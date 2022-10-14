@@ -1,4 +1,7 @@
-Powered by [Vercel](https://vercel.com/?utm_source=[frens]&utm_campaign=oss)! 
+<p align="center">
+  Powered by <a href="https://vercel.com/?utm_source=[frens]&utm_campaign=oss">Vercel</a>
+  <img src="public/vercel-icon-dark.svg" width="20" title="hover text">
+</p>
 
 This is a [RainbowKit](https://rainbowkit.com) + [wagmi](https://wagmi.sh) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-rainbowkit`](https://github.com/rainbow-me/rainbowkit/tree/main/packages/create-rainbowkit).
 
