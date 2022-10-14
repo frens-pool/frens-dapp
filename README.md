@@ -1,3 +1,5 @@
+Powered by Vercel](https://vercel.com/?utm_source=[frens]&utm_campaign=oss)! 
+
 This is a [RainbowKit](https://rainbowkit.com) + [wagmi](https://wagmi.sh) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-rainbowkit`](https://github.com/rainbow-me/rainbowkit/tree/main/packages/create-rainbowkit).
 
 ## Getting Started
