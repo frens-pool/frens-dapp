@@ -1,14 +1,37 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'exo': ['"Exo 2"', 'sans-serif'],
+      },
+    },
   },
   plugins: [require("daisyui")],
-  // daisyUI config (optional)
-  themes: ["light", "dark", "corporate", "winter"],
 
+  daisyui: {
+    styled: true,
+    themes: true,
+    base: true,
+    utils: true,
+    logs: true,
+    rtl: false,
+    prefix: "",
+    darkTheme: "halloween",
+    themes: [
+      {
+        garden: {
+          ...require("daisyui/src/colors/themes")["[data-theme=garden]"],
+          primary: "#E79132",
+          "primary-focus": "#E79132",
+        },
+      },
+      "halloween"
+    ],
+  },
 }
