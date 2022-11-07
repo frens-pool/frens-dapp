@@ -15,6 +15,8 @@ import {
   chain,
 } from "wagmi";
 import { alchemyProvider } from 'wagmi/providers/alchemy';
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
 
 export default function RootLayout({children,} : { children: React.ReactNode}) {
   const { chains, provider } = configureChains(
@@ -25,7 +27,7 @@ export default function RootLayout({children,} : { children: React.ReactNode}) {
   );
   
   const { connectors } = getDefaultWallets({
-    appName: 'Institutional Staking',
+    appName: 'Frens',
     chains
   });
   
@@ -36,18 +38,14 @@ export default function RootLayout({children,} : { children: React.ReactNode}) {
   })
 
   return (
-    <html data-theme="garden">
+    <html data-theme="winter">
       <head></head>
-      <body>
+      <body className="min-h-screen bg-gradient-to-r from-cyan-400 to-blue-300">
         <WagmiConfig client={wagmiClient}>
-          <RainbowKitProvider
-            chains={chains}
-            theme={{
-              lightMode: lightTheme({ accentColor: "#E79132" }),
-              darkMode: darkTheme({ accentColor: "#E79132" }),
-            }}
-          >
+          <RainbowKitProvider chains={chains}>
+            <Navbar />
             {children}
+            <Footer />
           </RainbowKitProvider>
         </WagmiConfig>
       </body>

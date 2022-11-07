@@ -10,6 +10,19 @@ module.exports = {
       fontFamily: {
         'exo': ['"Exo 2"', 'sans-serif'],
       },
+      keyframes: {
+        wiggle: {
+            '0%, 100%': {
+                transform: 'rotate(-3deg)'
+            },
+            '50%': {
+                transform: 'rotate(3deg)'
+            },
+        }
+      },
+      animation: {
+          wiggle: 'wiggle 1s ease-in-out infinite',
+      }
     },
   },
   plugins: [require("daisyui")],
@@ -22,16 +35,16 @@ module.exports = {
     logs: true,
     rtl: false,
     prefix: "",
-    darkTheme: "halloween",
+    darkTheme: "winter",
     themes: [
       {
         garden: {
           ...require("daisyui/src/colors/themes")["[data-theme=garden]"],
-          primary: "#E79132",
-          "primary-focus": "#E79132",
+          primary: "#26c6da",
+          "primary-focus": "#26c6da",
         },
       },
-      "halloween"
+      "winter"
     ],
   },
 }
