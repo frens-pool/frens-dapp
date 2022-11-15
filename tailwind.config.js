@@ -1,15 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      fontFamily: {
-        'exo': ['"Exo 2"', 'sans-serif'],
-      },
       keyframes: {
         wiggle: {
             '0%, 100%': {
@@ -26,25 +22,7 @@ module.exports = {
     },
   },
   plugins: [require("daisyui")],
+  // daisyUI config (optional)
+  themes: ["light", "dark", "corporate", "winter"],
 
-  daisyui: {
-    styled: true,
-    themes: true,
-    base: true,
-    utils: true,
-    logs: true,
-    rtl: false,
-    prefix: "",
-    darkTheme: "winter",
-    themes: [
-      {
-        garden: {
-          ...require("daisyui/src/colors/themes")["[data-theme=garden]"],
-          primary: "#26c6da",
-          "primary-focus": "#26c6da",
-        },
-      },
-      "winter"
-    ],
-  },
 }

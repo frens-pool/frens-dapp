@@ -11,31 +11,25 @@ const Navbar = () => (
         <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
           <li>
             <Link href="/">
-              Homepage
+              <a>Homepage</a>
             </Link>
           </li>
           <li>
-            {/* <Link href="/operator">
-                Operator
-            </Link> */}
-            <a href="https://frens.fun/operator">
-                Operator
-            </a>
+            <Link href="/operator">
+              <a>Operator</a>
+            </Link>
           </li>
           <li>
-            {/* <Link href="/staker">
-              Staker
-            </Link> */}
-            <a href="https://frens.fun/staker">
-              Staker
-            </a>
+            <Link href="/staker">
+              <a>Staker</a>
+            </Link>
           </li>
         </ul>
       </div>
     </div>
     <div className="navbar-center">
-      <Link href="/" className="btn btn-ghost normal-case text-3xl text-white">
-        frens 🧑‍🤝‍🧑
+      <Link href="/">
+        <a className="btn btn-ghost normal-case text-3xl text-white">frens 🧑‍🤝‍🧑</a>
       </Link>
     </div>
     <div className="navbar-end">
