@@ -9,7 +9,6 @@ import Navbar from 'components/navbar';
 import Footer from 'components/footer';
 import { useDeposit } from '../hooks/write/useDeposit';
 import { StakeFormComponent } from 'components/staker/stakeFormComponent';
-import { DepositProgressBarComponent } from 'components/shared/depositProgressBarComponent';
 import { OperatorWidget } from 'components/operatorWidget';
 import { PoolInfo } from 'components/poolInfo';
 import StakingPool from "../utils/StakingPool.json";

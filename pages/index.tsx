@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-300" data-theme="winter">
       <Head>
-        <title>frens</title>
+        <title>FRENS</title>
         <meta
           name="description"
           content="stake eth via ur trusted degen fren"
@@ -28,7 +28,7 @@ const Home: NextPage = () => {
             <div className="basis-3/5">
               <div className="flex">
                 <h1 className="text-5xl font-bold text-white">
-                  Stake with Frens!
+                  Stake with friends!
                 </h1>
                 <div className="ml-2 text-5xl animate-wiggle">🧑‍🤝‍🧑</div>
               </div>
