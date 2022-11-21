@@ -41,7 +41,7 @@ const Operator: NextPage = () => {
       <Navbar />
 
       <main className="flex flex-col justify-center items-center min-h-[93vh]">
-        <div className="w-2/3 flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">
             1️⃣ Create Pool
           </h1>
@@ -50,7 +50,7 @@ const Operator: NextPage = () => {
           </div>
         </div>
 
-        <div className="w-2/3 flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">
             2️⃣ Invite frens
           </h1>
@@ -59,7 +59,7 @@ const Operator: NextPage = () => {
           </div>
         </div>
 
-        <div className="w-2/3 flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">
             3️⃣  Watch pool fill
           </h1>
@@ -68,7 +68,7 @@ const Operator: NextPage = () => {
           </div>
         </div>
 
-        <div className="w-2/3 flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">
             4️⃣ Start your SSV validator
           </h1>
