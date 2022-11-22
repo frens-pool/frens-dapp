@@ -1,10 +1,14 @@
-import { useContractEvent } from "wagmi";
+import { useContractEvent, useAccount } from "wagmi";
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+  
 import { useCreatePool } from '../hooks/write/useCreatePool';
 import StakingPoolFactory from "../utils/StakingPoolFactory.json";
 
 const INVITATION_TOKEN_LENGTH = 9
 
 export const CreatePool = ({setTokenCode, setStep, setPoolContract}) => {
+    const { address, isConnecting, isDisconnected } = useAccount();
+    const { openConnectModal } = useConnectModal();
 
     const { data, isLoading, write:createPool } = useCreatePool();
     let etherscanLink = ""
@@ -26,7 +30,6 @@ export const CreatePool = ({setTokenCode, setStep, setPoolContract}) => {
             setStep(2);
         },
     })
-    // console.log(data)
 
     if(data){
         etherscanLink = `https://goerli.etherscan.io/tx/${data.hash}`
@@ -62,9 +65,18 @@ export const CreatePool = ({setTokenCode, setStep, setPoolContract}) => {
                                 Loading ... 
                             </button>
                             :
-                            <button className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' onClick={() => onCreatePool()}>
-                                Create Pool
-                            </button>
+                            <div>
+                                { address ? 
+                                    <button className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' onClick={() => onCreatePool()}>
+                                        Create Pool
+                                    </button>
+                                    :
+                                    <button className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' onClick={() => openConnectModal()}>
+                                        Create Pool
+                                    </button>
+                                }
+                               
+                            </div>
                         }
                     </div>
                 }
