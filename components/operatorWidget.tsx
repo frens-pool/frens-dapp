@@ -32,7 +32,6 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
 
     const { data: ensAvatar, isError: isAvatarError, isLoading: isAvatarLoading } = useEnsAvatar({
         addressOrName: ensName,
-        // addressOrName: "heeckhau.eth",
         chainId: chainId,
         cacheTime: 1_000,
         onSettled(data, error) {
@@ -94,7 +93,7 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
                         </div>
                     </figcaption>
                     {/* <button onClick={follow}>Follow on Lens</button> */}
-                    <a href="https://lenster.xyz/u/heeckhau.lens">Follow on Lens</a>
+                    {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
                 </div>
             </figure>
         </div>
