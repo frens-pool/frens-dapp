@@ -1,26 +1,18 @@
-import { useState, useEffect } from 'react';
 import {
     useEnsAvatar,
     useEnsName,
     useAccount,
     useSignMessage
 } from 'wagmi'
-
 import { Lens } from 'lens-protocol';
 
-
 const chainId = 5 // 1 for mainnet
-
 
 type Props = {
     operatorAddress: string
 }
 
 export const OperatorWidget = ({ operatorAddress }: Props) => {
-
-    // https://wagmi.sh/docs/hooks/useEnsAvatar
-
-
     const { data: ensName, isError: isEnsNameError, isLoading: isEnsNameLoading } = useEnsName({
         address: operatorAddress,
         chainId: chainId,

@@ -43,7 +43,7 @@ export const CreatePool = ({setTokenCode, setStep, setPoolContract}) => {
                 {data ?
                     <div>
                         <div className="my-2">
-                            bear with us ... pool is getting created
+                            just a sec ... pool is getting created
                         </div>
                         <div className="flex justify-center">
                             <div role="status">
