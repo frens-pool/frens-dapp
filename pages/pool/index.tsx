@@ -30,7 +30,7 @@ const Operator: NextPage = () => {
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-300" data-theme="winter">
       <Head>
-        <title>frens | operator</title>
+        <title>FRENS | pool </title>
         <meta
           name="description"
           content="stake eth via ur trusted degen"

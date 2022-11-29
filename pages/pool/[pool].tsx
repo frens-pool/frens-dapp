@@ -7,19 +7,22 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { NftGallery } from 'react-nft-gallery';
 import Navbar from 'components/navbar';
 import Footer from 'components/footer';
-import { useDeposit } from '../hooks/write/useDeposit';
+import { useDeposit } from '../../hooks/write/useDeposit';
+import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 import { StakeFormComponent } from 'components/staker/stakeFormComponent';
 import { OperatorWidget } from 'components/operatorWidget';
 import { PoolInfo } from 'components/poolInfo';
-import StakingPool from "../utils/StakingPool.json";
 
-const Staker: NextPage = () => {
-  const poolAddress = useRouter().query["pool"];
+const Pool: NextPage = () => {
+  const router = useRouter()
+  const poolAddress = router.query.pool as string
+
   let etherscanLink = ""
 
   const { isConnected, address } = useAccount()
   const [stakeAmount, setStakeAmount] = useState<string>("0");
   const [isDepositing, setIsDepositing] = useState(false);
+  const { data: poolOwner } = usePoolOwner({ address: poolAddress as string });
   const { data, write: deposit } = useDeposit({ address: poolAddress as string, val: stakeAmount });
 
   // if(poolAddress) {
@@ -40,7 +43,7 @@ const Staker: NextPage = () => {
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-300 min-h-screen" data-theme="winter">
       <Head>
-        <title>frens | staker</title>
+        <title>FRENS | stake </title>
         <meta
           name="description"
           content="stake eth via ur trusted degen"
@@ -51,7 +54,7 @@ const Staker: NextPage = () => {
       <Navbar />
 
       <main className="flex flex-col justify-center items-center min-h-[93vh]">
-        <OperatorWidget operatorAddress='0x9b18e9e9aa3dD35100b385b7035C0B1E44AfcA14' />
+        <OperatorWidget operatorAddress={poolOwner?.toString()} />
 
         <div className='w-3/5 border-2 border-violet-500 rounded-md bg-white mt-6'>
           {/* <DepositProgressBarComponent /> */}
@@ -127,4 +130,4 @@ const Staker: NextPage = () => {
   );
 };
 
-export default Staker;
+export default Pool;
