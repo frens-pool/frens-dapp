@@ -19,7 +19,7 @@ const Navbar = () => (
           </li>
           <li>
             <Link href="/pool">
-              <a>Stake (example)</a>
+              <a>Pool Example</a>
             </Link>
           </li>
         </ul>
