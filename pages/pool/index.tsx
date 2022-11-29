@@ -15,7 +15,7 @@ import { PoolInfo } from 'components/poolInfo';
 
 const Pool: NextPage = () => {
   const router = useRouter()
-  const poolAddress = "0x016F6c20F34fbD9CfFF9AF3Afe7475080e32a1B2"
+  const poolAddress = "0xB5a38976c8B39d481737354e4DE888eFB7A7fF75"
 
   let etherscanLink = ""
 
