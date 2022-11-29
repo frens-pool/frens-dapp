@@ -1,50 +1,102 @@
+import { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
-import Link from 'next/link'
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Navbar from 'components/navbar';
 import Footer from 'components/footer';
+import { InviteFrens } from 'components/inviteFrens';
+import { CreatePool } from 'components/createPool';
+import { SelectOperator } from 'components/selectOperator';
+import { DropKeys } from 'components/dropKeys';
+import { GiveAllowance } from 'components/GiveAllowance';
+import { PoolInfo } from 'components/poolInfo';
+import { DepositProgressBarComponent } from 'components/shared/depositProgressBarComponent';
+import { Stake } from 'components/stake';
 
-const Home: NextPage = () => {
+const Operator: NextPage = () => {
+  const poolAddress = useRouter().query["pool"];
+  const [poolContract, setPoolContract] = useState("")
+  const [tokenCode, setTokenCode] = useState("abcdef")
+  const [step, setStep] = useState(1)
+  const [depositFileData, setDepositFileData] = useState()
+
+  useEffect(() => {
+    if (poolAddress) {
+      setPoolContract(poolAddress as string);
+      setStep(4)
+    }
+  }, [poolAddress])
+
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-300" data-theme="winter">
       <Head>
-        <title>FRENS</title>
+        <title>FRENS | pool </title>
         <meta
           name="description"
-          content="stake eth via ur trusted degen fren"
+          content="stake eth via ur trusted degen"
         />
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧑‍🤝‍🧑</text></svg>" />
       </Head>
 
       <Navbar />
 
-      <main>
-        <div className="hero min-h-screen -mt-12">
-          <div className="hero-content flex-col lg:flex-row">
-            <img 
-              src="/frens.png"
-              className="hidden md:block hover:rotate-[360deg] hover:duration-1000 basis-2/5 max-w-sm mr-0 md:mr-20 rounded-lg shadow-2xl"
-            />
-            <div className="basis-3/5">
-              <div className="flex">
-                <h1 className="text-5xl font-bold text-white">
-                  Stake with friends!
-                </h1>
-                <div className="ml-2 text-5xl animate-wiggle">🧑‍🤝‍🧑</div>
+      <main className="flex flex-col justify-center items-center min-h-[93vh]">
+        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <h1 className="text-3xl font-bold">
+            1️⃣ Create Pool
+          </h1>
+          <div className={`${step == 1 ? "block" : "hidden"}`}>
+            <CreatePool setTokenCode={setTokenCode} setStep={setStep} setPoolContract={setPoolContract} />
+          </div>
+        </div>
+
+        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <h1 className="text-3xl font-bold">
+            2️⃣ Invite frens
+          </h1>
+          <div className={`${step == 2 ? "block" : "hidden"}`}>
+            <InviteFrens tokenCode={tokenCode} poolContract={poolContract} setStep={setStep} />
+          </div>
+        </div>
+
+        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <h1 className="text-3xl font-bold">
+            3️⃣  Watch pool fill
+          </h1>
+          <div className={`${step == 3 ? "block w-2/3" : "hidden"}`}>
+            <PoolInfo address={poolContract} />
+          </div>
+        </div>
+
+        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <h1 className="text-3xl font-bold">
+            4️⃣ Start your SSV validator
+          </h1>
+          <div className={`${step == 4 ? "block" : "hidden"}`}>
+            <div>
+              <div className="my-2 p-2 border border-slate-700 rounded-md">
+                <p>1. create staking keys using this command:</p>
+                <div><code>deposit new-mnemonic --eth1_withdrawal_address {poolAddress}</code></div>
               </div>
-             
-              <p className="text-xl py-6 text-white">Spin up a staking pool so ur frens can stake via their favorite crypto degen</p>
-              <Link href="/pool">
-                <a className="btn btn-primary text-white bg-gradient-to-r from-pink-500 to-violet-500">Get Started</a>
-              </Link>
+              <div className="my-2 p-2 border border-slate-700 rounded-md">
+                <div>2. upload the deposit file here</div>
+                <DropKeys onFileReceived={(data) => {
+                  const depositData = JSON.parse(data);
+                  setDepositFileData(depositData[0]);
+                }} />
+                <Stake address={poolAddress as string} depositdata={depositFileData} />
+              </div>
+              <div className="my-2 p-2 border border-slate-700 rounded-md">
+                <SelectOperator setTokenCode={setTokenCode} setStep={setStep} />
+                <GiveAllowance onFileReceived={undefined}/>
+              </div>
             </div>
           </div>
         </div>
       </main>
-
       <Footer/>
-    </div>
+    </div >
   );
 };
 
-export default Home;
+export default Operator;

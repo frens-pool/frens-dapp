@@ -13,12 +13,12 @@ const Navbar = () => (
             <a href="https://frens.fun">Home</a>
           </li>
           <li>
-            <Link href="/pool">
+            <Link href="/">
               <a>Pool</a>
             </Link>
           </li>
           <li>
-            <Link href="/pool/0x0803A931deb3b9e7aF602499fc84c07FC6Da4239">
+            <Link href="/pool">
               <a>Stake (example)</a>
             </Link>
           </li>
