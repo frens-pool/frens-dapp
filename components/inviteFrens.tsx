@@ -1,5 +1,5 @@
 export const InviteFrens = ({ tokenCode, poolContract, setStep }) => {
-  const link = `https://frens.fun/pool/${poolContract}`
+  const link = `https://app.frens.fun/pool/${poolContract}`
 
   function copyToClipboard(copyMe: string): void {
     navigator.clipboard.writeText(copyMe)
