@@ -1,5 +1,5 @@
 export const InviteFrens = ({ tokenCode, poolContract, setStep }) => {
-  const link = `https://frens-network.vercel.app/staker?token=${tokenCode}&pool=${poolContract}`
+  const link = `https://frens.fun/stake/${poolContract}?token=${tokenCode}`
 
   function copyToClipboard(copyMe: string): void {
     navigator.clipboard.writeText(copyMe)

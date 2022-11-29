@@ -10,18 +10,16 @@ const Navbar = () => (
         </label>
         <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
           <li>
-            <Link href="/">
-              <a>Homepage</a>
+            <a href="https://frens.fun">Home</a>
+          </li>
+          <li>
+            <Link href="/pool">
+              <a>Pool</a>
             </Link>
           </li>
           <li>
-            <Link href="/operator">
-              <a>Operator</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/staker">
-              <a>Staker</a>
+            <Link href="/stake">
+              <a>Stake</a>
             </Link>
           </li>
         </ul>
@@ -29,7 +27,7 @@ const Navbar = () => (
     </div>
     <div className="navbar-center">
       <Link href="/">
-        <a className="btn btn-ghost normal-case text-3xl text-white">frens 🧑‍🤝‍🧑</a>
+        <a className="btn btn-ghost normal-case text-3xl text-white">FRENS 🧑‍🤝‍🧑</a>
       </Link>
     </div>
     <div className="navbar-end">

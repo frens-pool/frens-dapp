@@ -34,7 +34,7 @@ const Home: NextPage = () => {
               </div>
              
               <p className="text-xl py-6 text-white">Spin up a staking pool so ur frens can stake via their favorite crypto degen</p>
-              <Link href="/operator">
+              <Link href="/pool">
                 <a className="btn btn-primary text-white bg-gradient-to-r from-pink-500 to-violet-500">Get Started</a>
               </Link>
             </div>

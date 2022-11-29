@@ -1,26 +1,18 @@
-import { useState, useEffect } from 'react';
 import {
     useEnsAvatar,
     useEnsName,
     useAccount,
     useSignMessage
 } from 'wagmi'
-
 import { Lens } from 'lens-protocol';
 
-
 const chainId = 5 // 1 for mainnet
-
 
 type Props = {
     operatorAddress: string
 }
 
 export const OperatorWidget = ({ operatorAddress }: Props) => {
-
-    // https://wagmi.sh/docs/hooks/useEnsAvatar
-
-
     const { data: ensName, isError: isEnsNameError, isLoading: isEnsNameLoading } = useEnsName({
         address: operatorAddress,
         chainId: chainId,
@@ -32,7 +24,6 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
 
     const { data: ensAvatar, isError: isAvatarError, isLoading: isAvatarLoading } = useEnsAvatar({
         addressOrName: ensName,
-        // addressOrName: "heeckhau.eth",
         chainId: chainId,
         cacheTime: 1_000,
         onSettled(data, error) {
@@ -94,7 +85,7 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
                         </div>
                     </figcaption>
                     {/* <button onClick={follow}>Follow on Lens</button> */}
-                    <a href="https://lenster.xyz/u/heeckhau.lens">Follow on Lens</a>
+                    {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
                 </div>
             </figure>
         </div>
