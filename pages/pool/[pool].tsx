@@ -79,7 +79,7 @@ const Pool: NextPage = () => {
                       setIsDepositing(true);
                     }}
                     >
-                    Deposit
+                    Stake
                   </button>
                 }
               </div>
