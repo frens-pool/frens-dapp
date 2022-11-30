@@ -6,12 +6,12 @@ import { useState } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Navbar from 'components/shared/navbar';
 import Footer from 'components/shared/footer';
-import { useDeposit } from '../../hooks/write/useDeposit';
-import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 import { StakeFormComponent } from 'components/staker/stakeFormComponent';
 import { OperatorWidget } from 'components/staker/operatorWidget';
 import { PoolInfo } from 'components/shared/poolInfo';
 import { NftGallery } from 'components/staker/nftGallery';
+import { useDeposit } from '../../hooks/write/useDeposit';
+import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 
 const Pool: NextPage = () => {
   const router = useRouter()
