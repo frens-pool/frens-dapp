@@ -1,5 +1,5 @@
 
-import { usePoolStatus } from '../hooks/read/usePoolStatus';
+import { usePoolStatus } from '../../hooks/read/usePoolStatus';
 
 export const PoolInfo = ({address}) => {
     const componentConfig = { postUrl: 'no-url' };

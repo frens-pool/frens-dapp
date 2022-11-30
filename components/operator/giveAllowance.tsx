@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useAllowance } from '../hooks/write/useAllowance';
+import { useAllowance } from '../../hooks/write/useAllowance';
 
 export const GiveAllowance = ({ onFileReceived }: { onFileReceived: any }) => {
     // const { data, isLoading, isSuccess, write: register } = useSSVRegisterValidator({
