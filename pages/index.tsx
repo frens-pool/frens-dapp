@@ -8,7 +8,7 @@ import { InviteFrens } from 'components/operator/inviteFrens';
 import { CreatePool } from 'components/operator/createPool';
 import { SelectOperator } from 'components/operator/selectOperator';
 import { DropKeys } from 'components/operator/dropKeys';
-import { GiveAllowance } from 'components/operator/GiveAllowance';
+import { GiveAllowance } from 'components/operator/giveAllowance';
 import { PoolInfo } from 'components/shared/poolInfo';
 import { Deposit } from 'components/operator/deposit';
 
