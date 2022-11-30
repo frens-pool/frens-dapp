@@ -1,8 +1,8 @@
 import { useContractEvent, useAccount } from "wagmi";
 import { useConnectModal } from '@rainbow-me/rainbowkit';
   
-import { useCreatePool } from '../hooks/write/useCreatePool';
-import StakingPoolFactory from "../utils/StakingPoolFactory.json";
+import { useCreatePool } from '../../hooks/write/useCreatePool';
+import StakingPoolFactory from "../../utils/StakingPoolFactory.json";
 
 const INVITATION_TOKEN_LENGTH = 9
 

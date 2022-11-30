@@ -5,13 +5,13 @@ import { useAccount, useContractEvent } from "wagmi"
 import { useState } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { NftGallery } from 'react-nft-gallery';
-import Navbar from 'components/navbar';
-import Footer from 'components/footer';
+import Navbar from 'components/shared/navbar';
+import Footer from 'components/shared/footer';
 import { useDeposit } from '../../hooks/write/useDeposit';
 import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 import { StakeFormComponent } from 'components/staker/stakeFormComponent';
-import { OperatorWidget } from 'components/operatorWidget';
-import { PoolInfo } from 'components/poolInfo';
+import { OperatorWidget } from 'components/staker/operatorWidget';
+import { PoolInfo } from 'components/shared/poolInfo';
 
 const Pool: NextPage = () => {
   const router = useRouter()
@@ -43,7 +43,7 @@ const Pool: NextPage = () => {
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-300 min-h-screen" data-theme="winter">
       <Head>
-        <title>FRENS | stake </title>
+        <title>FRENS Pool </title>
         <meta
           name="description"
           content="stake eth via ur trusted degen"

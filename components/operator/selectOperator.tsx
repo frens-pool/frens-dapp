@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useEventCreate } from '../hooks/read/useEventCreate';
-import { useCreatePool } from '../hooks/write/useCreatePool';
+import { useEventCreate } from '../../hooks/read/useEventCreate';
+import { useCreatePool } from '../../hooks/write/useCreatePool';
 
 const INVITATION_TOKEN_LENGTH = 9
 

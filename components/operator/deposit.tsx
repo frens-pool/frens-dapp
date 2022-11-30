@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useEventCreate } from '../hooks/read/useEventCreate';
-import { useStake } from '../hooks/write/useStake';
+import { useEventCreate } from '../../hooks/read/useEventCreate';
+import { useStake } from '../../hooks/write/useStake';
 
 const INVITATION_TOKEN_LENGTH = 9
 
-export const Stake = ({ address, depositdata }: { address: string, depositdata: any }) => {
+export const Deposit = ({ address, depositdata }: { address: string, depositdata: any }) => {
     // const [ssvOperators, setssvOperators] = useState([]);
     // const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
 

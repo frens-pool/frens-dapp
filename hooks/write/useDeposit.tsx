@@ -3,7 +3,6 @@ import {
   useAccount,
   usePrepareContractWrite,
   useContractWrite,
-  useNetwork
 } from "wagmi";
 import StakingPool from "../../utils/StakingPool.json";
 

@@ -2,16 +2,15 @@ import { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import Navbar from 'components/navbar';
-import Footer from 'components/footer';
-import { InviteFrens } from 'components/inviteFrens';
-import { CreatePool } from 'components/createPool';
-import { SelectOperator } from 'components/selectOperator';
-import { DropKeys } from 'components/dropKeys';
-import { GiveAllowance } from 'components/GiveAllowance';
-import { PoolInfo } from 'components/poolInfo';
-import { DepositProgressBarComponent } from 'components/shared/depositProgressBarComponent';
-import { Stake } from 'components/stake';
+import Navbar from 'components/shared/navbar';
+import Footer from 'components/shared/footer';
+import { InviteFrens } from 'components/operator/inviteFrens';
+import { CreatePool } from 'components/operator/createPool';
+import { SelectOperator } from 'components/operator/selectOperator';
+import { DropKeys } from 'components/operator/dropKeys';
+import { GiveAllowance } from 'components/operator/giveAllowance';
+import { PoolInfo } from 'components/shared/poolInfo';
+import { Deposit } from 'components/operator/deposit';
 
 const Operator: NextPage = () => {
   const poolAddress = useRouter().query["pool"];
@@ -30,7 +29,7 @@ const Operator: NextPage = () => {
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-300" data-theme="winter">
       <Head>
-        <title>FRENS | pool </title>
+        <title>FRENS Pool </title>
         <meta
           name="description"
           content="stake eth via ur trusted degen"
@@ -84,7 +83,7 @@ const Operator: NextPage = () => {
                   const depositData = JSON.parse(data);
                   setDepositFileData(depositData[0]);
                 }} />
-                <Stake address={poolAddress as string} depositdata={depositFileData} />
+                <Deposit address={poolAddress as string} depositdata={depositFileData} />
               </div>
               <div className="my-2 p-2 border border-slate-700 rounded-md">
                 <SelectOperator setTokenCode={setTokenCode} setStep={setStep} />
