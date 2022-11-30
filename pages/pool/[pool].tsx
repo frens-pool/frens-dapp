@@ -1,10 +1,9 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useAccount, useContractEvent } from "wagmi"
+import { useAccount } from "wagmi"
 import { useState } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { NftGallery } from 'react-nft-gallery';
 import Navbar from 'components/shared/navbar';
 import Footer from 'components/shared/footer';
 import { useDeposit } from '../../hooks/write/useDeposit';
@@ -115,13 +114,7 @@ const Pool: NextPage = () => {
 
         <div className={`w-3/5 mt-6 border-2 border-violet-500 rounded-md bg-white ${isConnected ? "block" : "hidden"}`}>
           <div className='text-center font-bold my-2'>Ur current pool stakes</div>
-          <div className='text-center my-2'>takes some time to update</div>
-          <NftGallery
-              ownerAddress={address}
-              apiUrl="https://testnets-api.opensea.io"
-              hasLightbox={false}
-              isInline={true}
-          />
+          
         </div>
 
       </main>
