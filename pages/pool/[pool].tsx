@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useAccount } from "wagmi"
+import { useAccount, useContractEvent } from "wagmi"
 import { useState } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Navbar from 'components/shared/navbar';
@@ -12,6 +12,7 @@ import { PoolInfo } from 'components/shared/poolInfo';
 import { NftGallery } from 'components/staker/nftGallery';
 import { useDeposit } from '../../hooks/write/useDeposit';
 import { usePoolOwner } from '../../hooks/read/usePoolOwner';
+import StakingPool from "../../utils/StakingPool.json";
 
 const Pool: NextPage = () => {
   const router = useRouter()
@@ -25,16 +26,14 @@ const Pool: NextPage = () => {
   const { data: poolOwner } = usePoolOwner({ address: poolAddress as string });
   const { data, write: deposit } = useDeposit({ address: poolAddress as string, val: stakeAmount });
 
-  // if(poolAddress) {
-  //   useContractEvent({
-  //     addressOrName: "0xb33548809461CaEF599f9a0C9C5A9E559b31088a",
-  //     contractInterface: StakingPool.abi,
-  //     eventName: 'Deposit',
-  //     listener: (event) => {
-  //         console.log(event);
-  //     },
-  //   })
-  // }
+  // useContractEvent({
+  //   addressOrName: poolAddress.toString(),
+  //   contractInterface: StakingPool.abi,
+  //   eventName: 'Deposit',
+  //   listener: (event) => {
+  //       console.log(event);
+  //   },
+  // })
 
   if(data){
     etherscanLink = `https://goerli.etherscan.io/tx/${data.hash}`
