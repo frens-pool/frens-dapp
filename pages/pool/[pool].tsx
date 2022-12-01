@@ -15,7 +15,7 @@ import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 
 const Pool: NextPage = () => {
   const router = useRouter()
-  const poolAddress = router.query.pool as string ? router.query.pool as string : ""
+  const poolAddress = router.query.pool as string ? router.query.pool as string : "notSet"
 
   let etherscanLink = ""
 
@@ -115,7 +115,7 @@ const Pool: NextPage = () => {
 
         <div className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white ${isConnected ? "block" : "hidden"}`}>
           <div className='text-center font-bold my-2'>Current pool stakes *(yours for now)*</div>
-          <NftGallery poolAddress={poolAddress} />
+          <NftGallery />
         </div>
 
       </main>
