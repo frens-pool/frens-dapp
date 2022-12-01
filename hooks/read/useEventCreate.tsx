@@ -9,8 +9,8 @@ export function useEventCreate() {
         : "0x00000000000000000000000000000000deadb33f"; // TODO :)
 
     useContractEvent({
-        address: contractAddr,
-        abi: StakingPoolFactory.abi,
+        addressOrName: contractAddr,
+        contractInterface: StakingPoolFactory.abi,
         eventName: 'Create',
         listener: (event) => {
             console.log(event);

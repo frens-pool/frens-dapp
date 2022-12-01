@@ -11,8 +11,8 @@ export function useNftTokenID( {
     tokenId: number,
   }) {
     const { data, isError, isLoading } = useContractRead({
-        address: poolAddress,
-        abi: StakingPool.abi,
+        addressOrName: poolAddress,
+        contractInterface: StakingPool.abi,
         functionName: 'tokenOfOwnerByIndex',
         args: [ownerAddress, tokenId],
     })

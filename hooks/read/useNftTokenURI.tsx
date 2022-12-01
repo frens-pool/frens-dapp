@@ -9,8 +9,8 @@ export function useNftTokenURI( {
     tokenId: any,
   }) {
     const { data, isError, isLoading } = useContractRead({
-        address: poolAddress,
-        abi: StakingPool.abi,
+        addressOrName: poolAddress,
+        contractInterface: StakingPool.abi,
         functionName: 'tokenURI',
         args: [tokenId],
     })

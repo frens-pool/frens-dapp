@@ -15,7 +15,7 @@ import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 
 const Pool: NextPage = () => {
   const router = useRouter()
-  const poolAddress = router.query.pool as string
+  const poolAddress = router.query.pool as string ? router.query.pool as string : ""
 
   let etherscanLink = ""
 

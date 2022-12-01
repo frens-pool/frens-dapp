@@ -18,12 +18,12 @@ const Navbar = () => (
             </Link>
           </li>
           <li>
-            <Link href="/pool">
+            <Link href="/pool/0xB5a38976c8B39d481737354e4DE888eFB7A7fF75">
               <a>Pool Example</a>
             </Link>
           </li>
           <li>
-            <Link href="/run">
+            <Link href="/run/0xB5a38976c8B39d481737354e4DE888eFB7A7fF75">
               <a>Run Example</a>
             </Link>
           </li>

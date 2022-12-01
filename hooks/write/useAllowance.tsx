@@ -29,8 +29,8 @@ export function useAllowance(
       : "0x00000000000000000000000000000000deadb33f";
 
   const { config } = usePrepareContractWrite({
-    address: SSVTokenContractAddr,
-    abi: ERC20.abi,
+    addressOrName: SSVTokenContractAddr,
+    contractInterface: ERC20.abi,
     functionName: 'approve',
     args: [registerContractAddr,"10000000000000000000000"],
   })

@@ -9,8 +9,8 @@ export function useNumberOfPools() {
         : "0x00000000000000000000000000000000deadb33f"; // TODO :)
 
     const { data, isError, isLoading } = useContractRead({
-        address: contractAddr,
-        abi: StakingPoolFactory.abi,
+        addressOrName: contractAddr,
+        contractInterface: StakingPoolFactory.abi,
         functionName: 'numberOfStakingPools',
     })
 

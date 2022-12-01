@@ -19,8 +19,8 @@ export function useCreatePool() {
   : "0x0000000000000000000000000000000000000000";
   
   const { config } = usePrepareContractWrite({
-    address: contractAddr,
-    abi: StakingPoolFactory.abi,
+    addressOrName: contractAddr,
+    contractInterface: StakingPoolFactory.abi,
     functionName: 'create',
     args: [goerliDepostAddress, ownerAddress],
   })

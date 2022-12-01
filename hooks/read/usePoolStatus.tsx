@@ -12,12 +12,12 @@ export function usePoolStatus( {
     //     ? "0x0eaA2B7472d169C038817133a1E87aFED8f01996"
     //     : "0x00000000000000000000000000000000deadb33f"; // TODO :)
 
-    const { data: totaldeposits, isError, isLoading } = useContractRead({
-        address: address,
-        abi: StakingPool.abi,
+    const { data, isError, isLoading } = useContractRead({
+        addressOrName: address,
+        contractInterface: StakingPool.abi,
         functionName: 'totalDeposits',
     })
 
-    return { totaldeposits, isError, isLoading };
+    return { data, isError, isLoading };
 }
   
