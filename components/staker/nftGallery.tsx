@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
 import { ethers } from "ethers";
+import { useRouter } from 'next/router';
 import StakingPool from "../../utils/StakingPool.json";
 import CardForNFT from "./cardForNFT";
 
@@ -8,11 +9,10 @@ import { useNftBalance } from '../../hooks/read/useNftBalance';
 import { useNftTokenID } from '../../hooks/read/useNftTokenID';
 import { useNftTokenURI } from '../../hooks/read/useNftTokenURI';
 
-type Props = {
-    poolAddress: string
-}
+export const NftGallery = () => {
+    const router = useRouter()
+    const poolAddress = router.query.pool ? router.query.pool : "0xB5a38976c8B39d481737354e4DE888eFB7A7fF75"
 
-export const NftGallery = ({ poolAddress }: Props) => {
     const { address:accountAddress } = useAccount();
     const [walletNFTs, setWalletNFTs] = useState<any[]>([]);
     let provider;
@@ -24,15 +24,15 @@ export const NftGallery = ({ poolAddress }: Props) => {
         if (ethereum) {
             provider = new ethers.providers.Web3Provider(ethereum as any);
             signer = provider.getSigner();
-            
+
             FrensPoolContract = new ethers.Contract(
-                poolAddress,
+                poolAddress.toString(),
                 StakingPool.abi,
                 signer
             );
         }
         getUserNft();
-    }, []);
+    }, [router.query.pool]);
 
     const getUserNft = async () => {
         let userNftIDs = await getUserNftIds()
@@ -68,8 +68,11 @@ export const NftGallery = ({ poolAddress }: Props) => {
                 userWalletNFTs.push(nftMetaData)
             }
             setWalletNFTs(userWalletNFTs)  
+            console.log('userWalletNFTs', userWalletNFTs)
         }
     }
+
+    // console.log(walletNFTs)
 
     if(walletNFTs.length === 0) {
         return <div className="flex flex-col items-center justify-center">
