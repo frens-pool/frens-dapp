@@ -1,11 +1,19 @@
-export const InviteFrens = ({ tokenCode, poolContract, setStep }) => {
+export const InviteFrens = ({ tokenCode, poolContract, setStep, step }) => {
   const link = `https://app.frens.fun/pool/${poolContract}`
 
   function copyToClipboard(copyMe: string): void {
     navigator.clipboard.writeText(copyMe)
   }
 
-  return (
+  if(step === 3) {
+    return(
+      <div className="flex flex-col justify-center">
+        <div className='my-2 text-center'>{link}</div>
+      </div>
+    )
+  } 
+
+  return(
     <div className="flex flex-col justify-center">
       <div className='my-2 text-center'>{link}</div>
       <div className="flex justify-center">
@@ -19,5 +27,5 @@ export const InviteFrens = ({ tokenCode, poolContract, setStep }) => {
         </button>
       </div>
     </div>
-  );
+  )
 };
