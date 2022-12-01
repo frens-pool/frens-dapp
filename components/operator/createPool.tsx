@@ -24,9 +24,9 @@ export const CreatePool = ({setTokenCode, setStep, setPoolContract}) => {
         addressOrName: "0x0013f09Bd637D39c659f121f93B4C5b8dAa3A561",
         contractInterface: StakingPoolFactory.abi,
         eventName: 'Create',
-        listener: (node, label, owner) => {
-            console.log(node, label, owner)
-            setPoolContract(label)
+        listener: (event) => {
+            console.log(event);
+            setPoolContract(event[1])
             setStep(2);
         },
     })

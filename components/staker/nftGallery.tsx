@@ -26,7 +26,7 @@ export const NftGallery = ({ poolAddress }: Props) => {
             signer = provider.getSigner();
             
             FrensPoolContract = new ethers.Contract(
-                "0xB5a38976c8B39d481737354e4DE888eFB7A7fF75",
+                poolAddress,
                 StakingPool.abi,
                 signer
             );
