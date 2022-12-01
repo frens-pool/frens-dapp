@@ -19,7 +19,12 @@ const Navbar = () => (
           </li>
           <li>
             <Link href="/pool">
-              <a>Example</a>
+              <a>Pool Example</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/run">
+              <a>Run Example</a>
             </Link>
           </li>
         </ul>

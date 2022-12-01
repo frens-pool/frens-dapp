@@ -10,8 +10,8 @@ export function useDeposit({ address, val }: { address: string, val: string }) {
   const { address: connectedWallet, connector, isConnected } = useAccount()
 
   const { config } = usePrepareContractWrite({
-    addressOrName: address,
-    contractInterface: StakingPool.abi,
+    address: address,
+    abi: StakingPool.abi,
     functionName: 'deposit',
     args: [connectedWallet],
     overrides: {

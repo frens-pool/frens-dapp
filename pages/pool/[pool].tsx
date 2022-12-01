@@ -113,7 +113,7 @@ const Pool: NextPage = () => {
           <PoolInfo address={poolAddress} />
         </div>
 
-        <div className={`w-3/5 mt-6 border-2 border-violet-500 rounded-md bg-white ${isConnected ? "block" : "hidden"}`}>
+        <div className={`w-3/5 p-4 mt-6 border-2 border-violet-500 rounded-md bg-white ${isConnected ? "block" : "hidden"}`}>
           <div className='text-center font-bold my-2'>Ur current pool stakes</div>
           <NftGallery poolAddress={poolAddress} />
         </div>

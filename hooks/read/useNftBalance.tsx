@@ -9,8 +9,8 @@ export function useNftBalance( {
     ownerAddress: string,
   }) {
     const { data, isError, isLoading } = useContractRead({
-        addressOrName: poolAddress,
-        contractInterface: StakingPool.abi,
+        address: poolAddress,
+        abi: StakingPool.abi,
         functionName: 'balanceOf',
         args: [ownerAddress],
     })

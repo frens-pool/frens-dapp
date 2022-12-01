@@ -4,7 +4,7 @@ import { useCreatePool } from '../../hooks/write/useCreatePool';
 
 const INVITATION_TOKEN_LENGTH = 9
 
-export const SelectOperator = ({ setTokenCode, setStep }) => {
+export const SelectOperator = ({ setTokenCode }) => {
     const [ssvOperators, setssvOperators] = useState([]);
     const [operatorList, setOperatorList] = useState((<></>));
     const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
