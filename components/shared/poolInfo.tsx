@@ -5,7 +5,7 @@ export const PoolInfo = ({address}) => {
     const componentConfig = { postUrl: 'no-url' };
     const djsConfig = { autoProcessQueue: false }
 
-    const { totaldeposits, isError, isLoading } = usePoolStatus({ address });
+    const { data:totaldeposits, isError, isLoading } = usePoolStatus({ address });
 
     // const eventHandlers = {
     //     addedfile: (file) => {
