@@ -1,20 +1,30 @@
 import { ChangeEvent, useState, useEffect } from 'react';
-import { useAccount, useBalance } from "wagmi"
+import { useAccount, useBalance, useContractEvent } from "wagmi"
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { BalanceComponent } from "./balanceComponent";
 import { DepositProgressBarComponent } from 'components/shared/depositProgressBarComponent';
 import { useDeposit } from '../../hooks/write/useDeposit';
+import StakingPool from "../../utils/StakingPool.json";
 
 const errorClassForInput = "input-error"
 
-export const StakeFormComponent = ({ poolAddress }) => {
+export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing }) => {
     const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
-    const [isDepositing, setIsDepositing] = useState(false);
     const [stakeAmount, setStakeAmount] = useState<string>("0");
     const { address, isConnected } = useAccount();
     const { data:balanceData } = useBalance({ addressOrName: address});
     const { data:depositData, write:deposit } = useDeposit({ address: poolAddress as string, val: stakeAmount });
     const etherscanLink = `https://goerli.etherscan.io/tx/${depositData?.hash}`
+
+    useContractEvent({
+        addressOrName: poolAddress.toString(),
+        contractInterface: StakingPool.abi,
+        eventName: 'DepositToPool',
+        listener: (event) => {
+            console.log(event);
+            setIsDepositing(false);
+        },
+    })
 
     useEffect(() => {
         if (isConnected) {

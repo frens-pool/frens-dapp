@@ -61,7 +61,7 @@ const Pool: NextPage = () => {
         <div className='w-3/5 border-2 border-violet-500 rounded-md bg-white mt-6'>
           {/* <DepositProgressBarComponent /> */}
 
-          <StakeFormComponent poolAddress={poolAddress} />
+          <StakeFormComponent poolAddress={poolAddress} isDepositing={isDepositing} setIsDepositing={setIsDepositing} />
 
           <div className='border border-violet-500 rounded-md mx-4'></div>
           <PoolInfo address={poolAddress} />
@@ -69,7 +69,7 @@ const Pool: NextPage = () => {
 
         <div className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white ${isDefinitelyConnected ? "block" : "hidden"}`}>
           <div className='text-center font-bold my-2'>Current pool stakes *(yours for now)*</div>
-          <NftGallery />
+          <NftGallery isDepositing={isDepositing}/>
         </div>
 
       </main>

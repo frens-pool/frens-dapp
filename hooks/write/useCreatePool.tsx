@@ -6,7 +6,7 @@ import {
 } from "wagmi";
 import StakingPoolFactory from "../../utils/StakingPoolFactory.json";
 
-const StakingPoolFactoryAddress = "0x0013f09Bd637D39c659f121f93B4C5b8dAa3A561"
+const StakingPoolFactoryAddress = "0xFf9A6f5E9e30a72AF79f69C5EA09465004Efb40d"
 const goerliDepostAddress = "0xff50ed3d0ec03aC01D4C79aAd74928BFF48a7b2b"
 
 export function useCreatePool() {
@@ -22,7 +22,7 @@ export function useCreatePool() {
     addressOrName: contractAddr,
     contractInterface: StakingPoolFactory.abi,
     functionName: 'create',
-    args: [goerliDepostAddress, ownerAddress],
+    args: [ ownerAddress ],
   })
   const { data, isLoading, isSuccess, write } = useContractWrite(config)
 
