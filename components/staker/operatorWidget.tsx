@@ -8,7 +8,7 @@ import {
 import { queryOperator } from 'hooks/graphql/queryOperator';
 import { Lens } from 'lens-protocol';
 
-const chainId = 5 // 1 for mainnet
+const chainId = 5 // 1 for mainnet, 5 for goerli
 
 type Props = {
     operatorAddress: string
@@ -25,7 +25,6 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
             console.log('Settled', { data, error })
         }
     })
-    console.log(ensName)
 
     useEffect(() => {
         const fetchOperatorProfile = async () => {
@@ -93,13 +92,16 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
                     alt={ensName} 
                     width="384" 
                 />
-                <div className="pt-6 pr-8 text-center md:text-left space-y-4">
+                <div className="pt-6 px-8 text-center md:text-left space-y-4">
                     <blockquote>
                         <h1 className="text-lg font-medium text-white">
                             Your frenly pool operator
                         </h1>
                     </blockquote>
                     <figcaption className="font-medium">
+                        <div className="text-sky-500 dark:text-sky-400">
+                            {operatorProfile?.data?.profile?.name}
+                        </div>
                         <div className="text-sky-500 dark:text-sky-400">
                             {ensName}
                         </div>
