@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
 import { ethers } from "ethers";
 import { useRouter } from 'next/router';
+import StakingPool from "../../utils/StakingPool.json";
 import FrensPoolShare from "../../utils/FrensPoolShare.json";
 import CardForNFT from "./cardForNFT";
 
@@ -14,9 +15,11 @@ export const NftGallery = ({isDepositing}) => {
     const poolAddress = router.query.pool ? router.query.pool : "0xB5a38976c8B39d481737354e4DE888eFB7A7fF75"
 
     const { address:accountAddress } = useAccount();
+    const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
     const [walletNFTs, setWalletNFTs] = useState<any[]>([]);
     let provider;
     let signer;
+    let StakingPoolContract;
     let FrensPoolShareContract;
 
     useEffect(() => {
@@ -25,18 +28,65 @@ export const NftGallery = ({isDepositing}) => {
             provider = new ethers.providers.Web3Provider(ethereum as any);
             signer = provider.getSigner();
 
+            StakingPoolContract = new ethers.Contract(
+                poolAddress.toString(),
+                StakingPool.abi,
+                signer
+            );
+
             FrensPoolShareContract = new ethers.Contract(
                 "0x7Dd2DaD96D8c0C26Bf76C57f933fE9370009Cecc",
                 FrensPoolShare.abi,
                 signer
             );
         }
-        getUserNft();
+        getPoolNft();
     }, [router.query.pool]);
 
-    const getUserNft = async () => {
-        let userNftIDs = await getUserNftIds()
-        setUserNFTs(userNftIDs)
+    const getPoolNft = async () => {
+        let poolNftIds = await getAllPoolNftIds();
+        setPoolNftArray(poolNftIds);
+    }
+
+    const getAllPoolNftIds = async () => {
+        let poolNFTsByIDArray: number[] = []
+
+        const { ethereum } = window;
+        if (ethereum) {
+            let poolTotalDeposits = await StakingPoolContract.totalDeposits();
+            let poolTotalDepositsString = poolTotalDeposits.toString();
+
+            if(poolTotalDepositsString !== "0") {
+                let poolTotalDepositsInt = poolTotalDepositsString / 1000000000000000;
+                for (var i = 0; i < poolTotalDepositsInt; i++) {
+                    let poolNftId = await StakingPoolContract.idsInThisPool(i);
+                    poolNFTsByIDArray.push(poolNftId.toNumber());
+                }
+            }
+        }
+        return poolNFTsByIDArray;
+    }
+
+    const setPoolNftArray = async (poolNftIDs: number[]) => {
+        let poolNft: any[] = []
+        let userWalletNFTs: any[] = []
+
+        const { ethereum } = window;
+        if (ethereum) {
+            for (var nftID of poolNftIDs) {
+                let tokenURI = await FrensPoolShareContract.tokenURI(nftID);
+                const json = atob(tokenURI.substring(29));
+                const nftMetaData = JSON.parse(json);
+                poolNft.push(nftMetaData);
+
+                let nftOwner = await FrensPoolShareContract.ownerOf(nftID);
+                if(nftOwner === accountAddress) {
+                    userWalletNFTs.push(nftMetaData);
+                }
+            }
+            setPoolNFTs(poolNft)
+            setWalletNFTs(userWalletNFTs)  
+        }
     }
 
     const getUserNftIds = async () => {
@@ -44,35 +94,17 @@ export const NftGallery = ({isDepositing}) => {
 
         const { ethereum } = window;
         if (ethereum) {
-            let totalSupply = await FrensPoolShareContract.totalSupply()
+            let totalSupply = await FrensPoolShareContract.totalSupply();
            
             for (var i = 1; i <= totalSupply.toNumber(); i++) {
                 let nftOwner = await FrensPoolShareContract.ownerOf(i);
                 if(nftOwner === accountAddress) {
-                    userNFTsByIDArray.push(i)
+                    userNFTsByIDArray.push(i);
                 }
             }
         }
         return userNFTsByIDArray
     }
-
-    const setUserNFTs = async (userNftIDs: number[]) => {
-        let userWalletNFTs: any[] = []
-
-        const { ethereum } = window;
-        if (ethereum) {
-            for (var nftID of userNftIDs) {
-                let tokenURI = await FrensPoolShareContract.tokenURI(nftID);
-                const json = atob(tokenURI.substring(29));
-                const nftMetaData = JSON.parse(json);
-                userWalletNFTs.push(nftMetaData)
-            }
-            setWalletNFTs(userWalletNFTs)  
-            console.log('userWalletNFTs', userWalletNFTs)
-        }
-    }
-
-    // console.log(walletNFTs)
 
     if(walletNFTs.length === 0) {
         return <div className="flex flex-col items-center justify-center">
@@ -94,33 +126,24 @@ export const NftGallery = ({isDepositing}) => {
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {walletNFTs.map(({ name, image }) => (
-                <div key={name}>
-                    <CardForNFT name={name} image={image}/>
-                </div>
-            ))}
+        <div>
+            <div>Yours:</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {walletNFTs.map(({ name, image }) => (
+                    <div key={name}>
+                        <CardForNFT name={name} image={image}/>
+                    </div>
+                ))}
+            </div>
+            <div className="mt-6">All:</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {poolNFTs.map(({ name, image }) => (
+                    <div key={name}>
+                        <CardForNFT name={name} image={image}/>
+                    </div>
+                ))}
+            </div>
         </div>
+        
     )
-
-    // with wagmi - single token only
-
-    // const { data: nftTokenID } = useNftTokenID({ poolAddress: poolAddress as string, ownerAddress: accountAddress as string, tokenId: 0 as number });
-    // const { data: nftTokenURI } = useNftTokenURI({ poolAddress: poolAddress as string, tokenId: nftTokenID });
-
-    // if (nftTokenURI) {
-    //     const jsonNFT = atob(nftTokenURI.substring(29));
-    //     const resultNFT = JSON.parse(jsonNFT);
-
-    //     return (
-    //         <div className="w-full md:w-3/5 mt-4">
-    //             <div className="flex flex-col items-center">
-    //                 {resultNFT ?
-    //                     <img src={resultNFT.image} alt="NFT" className="rounded-lg" />
-    //                     : <div>loading nft</div>
-    //                 }
-    //             </div>
-    //         </div>
-    //     )
-    // }
 };

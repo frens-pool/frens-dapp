@@ -68,7 +68,7 @@ const Pool: NextPage = () => {
         </div>
 
         <div className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white ${isDefinitelyConnected ? "block" : "hidden"}`}>
-          <div className='text-center font-bold my-2'>Current pool stakes *(yours for now)*</div>
+          <div className='text-center font-bold my-2'>Pool stakes</div>
           <NftGallery isDepositing={isDepositing}/>
         </div>
 
