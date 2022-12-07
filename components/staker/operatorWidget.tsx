@@ -16,6 +16,8 @@ type Props = {
 
 export const OperatorWidget = ({ operatorAddress }: Props) => {
     const [operatorProfile, setOperatorProfile] = useState({});
+    const [operatorImage, setOperatorImage] = useState("");
+    const [operatorName, setOperatorName] = useState("");
 
     const { data: ensName, isError: isEnsNameError, isLoading: isEnsNameLoading } = useEnsName({
         address: operatorAddress,
@@ -30,6 +32,11 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
         const fetchOperatorProfile = async () => {
             let operatorProfileFromFetch = await queryOperator(ensName);
             setOperatorProfile(operatorProfileFromFetch);
+            // @ts-ignore
+            setOperatorImage(operatorProfile?.data?.profile?.picture?.original?.url);
+            // @ts-ignore
+            setOperatorName(operatorProfile?.data?.profile?.name);
+
         };
 
         fetchOperatorProfile()
@@ -88,7 +95,7 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
             <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
                 <img 
                     className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" 
-                    src={operatorProfile?.data?.profile?.picture?.original?.url} 
+                    src={operatorImage} 
                     alt={ensName} 
                     width="384" 
                 />
@@ -100,7 +107,7 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
                     </blockquote>
                     <figcaption className="font-medium">
                         <div className="text-sky-500 dark:text-sky-400">
-                            {operatorProfile?.data?.profile?.name}
+                            {operatorName}
                         </div>
                         <div className="text-sky-500 dark:text-sky-400">
                             {ensName}
