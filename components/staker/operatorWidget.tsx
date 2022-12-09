@@ -18,6 +18,7 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
     const [operatorProfile, setOperatorProfile] = useState({});
     const [operatorImage, setOperatorImage] = useState("");
     const [operatorName, setOperatorName] = useState("");
+    const { address } = useAccount();
 
     const { data: ensName, isError: isEnsNameError, isLoading: isEnsNameLoading } = useEnsName({
         address: operatorAddress,
@@ -28,23 +29,14 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
         }
     })
 
-    useEffect(() => {
-        const fetchOperatorProfile = async () => {
-            let operatorProfileFromFetch = await queryOperator(ensName);
-            setOperatorProfile(operatorProfileFromFetch);
-            // @ts-ignore
-            setOperatorImage(operatorProfile?.data?.profile?.picture?.original?.url);
-            // @ts-ignore
-            setOperatorName(operatorProfile?.data?.profile?.name);
-
-        };
-
-        fetchOperatorProfile()
-            .catch(console.error);;
-
-    }, [ensName])
-
-    // console.log(operatorProfile?.data?.profile?.picture?.original?.url);
+    const fetchOperatorProfile = async () => {
+        let operatorProfileFromFetch = await queryOperator(ensName);
+        setOperatorProfile(operatorProfileFromFetch);
+        // @ts-ignore
+        setOperatorImage(operatorProfile?.data?.profile?.picture?.original?.url);
+        // @ts-ignore
+        setOperatorName(operatorProfile?.data?.profile?.name);
+    };
     
     const { data: ensAvatar, isError: isAvatarError, isLoading: isAvatarLoading } = useEnsAvatar({
         addressOrName: ensName,
@@ -54,8 +46,6 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
             console.log('Settled', { data, error })
         }
     })
-
-    const { address } = useAccount()
 
     const { data, error, isLoading, signMessage } = useSignMessage({
         onSuccess(data, variables) {
@@ -90,6 +80,11 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
         await authenticate();
     }
 
+    fetchOperatorProfile()
+        .catch(console.error);
+    
+    // console.log(operatorProfile?.data?.profile?.picture?.original?.url);
+
     return (
         <div className="w-full md:w-3/5 mt-4">
             <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
@@ -99,7 +94,7 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
                     alt={ensName} 
                     width="384" 
                 />
-                <div className="pt-6 px-8 text-center md:text-left space-y-4">
+                <div className="py-6 px-8 text-center md:text-left space-y-4">
                     <blockquote>
                         <h1 className="text-lg font-medium text-white">
                             Your frenly pool operator

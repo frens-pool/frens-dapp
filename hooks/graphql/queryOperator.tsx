@@ -90,9 +90,8 @@ const buildQuery = ({ lensHandle }) => {
 } 
 
 export const queryOperator = async (ensName) => {
-  const tempConstantENS = "heeckhau.eth";
-  const lensHandle = tempConstantENS?.replace(new RegExp(".eth$"), '.lens');
-  console.log(lensHandle)
+  // const tempConstantENS = "heeckhau.eth";
+  const lensHandle = ensName?.replace(new RegExp(".eth$"), '.lens');
   const queryForOperator = buildQuery({ lensHandle });
   const response = await apolloClient.query({
     query: gql(queryForOperator),

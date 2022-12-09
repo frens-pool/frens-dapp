@@ -35,26 +35,36 @@ export const NftGallery = () => {
     }, [router.query.pool]);
 
     const getUserNft = async () => {
-        let userNftIDs = await getUserNftIds()
+        let userNftIDs = await getUserNftIds(accountAddress)
         setUserNFTs(userNftIDs)
     }
 
-    const getUserNftIds = async () => {
-        let userNFTsByIDArray: number[] = []
-
-        const { ethereum } = window;
-        if (ethereum) {
-            let totalSupply = await FrensPoolContract.totalSupply()
-           
-            for (var i = 1; i <= totalSupply.toNumber(); i++) {
-                let nftOwner = await FrensPoolContract.ownerOf(i);
-                if(nftOwner === accountAddress) {
-                    userNFTsByIDArray.push(i)
-                }
-            }
+    const getUserNftIds = async (ownerAddress) => {
+        let nfts = [];
+        let ownerBalance = await FrensPoolContract.balanceOf(ownerAddress);
+        for (var i = 0; i < ownerBalance.toNumber(); i++) {
+            let nftId = await FrensPoolContract.tokenOfOwnerByIndex(ownerAddress, i);
+            nfts.push(nftId.toNumber());
         }
-        return userNFTsByIDArray
+        return nfts;
     }
+
+    // const getUserNftIds = async () => {
+    //     let userNFTsByIDArray: number[] = []
+
+    //     const { ethereum } = window;
+    //     if (ethereum) {
+    //         let totalSupply = await FrensPoolContract.totalSupply()
+           
+    //         for (var i = 1; i <= totalSupply.toNumber(); i++) {
+    //             let nftOwner = await FrensPoolContract.ownerOf(i);
+    //             if(nftOwner === accountAddress) {
+    //                 userNFTsByIDArray.push(i)
+    //             }
+    //         }
+    //     }
+    //     return userNFTsByIDArray
+    // }
 
     const setUserNFTs = async (userNftIDs: number[]) => {
         let userWalletNFTs: any[] = []
