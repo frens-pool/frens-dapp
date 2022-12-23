@@ -15,7 +15,7 @@ export function usePoolStatus( {
     const { data, isError, isLoading } = useContractRead({
         addressOrName: address,
         contractInterface: StakingPool.abi,
-        functionName: 'totalDeposits',
+        functionName: 'getDepositAmount',
     })
 
     return { data, isError, isLoading };

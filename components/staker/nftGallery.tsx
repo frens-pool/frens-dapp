@@ -6,16 +6,14 @@ import StakingPool from "../../utils/StakingPool.json";
 import FrensPoolShare from "../../utils/FrensPoolShare.json";
 import CardForNFT from "./cardForNFT";
 
-import { useNftBalance } from '../../hooks/read/useNftBalance';
-import { useNftTokenID } from '../../hooks/read/useNftTokenID';
-import { useNftTokenURI } from '../../hooks/read/useNftTokenURI';
+import { usePoolTokenIDs } from '../../hooks/read/usePoolTokenIDs';
 
 export const NftGallery = ({isDepositing}) => {
     const router = useRouter()
-    const poolAddress = router.query.pool ? router.query.pool : "0xB5a38976c8B39d481737354e4DE888eFB7A7fF75"
+    const poolAddress = router.query.pool ? router.query.pool.toString() : "0xB5a38976c8B39d481737354e4DE888eFB7A7fF75"
 
     const { address:accountAddress } = useAccount();
-    const [poolNftIds, setPoolNftIds] = useState<any[]>([]);
+    const { data:poolNftIds } = usePoolTokenIDs({ poolAddress });
     const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
     const [userNFTs, setUserNFTs] = useState<any[]>([]);
     let provider;
@@ -41,27 +39,22 @@ export const NftGallery = ({isDepositing}) => {
                 signer
             );
         }
-        getPoolNft();
-        getUserNft();
+        getPoolNfts();
+        getUserNfts();
     }, [router.query.pool]);
 
-    const getPoolNft = async () => {
-        let poolNftIdsCache = await getAllPoolNftIds();
-        // setPoolNftIds(poolNftIdsCache);
-        setPoolNftArray(poolNftIdsCache);
-    }
-
-    const getAllPoolNftIds = async () => {
-        let poolNFTsByIDArray: number[] = []
-
-        const { ethereum } = window;
-        if (ethereum) {
-            poolNFTsByIDArray = await StakingPoolContract.getIdsInThisPool();
+    const getPoolNfts = async () => {
+        console.log('poolNftIds', poolNftIds)
+        if(poolNftIds?.length){
+            const poolNftIdsCache = []
+            for(var nftID of poolNftIds){
+                poolNftIdsCache.push(nftID)
+            }
+            setPoolNftArray(poolNftIdsCache);
         }
-        return poolNFTsByIDArray;
     }
 
-    const setPoolNftArray = async (poolNftIDs: number[]) => {
+    const setPoolNftArray = async (poolNftIDs: any[]) => {
         let poolNft: any[] = []
         let userWalletNFTs: any[] = []
 
@@ -82,11 +75,21 @@ export const NftGallery = ({isDepositing}) => {
         }
     }
 
-    const getUserNft = async () => {
+    const getUserNfts = async () => {
+        let userPoolNfts = [];
         let userNftIDs = await getUserNftIds(accountAddress)
         // console.log('userNftIDs', userNftIDs)
         // console.log('poolNftIds', poolNftIds)
-        setUserNFTArray(userNftIDs)
+        if(poolNftIds?.length) {
+            for (var poolNftID of poolNftIds) {
+                for (var userNftID of userNftIDs) {
+                    if(poolNftID.toNumber() === userNftID) {
+                        userPoolNfts.push(userNftID);
+                    }
+                }
+            }
+            setUserNFTArray(userPoolNfts)
+        }
     }
 
     const getUserNftIds = async (ownerAddress) => {
@@ -94,6 +97,8 @@ export const NftGallery = ({isDepositing}) => {
         let ownerBalance = await FrensPoolShareContract.balanceOf(ownerAddress);
         for (var i = 0; i < ownerBalance.toNumber(); i++) {
             let nftId = await FrensPoolShareContract.tokenOfOwnerByIndex(ownerAddress, i);
+            console.log('nftId', nftId)
+            // Todo check if nftID is part of poolNftIds
             nfts.push(nftId.toNumber());
         }
         return nfts;
@@ -115,7 +120,7 @@ export const NftGallery = ({isDepositing}) => {
         }
     }
 
-    if(userNFTs.length === 0) {
+    if(poolNFTs.length === 0) {
         return <div className="flex flex-col items-center justify-center">
             <div className="">None 🧐</div>
         </div>
