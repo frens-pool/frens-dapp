@@ -9,7 +9,7 @@ export const CreatePool = ({ setStep, setPoolContract, setTokenCode}) => {
     const { address:accountAddress } = useAccount();
     const { openConnectModal } = useConnectModal();
 
-    const { data, isLoading, write:createPool } = useCreatePool({ ownerAddress: accountAddress as string });
+    const { data, isLoading, write:createPool } = useCreatePool();
     let etherscanLink = ""
 
     function onCreatePool(): void {

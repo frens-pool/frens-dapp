@@ -59,7 +59,7 @@ export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing 
                 </div>
                 <div className="px-6 mb-4">
                     <div className="my-2 text-center">
-                        Your deposit is being processed. <br/> Pls kindly refresh the page once the deposit is done.
+                        Your deposit is being processed.
                     </div>
                     <div className="flex justify-center">
                         <div role="status">

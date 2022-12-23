@@ -9,7 +9,6 @@ import { StakeFormComponent } from 'components/staker/stakeFormComponent';
 import { OperatorWidget } from 'components/staker/operatorWidget';
 import { PoolInfo } from 'components/shared/poolInfo';
 import { NftGallery } from 'components/staker/nftGallery';
-import { useDeposit } from '../../hooks/write/useDeposit';
 import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 import StakingPool from "../../utils/StakingPool.json";
 
@@ -18,13 +17,10 @@ const Pool: NextPage = () => {
   const poolAddress = router.query.pool as string ? router.query.pool as string : "notSet"
 
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
-  const [stakeAmount, setStakeAmount] = useState<string>("0");
   const [isDepositing, setIsDepositing] = useState(false);
   
   const { isConnected, address } = useAccount()
   const { data: poolOwner } = usePoolOwner({ address: poolAddress as string });
-  const { data, write: deposit } = useDeposit({ address: poolAddress as string, val: stakeAmount });
-  const etherscanLink = `https://goerli.etherscan.io/tx/${data?.hash}`;
 
   useEffect(() => {
     if (isConnected) {
@@ -32,16 +28,7 @@ const Pool: NextPage = () => {
     } else {
         setIsDefinitelyConnected(false);
     }
-}, [address]);
-
-  // useContractEvent({
-  //   addressOrName: poolAddress.toString(),
-  //   contractInterface: StakingPool.abi,
-  //   eventName: 'Deposit',
-  //   listener: (event) => {
-  //       console.log(event);
-  //   },
-  // })
+  }, [address]);
 
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-300 min-h-screen" data-theme="winter">

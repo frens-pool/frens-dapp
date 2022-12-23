@@ -8,9 +8,9 @@ import StakingPoolFactory from "../../utils/StakingPoolFactory.json";
 
 const StakingPoolFactoryAddress = "0x38ED69e7635ADB2083B06c5d00B9fb9C7e55CD34"
 
-export function useCreatePool({ ownerAddress } : { ownerAddress: string }) {
+export function useCreatePool() {
   const { chain } = useNetwork();
-  // const { address: ownerAddress } = useAccount()
+  const { address: ownerAddress } = useAccount()
   
   const contractAddr =
   chain?.name === "Goerli"
