@@ -15,8 +15,9 @@ export const NftGallery = ({isDepositing}) => {
     const poolAddress = router.query.pool ? router.query.pool : "0xB5a38976c8B39d481737354e4DE888eFB7A7fF75"
 
     const { address:accountAddress } = useAccount();
+    const [poolNftIds, setPoolNftIds] = useState<any[]>([]);
     const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
-    const [walletNFTs, setWalletNFTs] = useState<any[]>([]);
+    const [userNFTs, setUserNFTs] = useState<any[]>([]);
     let provider;
     let signer;
     let StakingPoolContract;
@@ -41,11 +42,13 @@ export const NftGallery = ({isDepositing}) => {
             );
         }
         getPoolNft();
+        getUserNft();
     }, [router.query.pool]);
 
     const getPoolNft = async () => {
-        let poolNftIds = await getAllPoolNftIds();
-        setPoolNftArray(poolNftIds);
+        let poolNftIdsCache = await getAllPoolNftIds();
+        // setPoolNftIds(poolNftIdsCache);
+        setPoolNftArray(poolNftIdsCache);
     }
 
     const getAllPoolNftIds = async () => {
@@ -53,16 +56,7 @@ export const NftGallery = ({isDepositing}) => {
 
         const { ethereum } = window;
         if (ethereum) {
-            let poolTotalDeposits = await StakingPoolContract.totalDeposits();
-            let poolTotalDepositsString = poolTotalDeposits.toString();
-
-            if(poolTotalDepositsString !== "0") {
-                let poolTotalDepositsInt = poolTotalDepositsString / 1000000000000000;
-                for (var i = 0; i < poolTotalDepositsInt; i++) {
-                    let poolNftId = await StakingPoolContract.idsInThisPool(i);
-                    poolNFTsByIDArray.push(poolNftId.toNumber());
-                }
-            }
+            poolNFTsByIDArray = await StakingPoolContract.getIdsInThisPool();
         }
         return poolNFTsByIDArray;
     }
@@ -85,28 +79,43 @@ export const NftGallery = ({isDepositing}) => {
                 }
             }
             setPoolNFTs(poolNft)
-            setWalletNFTs(userWalletNFTs)  
         }
     }
 
-    const getUserNftIds = async () => {
-        let userNFTsByIDArray: number[] = []
+    const getUserNft = async () => {
+        let userNftIDs = await getUserNftIds(accountAddress)
+        // console.log('userNftIDs', userNftIDs)
+        // console.log('poolNftIds', poolNftIds)
+        setUserNFTArray(userNftIDs)
+    }
+
+    const getUserNftIds = async (ownerAddress) => {
+        let nfts = [];
+        let ownerBalance = await FrensPoolShareContract.balanceOf(ownerAddress);
+        for (var i = 0; i < ownerBalance.toNumber(); i++) {
+            let nftId = await FrensPoolShareContract.tokenOfOwnerByIndex(ownerAddress, i);
+            nfts.push(nftId.toNumber());
+        }
+        return nfts;
+    }
+
+    const setUserNFTArray = async (userNftIDs: number[]) => {
+        let userWalletNFTs: any[] = []
 
         const { ethereum } = window;
         if (ethereum) {
-            let totalSupply = await FrensPoolShareContract.totalSupply();
-           
-            for (var i = 1; i <= totalSupply.toNumber(); i++) {
-                let nftOwner = await FrensPoolShareContract.ownerOf(i);
-                if(nftOwner === accountAddress) {
-                    userNFTsByIDArray.push(i);
-                }
+            for (var nftID of userNftIDs) {
+                let tokenURI = await FrensPoolShareContract.tokenURI(nftID);
+                const json = atob(tokenURI.substring(29));
+                const nftMetaData = JSON.parse(json);
+                userWalletNFTs.push(nftMetaData)
             }
+            setUserNFTs(userWalletNFTs)  
+            // console.log('userWalletNFTs', userWalletNFTs)
         }
-        return userNFTsByIDArray
     }
 
-    if(walletNFTs.length === 0) {
+    if(userNFTs.length === 0) {
         return <div className="flex flex-col items-center justify-center">
             <div className="">None 🧐</div>
         </div>
@@ -125,11 +134,12 @@ export const NftGallery = ({isDepositing}) => {
         </div>
     }
 
+
     return (
         <div>
             <div>Yours:</div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {walletNFTs.map(({ name, image }) => (
+                {userNFTs.map(({ name, image }) => (
                     <div key={name}>
                         <CardForNFT name={name} image={image}/>
                     </div>

@@ -33,7 +33,7 @@ const Pool: NextPage = () => {
   return (
     <div className="bg-gradient-to-r from-cyan-400 to-blue-300 min-h-screen" data-theme="winter">
       <Head>
-        <title>FRENS Pool </title>
+        <title>FRENS Pool</title>
         <meta
           name="description"
           content="stake eth via ur trusted degen"
@@ -57,7 +57,7 @@ const Pool: NextPage = () => {
 
         <div className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white ${isDefinitelyConnected ? "block" : "hidden"}`}>
           <div className='text-center font-bold my-2'>Pool stakes</div>
-          {/* <NftGallery isDepositing={isDepositing}/> */}
+          <NftGallery isDepositing={isDepositing}/>
         </div>
 
       </main>
