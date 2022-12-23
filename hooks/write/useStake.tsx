@@ -33,8 +33,8 @@ export function useStake({ address, depositdata }: { address: string, depositdat
   console.log("contract=",address);
 
   const { config } = usePrepareContractWrite({
-    addressOrName: address,
-    contractInterface: StakingPool.abi,
+    address: address,
+    abi: StakingPool.abi,
     functionName: 'stake',
     args,
   })

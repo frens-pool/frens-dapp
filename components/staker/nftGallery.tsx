@@ -10,7 +10,7 @@ import { usePoolTokenIDs } from '../../hooks/read/usePoolTokenIDs';
 
 export const NftGallery = ({isDepositing}) => {
     const router = useRouter()
-    const poolAddress = router.query.pool ? router.query.pool.toString() : "0xB5a38976c8B39d481737354e4DE888eFB7A7fF75"
+    const poolAddress = router.query.pool ? router.query.pool.toString() : "0xc4cd3e20fFb01B8655ea78Dc73331ea0aCB4B514"
 
     const { address:accountAddress } = useAccount();
     const { data:poolNftIds } = usePoolTokenIDs({ poolAddress });
@@ -44,10 +44,10 @@ export const NftGallery = ({isDepositing}) => {
     }, [router.query.pool]);
 
     const getPoolNfts = async () => {
-        console.log('poolNftIds', poolNftIds)
-        if(poolNftIds?.length){
+        const poolNftIdsArray = poolNftIds as any[];
+        if(poolNftIdsArray?.length){
             const poolNftIdsCache = []
-            for(var nftID of poolNftIds){
+            for(var nftID of poolNftIdsArray){
                 poolNftIdsCache.push(nftID)
             }
             setPoolNftArray(poolNftIdsCache);
@@ -78,10 +78,10 @@ export const NftGallery = ({isDepositing}) => {
     const getUserNfts = async () => {
         let userPoolNfts = [];
         let userNftIDs = await getUserNftIds(accountAddress)
-        // console.log('userNftIDs', userNftIDs)
-        // console.log('poolNftIds', poolNftIds)
-        if(poolNftIds?.length) {
-            for (var poolNftID of poolNftIds) {
+        const poolNftIdsArray = poolNftIds as any[];
+
+        if(poolNftIdsArray?.length) {
+            for (var poolNftID of poolNftIdsArray) {
                 for (var userNftID of userNftIDs) {
                     if(poolNftID.toNumber() === userNftID) {
                         userPoolNfts.push(userNftID);
@@ -97,8 +97,6 @@ export const NftGallery = ({isDepositing}) => {
         let ownerBalance = await FrensPoolShareContract.balanceOf(ownerAddress);
         for (var i = 0; i < ownerBalance.toNumber(); i++) {
             let nftId = await FrensPoolShareContract.tokenOfOwnerByIndex(ownerAddress, i);
-            console.log('nftId', nftId)
-            // Todo check if nftID is part of poolNftIds
             nfts.push(nftId.toNumber());
         }
         return nfts;
@@ -116,7 +114,6 @@ export const NftGallery = ({isDepositing}) => {
                 userWalletNFTs.push(nftMetaData)
             }
             setUserNFTs(userWalletNFTs)  
-            // console.log('userWalletNFTs', userWalletNFTs)
         }
     }
 

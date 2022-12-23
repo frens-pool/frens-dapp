@@ -10,15 +10,15 @@ const errorClassForInput = "input-error"
 
 export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing }) => {
     const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
-    const [stakeAmount, setStakeAmount] = useState<string>("0");
+    const [stakeAmount, setStakeAmount] = useState<string>("0.000000000000001");
     const { address, isConnected } = useAccount();
-    const { data:balanceData } = useBalance({ addressOrName: address});
+    const { data:balanceData } = useBalance({ address: address});
     const { data:depositData, write:deposit } = useDeposit({ address: poolAddress as string, val: stakeAmount });
     const etherscanLink = `https://goerli.etherscan.io/tx/${depositData?.hash}`
 
     useContractEvent({
-        addressOrName: poolAddress.toString(),
-        contractInterface: StakingPool.abi,
+        address: poolAddress.toString(),
+        abi: StakingPool.abi,
         eventName: 'DepositToPool',
         listener: (event) => {
             console.log(event);
@@ -94,28 +94,20 @@ export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing 
                     </label>
                 </div>
                 <div className='flex justify-center mt-2 mb-4'>
-                    { isDepositing ? 
-                        <button 
-                            className="btn btn-primary text-white" 
-                            disabled
-                        >
-                            Processing
-                        </button>
-                        :
-                        <button 
-                            className="btn text-white bg-gradient-to-r from-pink-500 to-violet-500" 
-                            onClick={() => {
-                                deposit();
-                                setIsDepositing(true);
-                            }}
-                        >
-                            Stake
-                        </button>
-                    }
+                    <button 
+                        className="btn text-white bg-gradient-to-r from-pink-500 to-violet-500" 
+                        onClick={() => {
+                            deposit();
+                            setIsDepositing(true);
+                        }}
+                    >
+                        Stake
+                    </button>
                 </div>
             </div>
         )
     }
+
     return (
         <div>
             <div>

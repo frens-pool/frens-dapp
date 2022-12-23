@@ -62,12 +62,11 @@ const Operator: NextPage = () => {
               Once your pool is full you can run the SSV-validator. Checkout the process here:
             </div>
             <div className="mt-4">
-              <Link 
+              <Link
+                className='btn bg-gradient-to-r from-pink-500 to-violet-500 text-white'
                 href={`/run/${poolContract}`}
               >
-                <a className='btn bg-gradient-to-r from-pink-500 to-violet-500 text-white'>
-                  Run SSV-validator
-                </a>
+                Run SSV-validator
               </Link>
             </div>
           </div>

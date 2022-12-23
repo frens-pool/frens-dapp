@@ -12,8 +12,8 @@ export function useSSVReadTest() {
         : "0x00000000000000000000000000000000deadb33f"; // TODO :)
 
     const { data, isError, isLoading } = useContractRead({
-        addressOrName: contractAddr,
-        contractInterface: SSVRegistry.abi,
+        address: contractAddr,
+        abi: SSVRegistry.abi,
         functionName: 'version',
     })
 

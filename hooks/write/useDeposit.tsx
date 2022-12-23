@@ -8,8 +8,8 @@ import StakingPool from "../../utils/StakingPool.json";
 export function useDeposit({ address, val }: { address: string, val: string }) {
 
   const { config } = usePrepareContractWrite({
-    addressOrName: address,
-    contractInterface: StakingPool.abi,
+    address: address,
+    abi: StakingPool.abi,
     functionName: 'depositToPool',
     overrides: {
       value: ethers.utils.parseEther(val),

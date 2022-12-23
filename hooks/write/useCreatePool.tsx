@@ -18,8 +18,8 @@ export function useCreatePool() {
   : "0x0000000000000000000000000000000000000000";
   
   const { config } = usePrepareContractWrite({
-    addressOrName: contractAddr,
-    contractInterface: StakingPoolFactory.abi,
+    address: contractAddr,
+    abi: StakingPoolFactory.abi,
     functionName: 'create',
     args: [ ownerAddress ],
   })

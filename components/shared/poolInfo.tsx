@@ -2,20 +2,7 @@
 import { usePoolStatus } from '../../hooks/read/usePoolStatus';
 
 export const PoolInfo = ({address}) => {
-    const componentConfig = { postUrl: 'no-url' };
-    const djsConfig = { autoProcessQueue: false }
-
-    const { data:totaldeposits, isError, isLoading } = usePoolStatus({ address });
-
-    // const eventHandlers = {
-    //     addedfile: (file) => {
-
-    //         // console.log(file);
-    //         // debugger;
-    //         // register();
-    //         // allow();
-    //     }
-    // }
+    // const { data:totaldeposits, isError, isLoading } = usePoolStatus({ address });
 
     return (
         <div className='my-4 px-6'>
@@ -25,7 +12,8 @@ export const PoolInfo = ({address}) => {
             </div> */}
             <div className='flex justify-between'>
                 <div>Current Pool Balance</div>
-                <div>{totaldeposits?.div("1000000000000000000").toString() ?? "0"} ETH</div> 
+                <div>TODO</div>
+                {/* <div>{totaldeposits.toString() ?? "0"} ETH</div>  */}
             </div>
             <div className='flex justify-between'>
                 <div>Pool Address</div>

@@ -5,16 +5,19 @@ import {
     useSignMessage
 } from 'wagmi'
 import { Lens } from 'lens-protocol';
+import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 
 const chainId = 5 // 1 for mainnet
 
 type Props = {
-    operatorAddress: string
+    poolAddress: string
 }
 
-export const OperatorWidget = ({ operatorAddress }: Props) => {
+export const OperatorWidget = ({ poolAddress }: Props) => {
+    const { data: poolOwner } = usePoolOwner({ address: poolAddress });
+
     const { data: ensName, isError: isEnsNameError, isLoading: isEnsNameLoading } = useEnsName({
-        address: operatorAddress,
+        address: '0xeD567297Ad6c93bcae8B4ffAB16dBE13D9d5048A',
         chainId: chainId,
         cacheTime: 1_000,
         onSettled(data, error) {
@@ -22,14 +25,14 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
         }
     })
 
-    const { data: ensAvatar, isError: isAvatarError, isLoading: isAvatarLoading } = useEnsAvatar({
-        addressOrName: ensName,
-        chainId: chainId,
-        cacheTime: 1_000,
-        onSettled(data, error) {
-            console.log('Settled', { data, error })
-        }
-    })
+    // const { data: ensAvatar, isError: isAvatarError, isLoading: isAvatarLoading } = useEnsAvatar({
+    //     address: ensName,
+    //     chainId: chainId,
+    //     cacheTime: 1_000,
+    //     onSettled(data, error) {
+    //         console.log('Settled', { data, error })
+    //     }
+    // })
 
     const { address } = useAccount()
 
@@ -51,7 +54,6 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
     const VerifySignature = async (sign) => {
         // Sending the signature to the server to verify
         const response = await Lens.Authenticate(address, sign);
-        console.log(response);
 
         // {
         //  data: {
@@ -66,12 +68,41 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
         await authenticate();
     }
 
-    if(ensName){
-        return (
-            <div className="w-full md:w-3/5 mt-4">
+    // if(ensName){
+    //     return (
+    //         <div className="w-full md:w-3/5 mt-4">
+    //             <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+    //                 {/* <img className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" src={ensAvatar} alt={ensName} width="384" /> */}
+    //                 <div className="pt-6 pr-8 text-center md:text-left space-y-4">
+    //                     <blockquote>
+    //                         <h1 className="text-lg font-medium text-white">
+    //                             Your frenly pool operator
+    //                         </h1>
+    //                     </blockquote>
+    //                     <figcaption className="font-medium">
+    //                         <div className="text-sky-500 dark:text-sky-400">
+    //                             {ensName}
+    //                         </div>
+    //                         <div className="text-white dark:text-slate-500">
+    //                             ({operatorAddress})
+    //                         </div>
+    //                     </figcaption>
+    //                     {/* <button onClick={follow}>Follow on Lens</button> */}
+    //                     {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
+    //                 </div>
+    //             </figure>
+    //         </div>
+    //     )
+    // }
+
+    if(poolAddress){
+        return(
+            <div className="w-3/5 my-4">
                 <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-                    <img className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" src={ensAvatar} alt={ensName} width="384" />
-                    <div className="pt-6 pr-8 text-center md:text-left space-y-4">
+                    <div className="text-3xl text-white text-center p-2 md:p-14">
+                        🧑‍🤝‍🧑
+                    </div>
+                    <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
                         <blockquote>
                             <h1 className="text-lg font-medium text-white">
                                 Your frenly pool operator
@@ -79,14 +110,12 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
                         </blockquote>
                         <figcaption className="font-medium">
                             <div className="text-sky-500 dark:text-sky-400">
-                                {ensName}
+                                no ENS
                             </div>
-                            <div className="text-white dark:text-slate-500">
-                                ({operatorAddress})
+                            <div className="hidden md:block text-white dark:text-white">
+                                {poolAddress}
                             </div>
                         </figcaption>
-                        {/* <button onClick={follow}>Follow on Lens</button> */}
-                        {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
                     </div>
                 </figure>
             </div>
@@ -95,28 +124,8 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
 
     return (
         <div className="w-3/5 my-4">
-            <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-                <div className="text-3xl text-white text-center p-2 md:p-14">
-                    🧑‍🤝‍🧑
-                </div>
-                <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
-                    <blockquote>
-                        <h1 className="text-lg font-medium text-white">
-                            Your frenly pool operator
-                        </h1>
-                    </blockquote>
-                    <figcaption className="font-medium">
-                        <div className="text-sky-500 dark:text-sky-400">
-                            no ENS
-                        </div>
-                        <div className="hidden md:block text-white dark:text-white">
-                            {operatorAddress}
-                        </div>
-                    </figcaption>
-                </div>
-            </figure>
+            no operator
         </div>
-
     )
     
 };

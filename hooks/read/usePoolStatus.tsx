@@ -13,8 +13,8 @@ export function usePoolStatus( {
     //     : "0x00000000000000000000000000000000deadb33f"; // TODO :)
 
     const { data, isError, isLoading } = useContractRead({
-        addressOrName: address,
-        contractInterface: StakingPool.abi,
+        address: address,
+        abi: StakingPool.abi,
         functionName: 'getDepositAmount',
     })
 
