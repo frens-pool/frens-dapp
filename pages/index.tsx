@@ -40,7 +40,7 @@ const Operator: NextPage = () => {
             1️⃣ Create Pool
           </h1>
           <div className={`${step == 1 ? "block" : "hidden"}`}>
-            <CreatePool setTokenCode={setTokenCode} setStep={setStep} setPoolContract={setPoolContract} />
+            <CreatePool setStep={setStep} setPoolContract={setPoolContract} setTokenCode={setTokenCode} />
           </div>
         </div>
 

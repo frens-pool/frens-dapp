@@ -18,9 +18,10 @@ const Pool: NextPage = () => {
   const poolAddress = router.query.pool as string ? router.query.pool as string : "notSet"
 
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
-  const { isConnected, address } = useAccount()
   const [stakeAmount, setStakeAmount] = useState<string>("0");
   const [isDepositing, setIsDepositing] = useState(false);
+  
+  const { isConnected, address } = useAccount()
   const { data: poolOwner } = usePoolOwner({ address: poolAddress as string });
   const { data, write: deposit } = useDeposit({ address: poolAddress as string, val: stakeAmount });
   const etherscanLink = `https://goerli.etherscan.io/tx/${data?.hash}`;
@@ -69,7 +70,7 @@ const Pool: NextPage = () => {
 
         <div className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white ${isDefinitelyConnected ? "block" : "hidden"}`}>
           <div className='text-center font-bold my-2'>Pool stakes</div>
-          <NftGallery isDepositing={isDepositing}/>
+          {/* <NftGallery isDepositing={isDepositing}/> */}
         </div>
 
       </main>

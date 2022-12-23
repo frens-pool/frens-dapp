@@ -1,13 +1,11 @@
 import { ethers } from 'ethers';
 import {
-  useAccount,
   usePrepareContractWrite,
   useContractWrite,
 } from "wagmi";
 import StakingPool from "../../utils/StakingPool.json";
 
 export function useDeposit({ address, val }: { address: string, val: string }) {
-  const { address: connectedWallet, connector, isConnected } = useAccount()
 
   const { config } = usePrepareContractWrite({
     addressOrName: address,

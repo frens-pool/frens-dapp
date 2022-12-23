@@ -11,7 +11,7 @@ export function usePoolOwner( {
     const { data, isError, isLoading } = useContractRead({
         addressOrName: address,
         contractInterface: StakingPool.abi,
-        functionName: 'getOwner',
+        functionName: 'owner',
     })
 
     return { data, isError, isLoading };

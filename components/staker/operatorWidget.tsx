@@ -66,11 +66,40 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
         await authenticate();
     }
 
+    if(ensName){
+        return (
+            <div className="w-full md:w-3/5 mt-4">
+                <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+                    <img className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" src={ensAvatar} alt={ensName} width="384" />
+                    <div className="pt-6 pr-8 text-center md:text-left space-y-4">
+                        <blockquote>
+                            <h1 className="text-lg font-medium text-white">
+                                Your frenly pool operator
+                            </h1>
+                        </blockquote>
+                        <figcaption className="font-medium">
+                            <div className="text-sky-500 dark:text-sky-400">
+                                {ensName}
+                            </div>
+                            <div className="text-white dark:text-slate-500">
+                                ({operatorAddress})
+                            </div>
+                        </figcaption>
+                        {/* <button onClick={follow}>Follow on Lens</button> */}
+                        {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
+                    </div>
+                </figure>
+            </div>
+        )
+    }
+
     return (
-        <div className="w-full md:w-3/5 mt-4">
+        <div className="w-3/5 my-4">
             <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-                <img className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" src={ensAvatar} alt={ensName} width="384" />
-                <div className="pt-6 pr-8 text-center md:text-left space-y-4">
+                <div className="text-3xl text-white text-center p-2 md:p-14">
+                    🧑‍🤝‍🧑
+                </div>
+                <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
                     <blockquote>
                         <h1 className="text-lg font-medium text-white">
                             Your frenly pool operator
@@ -78,16 +107,16 @@ export const OperatorWidget = ({ operatorAddress }: Props) => {
                     </blockquote>
                     <figcaption className="font-medium">
                         <div className="text-sky-500 dark:text-sky-400">
-                            {ensName}
+                            no ENS
                         </div>
-                        <div className="text-white dark:text-slate-500">
-                            ({operatorAddress})
+                        <div className="hidden md:block text-white dark:text-white">
+                            {operatorAddress}
                         </div>
                     </figcaption>
-                    {/* <button onClick={follow}>Follow on Lens</button> */}
-                    {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
                 </div>
             </figure>
         </div>
+
     )
+    
 };

@@ -6,12 +6,11 @@ import {
 } from "wagmi";
 import StakingPoolFactory from "../../utils/StakingPoolFactory.json";
 
-const StakingPoolFactoryAddress = "0xFf9A6f5E9e30a72AF79f69C5EA09465004Efb40d"
-const goerliDepostAddress = "0xff50ed3d0ec03aC01D4C79aAd74928BFF48a7b2b"
+const StakingPoolFactoryAddress = "0x38ED69e7635ADB2083B06c5d00B9fb9C7e55CD34"
 
-export function useCreatePool() {
+export function useCreatePool({ ownerAddress } : { ownerAddress: string }) {
   const { chain } = useNetwork();
-  const { address: ownerAddress } = useAccount()
+  // const { address: ownerAddress } = useAccount()
   
   const contractAddr =
   chain?.name === "Goerli"

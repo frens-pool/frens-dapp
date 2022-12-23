@@ -4,24 +4,23 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useCreatePool } from '../../hooks/write/useCreatePool';
 import StakingPoolFactory from "../../utils/StakingPoolFactory.json";
 
-const INVITATION_TOKEN_LENGTH = 9
 
-export const CreatePool = ({setTokenCode, setStep, setPoolContract}) => {
-    const { address, isConnecting, isDisconnected } = useAccount();
+export const CreatePool = ({ setStep, setPoolContract, setTokenCode}) => {
+    const { address:accountAddress } = useAccount();
     const { openConnectModal } = useConnectModal();
 
-    const { data, isLoading, write:createPool } = useCreatePool();
+    const { data, isLoading, write:createPool } = useCreatePool({ ownerAddress: accountAddress as string });
     let etherscanLink = ""
 
     function onCreatePool(): void {
-        const inviteToken = Math.random().toString(36).substring(2, INVITATION_TOKEN_LENGTH);
-        setTokenCode(inviteToken);
-
+        // const INVITATION_TOKEN_LENGTH = 9
+        // const inviteToken = Math.random().toString(36).substring(2, INVITATION_TOKEN_LENGTH);
+        // setTokenCode(inviteToken);
         createPool();
     }
 
     useContractEvent({
-        addressOrName: "0xFf9A6f5E9e30a72AF79f69C5EA09465004Efb40d",
+        addressOrName: "0x38ED69e7635ADB2083B06c5d00B9fb9C7e55CD34",
         contractInterface: StakingPoolFactory.abi,
         eventName: 'Create',
         listener: (event) => {
@@ -33,14 +32,11 @@ export const CreatePool = ({setTokenCode, setStep, setPoolContract}) => {
 
     if(data){
         etherscanLink = `https://goerli.etherscan.io/tx/${data.hash}`
-    }
-
-    return (
-        <div>
-            <div className='my-2'>Create a staking pool so ur frens can stake with u!</div>
-            
-            <div className='flex items-center justify-center mt-4 mb-2'>
-                {data ?
+        
+        return (
+            <div>
+                <div className='my-2'>Create a staking pool so ur frens can stake with u!</div>
+                <div className='flex items-center justify-center mt-4 mb-2'>
                     <div>
                         <div className="my-2">
                             just a sec ... pool is getting created
@@ -57,29 +53,35 @@ export const CreatePool = ({setTokenCode, setStep, setPoolContract}) => {
                                 view tx on etherscan
                             </a>
                         </div>
-                    </div>
-                    :
-                    <div>
-                        {isLoading ? 
-                            <button disabled className='btn text-white'>
-                                Loading ... 
-                            </button>
-                            :
-                            <div>
-                                { address ? 
-                                    <button className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' onClick={() => onCreatePool()}>
-                                        Create Pool
-                                    </button>
-                                    :
-                                    <button className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' onClick={() => openConnectModal()}>
-                                        Create Pool
-                                    </button>
-                                }
-                               
-                            </div>
-                        }
-                    </div>
-                }
+                    </div>  
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            <div className='my-2'>Create a staking pool so ur frens can stake with u!</div>
+            <div className='flex items-center justify-center mt-4 mb-2'>
+                <div>
+                    {isLoading ? 
+                        <button disabled className='btn text-white'>
+                            Loading ... 
+                        </button>
+                        :
+                        <div>
+                            { accountAddress ? 
+                                <button className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' onClick={() => onCreatePool()}>
+                                    Create Pool
+                                </button>
+                                :
+                                <button className='btn text-white bg-gradient-to-r from-pink-500 to-violet-500' onClick={() => openConnectModal()}>
+                                    Create Pool
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>          
             </div>
         </div>
     );

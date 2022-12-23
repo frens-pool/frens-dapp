@@ -35,7 +35,7 @@ export const NftGallery = ({isDepositing}) => {
             );
 
             FrensPoolShareContract = new ethers.Contract(
-                "0x7Dd2DaD96D8c0C26Bf76C57f933fE9370009Cecc",
+                "0x30938d55B18C1273FD7f5901a2B33127c01cB371",
                 FrensPoolShare.abi,
                 signer
             );
