@@ -107,7 +107,6 @@ export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing 
             </div>
         )
     }
-
     return (
         <div>
             <div>

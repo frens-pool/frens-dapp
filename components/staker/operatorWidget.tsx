@@ -1,30 +1,47 @@
+import { useState, useEffect } from 'react';
 import {
     useEnsAvatar,
     useEnsName,
     useAccount,
     useSignMessage
 } from 'wagmi'
+import { queryOperator } from 'hooks/graphql/queryOperator';
 import { Lens } from 'lens-protocol';
 import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 
-const chainId = 5 // 1 for mainnet
+const chainId = 5 // 1 for mainnet, 5 for goerli
 
 type Props = {
     poolAddress: string
 }
 
 export const OperatorWidget = ({ poolAddress }: Props) => {
-    const { data: poolOwner } = usePoolOwner({ address: poolAddress });
+    const [operatorProfile, setOperatorProfile] = useState({});
+    const [operatorImage, setOperatorImage] = useState("");
+    const [operatorName, setOperatorName] = useState("");
+    const { address } = useAccount();
 
+    const { data: poolOwner } = usePoolOwner({ address: poolAddress });
+    // const poolOwnerSubString = poolOwner?.toString().slice(2);
     const { data: ensName, isError: isEnsNameError, isLoading: isEnsNameLoading } = useEnsName({
-        address: '0xeD567297Ad6c93bcae8B4ffAB16dBE13D9d5048A',
+        address: `0x9179cf75f37Ceb03bC7EbD2Ad0660933308a8CB4`,
         chainId: chainId,
         cacheTime: 1_000,
         onSettled(data, error) {
             console.log('Settled', { data, error })
         }
     })
+    console.log(ensName)
 
+    const fetchOperatorProfile = async () => {
+        let operatorProfileFromFetch = await queryOperator(ensName);
+        setOperatorProfile(operatorProfileFromFetch);
+        // @ts-ignore
+        setOperatorImage(operatorProfile?.data?.profile?.picture?.original?.url);
+        // @ts-ignore
+        setOperatorName(operatorProfile?.data?.profile?.name);
+    };
+    
     // const { data: ensAvatar, isError: isAvatarError, isLoading: isAvatarLoading } = useEnsAvatar({
     //     address: ensName,
     //     chainId: chainId,
@@ -33,8 +50,6 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
     //         console.log('Settled', { data, error })
     //     }
     // })
-
-    const { address } = useAccount()
 
     const { data, error, isLoading, signMessage } = useSignMessage({
         onSuccess(data, variables) {
@@ -64,36 +79,47 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
         // }
     };
 
-    const follow = async () => {
-        await authenticate();
+    fetchOperatorProfile()
+    .catch(console.error);
+
+    // console.log(operatorProfile);
+    // console.log(operatorProfile?.data?.profile?.picture?.original?.url);
+
+
+    if(ensName) {
+        return (
+            <div className="w-full md:w-3/5 mt-4">
+                <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+                    <img 
+                        className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" 
+                        src={operatorImage} 
+                        alt={ensName} 
+                        width="384" 
+                    />
+                    <div className="py-6 px-8 text-center md:text-left space-y-4">
+                        <blockquote>
+                            <h1 className="text-lg font-medium text-white">
+                                Your frenly pool operator
+                            </h1>
+                        </blockquote>
+                        <figcaption className="font-medium">
+                            <div className="text-sky-500 dark:text-sky-400">
+                                {operatorName}
+                            </div>
+                            <div className="text-sky-500 dark:text-sky-400">
+                                {ensName}
+                            </div>
+                            <div className="text-white dark:text-slate-500">
+                            </div>
+                        </figcaption>
+                        {/* <button onClick={follow}>Follow on Lens</button> */}
+                        {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
+                    </div>
+                </figure>
+            </div>
+        )
     }
 
-    // if(ensName){
-    //     return (
-    //         <div className="w-full md:w-3/5 mt-4">
-    //             <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-    //                 {/* <img className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" src={ensAvatar} alt={ensName} width="384" /> */}
-    //                 <div className="pt-6 pr-8 text-center md:text-left space-y-4">
-    //                     <blockquote>
-    //                         <h1 className="text-lg font-medium text-white">
-    //                             Your frenly pool operator
-    //                         </h1>
-    //                     </blockquote>
-    //                     <figcaption className="font-medium">
-    //                         <div className="text-sky-500 dark:text-sky-400">
-    //                             {ensName}
-    //                         </div>
-    //                         <div className="text-white dark:text-slate-500">
-    //                             ({operatorAddress})
-    //                         </div>
-    //                     </figcaption>
-    //                     {/* <button onClick={follow}>Follow on Lens</button> */}
-    //                     {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
-    //                 </div>
-    //             </figure>
-    //         </div>
-    //     )
-    // }
 
     if(poolAddress){
         return(
@@ -127,5 +153,4 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
             no operator
         </div>
     )
-    
 };
