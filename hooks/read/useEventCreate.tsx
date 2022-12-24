@@ -13,7 +13,7 @@ export function useEventCreate() {
         abi: StakingPoolFactory.abi,
         eventName: 'Create',
         listener: (event) => {
-            console.log(event);
+            // console.log(event);
         },
     })
 

@@ -13,7 +13,7 @@ export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing 
     const [stakeAmount, setStakeAmount] = useState<string>("0.000000000000001");
     const { address, isConnected } = useAccount();
     const { data:balanceData } = useBalance({ address: address});
-    const { data:depositData, write:deposit } = useDeposit({ address: poolAddress as string, val: stakeAmount });
+    const { data:depositData, write:deposit } = useDeposit({ address: poolAddress, val: stakeAmount });
     const etherscanLink = `https://goerli.etherscan.io/tx/${depositData?.hash}`
 
     useContractEvent({
@@ -21,7 +21,7 @@ export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing 
         abi: StakingPool.abi,
         eventName: 'DepositToPool',
         listener: (event) => {
-            console.log(event);
+            // console.log(event);
             setIsDepositing(false);
         },
     })
@@ -120,7 +120,6 @@ export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing 
                         className="input input-bordered w-1/3" />
                     <span>ETH</span>
                 </label>
-                {/* <BalanceComponent ethBalance={data.formatted} symbol={data.symbol}></BalanceComponent> */}
             </div>
             <div className='flex justify-center mt-2 mb-4'>
                 <ConnectButton/>

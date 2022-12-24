@@ -7,9 +7,9 @@ export function usePoolTokenIDs( {
   poolAddress: string,
 }) {
   const { data, isError, isLoading } = useContractRead({
-      address: poolAddress,
-      abi: StakingPool.abi,
-      functionName: 'getIdsInThisPool',
+    address: poolAddress,
+    abi: StakingPool.abi,
+    functionName: 'getIdsInThisPool',
   })
   return { data, isError, isLoading };
 }

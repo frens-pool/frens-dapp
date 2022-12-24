@@ -82,8 +82,8 @@ export function useSSVRegisterValidator(
   })
   // debugger;
   const { data, isLoading, isSuccess, write } = useContractWrite(config)
-  console.log(data)
-  console.log(write)
+  // console.log(data)
+  // console.log(write)
 
   return { data, isLoading, isSuccess, write };
 }

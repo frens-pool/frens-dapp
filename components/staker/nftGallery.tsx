@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
 import { ethers } from "ethers";
-import { useRouter } from 'next/router';
 import StakingPool from "../../utils/StakingPool.json";
 import FrensPoolShare from "../../utils/FrensPoolShare.json";
 import CardForNFT from "./cardForNFT";
 
 import { usePoolTokenIDs } from '../../hooks/read/usePoolTokenIDs';
 
-export const NftGallery = ({isDepositing}) => {
-    const router = useRouter()
-    const poolAddress = router.query.pool ? router.query.pool.toString() : "0xc4cd3e20fFb01B8655ea78Dc73331ea0aCB4B514"
-
+export const NftGallery = ({ poolAddress, isDepositing }) => {
     const { address:accountAddress } = useAccount();
     const { data:poolNftIds } = usePoolTokenIDs({ poolAddress });
     const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
@@ -41,7 +37,7 @@ export const NftGallery = ({isDepositing}) => {
         }
         getPoolNfts();
         getUserNfts();
-    }, [router.query.pool]);
+    }, [poolAddress]);
 
     const getPoolNfts = async () => {
         const poolNftIdsArray = poolNftIds as any[];
