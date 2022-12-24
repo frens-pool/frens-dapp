@@ -18,6 +18,7 @@ type Props = {
 export const OperatorWidget = ({ poolAddress }: Props) => {
     const [operatorProfile, setOperatorProfile] = useState({});
     const [operatorImage, setOperatorImage] = useState("");
+    const [operatorENS, setOperatorENS] = useState("");
     const [operatorName, setOperatorName] = useState("");
     const { address } = useAccount();
 
@@ -29,6 +30,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
         cacheTime: 1_000,
         onSettled(data, error) {
             console.log('Settled', { data, error })
+            setOperatorENS(data);
         }
     })
     console.log(ensName)
@@ -86,7 +88,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
     // console.log(operatorProfile?.data?.profile?.picture?.original?.url);
 
 
-    if(ensName) {
+    if(operatorENS) {
         return (
             <div className="w-full md:w-3/5 mt-4">
                 <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
