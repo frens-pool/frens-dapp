@@ -114,7 +114,9 @@ export const NftGallery = ({ poolAddress, isDepositing }) => {
     if(poolNFTs.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center">
-                <div className="">None 🧐</div>
+                <div className="mb-4">None 🧐</div>
+                <div className="">Indexing new stakes takes some time :/</div>
+                <div className="">We are working on making that better</div>
             </div>
         )
     }
