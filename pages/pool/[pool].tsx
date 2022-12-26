@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useAccount } from "wagmi"
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Navbar from 'components/shared/navbar';
 import Footer from 'components/shared/footer';
 import { StakeFormComponent } from 'components/staker/stakeFormComponent';
@@ -17,7 +17,6 @@ const Pool: NextPage = () => {
 
   const [isDepositing, setIsDepositing] = useState(false);
   const { isConnected } = useAccount();
-
 
   if(poolAddress && isConnected) {
     return (
@@ -37,12 +36,9 @@ const Pool: NextPage = () => {
               
           <OperatorWidget poolAddress={poolAddress.toString()} />
   
-          <div className='w-3/5 border-2 border-violet-500 rounded-md bg-white mt-6'>
-            {/* <DepositProgressBarComponent /> */}
-  
-            <StakeFormComponent poolAddress={poolAddress.toString()} isDepositing={isDepositing} setIsDepositing={setIsDepositing} />
-            {/* <StakeForm poolAddress={poolAddress.toString()} isDepositing={isDepositing} setIsDepositing={setIsDepositing} /> */}
-  
+          <div className='w-3/5 border-2 border-violet-500 rounded-md bg-white mt-6'>  
+            {/* <StakeFormComponent poolAddress={poolAddress.toString()} isDepositing={isDepositing} setIsDepositing={setIsDepositing} /> */}
+            <StakeForm poolAddress={poolAddress.toString()} isDepositing={isDepositing} setIsDepositing={setIsDepositing} />
             <div className='border border-violet-500 rounded-md mx-4'></div>
             <PoolInfo address={poolAddress.toString()} />
           </div>

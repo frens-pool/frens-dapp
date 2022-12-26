@@ -15,6 +15,6 @@ export function useDeposit({ address, val }: { address: string, val: string }) {
       value: ethers.utils.parseEther(val),
     },
   })
-  const { data, isLoading, isSuccess, write } = useContractWrite(config)
-  return { data, isLoading, isSuccess, write };
+  const { data, isLoading, isSuccess, isError, write } = useContractWrite(config)
+  return { data, isLoading, isSuccess, isError, write };
 }
