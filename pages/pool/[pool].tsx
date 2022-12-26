@@ -40,7 +40,7 @@ const Pool: NextPage = () => {
             {/* <StakeFormComponent poolAddress={poolAddress.toString()} isDepositing={isDepositing} setIsDepositing={setIsDepositing} /> */}
             <StakeForm poolAddress={poolAddress.toString()} isDepositing={isDepositing} setIsDepositing={setIsDepositing} />
             <div className='border border-violet-500 rounded-md mx-4'></div>
-            <PoolInfo address={poolAddress.toString()} />
+            <PoolInfo poolAddress={poolAddress.toString()} />
           </div>
   
           <div className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white ${isConnected ? "block" : "block"}`}>
