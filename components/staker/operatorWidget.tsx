@@ -13,33 +13,31 @@ type Props = {
 }
 
 export const OperatorWidget = ({ poolAddress }: Props) => {
+    const [operatorAddress, setOperatorAddress] = useState("");
+    const [operatorENS, setOperatorENS] = useState("");
     const [operatorProfile, setOperatorProfile] = useState({});
     const [operatorImage, setOperatorImage] = useState("");
-    const [loadedPoolOwner, setLoadedPoolOwner] = useState(false);
+    // const [loadedPoolOwner, setLoadedPoolOwner] = useState(false);
     const [operatorName, setOperatorName] = useState("");
 
-    const { address:accountAddress } = useAccount()
+    const { address:accountAddress, isConnected } = useAccount()
     const { data: poolOwner, isSuccess } = usePoolOwner({ address: poolAddress });
-
-    useEffect(() => {
-        if(isSuccess) setLoadedPoolOwner(true)
-        fetchOperatorProfile()
-    }, [loadedPoolOwner])
-
-
-    const poolOwnerSubString = poolOwner?.toString().slice(2);
-    const { data: ensName, isError: isEnsNameError, isLoading: isEnsNameLoading } = useEnsName({
+    const poolOwnerSubString = operatorAddress ? operatorAddress.toString().slice(2) : "49792f9cd0a7DC957CA6658B18a3c2A6d8F36F2d";
+    const { data: ensName } = useEnsName({
         address: `0x${poolOwnerSubString}`,
         chainId: chainId,
         cacheTime: 1_000,
     })
 
-    const fetchOperatorProfile = async () => {
-        let operatorProfileFromFetch = await queryOperator(ensName);
+    useEffect(() => {
+        if(isSuccess) setOperatorAddress(poolOwner.toString())
+        if(ensName) setOperatorENS(ensName.toString())
+        if(operatorENS) fetchOperatorProfile()
+    }, [operatorAddress, operatorENS, operatorImage])
 
-        //TODO: make sure we have the profile information when setting the image! 
-        //... seems like we are not awaiting correctly?
-        // console.log(operatorProfileFromFetch)
+    const fetchOperatorProfile = async () => {
+        let operatorProfileFromFetch = await queryOperator(operatorENS);
+
         setOperatorProfile(operatorProfileFromFetch);
         // @ts-ignore
         setOperatorImage(operatorProfile?.data?.profile?.picture?.original?.url);
@@ -47,39 +45,14 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
         setOperatorName(operatorProfile?.data?.profile?.name);
     };
 
-    if(!accountAddress){
-        <div className="w-3/5 my-4">
-            <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-                <div className="text-3xl text-white text-center p-2 md:p-14">
-                    🧑‍🤝‍🧑
-                </div>
-                <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
-                    <blockquote>
-                        <h1 className="text-lg font-medium text-white">
-                            Your frenly pool operator
-                        </h1>
-                    </blockquote>
-                    <figcaption className="font-medium">
-                        <div className="text-sky-500 dark:text-sky-400">
-                            no ENS
-                        </div>
-                        <div className="hidden md:block text-white dark:text-white">
-                            {poolAddress}
-                        </div>
-                    </figcaption>
-                </div>
-            </figure>
-        </div>
-    }
-
-    if(ensName) {
+    if(operatorENS) {
         return (
             <div className="w-full md:w-3/5 mt-4">
                 <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
                     <img 
                         className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" 
                         src={operatorImage} 
-                        alt={ensName} 
+                        alt={operatorENS} 
                         width="384" 
                     />
                     <div className="py-6 px-8 text-center md:text-left space-y-4">
@@ -108,7 +81,32 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
 
     return(
         <div className="w-3/5 my-4">
-            we have a problem
+            <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+                <div className="text-3xl text-white text-center p-2 md:p-14">
+                    🧑‍🤝‍🧑
+                </div>
+                <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
+                    <blockquote>
+                        <h1 className="text-lg font-medium text-white">
+                            Your frenly pool operator
+                        </h1>
+                    </blockquote>
+                    { isConnected ? 
+                        <figcaption className="font-medium">
+                        
+
+                            <div className="text-sky-500 dark:text-sky-400">
+                                no ENS
+                            </div>
+                            <div className="hidden md:block text-white dark:text-white">
+                                    <div>{operatorAddress ? operatorAddress : "couldn't query operator address"}</div>
+                                    
+                            </div>
+                        </figcaption>
+                        : <div className='font-medium text-blue-500'>connect wallet to see</div>
+                    }
+                </div>
+            </figure>
         </div>
     )
 };
