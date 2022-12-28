@@ -4,10 +4,9 @@ import Head from 'next/head';
 import router, { useRouter } from 'next/router';
 import Navbar from 'components/shared/navbar';
 import Footer from 'components/shared/footer';
-import { InviteFrens } from 'components/operator/inviteFrens';
 import { SelectOperator } from 'components/operator/selectOperator';
 import { DropKeys } from 'components/operator/dropKeys';
-import { GiveAllowance } from 'components/operator/giveAllowance';
+import { SSVRegisterValidator } from 'components/operator/ssvRegisterValidator';
 import { PoolInfo } from 'components/shared/poolInfo';
 import { Deposit } from 'components/operator/deposit';
 
@@ -15,16 +14,8 @@ const Operator: NextPage = () => {
   const router = useRouter()
   const poolAddress = router.query.pool as string
 
-  const [poolContract, setPoolContract] = useState("")
-  const [tokenCode, setTokenCode] = useState("abcdef")
-  const [depositFileData, setDepositFileData] = useState()
-
-  // useEffect(() => {
-  //   if (poolAddress) {
-  //     setPoolContract(poolAddress as string);
-  //     setStep(4)
-  //   }
-  // }, [poolAddress])
+  const [depositFileData, setDepositFileData] = useState();
+  const [keystoreFileData, setKeystoreFileData] = useState();
 
   if(poolAddress) {
     return (
@@ -63,11 +54,14 @@ const Operator: NextPage = () => {
             <div className="block">
               <div>
                 <div className="my-2 p-2 border border-slate-700 rounded-md">
-                  <p>1. create staking keys using this command:</p>
+                  <div>1. reate staking keys</div>
+                  <div>using this command:</div>
                   <div><code>deposit new-mnemonic --eth1_withdrawal_address {poolAddress}</code></div>
+                  <div>or using wagyu key gen</div>
                 </div>
                 <div className="my-2 p-2 border border-slate-700 rounded-md">
-                  <div>2. upload the deposit file here</div>
+                  <div>2. Deposit ETH</div>
+                  <div>upload the deposit file here</div>
                   <DropKeys onFileReceived={(data) => {
                     const depositData = JSON.parse(data);
                     setDepositFileData(depositData[0]);
@@ -75,8 +69,16 @@ const Operator: NextPage = () => {
                   <Deposit address={poolAddress as string} depositdata={depositFileData} />
                 </div>
                 <div className="my-2 p-2 border border-slate-700 rounded-md">
-                  <SelectOperator setTokenCode={setTokenCode}/>
-                  <GiveAllowance onFileReceived={undefined}/>
+                  <div>3. register SSV validator</div>
+                  <div>upload the keystore file here</div>
+                  <DropKeys onFileReceived={(data) => {
+                    const depositData = JSON.parse(data);
+                    setDepositFileData(depositData[0]);
+                  }} />
+                  <div>select ur operators</div>
+                  {/* <SelectOperator setTokenCode={setTokenCode}/> */}
+                  <div>register validator</div>
+                  <SSVRegisterValidator keystoredata={depositFileData}/>
                 </div>
               </div>
             </div>
