@@ -15,12 +15,11 @@ type Props = {
 export const OperatorWidget = ({ poolAddress }: Props) => {
     const [operatorAddress, setOperatorAddress] = useState("");
     const [operatorENS, setOperatorENS] = useState("");
-    const [operatorProfile, setOperatorProfile] = useState({});
     const [operatorImage, setOperatorImage] = useState("");
     // const [loadedPoolOwner, setLoadedPoolOwner] = useState(false);
     const [operatorName, setOperatorName] = useState("");
 
-    const { address:accountAddress, isConnected } = useAccount()
+    const { address: accountAddress, isConnected } = useAccount()
     const { data: poolOwner, isSuccess } = usePoolOwner({ address: poolAddress });
     const poolOwnerSubString = operatorAddress ? operatorAddress.toString().slice(2) : "49792f9cd0a7DC957CA6658B18a3c2A6d8F36F2d";
     const { data: ensName } = useEnsName({
@@ -30,30 +29,29 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
     })
 
     useEffect(() => {
-        if(isSuccess) setOperatorAddress(poolOwner.toString())
-        if(ensName) setOperatorENS(ensName.toString())
-        if(operatorENS) fetchOperatorProfile()
+        if (isSuccess) setOperatorAddress(poolOwner.toString())
+        if (ensName) setOperatorENS(ensName.toString())
+        if (operatorENS) fetchOperatorProfile()
     }, [operatorAddress, operatorENS, operatorImage])
 
     const fetchOperatorProfile = async () => {
         let operatorProfileFromFetch = await queryOperator(operatorENS);
 
-        setOperatorProfile(operatorProfileFromFetch);
         // @ts-ignore
-        setOperatorImage(operatorProfile?.data?.profile?.picture?.original?.url);
+        setOperatorImage(operatorProfileFromFetch?.data?.profile?.picture?.original?.url);
         // @ts-ignore
-        setOperatorName(operatorProfile?.data?.profile?.name);
+        setOperatorName(operatorProfileFromFetch?.data?.profile?.name);
     };
 
-    if(operatorENS) {
+    if (operatorENS) {
         return (
             <div className="w-full md:w-3/5 mt-4">
                 <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-                    <img 
-                        className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" 
-                        src={operatorImage} 
-                        alt={operatorENS} 
-                        width="384" 
+                    <img
+                        className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto"
+                        src={operatorImage}
+                        alt={operatorENS}
+                        width="384"
                     />
                     <div className="py-6 px-8 text-center md:text-left space-y-4">
                         <blockquote>
@@ -79,7 +77,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
         )
     }
 
-    return(
+    return (
         <div className="w-3/5 my-4">
             <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
                 <div className="text-3xl text-white text-center p-2 md:p-14">
@@ -91,16 +89,16 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
                             Your frenly pool operator
                         </h1>
                     </blockquote>
-                    { isConnected ? 
+                    {isConnected ?
                         <figcaption className="font-medium">
-                        
+
 
                             <div className="text-sky-500 dark:text-sky-400">
                                 no ENS
                             </div>
                             <div className="hidden md:block text-white dark:text-white">
-                                    <div>{operatorAddress ? operatorAddress : "couldn't query operator address"}</div>
-                                    
+                                <div>{operatorAddress ? operatorAddress : "couldn't query operator address"}</div>
+
                             </div>
                         </figcaption>
                         : <div className='font-medium text-blue-500'>connect wallet to see</div>
