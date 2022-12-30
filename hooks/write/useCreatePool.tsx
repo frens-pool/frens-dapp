@@ -4,22 +4,17 @@ import {
   useNetwork,
   useAccount
 } from "wagmi";
-import StakingPoolFactory from "../../utils/StakingPoolFactory.json";
 
-const StakingPoolFactoryAddress = "0x38ED69e7635ADB2083B06c5d00B9fb9C7e55CD34"
+import { FrensContracts } from "utils/contracts";
 
 export function useCreatePool() {
   const { chain } = useNetwork();
   const { address: ownerAddress } = useAccount()
   
-  const contractAddr =
-  chain?.name === "Goerli"
-  ? StakingPoolFactoryAddress
-  : "0x0000000000000000000000000000000000000000";
   
   const { config } = usePrepareContractWrite({
-    address: contractAddr,
-    abi: StakingPoolFactory.abi,
+    address: FrensContracts.StakingPoolFactory.address,
+    abi: FrensContracts.StakingPoolFactory.abi,
     functionName: 'create',
     args: [ ownerAddress ],
   })

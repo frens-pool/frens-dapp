@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAccount } from 'wagmi'
 import { BigNumber, ethers } from "ethers";
-import FrensPoolShare from "../../utils/FrensPoolShare.json";
 import CardForNFT from "./cardForNFT";
+import { FrensContracts } from "utils/contracts";
 
 import { usePoolTokenIDs } from '../../hooks/read/usePoolTokenIDs';
 
@@ -19,8 +19,8 @@ export const NftGallery = ({ poolAddress, isDepositing }) => {
             const signer = provider.getSigner();
 
             const FrensPoolShareContract = new ethers.Contract(
-                "0x30938d55B18C1273FD7f5901a2B33127c01cB371",
-                FrensPoolShare.abi,
+                FrensContracts.FrensPoolShareTokenURI.address,
+                FrensContracts.FrensPoolShareTokenURI.abi,
                 signer
             );
 
@@ -59,9 +59,11 @@ export const NftGallery = ({ poolAddress, isDepositing }) => {
     }
 
     const setUserNFTArray = async (FrensPoolShareContract: ethers.Contract, userNftIDs: string[]) => {
+
         const userWalletNFTs = await Promise.all(
             userNftIDs.map(async nftID => await jsonForNftId(FrensPoolShareContract, nftID))
         )
+
         setUserNFTs(userWalletNFTs)
 
     }

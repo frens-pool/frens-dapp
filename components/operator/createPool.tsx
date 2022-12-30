@@ -2,7 +2,7 @@ import { useContractEvent, useAccount } from "wagmi";
 import { useConnectModal } from '@rainbow-me/rainbowkit';
   
 import { useCreatePool } from '../../hooks/write/useCreatePool';
-import StakingPoolFactory from "../../utils/StakingPoolFactory.json";
+import { FrensContracts } from "utils/contracts";
 
 
 export const CreatePool = ({ setStep, setPoolContract, setTokenCode}) => {
@@ -20,8 +20,8 @@ export const CreatePool = ({ setStep, setPoolContract, setTokenCode}) => {
     }
 
     useContractEvent({
-        address: "0x38ED69e7635ADB2083B06c5d00B9fb9C7e55CD34",
-        abi: StakingPoolFactory.abi,
+        address: FrensContracts.StakingPoolFactory.address,
+        abi: FrensContracts.StakingPoolFactory.abi,
         eventName: 'Create',
         listener: (node) => {
             setPoolContract(node)
