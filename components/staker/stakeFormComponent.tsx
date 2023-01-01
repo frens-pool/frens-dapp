@@ -1,20 +1,30 @@
 import { ChangeEvent, useState, useEffect } from 'react';
-import { useAccount, useBalance } from "wagmi"
+import { useAccount, useBalance, useContractEvent } from "wagmi"
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { BalanceComponent } from "./balanceComponent";
 import { DepositProgressBarComponent } from 'components/shared/depositProgressBarComponent';
 import { useDeposit } from '../../hooks/write/useDeposit';
+import StakingPool from "../../utils/StakingPool.json";
 
 const errorClassForInput = "input-error"
 
-export const StakeFormComponent = ({ poolAddress }) => {
+export const StakeFormComponent = ({ poolAddress, isDepositing, setIsDepositing }) => {
     const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
-    const [isDepositing, setIsDepositing] = useState(false);
-    const [stakeAmount, setStakeAmount] = useState<string>("0");
+    const [stakeAmount, setStakeAmount] = useState<string>("0.000000000000001");
     const { address, isConnected } = useAccount();
-    const { data:balanceData } = useBalance({ addressOrName: address});
-    const { data:depositData, write:deposit } = useDeposit({ address: poolAddress as string, val: stakeAmount });
+    const { data:balanceData } = useBalance({ address: address});
+    const { data:depositData, write:deposit } = useDeposit({ address: poolAddress, val: stakeAmount });
     const etherscanLink = `https://goerli.etherscan.io/tx/${depositData?.hash}`
+
+    useContractEvent({
+        address: poolAddress.toString(),
+        abi: StakingPool.abi,
+        eventName: 'DepositToPool',
+        listener: (event) => {
+            // console.log(event);
+            setIsDepositing(false);
+        },
+    })
 
     useEffect(() => {
         if (isConnected) {
@@ -49,7 +59,7 @@ export const StakeFormComponent = ({ poolAddress }) => {
                 </div>
                 <div className="px-6 mb-4">
                     <div className="my-2 text-center">
-                        Your deposit is being processed. <br/> Pls kindly refresh the page once the deposit is done.
+                        Your deposit is being processed.
                     </div>
                     <div className="flex justify-center">
                         <div role="status">
@@ -84,24 +94,15 @@ export const StakeFormComponent = ({ poolAddress }) => {
                     </label>
                 </div>
                 <div className='flex justify-center mt-2 mb-4'>
-                    { isDepositing ? 
-                        <button 
-                            className="btn btn-primary text-white" 
-                            disabled
-                        >
-                            Processing
-                        </button>
-                        :
-                        <button 
-                            className="btn text-white bg-gradient-to-r from-pink-500 to-violet-500" 
-                            onClick={() => {
-                                deposit();
-                                setIsDepositing(true);
-                            }}
-                        >
-                            Stake
-                        </button>
-                    }
+                    <button 
+                        className="btn text-white bg-gradient-to-r from-pink-500 to-violet-500" 
+                        onClick={() => {
+                            deposit();
+                            setIsDepositing(true);
+                        }}
+                    >
+                        Stake
+                    </button>
                 </div>
             </div>
         )
@@ -119,7 +120,6 @@ export const StakeFormComponent = ({ poolAddress }) => {
                         className="input input-bordered w-1/3" />
                     <span>ETH</span>
                 </label>
-                {/* <BalanceComponent ethBalance={data.formatted} symbol={data.symbol}></BalanceComponent> */}
             </div>
             <div className='flex justify-center mt-2 mb-4'>
                 <ConnectButton/>

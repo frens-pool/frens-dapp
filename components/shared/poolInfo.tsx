@@ -1,22 +1,10 @@
+import { useBalance } from 'wagmi'
 
-import { usePoolStatus } from '../../hooks/read/usePoolStatus';
-
-export const PoolInfo = ({address}) => {
-    const componentConfig = { postUrl: 'no-url' };
-    const djsConfig = { autoProcessQueue: false }
-
-    const { data:totaldeposits, isError, isLoading } = usePoolStatus({ address });
-
-    // const eventHandlers = {
-    //     addedfile: (file) => {
-
-    //         // console.log(file);
-    //         // debugger;
-    //         // register();
-    //         // allow();
-    //     }
-    // }
-
+export const PoolInfo = ({poolAddress}) => {
+    const { data, isError, isLoading } = useBalance({
+        address: poolAddress,
+    })
+    
     return (
         <div className='my-4 px-6'>
             {/* <div className='flex justify-between'>
@@ -25,11 +13,12 @@ export const PoolInfo = ({address}) => {
             </div> */}
             <div className='flex justify-between'>
                 <div>Current Pool Balance</div>
-                <div>{totaldeposits?.div("1000000000000000000").toString() ?? "0"} ETH</div> 
+                <div>{data ? data.formatted : "connect to see"}</div>
+                {/* <div>{totaldeposits.toString() ?? "0"} ETH</div>  */}
             </div>
             <div className='flex justify-between'>
                 <div>Pool Address</div>
-                <div>{address}</div> 
+                <div>{poolAddress}</div> 
             </div>
         </div>
     );

@@ -29,12 +29,12 @@ export function useStake({ address, depositdata }: { address: string, depositdat
     `0x${depositdata.deposit_data_root}`
   ];
 
-  console.log("ARGS=", args);
-  console.log("contract=",address);
+  // console.log("ARGS=", args);
+  // console.log("contract=",address);
 
   const { config } = usePrepareContractWrite({
-    addressOrName: address,
-    contractInterface: StakingPool.abi,
+    address: address,
+    abi: StakingPool.abi,
     functionName: 'stake',
     args,
   })

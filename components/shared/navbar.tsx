@@ -14,25 +14,25 @@ const Navbar = () => (
           </li>
           <li>
             <Link href="/">
-              <a>Pool</a>
+              Pool
             </Link>
           </li>
           <li>
             <Link href="/pool/0xB5a38976c8B39d481737354e4DE888eFB7A7fF75">
-              <a>Pool Example</a>
+              Pool Example
             </Link>
           </li>
           <li>
             <Link href="/run/0xB5a38976c8B39d481737354e4DE888eFB7A7fF75">
-              <a>Run Example</a>
+              Run Example
             </Link>
           </li>
         </ul>
       </div>
     </div>
     <div className="navbar-center">
-      <Link href="/">
-        <a className="btn btn-ghost normal-case text-3xl text-white">FRENS 🧑‍🤝‍🧑</a>
+      <Link href="/" className="btn btn-ghost normal-case text-3xl text-white">
+        FRENS 🧑‍🤝‍🧑
       </Link>
     </div>
     <div className="navbar-end">

@@ -14,7 +14,7 @@ export const Deposit = ({ address, depositdata }: { address: string, depositdata
 
     // const depositdata = {}
     const { data, write: stake } = useStake({ address, depositdata });
-    console.log(depositdata);
+    // console.log(depositdata);
     // useEventCreate();
 
     // console.log(frenSsvOperatorIDs)

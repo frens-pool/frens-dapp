@@ -96,6 +96,5 @@ export const queryOperator = async (ensName) => {
   const response = await apolloClient.query({
     query: gql(queryForOperator),
   })
-  // console.log('Lens example data: ', response)
   return response;
 }

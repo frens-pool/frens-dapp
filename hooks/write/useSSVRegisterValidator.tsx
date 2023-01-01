@@ -75,15 +75,15 @@ export function useSSVRegisterValidator(
       : "0x00000000000000000000000000000000deadb33f";
 
   const { config } = usePrepareContractWrite({
-    addressOrName: contractAddr,
-    contractInterface: SSVNetwork.abi,
+    address: contractAddr,
+    abi: SSVNetwork.abi,
     functionName: 'registerValidator',
     args: payload,
   })
   // debugger;
   const { data, isLoading, isSuccess, write } = useContractWrite(config)
-  console.log(data)
-  console.log(write)
+  // console.log(data)
+  // console.log(write)
 
   return { data, isLoading, isSuccess, write };
 }

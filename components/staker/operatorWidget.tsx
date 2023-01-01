@@ -1,118 +1,108 @@
 import { useState, useEffect } from 'react';
 import {
-    useEnsAvatar,
     useEnsName,
     useAccount,
-    useSignMessage
 } from 'wagmi'
 import { queryOperator } from 'hooks/graphql/queryOperator';
-import { Lens } from 'lens-protocol';
+import { usePoolOwner } from '../../hooks/read/usePoolOwner';
 
 const chainId = 5 // 1 for mainnet, 5 for goerli
 
 type Props = {
-    operatorAddress: string
+    poolAddress: string
 }
 
-export const OperatorWidget = ({ operatorAddress }: Props) => {
-    const [operatorProfile, setOperatorProfile] = useState({});
+export const OperatorWidget = ({ poolAddress }: Props) => {
+    const [operatorAddress, setOperatorAddress] = useState("");
+    const [operatorENS, setOperatorENS] = useState("");
     const [operatorImage, setOperatorImage] = useState("");
+    // const [loadedPoolOwner, setLoadedPoolOwner] = useState(false);
     const [operatorName, setOperatorName] = useState("");
-    const { address } = useAccount();
 
-    const { data: ensName, isError: isEnsNameError, isLoading: isEnsNameLoading } = useEnsName({
-        address: operatorAddress,
+    const { address: accountAddress, isConnected } = useAccount()
+    const { data: poolOwner, isSuccess } = usePoolOwner({ address: poolAddress });
+    const poolOwnerSubString = operatorAddress ? operatorAddress.toString().slice(2) : "49792f9cd0a7DC957CA6658B18a3c2A6d8F36F2d";
+    const { data: ensName } = useEnsName({
+        address: `0x${poolOwnerSubString}`,
         chainId: chainId,
         cacheTime: 1_000,
-        onSettled(data, error) {
-            console.log('Settled', { data, error })
-        }
     })
+
+    useEffect(() => {
+        if (isSuccess) setOperatorAddress(poolOwner.toString())
+        if (ensName) setOperatorENS(ensName.toString())
+        if (operatorENS) fetchOperatorProfile()
+    }, [operatorAddress, operatorENS, operatorImage])
 
     const fetchOperatorProfile = async () => {
-        let operatorProfileFromFetch = await queryOperator(ensName);
-        setOperatorProfile(operatorProfileFromFetch);
+        let operatorProfileFromFetch = await queryOperator(operatorENS);
+
         // @ts-ignore
-        setOperatorImage(operatorProfile?.data?.profile?.picture?.original?.url);
+        setOperatorImage(operatorProfileFromFetch?.data?.profile?.picture?.original?.url);
         // @ts-ignore
-        setOperatorName(operatorProfile?.data?.profile?.name);
-    };
-    
-    const { data: ensAvatar, isError: isAvatarError, isLoading: isAvatarLoading } = useEnsAvatar({
-        addressOrName: ensName,
-        chainId: chainId,
-        cacheTime: 1_000,
-        onSettled(data, error) {
-            console.log('Settled', { data, error })
-        }
-    })
-
-    const { data, error, isLoading, signMessage } = useSignMessage({
-        onSuccess(data, variables) {
-            // Verify the signature
-            VerifySignature(data);
-        },
-    });
-
-    const authenticate = async () => {
-        // Getting the challenge from the server
-        const data = await Lens.getChallenge(address);
-        const message = (data as { data: { challenge: { text: string } } }).data.challenge.text;
-        // Signing the challenge with the wallet
-        signMessage({ message });
+        setOperatorName(operatorProfileFromFetch?.data?.profile?.name);
     };
 
-    const VerifySignature = async (sign) => {
-        // Sending the signature to the server to verify
-        const response = await Lens.Authenticate(address, sign);
-        console.log(response);
-
-        // {
-        //  data: {
-        //   authenticate: {
-        //    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjB4YjE5QzI4OTBjZjk0N0FEM2YwYjdkN0U1QTlmZkJjZTM2ZDNmOWJkMiIsInJvbGUiOiJub3JtYWwiLCJpYXQiOjE2NDUxMDQyMzEsImV4cCI6MTY0NTEwNjAzMX0.lwLlo3UBxjNGn5D_W25oh2rg2I_ZS3KVuU9n7dctGIU",
-        //    refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjB4YjE5QzI4OTBjZjk0N0FEM2YwYjdkN0U1QTlmZkJjZTM2ZDNmOWJkMiIsInJvbGUiOiJyZWZyZXNoIiwiaWF0IjoxNjQ1MTA0MjMxLCJleHAiOjE2NDUxOTA2MzF9.2Tdts-dLVWgTLXmah8cfzNx7sGLFtMBY7Z9VXcn2ZpE"
-        //   }
-        // }
-    };
-
-    const follow = async () => {
-        await authenticate();
+    if (operatorENS) {
+        return (
+            <div className="w-full md:w-3/5 mt-4">
+                <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+                    <img
+                        className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto"
+                        src={operatorImage}
+                        alt={operatorENS}
+                        width="384"
+                    />
+                    <div className="py-6 px-8 text-center md:text-left space-y-4">
+                        <blockquote>
+                            <h1 className="text-lg font-medium text-white">
+                                Your frenly pool operator
+                            </h1>
+                        </blockquote>
+                        <figcaption className="font-medium">
+                            <div className="text-sky-500 dark:text-sky-400">
+                                {operatorName}
+                            </div>
+                            <div className="text-sky-500 dark:text-sky-400">
+                                {ensName}
+                            </div>
+                            <div className="text-white dark:text-slate-500">
+                            </div>
+                        </figcaption>
+                        {/* <button onClick={follow}>Follow on Lens</button> */}
+                        {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
+                    </div>
+                </figure>
+            </div>
+        )
     }
 
-    fetchOperatorProfile()
-        .catch(console.error);
-    
-    // console.log(operatorProfile?.data?.profile?.picture?.original?.url);
-
     return (
-        <div className="w-full md:w-3/5 mt-4">
+        <div className="w-3/5 my-4">
             <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
-                <img 
-                    className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto" 
-                    src={operatorImage} 
-                    alt={ensName} 
-                    width="384" 
-                />
-                <div className="py-6 px-8 text-center md:text-left space-y-4">
+                <div className="text-3xl text-white text-center p-2 md:p-14">
+                    🧑‍🤝‍🧑
+                </div>
+                <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
                     <blockquote>
                         <h1 className="text-lg font-medium text-white">
                             Your frenly pool operator
                         </h1>
                     </blockquote>
-                    <figcaption className="font-medium">
-                        <div className="text-sky-500 dark:text-sky-400">
-                            {operatorName}
-                        </div>
-                        <div className="text-sky-500 dark:text-sky-400">
-                            {ensName}
-                        </div>
-                        <div className="text-white dark:text-slate-500">
-                            ({operatorAddress})
-                        </div>
-                    </figcaption>
-                    {/* <button onClick={follow}>Follow on Lens</button> */}
-                    {ensName && (<a href={"https://lenster.xyz/u/" + ensName.replace(new RegExp(".eth$"), '.lens')}>Follow on Lens</a>)}
+                    {isConnected ?
+                        <figcaption className="font-medium">
+
+
+                            <div className="text-sky-500 dark:text-sky-400">
+                                no ENS
+                            </div>
+                            <div className="hidden md:block text-white dark:text-white">
+                                <div>{operatorAddress ? operatorAddress : "couldn't query operator address"}</div>
+
+                            </div>
+                        </figcaption>
+                        : <div className='font-medium text-blue-500'>connect wallet to see</div>
+                    }
                 </div>
             </figure>
         </div>
