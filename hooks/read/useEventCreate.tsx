@@ -1,16 +1,11 @@
 import { useContractEvent, useNetwork } from "wagmi";
-import StakingPoolFactory from "../../utils/StakingPoolFactory.json";
-  
+import { FrensContracts } from "utils/contracts";
+
 export function useEventCreate() {
-    const { chain } = useNetwork();
-    const contractAddr =
-        chain?.name === "Goerli"
-        ? "0xFf9A6f5E9e30a72AF79f69C5EA09465004Efb40d"
-        : "0x00000000000000000000000000000000deadb33f"; // TODO :)
 
     useContractEvent({
-        address: contractAddr,
-        abi: StakingPoolFactory.abi,
+        address: FrensContracts.StakingPoolFactory.address,
+        abi: FrensContracts.StakingPoolFactory.abi,
         eventName: 'Create',
         listener: (event) => {
             // console.log(event);
@@ -18,4 +13,3 @@ export function useEventCreate() {
     })
 
 }
-  
