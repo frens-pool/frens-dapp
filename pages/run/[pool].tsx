@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
+import { ISharesKeyPairs, SSVKeys } from "ssv-keys";
 import Head from "next/head";
 import router, { useRouter } from "next/router";
 import Navbar from "components/shared/navbar";
@@ -16,6 +17,21 @@ const Operator: NextPage = () => {
 
   const [depositFileData, setDepositFileData] = useState();
   const [keystoreFileData, setKeystoreFileData] = useState();
+
+  function handleKeystoreDrop(data) {
+    const keystoreJSON = JSON.parse(data);
+
+    const keyshareData = async () => {
+      const response = await fetch("/api/keyshares", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      return response.json();
+    };
+    keyshareData().then((data) => {
+      alert(data.privateKey);
+    });
+  }
 
   if (poolAddress) {
     return (
@@ -38,13 +54,13 @@ const Operator: NextPage = () => {
           <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">Pool Information</h1>
             <div className="block w-2/3 mt-2">
-              <a
+              {/* <a
                 className="underline"
                 href={`https://app.frens.fun/pool/${poolAddress}`}
               >
                 {`https://app.frens.fun/pool/${poolAddress}`}
-              </a>
-              <PoolInfo poolAddress={poolAddress} />
+              </a> */}
+              {/* <PoolInfo poolAddress={poolAddress} /> */}
             </div>
           </div>
 
@@ -82,8 +98,7 @@ const Operator: NextPage = () => {
                   <div>upload the keystore file here</div>
                   <DropKeys
                     onFileReceived={(data) => {
-                      const keystoreData = JSON.parse(data);
-                      setKeystoreFileData(keystoreData);
+                      handleKeystoreDrop(data);
                     }}
                   />
                   <div>select ur operators</div>

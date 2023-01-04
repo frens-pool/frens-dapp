@@ -29,12 +29,25 @@ export const SSVRegisterValidator = ({
 
   const calcPayloadForRegisterSSV = async () => {
     const ssvKeys = new SSVKeys();
-    const privateKey = await ssvKeys.getPrivateKeyFromKeystoreData(
-      keystoredata,
-      "dummy123"
-    );
-    console.log("privateKey", privateKey);
-    setPayloadData(privateKey);
+    // const privateKey = await ssvKeys.getPrivateKeyFromKeystoreData(
+    //   keystoredata,
+    //   "dummy123"
+    // );
+
+    const privateKey = await ssvKeys
+      .getPrivateKeyFromKeystoreData(JSON.stringify(keystoredata), "dummy123")
+      .then((result) => {
+        // if (result instanceof Error) {
+        //   alert(result.message);
+        //   return;
+        // }
+        console.log("Private key ready");
+        console.log(result);
+        return result;
+      });
+    // console.log("privateKey", privateKey);
+    // console.log(privateKey);
+    // setPayloadData(privateKey);
   };
 
   const registerValiSSV = () => {};
