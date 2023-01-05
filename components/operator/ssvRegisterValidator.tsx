@@ -2,21 +2,7 @@ import { useState, useEffect } from "react";
 import { ISharesKeyPairs, SSVKeys } from "ssv-keys";
 import { useAllowance } from "../../hooks/write/useAllowance";
 
-export const SSVRegisterValidator = ({
-  keystoredata,
-}: {
-  keystoredata: any;
-}) => {
-  const [payloadData, setPayloadData] = useState("abc");
-
-  useEffect(() => {
-    console.log("keystoredata", keystoredata);
-    if (keystoredata) {
-      console.log("rdy to populate");
-      calcPayloadForRegisterSSV();
-    }
-  }, [keystoredata]);
-
+export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const {
     data: data2,
     isLoading: isLoading2,
@@ -26,29 +12,6 @@ export const SSVRegisterValidator = ({
     spender: "",
     value: "",
   });
-
-  const calcPayloadForRegisterSSV = async () => {
-    const ssvKeys = new SSVKeys();
-    // const privateKey = await ssvKeys.getPrivateKeyFromKeystoreData(
-    //   keystoredata,
-    //   "dummy123"
-    // );
-
-    const privateKey = await ssvKeys
-      .getPrivateKeyFromKeystoreData(JSON.stringify(keystoredata), "dummy123")
-      .then((result) => {
-        // if (result instanceof Error) {
-        //   alert(result.message);
-        //   return;
-        // }
-        console.log("Private key ready");
-        console.log(result);
-        return result;
-      });
-    // console.log("privateKey", privateKey);
-    // console.log(privateKey);
-    // setPayloadData(privateKey);
-  };
 
   const registerValiSSV = () => {};
 

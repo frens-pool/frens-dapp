@@ -15,22 +15,28 @@ const Operator: NextPage = () => {
   const router = useRouter();
   const poolAddress = router.query.pool as string;
 
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
+  const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
   const [depositFileData, setDepositFileData] = useState();
   const [keystoreFileData, setKeystoreFileData] = useState();
 
+  function buildRegisterPayload() {
+    const keyshareData = async () => {
+      const response = await fetch("/api/keyshares", {
+        method: "POST",
+        body: keystoreFileData,
+      });
+      return response.json();
+    };
+    keyshareData().then((data) => {
+      // console.log(data);
+      setPayloadRegisterValidator(data);
+    });
+  }
+
   function handleKeystoreDrop(data) {
     if (JSON.parse(data).crypto) {
-      const keyshareData = async () => {
-        const response = await fetch("/api/keyshares", {
-          method: "POST",
-          body: data,
-        });
-        return response.json();
-      };
-      keyshareData().then((data) => {
-        alert(data.privateKey);
-      });
+      setKeystoreFileData(data);
     } else {
       alert("please upload a keystore file");
     }
@@ -77,10 +83,10 @@ const Operator: NextPage = () => {
                 Deposit ETH
               </li>
               <li className={`step px-1 ${step >= 3 ? "step-primary" : ""}`}>
-                Upload keystore
+                Select operators
               </li>
               <li className={`step px-1 ${step >= 4 ? "step-primary" : ""}`}>
-                Select operators
+                Upload keystore
               </li>
               <li className={`step px-1 ${step >= 5 ? "step-primary" : ""}`}>
                 Register validator
@@ -132,18 +138,8 @@ const Operator: NextPage = () => {
             </div>
             <div className={`${step == 3 ? "block" : "hidden"}`}>
               <div className="my-2 p-2 border border-slate-700 rounded-md">
-                <div>upload the keystore file here</div>
-                <DropKeys
-                  onFileReceived={(data) => {
-                    handleKeystoreDrop(data);
-                  }}
-                />
-                <div>Keystore password:</div>
-                <input
-                  type="text"
-                  placeholder=""
-                  className="input input-primary w-full max-w-xs my-2"
-                />
+                <div>select ur operators</div>
+                {/* <SelectOperator setTokenCode={setTokenCode} /> */}
                 <button
                   className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
                   onClick={() => {
@@ -156,11 +152,22 @@ const Operator: NextPage = () => {
             </div>
             <div className={`${step == 4 ? "block" : "hidden"}`}>
               <div className="my-2 p-2 border border-slate-700 rounded-md">
-                <div>select ur operators</div>
-                {/* <SelectOperator setTokenCode={setTokenCode} /> */}
+                <div>upload the keystore file here</div>
+                <DropKeys
+                  onFileReceived={(data) => {
+                    handleKeystoreDrop(data);
+                  }}
+                />
+                <div>Keystore password:</div>
+                <input
+                  type="text"
+                  placeholder="dummy123"
+                  className="input input-primary w-full max-w-xs my-2"
+                />
                 <button
                   className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
                   onClick={() => {
+                    buildRegisterPayload();
                     setStep(5);
                   }}
                 >
@@ -171,7 +178,7 @@ const Operator: NextPage = () => {
             <div className={`${step == 5 ? "block" : "hidden"}`}>
               <div className="my-2 p-2 border border-slate-700 rounded-md">
                 <div>register validator</div>
-                <SSVRegisterValidator keystoredata={keystoreFileData} />
+                <SSVRegisterValidator payloadData={payloadRegisterValidator} />
               </div>
             </div>
           </div>
