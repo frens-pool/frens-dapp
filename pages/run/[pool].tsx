@@ -15,22 +15,25 @@ const Operator: NextPage = () => {
   const router = useRouter();
   const poolAddress = router.query.pool as string;
 
+  const [step, setStep] = useState(3);
   const [depositFileData, setDepositFileData] = useState();
   const [keystoreFileData, setKeystoreFileData] = useState();
 
   function handleKeystoreDrop(data) {
-    const keystoreJSON = JSON.parse(data);
-
-    const keyshareData = async () => {
-      const response = await fetch("/api/keyshares", {
-        method: "POST",
-        body: JSON.stringify(data),
+    if (JSON.parse(data).crypto) {
+      const keyshareData = async () => {
+        const response = await fetch("/api/keyshares", {
+          method: "POST",
+          body: data,
+        });
+        return response.json();
+      };
+      keyshareData().then((data) => {
+        alert(data.privateKey);
       });
-      return response.json();
-    };
-    keyshareData().then((data) => {
-      alert(data.privateKey);
-    });
+    } else {
+      alert("please upload a keystore file");
+    }
   }
 
   if (poolAddress) {
@@ -65,47 +68,110 @@ const Operator: NextPage = () => {
           </div>
 
           <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
-            <h1 className="text-3xl font-bold">3️⃣ Run SSV-validator</h1>
-            <div className="block">
-              <div>
-                <div className="my-2 p-2 border border-slate-700 rounded-md">
-                  <div>1. create staking keys</div>
-                  <div>using this command:</div>
-                  <div>
-                    <code>
-                      deposit new-mnemonic --eth1_withdrawal_address{" "}
-                      {poolAddress}
-                    </code>
-                  </div>
-                  <div>or using wagyu key gen</div>
+            <h1 className="text-3xl font-bold">Run SSV-validator</h1>
+            <ul className="steps mt-2">
+              <li className={`step px-1 ${step >= 1 ? "step-primary" : ""}`}>
+                Create Keys
+              </li>
+              <li className={`step px-1 ${step >= 2 ? "step-primary" : ""}`}>
+                Deposit ETH
+              </li>
+              <li className={`step px-1 ${step >= 3 ? "step-primary" : ""}`}>
+                Upload keystore
+              </li>
+              <li className={`step px-1 ${step >= 4 ? "step-primary" : ""}`}>
+                Select operators
+              </li>
+              <li className={`step px-1 ${step >= 5 ? "step-primary" : ""}`}>
+                Register validator
+              </li>
+            </ul>
+            <div className={`${step == 1 ? "block" : "hidden"}`}>
+              <div className="my-2 p-2 border border-slate-700 rounded-md">
+                <div>1. create staking keys</div>
+                <div>using this command:</div>
+                <div>
+                  <code>
+                    deposit new-mnemonic --eth1_withdrawal_address {poolAddress}
+                  </code>
                 </div>
-                <div className="my-2 p-2 border border-slate-700 rounded-md">
-                  <div>2. Deposit ETH</div>
-                  <div>upload the deposit file here</div>
-                  <DropKeys
-                    onFileReceived={(data) => {
-                      const depositData = JSON.parse(data);
-                      setDepositFileData(depositData[0]);
-                    }}
-                  />
-                  <Deposit
-                    address={poolAddress as string}
-                    depositdata={depositFileData}
-                  />
-                </div>
-                <div className="my-2 p-2 border border-slate-700 rounded-md">
-                  <div>3. register SSV validator</div>
-                  <div>upload the keystore file here</div>
-                  <DropKeys
-                    onFileReceived={(data) => {
-                      handleKeystoreDrop(data);
-                    }}
-                  />
-                  <div>select ur operators</div>
-                  {/* <SelectOperator setTokenCode={setTokenCode}/> */}
-                  <div>register validator</div>
-                  <SSVRegisterValidator keystoredata={keystoreFileData} />
-                </div>
+                <div>or using wagyu key gen</div>
+                <button
+                  className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+                  onClick={() => {
+                    setStep(2);
+                  }}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+            <div className={`${step == 2 ? "block" : "hidden"}`}>
+              <div className="my-2 p-2 border border-slate-700 rounded-md">
+                <div>2. Deposit ETH</div>
+                <div>upload the deposit file here</div>
+                <DropKeys
+                  onFileReceived={(data) => {
+                    const depositData = JSON.parse(data);
+                    setDepositFileData(depositData[0]);
+                  }}
+                />
+                <Deposit
+                  address={poolAddress as string}
+                  depositdata={depositFileData}
+                />
+                <button
+                  className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+                  onClick={() => {
+                    setStep(3);
+                  }}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+            <div className={`${step == 3 ? "block" : "hidden"}`}>
+              <div className="my-2 p-2 border border-slate-700 rounded-md">
+                <div>upload the keystore file here</div>
+                <DropKeys
+                  onFileReceived={(data) => {
+                    handleKeystoreDrop(data);
+                  }}
+                />
+                <div>Keystore password:</div>
+                <input
+                  type="text"
+                  placeholder=""
+                  className="input input-primary w-full max-w-xs my-2"
+                />
+                <button
+                  className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+                  onClick={() => {
+                    setStep(4);
+                  }}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+            <div className={`${step == 4 ? "block" : "hidden"}`}>
+              <div className="my-2 p-2 border border-slate-700 rounded-md">
+                <div>select ur operators</div>
+                {/* <SelectOperator setTokenCode={setTokenCode} /> */}
+                <button
+                  className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+                  onClick={() => {
+                    setStep(5);
+                  }}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+            <div className={`${step == 5 ? "block" : "hidden"}`}>
+              <div className="my-2 p-2 border border-slate-700 rounded-md">
+                <div>register validator</div>
+                <SSVRegisterValidator keystoredata={keystoreFileData} />
               </div>
             </div>
           </div>

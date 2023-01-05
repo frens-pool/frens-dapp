@@ -41,12 +41,10 @@ export default async function handler(req, res) {
   }
 
   const body = JSON.parse(req.body);
-  console.log(req.body);
-
   const ssvKeys = new SSVKeys();
 
   const privateKey = await ssvKeys
-    .getPrivateKeyFromKeystoreData(JSON.stringify(keyStoreObject), "dummy123")
+    .getPrivateKeyFromKeystoreData(JSON.stringify(body), "dummy123")
     .then((result) => {
       return result;
     });
