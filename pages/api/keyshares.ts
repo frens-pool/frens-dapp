@@ -9,7 +9,6 @@ const operators = [
   "LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBelRDZ1hLeStWRitvOFNIdFVwT1YKcXNDSDJHSVhOUkJtS0Ixb251aUE2TnBFK3crOXFMQllQUjdDZ0p4eWxMYWFvYnNVNWhKd001K2ZKcGF3OU9XbApzSU40MGtRNU1JaXY3SVFBTUtiSnZuNmFwYWZGYXJFTjA3WjJUN2VVWDU1RWJwSC9lRXZDUzB4WjV3dklCTTJQCnpKSU5TYlVUNHR5MTNDZkFZOE5IOWcybFdiS3AzVUtuMTZpcmRMcWFmd0tjUTNtaG90K3NBSE52NTdaNWdZS3IKUGY0Q0F4b0oyT0FEVlRYUGxuOXluOGhiU084ajZJOTVHYWxiWk9lZTdGR3FMNmYrVnJrZXBLMEU5K2VFSkJTVwpoeURxcjg4dEFydlB1VWNhUEltMll0dG5sTS9pRGJNNDNnWXRHOEV1bTAvMEZZZGY5dmtJeTRZK2VmaGdPVmluCnB3SURBUUFCCi0tLS0tRU5EIFJTQSBQVUJMSUMgS0VZLS0tLS0K",
 ];
 const operatorIds = [91, 2, 9, 83];
-const keyStorePW = "dummy123";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -17,43 +16,47 @@ export default async function handler(req, res) {
     return;
   }
 
-  const body = JSON.parse(req.body);
-  const keyStore = new EthereumKeyStore(JSON.stringify(body));
-  console.log("keyStore", keyStore);
+  try {
+    const body = JSON.parse(req.body);
+    const bodyKeystore = JSON.parse(body.keystore);
 
-  const thresholdInstance = new Threshold();
-  // Get public key using the keystore password
-  const privateKey = await keyStore.getPrivateKey(keyStorePW);
-  const threshold = await thresholdInstance.create(privateKey, operatorIds);
-  console.log("keyStore", keyStore);
-  console.log("privateKey", privateKey);
-  let shares = new Encryption(operators, threshold.shares).encrypt();
-  // Loop through the operators RSA keys and format them as base64
-  shares = shares.map((share) => {
-    share.operatorPublicKey = encode(share.operatorPublicKey);
-    // Return the operator key and KeyShares (sharePublicKey & shareEncrypted)
-    return share;
-  });
-  const web3 = new Web3();
-  // Get all the public keys from the shares
-  const sharesPublicKeys = shares.map((share) => share.publicKey);
-  // Get all the private keys from the shares and encode them as ABI parameters
-  const sharesEncrypted = shares.map((share) =>
-    web3.eth.abi.encodeParameter("string", share.privateKey)
-  );
+    const keyStore = new EthereumKeyStore(JSON.stringify(bodyKeystore));
+    const keyStorePW = body.password.toString();
 
-  // Token amount (liquidation collateral and operational runway balance to be funded)
-  const tokenAmount = web3.utils.toBN(21342395400000000000).toString();
-  const operatorIdsArray = Array.from(operatorIds);
+    const thresholdInstance = new Threshold();
+    // Get public key using the keystore password
+    const privateKey = await keyStore.getPrivateKey(keyStorePW);
+    const threshold = await thresholdInstance.create(privateKey, operatorIds);
+    let shares = new Encryption(operators, threshold.shares).encrypt();
+    // Loop through the operators RSA keys and format them as base64
+    shares = shares.map((share) => {
+      share.operatorPublicKey = encode(share.operatorPublicKey);
+      // Return the operator key and KeyShares (sharePublicKey & shareEncrypted)
+      return share;
+    });
+    const web3 = new Web3();
+    // Get all the public keys from the shares
+    const sharesPublicKeys = shares.map((share) => share.publicKey);
+    // Get all the private keys from the shares and encode them as ABI parameters
+    const sharesEncrypted = shares.map((share) =>
+      web3.eth.abi.encodeParameter("string", share.privateKey)
+    );
 
-  // Return all the needed params to build a transaction payload
-  const ssvData = [
-    threshold.validatorPublicKey,
-    operatorIdsArray,
-    sharesPublicKeys,
-    sharesEncrypted,
-    tokenAmount,
-  ];
+    // Token amount (liquidation collateral and operational runway balance to be funded)
+    const tokenAmount = web3.utils.toBN(21342395400000000000).toString();
+    const operatorIdsArray = Array.from(operatorIds);
 
-  res.status(200).json({ ssvData });
+    // Return all the needed params to build a transaction payload
+    const ssvData = [
+      threshold.validatorPublicKey,
+      operatorIdsArray,
+      sharesPublicKeys,
+      sharesEncrypted,
+      tokenAmount,
+    ];
+
+    res.status(200).json({ ssvData });
+  } catch (err) {
+    res.status(451).json("likely wrong pw");
+  }
 }

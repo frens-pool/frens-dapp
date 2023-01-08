@@ -16,6 +16,7 @@ const Operator: NextPage = () => {
   const poolAddress = router.query.pool as string;
 
   const [step, setStep] = useState(4);
+  const [pw, setPW] = useState("");
   const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
   const [depositFileData, setDepositFileData] = useState();
   const [keystoreFileData, setKeystoreFileData] = useState();
@@ -24,17 +25,31 @@ const Operator: NextPage = () => {
     const keyshareData = async () => {
       const response = await fetch("/api/keyshares", {
         method: "POST",
-        body: keystoreFileData,
+        body: JSON.stringify({ keystore: keystoreFileData, password: pw }),
       });
+      if (response.status === 451) {
+        setStep(4);
+      }
       return response.json();
     };
     keyshareData().then((data) => {
-      // console.log(data);
       if (data.ssvData) {
         setPayloadRegisterValidator(data.ssvData);
       }
     });
   }
+
+  // const response = await fetch("/api/keyshares", {
+  //   method: "POST",
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     keystore: keystoreFileData,
+  //     password: pw,
+  //   }),
+  // });
 
   function handleKeystoreDrop(data) {
     if (JSON.parse(data).crypto) {
@@ -163,7 +178,7 @@ const Operator: NextPage = () => {
                 <div>Keystore password:</div>
                 <input
                   type="text"
-                  placeholder="dummy123"
+                  onChange={(e) => setPW(e.target.value)}
                   className="input input-primary w-full max-w-xs my-2"
                 />
                 <button
