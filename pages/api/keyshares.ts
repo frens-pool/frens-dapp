@@ -1,4 +1,6 @@
-import { ISharesKeyPairs, SSVKeys } from "ssv-keys";
+import { Encryption, EthereumKeyStore, Threshold } from "ssv-keys";
+import { encode } from "js-base64";
+import Web3 from "web3";
 
 const operators = [
   "LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBM3FncW9MMUlERWhTZ3RoMkYycUEKS3dtekhFblQrTkoxNVk5L3B0UTVBOFZpdXNtazgrbEVKcUNjYlN2YTRIZTlNQVNPWDBVU210d2tiaS9IdFVSTAp2Qi9adFE5MFZqK2NuZ2Q5KzZjY2VtNVkwMm50K3hjUFg4TStkYWYzYVVFbHZ1REtPemtxWmZXMjQxQnpCMFdtCmFlaVFlWE1QUTlSNmkzSGFrZC9KNlhyck02QmUyR0FWT0x6ZE52eUNFdFJjVjRVTXc2NzBwUDhjYldhRkVWdEoKWlBPOFc4MGx3anZkQ0NCUTBRMlppVEkySG43N1lXc01xeExVaTJNSjN6WCtPeVFvaVJ5cFpyU2FzaitTTTJaWQpXNGRPMUNRcXJHZ3pPS2JXMnFBWjBHZytrdytQeHdyOUtYRE84WGJlKytVTFhEaWFneFZmZjg5ODZCOXRUYWlaCmp3SURBUUFCCi0tLS0tRU5EIFJTQSBQVUJMSUMgS0VZLS0tLS0K",
@@ -16,27 +18,42 @@ export default async function handler(req, res) {
   }
 
   const body = JSON.parse(req.body);
-  const ssvKeys = new SSVKeys();
+  const keyStore = new EthereumKeyStore(JSON.stringify(body));
+  console.log("keyStore", keyStore);
 
-  const privateKey = await ssvKeys
-    .getPrivateKeyFromKeystoreData(JSON.stringify(body), keyStorePW)
-    .then((result) => {
-      return result;
-    });
-
-  const threshold: ISharesKeyPairs = await ssvKeys.createThreshold(
-    privateKey,
-    operatorIds
+  const thresholdInstance = new Threshold();
+  // Get public key using the keystore password
+  const privateKey = await keyStore.getPrivateKey(keyStorePW);
+  const threshold = await thresholdInstance.create(privateKey, operatorIds);
+  console.log("keyStore", keyStore);
+  console.log("privateKey", privateKey);
+  let shares = new Encryption(operators, threshold.shares).encrypt();
+  // Loop through the operators RSA keys and format them as base64
+  shares = shares.map((share) => {
+    share.operatorPublicKey = encode(share.operatorPublicKey);
+    // Return the operator key and KeyShares (sharePublicKey & shareEncrypted)
+    return share;
+  });
+  const web3 = new Web3();
+  // Get all the public keys from the shares
+  const sharesPublicKeys = shares.map((share) => share.publicKey);
+  // Get all the private keys from the shares and encode them as ABI parameters
+  const sharesEncrypted = shares.map((share) =>
+    web3.eth.abi.encodeParameter("string", share.privateKey)
   );
 
-  const shares = await ssvKeys.encryptShares(operators, threshold.shares);
+  // Token amount (liquidation collateral and operational runway balance to be funded)
+  const tokenAmount = web3.utils.toBN(21342395400000000000).toString();
+  const operatorIdsArray = Array.from(operatorIds);
 
-  const payload = await ssvKeys.buildPayload(
+  // Return all the needed params to build a transaction payload
+  const ssvData = [
     threshold.validatorPublicKey,
-    operatorIds,
-    shares,
-    323456789
-  );
+    operatorIdsArray,
+    sharesPublicKeys,
+    sharesEncrypted,
+    tokenAmount,
+  ];
 
-  res.status(200).json({ payload });
+  res.status(200).json({ ssvData });
 }

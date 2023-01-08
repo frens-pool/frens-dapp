@@ -30,7 +30,9 @@ const Operator: NextPage = () => {
     };
     keyshareData().then((data) => {
       // console.log(data);
-      setPayloadRegisterValidator(data);
+      if (data.ssvData) {
+        setPayloadRegisterValidator(data.ssvData);
+      }
     });
   }
 

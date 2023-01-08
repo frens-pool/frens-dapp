@@ -21,7 +21,8 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.41.1",
     "ssv-keys": "github:bloxapp/ssv-keys",
-    "wagmi": "^0.9.5"
+    "wagmi": "^0.9.5",
+    "web3": "^1.8.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.17",
