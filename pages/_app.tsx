@@ -1,13 +1,13 @@
-import '../styles/globals.css';
-import '@rainbow-me/rainbowkit/styles.css';
-import type { AppProps } from 'next/app';
-import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { configureChains, createClient, WagmiConfig, goerli } from 'wagmi';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
+import "../styles/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
+import type { AppProps } from "next/app";
+import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { configureChains, createClient, WagmiConfig, goerli } from "wagmi";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [ goerli ],
+  [goerli],
   [
     alchemyProvider({
       // This is Alchemy's default API key.
@@ -20,7 +20,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'frens',
+  appName: "frens",
   chains,
 });
 

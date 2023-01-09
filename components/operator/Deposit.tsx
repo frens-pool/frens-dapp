@@ -1,31 +1,42 @@
-import { useState, useEffect } from 'react';
-import { useEventCreate } from '../../hooks/read/useEventCreate';
-import { useStake } from '../../hooks/write/useStake';
+import { useState, useEffect } from "react";
+import { useEventCreate } from "../../hooks/read/useEventCreate";
+import { useStake } from "../../hooks/write/useStake";
 
-const INVITATION_TOKEN_LENGTH = 9
+const INVITATION_TOKEN_LENGTH = 9;
 
-export const Deposit = ({ address, depositdata }: { address: string, depositdata: any }) => {
-    // const [ssvOperators, setssvOperators] = useState([]);
-    // const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
+export const Deposit = ({
+  address,
+  depositdata,
+}: {
+  address: string;
+  depositdata: any;
+}) => {
+  // const [ssvOperators, setssvOperators] = useState([]);
+  // const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
 
-    if (!depositdata){
-        return(null);
-    }
+  if (!depositdata) {
+    return null;
+  }
 
-    // const depositdata = {}
-    const { data, write: stake } = useStake({ address, depositdata });
-    // console.log(depositdata);
-    // useEventCreate();
+  // const depositdata = {}
+  const { data, write: stake } = useStake({ address, depositdata });
+  // console.log(depositdata);
+  // useEventCreate();
 
-    // console.log(frenSsvOperatorIDs)
+  // console.log(frenSsvOperatorIDs)
 
-    return (
-        <div>
-            {/* <div>Create a SSV operated Validator</div> */}
-            {/* deposit data : {JSON.stringify(depositdata,0,2)} */}
-            <button className='btn btn-primary' onClick={() => { stake() }}>
-                Deposit ETH to Beacon chain
-            </button>
-        </div>
-    );
+  return (
+    <div>
+      {/* <div>Create a SSV operated Validator</div> */}
+      {/* deposit data : {JSON.stringify(depositdata,0,2)} */}
+      <button
+        className="btn btn-primary"
+        onClick={() => {
+          stake();
+        }}
+      >
+        Deposit ETH to Beacon chain
+      </button>
+    </div>
+  );
 };
