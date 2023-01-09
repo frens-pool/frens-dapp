@@ -3,13 +3,12 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { useState } from "react";
-import Navbar from "components/shared/navbar";
-import Footer from "components/shared/footer";
-import { StakeFormComponent } from "components/staker/stakeFormComponent";
-import { StakeForm } from "components/staker/stakeForm";
-import { OperatorWidget } from "components/staker/operatorWidget";
-import { PoolInfo } from "components/shared/poolInfo";
-import { NftGallery } from "components/staker/nftGallery";
+import Navbar from "components/shared/Navbar";
+import Footer from "components/shared/Footer";
+import { StakeForm } from "components/staker/StakeForm";
+import { OperatorWidget } from "components/staker/OperatorWidget";
+import { PoolInfo } from "components/shared/PoolInfo";
+import { NftGallery } from "components/staker/NftGallery";
 
 const Pool: NextPage = () => {
   const router = useRouter();

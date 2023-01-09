@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { BigNumber, ethers } from "ethers";
-import CardForNFT from "./cardForNFT";
+import CardForNFT from "./CardForNFT";
 import { FrensContracts } from "utils/contracts";
 
 import { usePoolTokenIDs } from "../../hooks/read/usePoolTokenIDs";
 
-export const NftGallery = ({ poolAddress, isDepositing }) => {
+export const NftGallery = ({
+  poolAddress,
+  isDepositing,
+}: {
+  poolAddress: any;
+  isDepositing: any;
+}) => {
   const { address: accountAddress, isConnected } = useAccount();
   const { data: poolNftIds } = usePoolTokenIDs({ poolAddress });
   const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
@@ -62,7 +68,7 @@ export const NftGallery = ({ poolAddress, isDepositing }) => {
 
   const getUserNftIds = async (
     FrensPoolShareContract: ethers.Contract,
-    ownerAddress
+    ownerAddress: any
   ) => {
     let ownerBalance = await FrensPoolShareContract.balanceOf(ownerAddress);
 

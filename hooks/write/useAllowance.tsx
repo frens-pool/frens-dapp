@@ -1,21 +1,13 @@
-// import { ethers } from 'ethers';
-// import { SSVKeys, EthereumKeyStore } from 'ssv-keys';
-import {
-  usePrepareContractWrite,
-  useContractWrite,
-  useNetwork
-} from "wagmi";
-import ERC20 from "../../utils/ERC20.json";
+import { usePrepareContractWrite, useContractWrite, useNetwork } from "wagmi";
+import SSVToken from "../../utils/SSVToken.json";
 
-export function useAllowance(
-  {
-    spender,
-    value,
-  }: {
-    spender: string,
-    value: string
-  }) {
-
+export function useAllowance({
+  spender,
+  value,
+}: {
+  spender: string;
+  value: string;
+}) {
   const { chain } = useNetwork();
 
   const SSVTokenContractAddr =
@@ -30,12 +22,12 @@ export function useAllowance(
 
   const { config } = usePrepareContractWrite({
     address: SSVTokenContractAddr,
-    abi: ERC20.abi,
-    functionName: 'approve',
-    args: [registerContractAddr,"10000000000000000000000"],
-  })
+    abi: SSVToken.abi,
+    functionName: "approve",
+    args: [registerContractAddr, "21342395400000000000"],
+  });
 
-  const { data, isLoading, isSuccess, write } = useContractWrite(config)
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
   return { data, isLoading, isSuccess, write };
 }

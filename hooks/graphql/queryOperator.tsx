@@ -1,7 +1,7 @@
-import { apolloClient } from './apolloClient';
-import { gql } from '@apollo/client'
+import { apolloClient } from "./apolloClient";
+import { gql } from "@apollo/client";
 
-const buildQuery = ({ lensHandle }) => {
+const buildQuery = ({ lensHandle }: { lensHandle: any }) => {
   const query = `
     query Profile {
       profile(request: { handle: "${lensHandle}" }) {
@@ -85,16 +85,16 @@ const buildQuery = ({ lensHandle }) => {
         }
       }
     }
-  `
+  `;
   return query;
-} 
+};
 
-export const queryOperator = async (ensName) => {
+export const queryOperator = async ({ ensName }: { ensName: any }) => {
   // const tempConstantENS = "heeckhau.eth";
-  const lensHandle = ensName?.replace(new RegExp(".eth$"), '.lens');
+  const lensHandle = ensName?.replace(new RegExp(".eth$"), ".lens");
   const queryForOperator = buildQuery({ lensHandle });
   const response = await apolloClient.query({
     query: gql(queryForOperator),
-  })
+  });
   return response;
-}
+};
