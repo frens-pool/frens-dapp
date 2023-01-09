@@ -19,7 +19,8 @@ export const Deposit = ({
   // }
 
   // const depositdata = {}
-  const { data, write: stake } = useStake({ address, depositdata });
+  // const { data, write: stake } = useStake({ address, depositdata });
+
   // console.log(depositdata);
   // useEventCreate();
 
@@ -32,7 +33,7 @@ export const Deposit = ({
       <button
         className="btn btn-primary"
         onClick={() => {
-          if (stake) stake();
+          // if (stake) stake();
         }}
       >
         Deposit ETH to Beacon chain
