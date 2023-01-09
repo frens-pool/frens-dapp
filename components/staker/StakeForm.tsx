@@ -4,7 +4,15 @@ import { useAccount, useBalance, useContractEvent } from "wagmi";
 import { useDeposit } from "../../hooks/write/useDeposit";
 import StakingPool from "../../utils/StakingPool.json";
 
-export const StakeForm = ({ poolAddress, isDepositing, setIsDepositing }) => {
+export const StakeForm = ({
+  poolAddress,
+  isDepositing,
+  setIsDepositing,
+}: {
+  poolAddress: any;
+  isDepositing: any;
+  setIsDepositing: any;
+}) => {
   const {
     register,
     watch,
@@ -67,7 +75,7 @@ export const StakeForm = ({ poolAddress, isDepositing, setIsDepositing }) => {
                     : "bg-gradient-to-r from-pink-500 to-violet-500"
                 }`}
                 onClick={() => {
-                  deposit();
+                  if (deposit) deposit();
                   setIsDepositing(true);
                 }}
               >

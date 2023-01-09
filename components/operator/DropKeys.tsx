@@ -5,11 +5,11 @@ export const DropKeys = ({ onFileReceived }: { onFileReceived: any }) => {
   const [showDropzone, setShowDropzone] = useState(true);
 
   function MyDropzone() {
-    const onDrop = useCallback((acceptedFiles) => {
-      acceptedFiles.forEach((file) => {
+    const onDrop = useCallback((acceptedFiles: any) => {
+      acceptedFiles.forEach((file: any) => {
         var reader = new FileReader();
 
-        reader.onload = function (evt) {
+        reader.onload = function (evt: any) {
           if (evt.target.readyState != 2) return;
           if (evt.target.error) {
             alert("Error while reading file");

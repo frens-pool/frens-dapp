@@ -10,7 +10,7 @@ const operators = [
 ];
 const operatorIds = [91, 2, 9, 83];
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     res.status(405).send({ message: "Only POST requests allowed" });
     return;
