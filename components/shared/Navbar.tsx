@@ -32,12 +32,12 @@ const Navbar = () => (
             <Link href="/">Pool</Link>
           </li>
           <li>
-            <Link href="/pool/0xB5a38976c8B39d481737354e4DE888eFB7A7fF75">
+            <Link href="/pool/0xAbCf45F92f911aec91Dfe6785674D4659F8B1379">
               Pool Example
             </Link>
           </li>
           <li>
-            <Link href="/run/0xB5a38976c8B39d481737354e4DE888eFB7A7fF75">
+            <Link href="/run/0xAbCf45F92f911aec91Dfe6785674D4659F8B1379">
               Run Example
             </Link>
           </li>
