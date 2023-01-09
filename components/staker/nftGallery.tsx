@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { BigNumber, ethers } from "ethers";
-import CardForNFT from "./cardForNFT";
+import CardForNFT from "./CardForNFT";
 import { FrensContracts } from "utils/contracts";
 
 import { usePoolTokenIDs } from "../../hooks/read/usePoolTokenIDs";

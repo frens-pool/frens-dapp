@@ -3,13 +3,13 @@ import type { NextPage } from "next";
 import { ISharesKeyPairs, SSVKeys } from "ssv-keys";
 import Head from "next/head";
 import router, { useRouter } from "next/router";
-import Navbar from "components/shared/navbar";
-import Footer from "components/shared/footer";
-import { SelectOperator } from "components/operator/selectOperator";
-import { DropKeys } from "components/operator/dropKeys";
-import { SSVRegisterValidator } from "components/operator/ssvRegisterValidator";
-import { PoolInfo } from "components/shared/poolInfo";
-import { Deposit } from "components/operator/deposit";
+import Navbar from "components/shared/Navbar";
+import Footer from "components/shared/Footer";
+import { SelectOperator } from "components/operator/SelectOperator";
+import { DropKeys } from "components/operator/DropKeys";
+import { SSVRegisterValidator } from "components/operator/SsvRegisterValidator";
+import { PoolInfo } from "components/shared/PoolInfo";
+import { Deposit } from "components/operator/Deposit";
 
 const Operator: NextPage = () => {
   const router = useRouter();
@@ -38,18 +38,6 @@ const Operator: NextPage = () => {
       }
     });
   }
-
-  // const response = await fetch("/api/keyshares", {
-  //   method: "POST",
-  //   headers: {
-  //     Accept: "application/json",
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     keystore: keystoreFileData,
-  //     password: pw,
-  //   }),
-  // });
 
   function handleKeystoreDrop(data) {
     if (JSON.parse(data).crypto) {
@@ -80,13 +68,13 @@ const Operator: NextPage = () => {
           <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">Pool Information</h1>
             <div className="block w-2/3 mt-2">
-              {/* <a
+              <a
                 className="underline"
                 href={`https://app.frens.fun/pool/${poolAddress}`}
               >
                 {`https://app.frens.fun/pool/${poolAddress}`}
-              </a> */}
-              {/* <PoolInfo poolAddress={poolAddress} /> */}
+              </a>
+              <PoolInfo poolAddress={poolAddress} />
             </div>
           </div>
 

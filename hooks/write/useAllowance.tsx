@@ -24,7 +24,7 @@ export function useAllowance({
     address: SSVTokenContractAddr,
     abi: SSVToken.abi,
     functionName: "approve",
-    args: [registerContractAddr, "41342395400000000000"],
+    args: [registerContractAddr, "21342395400000000000"],
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);

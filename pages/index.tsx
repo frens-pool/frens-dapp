@@ -3,10 +3,10 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Navbar from "components/shared/navbar";
-import Footer from "components/shared/footer";
-import { InviteFrens } from "components/operator/inviteFrens";
-import { CreatePool } from "components/operator/createPool";
+import Navbar from "components/shared/Navbar";
+import Footer from "components/shared/Footer";
+import { InviteFrens } from "components/operator/InviteFrens";
+import { CreatePool } from "components/operator/CreatePool";
 
 const Operator: NextPage = () => {
   const poolAddress = useRouter().query["pool"];
