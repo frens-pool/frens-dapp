@@ -24,7 +24,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       ...payloadData
     );
 
-    const tx = await signer.sendTransaction(unsignedTx);
+    const tx = await signer?.sendTransaction(unsignedTx);
     console.log(tx);
 
     // console.log("tx pending...");

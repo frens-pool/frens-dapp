@@ -4,7 +4,7 @@ import styles from "../../styles/Home.module.css";
 const Footer = () => (
   <footer className={styles.footer}>
     <div>
-      <a href="/">Made with ❤️ by your frens 🧑‍🤝‍🧑</a>
+      <a href="https://frens.fun/">Made with ❤️ by your frens 🧑‍🤝‍🧑</a>
       <div className="flex justify-center mt-4">
         <Image
           src="/vercel-icon-dark.svg"

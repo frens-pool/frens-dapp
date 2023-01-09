@@ -1,6 +1,6 @@
 import { useBalance } from "wagmi";
 
-export const PoolInfo = ({ poolAddress }) => {
+export const PoolInfo = ({ poolAddress }: { poolAddress: any }) => {
   const { data, isError, isLoading } = useBalance({
     address: poolAddress,
   });

@@ -1,6 +1,10 @@
-import { useAccount, useBalance } from "wagmi";
-
-export const BalanceComponent = ({ ethBalance, symbol }) => {
+export const BalanceComponent = ({
+  ethBalance,
+  symbol,
+}: {
+  ethBalance: any;
+  symbol: any;
+}) => {
   return (
     <div className="stats shadow">
       <div className="stat">

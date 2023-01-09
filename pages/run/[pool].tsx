@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
-import { ISharesKeyPairs, SSVKeys } from "ssv-keys";
 import Head from "next/head";
 import router, { useRouter } from "next/router";
 import Navbar from "components/shared/Navbar";
@@ -39,7 +38,7 @@ const Operator: NextPage = () => {
     });
   }
 
-  function handleKeystoreDrop(data) {
+  function handleKeystoreDrop(data: any) {
     if (JSON.parse(data).crypto) {
       setKeystoreFileData(data);
     } else {
@@ -122,7 +121,7 @@ const Operator: NextPage = () => {
                 <div>2. Deposit ETH</div>
                 <div>upload the deposit file here</div>
                 <DropKeys
-                  onFileReceived={(data) => {
+                  onFileReceived={(data: any) => {
                     const depositData = JSON.parse(data);
                     setDepositFileData(depositData[0]);
                   }}
@@ -159,7 +158,7 @@ const Operator: NextPage = () => {
               <div className="my-2 p-2 border border-slate-700 rounded-md">
                 <div>upload the keystore file here</div>
                 <DropKeys
-                  onFileReceived={(data) => {
+                  onFileReceived={(data: any) => {
                     handleKeystoreDrop(data);
                   }}
                 />

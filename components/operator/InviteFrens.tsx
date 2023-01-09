@@ -1,4 +1,12 @@
-export const InviteFrens = ({ tokenCode, poolContract, setStep, step }) => {
+export const InviteFrens = ({
+  poolContract,
+  setStep,
+  step,
+}: {
+  poolContract: string;
+  setStep: any;
+  step: any;
+}) => {
   const link = `https://app.frens.fun/pool/${poolContract}`;
 
   function copyToClipboard(copyMe: string): void {

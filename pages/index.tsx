@@ -53,7 +53,6 @@ const Operator: NextPage = () => {
           <h1 className="text-3xl font-bold">2️⃣ Invite frens</h1>
           <div className={`${step == 2 || step == 3 ? "block" : "hidden"}`}>
             <InviteFrens
-              tokenCode={tokenCode}
               poolContract={poolContract}
               setStep={setStep}
               step={step}

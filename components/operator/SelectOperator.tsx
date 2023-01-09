@@ -4,7 +4,7 @@ import { useCreatePool } from "../../hooks/write/useCreatePool";
 
 const INVITATION_TOKEN_LENGTH = 9;
 
-export const SelectOperator = ({ setTokenCode }) => {
+export const SelectOperator = ({}) => {
   const [ssvOperators, setssvOperators] = useState([]);
   const [operatorList, setOperatorList] = useState(<></>);
   const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
@@ -51,8 +51,8 @@ export const SelectOperator = ({ setTokenCode }) => {
           <input type="checkbox" />
           &nbsp;&nbsp;
         </td>
-        <td>{item.name} &nbsp;&nbsp;&nbsp;</td>
-        <td>{parseFloat(item.performance["24h"]).toFixed(2)}%</td>
+        {/* <td>{item.name} &nbsp;&nbsp;&nbsp;</td>
+        <td>{parseFloat(item.performance["24h"]).toFixed(2)}%</td> */}
       </tr>
     );
   });

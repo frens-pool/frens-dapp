@@ -14,9 +14,9 @@ export const Deposit = ({
   // const [ssvOperators, setssvOperators] = useState([]);
   // const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
 
-  if (!depositdata) {
-    return null;
-  }
+  // if (!depositdata) {
+  //   return null;
+  // }
 
   // const depositdata = {}
   const { data, write: stake } = useStake({ address, depositdata });
@@ -32,7 +32,7 @@ export const Deposit = ({
       <button
         className="btn btn-primary"
         onClick={() => {
-          stake();
+          if (stake) stake();
         }}
       >
         Deposit ETH to Beacon chain

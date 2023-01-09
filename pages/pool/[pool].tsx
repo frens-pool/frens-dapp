@@ -5,7 +5,6 @@ import { useAccount } from "wagmi";
 import { useState } from "react";
 import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
-import { StakeFormComponent } from "components/staker/StakeFormComponent";
 import { StakeForm } from "components/staker/StakeForm";
 import { OperatorWidget } from "components/staker/OperatorWidget";
 import { PoolInfo } from "components/shared/PoolInfo";

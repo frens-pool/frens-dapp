@@ -18,7 +18,9 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
   const { data: poolOwner, isSuccess } = usePoolOwner({ address: poolAddress });
   useEffect(() => {
     if (isSuccess) {
-      setOperatorAddress(poolOwner.toString());
+      if (poolOwner) {
+        setOperatorAddress(poolOwner.toString());
+      }
     }
   }, [isSuccess, poolOwner]);
 
@@ -40,7 +42,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
     }
   }, [ensName, operatorENS]);
 
-  const fetchOperatorProfile = async (ensName: string) => {
+  const fetchOperatorProfile = async (ensName: any) => {
     let operatorProfileFromFetch = await queryOperator(ensName);
     // @ts-ignore
     setOperatorImage(

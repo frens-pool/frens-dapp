@@ -4,7 +4,15 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCreatePool } from "../../hooks/write/useCreatePool";
 import { FrensContracts } from "utils/contracts";
 
-export const CreatePool = ({ setStep, setPoolContract, setTokenCode }) => {
+export const CreatePool = ({
+  setStep,
+  setPoolContract,
+  setTokenCode,
+}: {
+  setStep: any;
+  setPoolContract: any;
+  setTokenCode: any;
+}) => {
   const { address: accountAddress } = useAccount();
   const { openConnectModal } = useConnectModal();
 
@@ -15,7 +23,7 @@ export const CreatePool = ({ setStep, setPoolContract, setTokenCode }) => {
     // const INVITATION_TOKEN_LENGTH = 9
     // const inviteToken = Math.random().toString(36).substring(2, INVITATION_TOKEN_LENGTH);
     // setTokenCode(inviteToken);
-    createPool();
+    if (createPool) createPool();
   }
 
   useContractEvent({
@@ -97,7 +105,9 @@ export const CreatePool = ({ setStep, setPoolContract, setTokenCode }) => {
               ) : (
                 <button
                   className="btn text-white bg-gradient-to-r from-pink-500 to-violet-500"
-                  onClick={() => openConnectModal()}
+                  onClick={() => {
+                    if (openConnectModal) openConnectModal();
+                  }}
                 >
                   Create Pool
                 </button>
