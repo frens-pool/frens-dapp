@@ -9,17 +9,23 @@ export const KeystoreForm = ({
   setPayloadRegisterValidator: any;
 }) => {
   const [pw, setPW] = useState("");
+  const [loading, setLoading] = useState(false);
   const [payloadError, setPayloadError] = useState(false);
+  const [keystoreError, setKeystoreError] = useState(false);
   const [keystoreFileData, setKeystoreFileData] = useState();
 
   function buildRegisterPayload() {
     const keyshareData = async () => {
+      if (!keystoreFileData) {
+        setKeystoreError(true);
+      }
       const response = await fetch("/api/keyshares", {
         method: "POST",
         body: JSON.stringify({ keystore: keystoreFileData, password: pw }),
       });
       if (response.status === 451) {
         setPayloadError(true);
+        setLoading(false);
       }
       return response.json();
     };
@@ -35,6 +41,7 @@ export const KeystoreForm = ({
   function handleKeystoreDrop(data: any) {
     if (JSON.parse(data).crypto) {
       setKeystoreFileData(data);
+      setKeystoreError(false);
     } else {
       alert("please upload a keystore file");
     }
@@ -49,6 +56,11 @@ export const KeystoreForm = ({
             handleKeystoreDrop(data);
           }}
         />
+        {keystoreError ? (
+          <div className="text-red-600 mb-4">pls upload a keystore file</div>
+        ) : (
+          <></>
+        )}
         <div>Keystore password:</div>
         <input
           type="text"
@@ -56,18 +68,27 @@ export const KeystoreForm = ({
           className="input input-primary w-full max-w-xs my-2"
         />
         {payloadError ? (
-          <div className="text-red-600">likely wrong password, try again</div>
+          <div className="text-red-600 mb-4">
+            likely wrong password, try again
+          </div>
         ) : (
           <></>
         )}
-        <button
-          className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
-          onClick={() => {
-            buildRegisterPayload();
-          }}
-        >
-          Next
-        </button>
+        {loading ? (
+          <button className="btn loading text-white" disabled>
+            Verifying
+          </button>
+        ) : (
+          <button
+            className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+            onClick={() => {
+              buildRegisterPayload();
+              setLoading(true);
+            }}
+          >
+            Next
+          </button>
+        )}
       </div>
     </div>
   );
