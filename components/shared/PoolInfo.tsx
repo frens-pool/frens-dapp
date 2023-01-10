@@ -16,10 +16,6 @@ export const PoolInfo = ({ poolAddress }: { poolAddress: any }) => {
         <div>{data ? data.formatted : "connect to see"}</div>
         {/* <div>{totaldeposits.toString() ?? "0"} ETH</div>  */}
       </div>
-      <div className="flex justify-between">
-        <div>Pool Address</div>
-        <div>{poolAddress}</div>
-      </div>
     </div>
   );
 };
