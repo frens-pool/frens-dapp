@@ -12,7 +12,7 @@ export function useCreatePool() {
   const { address: ownerAddress } = useAccount();
 
   const { config } = usePrepareContractWrite({
-    address: FrensContracts.StakingPoolFactory.address,
+    address: FrensContracts.StakingPoolFactoryNoProxy.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     functionName: "create",
     args: [ownerAddress, false],

@@ -3,6 +3,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 import { useCreatePool } from "../../hooks/write/useCreatePool";
 import { FrensContracts } from "utils/contracts";
+import { CacheService } from "#/utils/cache/cacheService";
 
 export const CreatePool = ({
   setStep,

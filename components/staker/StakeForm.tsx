@@ -1,10 +1,10 @@
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { FrensContracts } from "utils/contracts";
 import { useAccount, useBalance, useContractEvent } from "wagmi";
 import { useDeposit } from "../../hooks/write/useDeposit";
-import { FrensContracts } from "utils/contracts";
 
 export const StakeForm = ({
   poolAddress,
@@ -56,11 +56,15 @@ export const StakeForm = ({
     address: poolAddress.toString(),
     abi: FrensContracts.StakingPool.abi,
     eventName: "DepositToPool",
-    listener: () => {
+    listener: (amount, depositer, id) => {
+      console.log("The deposit was triggered.");
       setIsDepositing(false);
       reset();
-      setTimeout(() => {
-        router.reload();
+      setTimeout(async () => {
+        await router.push({
+          pathname: router.asPath,
+          query: { shareId: id.toString() },
+        });
       }, 100);
     },
   });

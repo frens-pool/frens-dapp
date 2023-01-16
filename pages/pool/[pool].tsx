@@ -1,21 +1,35 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { Address, useAccount } from "wagmi";
-import { useState } from "react";
-import Navbar from "components/shared/Navbar";
+import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
+import { CacheService } from "#/utils/cache/cacheService";
 import Footer from "components/shared/Footer";
-import { StakeForm } from "components/staker/StakeForm";
-import { OperatorWidget } from "components/staker/OperatorWidget";
+import Navbar from "components/shared/Navbar";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
-import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
+import { OperatorWidget } from "components/staker/OperatorWidget";
+import { StakeForm } from "components/staker/StakeForm";
+import type { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { Address, useAccount } from "wagmi";
+import { CurrentPoolShares } from "../../components/staker/CurrentPoolShares";
 
-const Pool: NextPage = () => {
+interface Props {
+  shareIds: string[];
+}
+
+const Pool: NextPage<Props> = ({ shareIds }) => {
   const router = useRouter();
-  const poolAddress = router.query.pool as Address|undefined;
+  const poolAddress = router.query.pool as Address | undefined;
 
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
+
+  const shareId = router.query.shareId;
+  if (shareId !== undefined) {
+    router.replace({ query: { pool: poolAddress } });
+    router.reload();
+  }
+
+  const [_, setShareIdInfo] = useState([]);
   const { isConnected } = useAccount();
 
   if (poolAddress) {
@@ -64,9 +78,7 @@ const Pool: NextPage = () => {
                 isDepositing={isDepositing}
               />
             ) : (
-              <div className="flex flex-col items-center justify-center">
-                <div className="">Connect wallet to see 🧐</div>
-              </div>
+              <CurrentPoolShares shareIds={shareIds} />
             )}
           </div>
         </main>
@@ -76,6 +88,18 @@ const Pool: NextPage = () => {
   }
 
   return <div>loading animation!</div>;
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const poolAddress = context.query.pool;
+  const shareId = context.query.shareId;
+  if (shareId !== undefined) {
+    await CacheService.saveShareId(poolAddress as string, [shareId as string]);
+    return { props: {} };
+  }
+
+  const shareIds = await CacheService.getShareIds(poolAddress as string);
+  return { props: { shareIds: shareIds } };
 };
 
 export default Pool;
