@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { useSigner } from "wagmi";
+import { useWaitForTransaction, useSigner } from "wagmi";
 import { useAllowance } from "../../hooks/write/useAllowance";
 import SSVNetwork from "../../utils/SSVNetwork.json";
 
@@ -12,9 +12,13 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
     signer as any
   );
 
-  const { write: allow } = useAllowance({
+  const { data, write: allow } = useAllowance({
     spender: "",
     value: "",
+  });
+
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
   });
 
   const registerSSVValidator = async () => {
@@ -34,7 +38,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   };
 
   return (
-    <>
+    <div className="my-2 p-2">
       <button
         className="btn btn-primary my-2 mr-2"
         disabled={!allow}
@@ -44,6 +48,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       </button>
       <button
         className="btn btn-primary my-2 mr-2"
+        disabled={!isSuccess}
         onClick={() => registerSSVValidator()}
       >
         Register SSV validator
@@ -54,6 +59,6 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       >
         Register SSV validator
       </a> */}
-    </>
+    </div>
   );
 };

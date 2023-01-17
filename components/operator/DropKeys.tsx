@@ -31,21 +31,32 @@ export const DropKeys = ({ onFileReceived }: { onFileReceived: any }) => {
 
     if (!showDropzone) {
       return (
-        <h2>
-          <b>File imported !</b>
-        </h2>
+        <div className="border border-dashed border-green-500 bg-slate-200 w-full mb-2">
+          <div className="py-6 font-medium">File imported !</div>
+        </div>
       );
     }
 
     return (
-      <div {...getRootProps()}>
+      <div
+        className="border border-dashed border-gray-500 bg-slate-200 w-full mb-2 p-2"
+        {...getRootProps()}
+      >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <div className="">
+            <button className="btn btn-primary disabled my-2">
+              Click to select file
+            </button>
+            <div>drop now</div>
+          </div>
         ) : (
-          <button className="btn btn-primary no-animation my-2 mr-2">
-            Click to select file
-          </button>
+          <div>
+            <button className="btn btn-primary no-animation my-2">
+              Click to select file
+            </button>
+            <div>or simply drop it here</div>
+          </div>
         )}
       </div>
     );
