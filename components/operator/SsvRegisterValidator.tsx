@@ -34,7 +34,8 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   };
 
   return (
-    <>
+    <div className="my-2 p-2 border border-slate-700 rounded-md">
+      <div>register validator</div>{" "}
       <button
         className="btn btn-primary my-2 mr-2"
         disabled={!allow}
@@ -54,6 +55,6 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       >
         Register SSV validator
       </a> */}
-    </>
+    </div>
   );
 };

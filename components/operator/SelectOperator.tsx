@@ -4,7 +4,7 @@ import { useCreatePool } from "../../hooks/write/useCreatePool";
 
 const INVITATION_TOKEN_LENGTH = 9;
 
-export const SelectOperator = ({}) => {
+export const SelectOperator = ({ setStep }: { setStep: any }) => {
   const [ssvOperators, setssvOperators] = useState([]);
   const [operatorList, setOperatorList] = useState(<></>);
   const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
@@ -73,17 +73,29 @@ export const SelectOperator = ({}) => {
   // console.log(frenSsvOperatorIDs)
 
   return (
-    <div>
-      {/* <div>Create a SSV operated Validator</div> */}
-      <div>
-        3. Select three other operators to run you DVT secured validator
-      </div>
-      <div className="flex justify-center">
-        <div>{operatorListTable ? operatorListTable : ""}</div>
-      </div>
-      {/* <button className='btn btn-primary' onClick={() => onCreatePool()}>
-                Deposit ETH to Beacon chain
-            </button> */}
+    <div className="my-2 p-2 border border-slate-700 rounded-md">
+      <div className="font-bold">select ur operators</div>
+      <div>preselected for now</div>
+      <button
+        className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+        onClick={() => {
+          setStep(4);
+        }}
+      >
+        Next
+      </button>
     </div>
+    // <div>
+    //   {/* <div>Create a SSV operated Validator</div> */}
+    //   <div>
+    //     3. Select three other operators to run you DVT secured validator
+    //   </div>
+    //   <div className="flex justify-center">
+    //     <div>{operatorListTable ? operatorListTable : ""}</div>
+    //   </div>
+    //   {/* <button className='btn btn-primary' onClick={() => onCreatePool()}>
+    //             Deposit ETH to Beacon chain
+    //         </button> */}
+    // </div>
   );
 };
