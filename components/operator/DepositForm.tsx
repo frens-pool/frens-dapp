@@ -16,8 +16,12 @@ export const DepositForm = ({
   });
 
   return (
-    <div className="my-2 p-2 border border-slate-700 rounded-md">
-      <div>2. Deposit ETH</div>
+    <div className="my-2 p-2">
+      <div>Pool Balance: {balance?.formatted}</div>
+      <div className="text-blue-400 mb-2">
+        Balance of 32 eth required for deposit
+      </div>
+
       <div>upload the deposit file here</div>
       <DropKeys
         onFileReceived={(data: any) => {

@@ -49,8 +49,7 @@ export const KeystoreForm = ({
 
   return (
     <div className="">
-      <div className="my-2 p-2 border border-slate-700 rounded-md">
-        <div>upload the keystore file here</div>
+      <div className="my-2 p-2">
         <DropKeys
           onFileReceived={(data: any) => {
             handleKeystoreDrop(data);
