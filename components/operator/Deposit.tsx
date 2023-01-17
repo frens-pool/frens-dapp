@@ -5,21 +5,13 @@ import { useStake } from "../../hooks/write/useStake";
 const INVITATION_TOKEN_LENGTH = 9;
 
 export const Deposit = ({
-  address,
-  depositdata,
+  poolAddress,
+  depositFileData,
 }: {
-  address: string;
-  depositdata: any;
+  poolAddress: string;
+  depositFileData: any;
 }) => {
-  // const [ssvOperators, setssvOperators] = useState([]);
-  // const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
-
-  // if (!depositdata) {
-  //   return null;
-  // }
-
-  // const depositdata = {}
-  // const { data, write: stake } = useStake({ address, depositdata });
+  const { data, write: stake } = useStake({ poolAddress, depositFileData });
 
   // console.log(depositdata);
   // useEventCreate();
@@ -28,12 +20,10 @@ export const Deposit = ({
 
   return (
     <div>
-      {/* <div>Create a SSV operated Validator</div> */}
-      {/* deposit data : {JSON.stringify(depositdata,0,2)} */}
       <button
-        className="btn btn-primary"
+        className="btn btn-primary mb-2"
         onClick={() => {
-          // if (stake) stake();
+          if (stake) stake();
         }}
       >
         Deposit ETH to Beacon chain
