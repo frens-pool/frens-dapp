@@ -1,11 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Navbar = () => (
   <div className="navbar">
     <div className="navbar-start">
       <div className="dropdown">
-        <label tabIndex={0} className="btn btn-ghost btn-circle text-white">
+        <label tabIndex={0} className="btn btn-ghost btn-circle text-black">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -44,9 +45,9 @@ const Navbar = () => (
         </ul>
       </div>
     </div>
-    <div className="navbar-center">
+    <div className="z-20 navbar-center">
       <Link href="/" className="btn btn-ghost normal-case text-3xl text-white">
-        FRENS 🧑‍🤝‍🧑
+        <Image src="/frens-writing.png" alt="me" width="130" height="48" />
       </Link>
     </div>
     <div className="navbar-end">

@@ -39,26 +39,30 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   return (
     <div className="my-2 p-2">
-      <button
-        className="btn btn-primary my-2 mr-2"
-        disabled={!allow}
-        onClick={() => allow?.()}
-      >
-        Allow spending SSV
-      </button>
-      <button
-        className="btn btn-primary my-2 mr-2"
-        disabled={!isSuccess}
-        onClick={() => registerSSVValidator()}
-      >
-        Register SSV validator
-      </button>
-      {/* <a
-        className="btn btn-primary"
-        href="https://app.ssv.network/join/validator/enter-key"
-      >
-        Register SSV validator
-      </a> */}
+      {allow ? (
+        <button
+          className="btn bg-gradient-to-r from-blue-500 to-teal-500 text-white my-2 mr-2"
+          onClick={() => allow?.()}
+        >
+          Allow spending SSV
+        </button>
+      ) : (
+        <button className="btn btn-primary my-2 mr-2" disabled>
+          Allow spending SSV
+        </button>
+      )}
+      {isSuccess ? (
+        <button
+          className="btn bg-gradient-to-r from-blue-500 to-teal-500 text-white my-2 mr-2"
+          onClick={() => registerSSVValidator()}
+        >
+          Register SSV validator
+        </button>
+      ) : (
+        <button className="btn btn-primary my-2 mr-2" disabled>
+          Register SSV validator
+        </button>
+      )}
     </div>
   );
 };

@@ -52,7 +52,7 @@ export const DropKeys = ({ onFileReceived }: { onFileReceived: any }) => {
           </div>
         ) : (
           <div>
-            <button className="btn btn-primary no-animation my-2">
+            <button className="btn bg-gradient-to-r from-blue-500 to-teal-500 text-white no-animation my-2">
               Click to select file
             </button>
             <div>or simply drop it here</div>

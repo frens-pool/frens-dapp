@@ -79,7 +79,7 @@ export const StakeForm = ({
                 className={`btn text-white ${
                   isDepositing
                     ? "btn-primary"
-                    : "bg-gradient-to-r from-pink-500 to-violet-500"
+                    : "bg-gradient-to-r from-blue-500 to-teal-500"
                 }`}
                 onClick={() => {
                   if (deposit) deposit();

@@ -20,7 +20,7 @@ const Operator: NextPage = () => {
   if (poolAddress) {
     return (
       <div
-        className="bg-gradient-to-r from-cyan-400 to-blue-300"
+        className="bg-gradient-to-r from-cyan-50 to-blue-50"
         data-theme="winter"
       >
         <Head>
@@ -35,25 +35,25 @@ const Operator: NextPage = () => {
         <Navbar />
 
         <main className="flex flex-col justify-center items-center min-h-[93vh]">
-          <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">1️⃣ Create Keys</h1>
             <div className={`${step == 1 ? "block" : "hidden"}`}>
               <CreateKeys setStep={setStep} poolAddress={poolAddress} />
             </div>
           </div>
-          <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">2️⃣ Deposit ETH</h1>
             <div className={`${step == 2 ? "block" : "hidden"}`}>
               <DepositForm setStep={setStep} poolAddress={poolAddress} />
             </div>
           </div>
-          <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">3️⃣ Select Operator</h1>
             <div className={`${step == 3 ? "block" : "hidden"}`}>
               <SelectOperator setStep={setStep} />
             </div>
           </div>
-          <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">4️⃣ Upload Keystore</h1>
             <div className={`${step == 4 ? "block" : "hidden"}`}>
               <KeystoreForm
@@ -62,7 +62,7 @@ const Operator: NextPage = () => {
               />
             </div>
           </div>
-          <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+          <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">5️⃣ Register Validator</h1>
             <div className={`${step == 5 ? "block" : "hidden"}`}>
               <SSVRegisterValidator payloadData={payloadRegisterValidator} />

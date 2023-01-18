@@ -26,7 +26,7 @@ export const InviteFrens = ({
       <div className="my-2 text-center">{link}</div>
       <div className="flex justify-center">
         <button
-          className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+          className="btn bg-gradient-to-r from-blue-500 to-teal-400 text-white"
           onClick={() => {
             copyToClipboard(link);
             setStep(3);
