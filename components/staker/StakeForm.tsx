@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useBalance, useContractEvent } from "wagmi";
+import { useAccount, useContractEvent } from "wagmi";
 import { useDeposit } from "../../hooks/write/useDeposit";
 import StakingPool from "../../utils/StakingPool.json";
 
@@ -17,7 +18,9 @@ export const StakeForm = ({
     register,
     watch,
     formState: { errors },
+    reset,
   } = useForm();
+  const router = useRouter();
 
   const ethInputForm = watch("ethInput");
   const stakeAmount =
@@ -39,6 +42,10 @@ export const StakeForm = ({
     eventName: "DepositToPool",
     listener: () => {
       setIsDepositing(false);
+      reset();
+      setTimeout(() => {
+        router.reload();
+      }, 100);
     },
   });
 

@@ -149,10 +149,6 @@ export const NftGallery = ({
         <div></div>
       )}
 
-      <div className="text-center ">
-        hard reload after staking required for now
-      </div>
-
       <div>Yours:</div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {userNFTs.map(({ name, image }) => (
