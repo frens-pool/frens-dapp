@@ -58,8 +58,8 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
 
   if (operatorENS) {
     return (
-      <div className="w-full md:w-3/5 mt-4">
-        <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+      <div className="w-full md:w-3/5 mt-4 ">
+        <figure className="md:flex bg-blue-900 rounded-xl p-8 md:p-0 dark:bg-slate-800">
           <img
             className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto"
             src={operatorImage}
@@ -98,7 +98,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
 
   return (
     <div className="w-3/5 my-4">
-      <figure className="md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+      <figure className="md:flex bg-blue-900 rounded-xl p-8 md:p-0 dark:bg-slate-800">
         <div className="text-3xl text-white text-center p-2 md:p-14">🧑‍🤝‍🧑</div>
         <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
           <blockquote>
