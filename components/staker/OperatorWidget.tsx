@@ -117,7 +117,6 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
             </div>
           </figcaption>
           :{" "}
-          <div className="font-medium text-blue-500">connect wallet to see</div>
         </div>
       </figure>
     </div>
