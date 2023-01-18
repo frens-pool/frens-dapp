@@ -38,18 +38,22 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
   useEffect(() => {
     if (ensName) {
       setOperatorENS(ensName.toString());
-      fetchOperatorProfile(ensName.toString());
+      fetchOperatorProfile();
     }
   }, [ensName, operatorENS]);
 
-  const fetchOperatorProfile = async (ensName: any) => {
-    let operatorProfileFromFetch = await queryOperator(ensName);
+  const fetchOperatorProfile = async () => {
+    let operatorProfileFromFetch = await queryOperator({
+      operatorAddress: operatorAddress.toString(),
+    });
+    console.log("operatorProfileFromFetch");
+    console.log(operatorProfileFromFetch);
     // @ts-ignore
     setOperatorImage(
-      operatorProfileFromFetch?.data?.profile?.picture?.original?.url
+      operatorProfileFromFetch?.data?.defaultProfile?.picture?.original?.url
     );
     // @ts-ignore
-    setOperatorName(operatorProfileFromFetch?.data?.profile?.name);
+    setOperatorName(operatorProfileFromFetch?.data?.defaultProfile?.name);
   };
 
   if (operatorENS) {
