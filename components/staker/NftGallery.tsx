@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useProvider } from "wagmi";
 import { BigNumber, ethers } from "ethers";
 import CardForNFT from "./CardForNFT";
 import { FrensContracts } from "utils/contracts";
-
 import { usePoolTokenIDs } from "../../hooks/read/usePoolTokenIDs";
 
 export const NftGallery = ({
@@ -13,30 +12,25 @@ export const NftGallery = ({
   poolAddress: any;
   isDepositing: any;
 }) => {
+  const provider = useProvider();
   const { address: accountAddress, isConnected } = useAccount();
   const { data: poolNftIds } = usePoolTokenIDs({ poolAddress });
   const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
   const [userNFTs, setUserNFTs] = useState<any[]>([]);
 
   useEffect(() => {
-    const { ethereum } = window;
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum as any);
-      const signer = provider.getSigner();
+    const FrensPoolShareContract = new ethers.Contract(
+      FrensContracts.FrensPoolShareTokenURI.address,
+      FrensContracts.FrensPoolShareTokenURI.abi,
+      provider
+    );
 
-      const FrensPoolShareContract = new ethers.Contract(
-        FrensContracts.FrensPoolShareTokenURI.address,
-        FrensContracts.FrensPoolShareTokenURI.abi,
-        signer
+    if (poolNftIds) {
+      const poolIds: string[] = (poolNftIds as BigNumber[]).map((x) =>
+        x.toString()
       );
-
-      if (poolNftIds) {
-        const poolIds: string[] = (poolNftIds as BigNumber[]).map((x) =>
-          x.toString()
-        );
-        setPoolNftArray(FrensPoolShareContract, poolIds);
-        getUserNfts(FrensPoolShareContract, poolIds);
-      }
+      setPoolNftArray(FrensPoolShareContract, poolIds);
+      getUserNfts(FrensPoolShareContract, poolIds);
     }
   }, [poolNftIds]);
 
