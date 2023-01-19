@@ -68,7 +68,7 @@ export const CreatePool = ({
                 <span className="sr-only">Loading...</span>
               </div>
               <a
-                className="underline text-blue-500 pt-1"
+                className="underline text-teal-500 pt-1"
                 href={etherscanLink}
                 target="_blank"
                 rel="noopener noreferrer"

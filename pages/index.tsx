@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
-import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
 import { InviteFrens } from "components/operator/InviteFrens";
 import { CreatePool } from "components/operator/CreatePool";
+import { RunValidator } from "components/operator/RunValidator";
 
 const Operator: NextPage = () => {
   const poolAddress = useRouter().query["pool"];
@@ -48,9 +48,8 @@ const Operator: NextPage = () => {
             />
           </div>
         </div>
-
         <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">2️⃣ Invite frens</h1>
+          <h1 className="text-3xl font-bold">2️⃣ Invite Friends</h1>
           <div className={`${step == 2 || step == 3 ? "block" : "hidden"}`}>
             <InviteFrens
               poolContract={poolContract}
@@ -59,22 +58,10 @@ const Operator: NextPage = () => {
             />
           </div>
         </div>
-
         <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">3️⃣ Run SSV-validator</h1>
+          <h1 className="text-3xl font-bold">3️⃣ Run Validator</h1>
           <div className={`${step == 3 ? "block" : "hidden"}`}>
-            <div className="my-2 text-center">
-              Once your pool is full you can run the SSV-validator. Checkout the
-              process here:
-            </div>
-            <div className="mt-4">
-              <Link
-                className="btn bg-gradient-to-r from-blue-500 to-teal-400 text-white"
-                href={`/run/${poolContract}`}
-              >
-                Run SSV-validator
-              </Link>
-            </div>
+            <RunValidator poolContract={poolContract} />
           </div>
         </div>
       </main>
