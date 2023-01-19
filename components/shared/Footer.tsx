@@ -1,8 +1,7 @@
 import Image from "next/image";
-import styles from "../../styles/Home.module.css";
 
 const Footer = () => (
-  <footer className={styles.footer}>
+  <footer className="z-20 flex justify-center content-center p-8">
     <div>
       <a href="https://frens.fun/">Made with ❤️ by your frens 🧑‍🤝‍🧑</a>
       <div className="flex justify-center mt-4">

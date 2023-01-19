@@ -97,14 +97,14 @@ export const CreatePool = ({
             <div>
               {accountAddress ? (
                 <button
-                  className="btn text-white bg-gradient-to-r from-pink-500 to-violet-500"
+                  className="btn text-white bg-gradient-to-r from-blue-500 to-teal-400"
                   onClick={() => onCreatePool()}
                 >
                   Create Pool
                 </button>
               ) : (
                 <button
-                  className="btn text-white bg-gradient-to-r from-pink-500 to-violet-500"
+                  className="btn text-white bg-gradient-to-r from-blue-500 to-teal-400"
                   onClick={() => {
                     if (openConnectModal) openConnectModal();
                   }}

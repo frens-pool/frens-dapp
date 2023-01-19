@@ -46,8 +46,6 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
     let operatorProfileFromFetch = await queryOperator({
       operatorAddress: operatorAddress.toString(),
     });
-    console.log("operatorProfileFromFetch");
-    console.log(operatorProfileFromFetch);
     // @ts-ignore
     setOperatorImage(
       operatorProfileFromFetch?.data?.defaultProfile?.picture?.original?.url
@@ -58,8 +56,8 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
 
   if (operatorENS) {
     return (
-      <div className="w-full md:w-3/5 mt-4 ">
-        <figure className="md:flex bg-blue-900 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+      <div className="w-full md:w-3/5 mt-4">
+        <figure className="md:flex bg-white z-20 rounded-xl p-8 md:p-0 border-2 border-slate-400">
           <img
             className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto"
             src={operatorImage}
@@ -73,11 +71,9 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
               </h1>
             </blockquote>
             <figcaption className="font-medium">
-              <div className="text-sky-500 dark:text-sky-400">
-                {operatorName}
-              </div>
-              <div className="text-sky-500 dark:text-sky-400">{ensName}</div>
-              <div className="text-white dark:text-slate-500"></div>
+              <div className="text-sky-500">{operatorName}</div>
+              <div className="text-sky-500">{ensName}</div>
+              <div className=""></div>
             </figcaption>
             {/* <button onClick={follow}>Follow on Lens</button> */}
             {ensName && (
@@ -97,18 +93,16 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
   }
 
   return (
-    <div className="w-3/5 my-4">
-      <figure className="md:flex bg-blue-900 rounded-xl p-8 md:p-0 dark:bg-slate-800">
+    <div className="w-3/5 my-4 z-20">
+      <div className="md:flex bg-white z-20 rounded-xl p-8 md:p-0 border-2 border-slate-400">
         <div className="text-3xl text-white text-center p-2 md:p-14">🧑‍🤝‍🧑</div>
         <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
           <blockquote>
-            <h1 className="text-lg font-medium text-white">
-              Your frenly pool operator
-            </h1>
+            <h1 className="text-lg">Your frenly pool operator</h1>
           </blockquote>
-          <figcaption className="font-medium">
-            <div className="text-sky-500 dark:text-sky-400">no ENS</div>
-            <div className="hidden md:block text-white dark:text-white">
+          <figcaption className="">
+            <div className="text-sky-500 ">no ENS</div>
+            <div className="hidden md:block">
               <div>
                 {operatorAddress
                   ? operatorAddress
@@ -116,9 +110,8 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
               </div>
             </div>
           </figcaption>
-          :{" "}
         </div>
-      </figure>
+      </div>
     </div>
   );
 };

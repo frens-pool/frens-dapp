@@ -36,6 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
+        <div className="pattern-wavy pattern-blue-800 pattern-bg-white pattern-opacity-5 pattern-size-16 fixed top-0 left-0 right-0 bottom-0"></div>
         <Component {...pageProps} />
         <Analytics />
       </RainbowKitProvider>

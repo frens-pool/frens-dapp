@@ -23,7 +23,7 @@ const Operator: NextPage = () => {
 
   return (
     <div
-      className="bg-gradient-to-r from-cyan-400 to-blue-300"
+      className="bg-gradient-to-r from-cyan-50 to-blue-50"
       data-theme="winter"
     >
       <Head>
@@ -38,7 +38,7 @@ const Operator: NextPage = () => {
       <Navbar />
 
       <main className="flex flex-col justify-center items-center min-h-[93vh]">
-        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">1️⃣ Create Pool</h1>
           <div className={`${step == 1 ? "block" : "hidden"}`}>
             <CreatePool
@@ -49,7 +49,7 @@ const Operator: NextPage = () => {
           </div>
         </div>
 
-        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">2️⃣ Invite frens</h1>
           <div className={`${step == 2 || step == 3 ? "block" : "hidden"}`}>
             <InviteFrens
@@ -60,7 +60,7 @@ const Operator: NextPage = () => {
           </div>
         </div>
 
-        <div className="w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-violet-500 rounded-md mb-4 p-3 bg-white">
+        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">3️⃣ Run SSV-validator</h1>
           <div className={`${step == 3 ? "block" : "hidden"}`}>
             <div className="my-2 text-center">
@@ -69,7 +69,7 @@ const Operator: NextPage = () => {
             </div>
             <div className="mt-4">
               <Link
-                className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+                className="btn bg-gradient-to-r from-blue-500 to-teal-400 text-white"
                 href={`/run/${poolContract}`}
               >
                 Run SSV-validator

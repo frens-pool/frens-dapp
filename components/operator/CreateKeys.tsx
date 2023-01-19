@@ -14,7 +14,7 @@ export const CreateKeys = ({
         </code>
       </div>{" "}
       <button
-        className="btn bg-gradient-to-r from-pink-500 to-violet-500 text-white"
+        className="btn bg-gradient-to-r from-blue-500 to-teal-500 text-white"
         onClick={() => {
           setStep(2);
         }}

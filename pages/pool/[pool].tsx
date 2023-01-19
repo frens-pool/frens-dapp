@@ -20,7 +20,7 @@ const Pool: NextPage = () => {
   if (poolAddress) {
     return (
       <div
-        className="bg-gradient-to-r from-cyan-400 to-blue-300 min-h-screen"
+        className="bg-gradient-to-r from-cyan-50 to-blue-50 min-h-screen"
         data-theme="winter"
       >
         <Head>
@@ -37,19 +37,18 @@ const Pool: NextPage = () => {
         <main className="flex flex-col justify-center items-center min-h-[93vh]">
           <OperatorWidget poolAddress={poolAddress.toString()} />
 
-          <div className="w-3/5 border-2 border-violet-500 rounded-md bg-white mt-6">
-            {/* <StakeFormComponent poolAddress={poolAddress.toString()} isDepositing={isDepositing} setIsDepositing={setIsDepositing} /> */}
+          <div className="z-20 w-3/5 border-2 border-slate-400 rounded-md bg-white mt-6">
             <StakeForm
               poolAddress={poolAddress.toString()}
               isDepositing={isDepositing}
               setIsDepositing={setIsDepositing}
             />
-            <div className="border border-violet-500 rounded-md mx-4"></div>
+            <div className="border border-slate-400 rounded-md mx-4"></div>
             <PoolInfo poolAddress={poolAddress.toString()} />
           </div>
 
           <div
-            className={`w-3/5 p-4 my-6 border-2 border-violet-500 rounded-md bg-white ${
+            className={`z-20 w-3/5 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
               isConnected ? "block" : "block"
             }`}
           >
