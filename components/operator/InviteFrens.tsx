@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const InviteFrens = ({
   poolContract,
   setStep,
@@ -16,14 +18,24 @@ export const InviteFrens = ({
   if (step === 3) {
     return (
       <div className="flex flex-col justify-center">
-        <div className="my-2 text-center">{link}</div>
+        <Link
+          href={`/pool/${poolContract}`}
+          className="my-3 text-center underline text-teal-500"
+        >
+          {link}
+        </Link>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col justify-center">
-      <div className="my-2 text-center">{link}</div>
+      <Link
+        href={`/pool/${poolContract}`}
+        className="my-2 text-center underline "
+      >
+        {link}
+      </Link>
       <div className="flex justify-center">
         <button
           className="btn bg-gradient-to-r from-blue-500 to-teal-400 text-white"
