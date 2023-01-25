@@ -182,7 +182,7 @@ export const SelectOperator = ({ setStep }: { setStep: any }) => {
           </tbody>
         </table>
       </div>
-      <div className="font-bold">temporary static</div>
+      <div className="font-bold">- temporary static -</div>
       <button
         className="mt-2 btn bg-gradient-to-r from-blue-500 to-teal-500 text-white"
         onClick={() => {
