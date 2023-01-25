@@ -23,7 +23,7 @@
     "react-hook-form": "^7.41.1",
     "ssv-keys": "github:bloxapp/ssv-keys",
     "wagmi": "^0.9.5",
-    "web3": "^1.8.1"
+    "web3": "^1.7.4"
   },
   "devDependencies": {
     "@types/ms": "0.7.31",
