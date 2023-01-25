@@ -10,7 +10,7 @@ export const CreateKeys = ({
       <div>use this deposit-cli command:</div>
       <div className="bg-slate-200 rounded-md p-4 my-2">
         <code>
-          /deposit new-mnemonic --eth1_withdrawal_address {poolAddress}
+          ./deposit new-mnemonic --eth1_withdrawal_address {poolAddress}
         </code>
       </div>{" "}
       <button
