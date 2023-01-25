@@ -13,7 +13,7 @@ const { chains, provider, webSocketProvider } = configureChains(
     alchemyProvider({
       // This is Alchemy's default API key.
       // You can get your own at https://dashboard.alchemyapi.io
-      apiKey: "8kMhSrpLGyIlRYBtAtT9IAVWeVK8hiOZ",
+      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY!,
       priority: 0,
     }),
     publicProvider({ priority: 1 }),
@@ -21,7 +21,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "frens",
+  appName: "FRENS",
   chains,
 });
 
