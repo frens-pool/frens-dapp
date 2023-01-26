@@ -1,8 +1,5 @@
-import { useState, useEffect } from "react";
-import { useEventCreate } from "../../hooks/read/useEventCreate";
 import { useStake } from "../../hooks/write/useStake";
-
-const INVITATION_TOKEN_LENGTH = 9;
+import { useWaitForTransaction } from "wagmi";
 
 export const Deposit = ({
   poolAddress,
@@ -12,22 +9,31 @@ export const Deposit = ({
   depositFileData: any;
 }) => {
   const { data, write: stake } = useStake({ poolAddress, depositFileData });
-
-  // console.log(depositdata);
-  // useEventCreate();
-
-  // console.log(frenSsvOperatorIDs)
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  });
 
   return (
     <div>
       <button
-        className="btn bg-gradient-to-r from-blue-500 to-teal-400 mb-2"
+        className={`${
+          isLoading
+            ? "btn btn-info no-animation my-2 mr-2"
+            : "btn bg-gradient-to-r from-blue-500 to-teal-400 text-white mb-2"
+        }`}
         onClick={() => {
           if (stake) stake();
         }}
+        disabled={isLoading}
       >
-        Deposit ETH to Beacon chain
+        {isLoading ? "Deposit in progress..." : "Deposit ETH to Beacon chain"}
       </button>
+      {isLoading && (
+        <div className="my-2">
+          <a href={`https://etherscan.io/tx/${data?.hash}`}>tx on Etherscan</a>
+        </div>
+      )}
+      {isSuccess && <div className="my-2">Deposit successful</div>}
     </div>
   );
 };

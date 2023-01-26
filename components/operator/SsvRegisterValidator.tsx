@@ -39,16 +39,20 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   return (
     <div className="my-2 p-2">
-      {allow ? (
-        <button
-          className="btn bg-gradient-to-r from-blue-500 to-teal-500 text-white my-2 mr-2"
-          onClick={() => allow?.()}
-        >
-          Allow spending SSV
+      {!allow || isLoading ? (
+        <button className="btn btn-primary my-2 mr-2" disabled>
+          Tx pending...
         </button>
       ) : (
-        <button className="btn btn-primary my-2 mr-2" disabled>
-          Allow spending SSV
+        <button
+          className={`${
+            isSuccess
+              ? "btn btn-info no-animation my-2 mr-2"
+              : "btn bg-gradient-to-r from-blue-500 to-teal-500 text-white my-2 mr-2"
+          }`}
+          onClick={() => allow?.()}
+        >
+          {isSuccess ? "Allow again" : "Allow spending SSV"}
         </button>
       )}
       {isSuccess ? (
