@@ -77,7 +77,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
             ssv explorer
           </a>
           <a
-            href={`https://explorer.ssv.network/validators/${payloadData[0].slice(
+            href={`https://prater.beaconcha.in/validator/${payloadData[0].slice(
               2
             )}`}
             className="link link-primary px-2"
