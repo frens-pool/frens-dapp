@@ -13,6 +13,10 @@ export const Deposit = ({
     hash: data?.hash,
   });
 
+  if (isSuccess) {
+    <div className="mt-2 mb-4">✅ Deposit successful ✅</div>;
+  }
+
   return (
     <div>
       <button
@@ -34,12 +38,12 @@ export const Deposit = ({
             href={`https://etherscan.io/tx/${data?.hash}`}
             target="_blank"
             rel="noopener noreferrer"
+            className="link link-primary px-2"
           >
             tx on Etherscan
           </a>
         </div>
       )}
-      {isSuccess && <div className="my-2">Deposit successful</div>}
     </div>
   );
 };
