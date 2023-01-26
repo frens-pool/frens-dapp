@@ -8,7 +8,7 @@ export const RunValidator = ({ poolContract }: { poolContract: string }) => {
       <div className="mt-2 text-center">
         Once your pool is full you can run the SSV-validator here:
       </div>
-      <div className="my-2">
+      <div className="my-2 text-center underline text-teal-500">
         <Link
           href={`/run/${poolContract}`}
           className="my-2 text-center underline text-teal-500"
