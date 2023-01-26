@@ -3,7 +3,9 @@ import Image from "next/image";
 const Footer = () => (
   <footer className="z-20 flex justify-center content-center p-8">
     <div>
-      <a href="https://frens.fun/">Made with ❤️ by your frens 🧑‍🤝‍🧑</a>
+      <a href="https://frens.fun/" target="_blank" rel="noopener noreferrer">
+        Made with ❤️ by your frens 🧑‍🤝‍🧑
+      </a>
       <div className="flex justify-center mt-4">
         <Image
           src="/vercel-icon-dark.svg"
@@ -17,6 +19,8 @@ const Footer = () => (
           <a
             className="ml-1 font-bold"
             href="https://vercel.com/?utm_source=[frens]&utm_campaign=oss"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Vercel
           </a>

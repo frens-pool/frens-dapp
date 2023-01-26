@@ -82,6 +82,8 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
                   "https://lenster.xyz/u/" +
                   ensName.replace(new RegExp(".eth$"), ".lens")
                 }
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Follow on Lens
               </a>

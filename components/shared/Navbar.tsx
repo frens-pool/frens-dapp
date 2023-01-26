@@ -27,7 +27,13 @@ const Navbar = () => (
           className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
         >
           <li>
-            <a href="https://frens.fun">Home</a>
+            <a
+              href="https://frens.fun"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Home
+            </a>
           </li>
           <li>
             <Link href="/">Pool</Link>
