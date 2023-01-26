@@ -1,8 +1,5 @@
-import { useState, useEffect } from "react";
-import { useEventCreate } from "../../hooks/read/useEventCreate";
 import { useStake } from "../../hooks/write/useStake";
-
-const INVITATION_TOKEN_LENGTH = 9;
+import { useWaitForTransaction } from "wagmi";
 
 export const Deposit = ({
   poolAddress,
@@ -12,11 +9,9 @@ export const Deposit = ({
   depositFileData: any;
 }) => {
   const { data, write: stake } = useStake({ poolAddress, depositFileData });
-
-  // console.log(depositdata);
-  // useEventCreate();
-
-  // console.log(frenSsvOperatorIDs)
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  });
 
   return (
     <div>
@@ -28,6 +23,17 @@ export const Deposit = ({
       >
         Deposit ETH to Beacon chain
       </button>
+      {isLoading && (
+        <div className="my-2">
+          Deposit in progress
+          <div>
+            <a href={`https://etherscan.io/tx/${data?.hash}`}>
+              tx on Etherscan
+            </a>
+          </div>
+        </div>
+      )}
+      {isSuccess && <div className="my-2">Deposit successful</div>}
     </div>
   );
 };
