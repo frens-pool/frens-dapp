@@ -30,7 +30,13 @@ export const Deposit = ({
       </button>
       {isLoading && (
         <div className="my-2">
-          <a href={`https://etherscan.io/tx/${data?.hash}`}>tx on Etherscan</a>
+          <a
+            href={`https://etherscan.io/tx/${data?.hash}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            tx on Etherscan
+          </a>
         </div>
       )}
       {isSuccess && <div className="my-2">Deposit successful</div>}
