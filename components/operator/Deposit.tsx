@@ -16,21 +16,21 @@ export const Deposit = ({
   return (
     <div>
       <button
-        className="btn bg-gradient-to-r from-blue-500 to-teal-400 text-white mb-2"
+        className={`${
+          isLoading
+            ? "btn btn-info no-animation my-2 mr-2"
+            : "btn bg-gradient-to-r from-blue-500 to-teal-400 text-white mb-2"
+        }`}
         onClick={() => {
           if (stake) stake();
         }}
+        disabled={isLoading}
       >
-        Deposit ETH to Beacon chain
+        {isLoading ? "Deposit in progress..." : "Deposit ETH to Beacon chain"}
       </button>
       {isLoading && (
         <div className="my-2">
-          Deposit in progress
-          <div>
-            <a href={`https://etherscan.io/tx/${data?.hash}`}>
-              tx on Etherscan
-            </a>
-          </div>
+          <a href={`https://etherscan.io/tx/${data?.hash}`}>tx on Etherscan</a>
         </div>
       )}
       {isSuccess && <div className="my-2">Deposit successful</div>}
