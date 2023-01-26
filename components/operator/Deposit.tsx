@@ -21,7 +21,7 @@ export const Deposit = ({
   return (
     <div>
       <button
-        className="btn bg-gradient-to-r from-blue-500 to-teal-400 mb-2"
+        className="btn bg-gradient-to-r from-blue-500 to-teal-400 text-white mb-2"
         onClick={() => {
           if (stake) stake();
         }}
