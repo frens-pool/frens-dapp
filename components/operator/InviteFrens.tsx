@@ -17,10 +17,10 @@ export const InviteFrens = ({
 
   if (step === 3) {
     return (
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center my-3 text-center underline text-teal-500">
         <Link
           href={`/pool/${poolContract}`}
-          className="my-3 text-center underline text-teal-500"
+          className="underline text-teal-500"
         >
           {link}
         </Link>
@@ -30,12 +30,11 @@ export const InviteFrens = ({
 
   return (
     <div className="flex flex-col justify-center">
-      <Link
-        href={`/pool/${poolContract}`}
-        className="my-2 text-center underline "
-      >
-        {link}
-      </Link>
+      <div className="my-2 text-center underline">
+        <Link href={`/pool/${poolContract}`} className="underline">
+          {link}
+        </Link>
+      </div>
       <div className="flex justify-center">
         <button
           className="btn bg-gradient-to-r from-blue-500 to-teal-400 text-white"
