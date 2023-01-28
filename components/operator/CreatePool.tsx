@@ -51,7 +51,7 @@ export const CreatePool = ({
               <div role="status">
                 <svg
                   aria-hidden="true"
-                  className="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-cyan-500"
+                  className="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-frens-main"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,7 @@ export const CreatePool = ({
                 <span className="sr-only">Loading...</span>
               </div>
               <a
-                className="underline text-teal-500 pt-1"
+                className="underline text-frens-main pt-1"
                 href={etherscanLink}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -97,14 +97,14 @@ export const CreatePool = ({
             <div>
               {accountAddress ? (
                 <button
-                  className="btn text-white bg-gradient-to-r from-blue-500 to-teal-400"
+                  className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
                   onClick={() => onCreatePool()}
                 >
                   Create Pool
                 </button>
               ) : (
                 <button
-                  className="btn text-white bg-gradient-to-r from-blue-500 to-teal-400"
+                  className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
                   onClick={() => {
                     if (openConnectModal) openConnectModal();
                   }}

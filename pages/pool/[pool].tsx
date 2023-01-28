@@ -35,9 +35,11 @@ const Pool: NextPage = () => {
         <Navbar />
 
         <main className="flex flex-col justify-center items-center min-h-[93vh]">
-          <OperatorWidget poolAddress={poolAddress.toString()} />
+          <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
+            <OperatorWidget poolAddress={poolAddress.toString()} />
+          </div>
 
-          <div className="z-20 w-3/5 border-2 border-slate-400 rounded-md bg-white mt-6">
+          <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
             <StakeForm
               poolAddress={poolAddress.toString()}
               isDepositing={isDepositing}
@@ -48,7 +50,7 @@ const Pool: NextPage = () => {
           </div>
 
           <div
-            className={`z-20 w-3/5 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
+            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
               isConnected ? "block" : "block"
             }`}
           >

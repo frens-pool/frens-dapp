@@ -17,10 +17,10 @@ export const InviteFrens = ({
 
   if (step === 3) {
     return (
-      <div className="flex flex-col justify-center my-3 text-center underline text-teal-500">
+      <div className="flex flex-col justify-center my-3 text-center underline text-frens-main">
         <Link
           href={`/pool/${poolContract}`}
-          className="underline text-teal-500"
+          className="underline text-frens-main"
         >
           {link}
         </Link>
@@ -37,7 +37,7 @@ export const InviteFrens = ({
       </div>
       <div className="flex justify-center">
         <button
-          className="btn bg-gradient-to-r from-blue-500 to-teal-400 text-white"
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
           onClick={() => {
             copyToClipboard(link);
             setStep(3);

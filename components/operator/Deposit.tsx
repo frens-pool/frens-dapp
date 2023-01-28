@@ -23,7 +23,7 @@ export const Deposit = ({
         className={`${
           isLoading
             ? "btn btn-info no-animation my-2 mr-2"
-            : "btn bg-gradient-to-r from-blue-500 to-teal-400 text-white mb-2"
+            : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
         }`}
         onClick={() => {
           if (stake) stake();
@@ -38,7 +38,7 @@ export const Deposit = ({
             href={`https://etherscan.io/tx/${data?.hash}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="link link-primary px-2"
+            className="link text-frens-main underline px-2"
           >
             tx on Etherscan
           </a>
