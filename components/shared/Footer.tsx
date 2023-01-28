@@ -2,9 +2,10 @@ import Image from "next/image";
 
 const Footer = () => (
   <footer className="z-20 flex justify-center content-center p-8">
-    <div>
+    <div className="z-20">
       <a href="https://frens.fun/" target="_blank" rel="noopener noreferrer">
-        Made with ❤️ by your frens 🤙
+        Made with ❤️ by your{" "}
+        <span className=" text-frens-main undeline">FRENS</span> 🤙
       </a>
       <div className="flex justify-center mt-4">
         <Image
