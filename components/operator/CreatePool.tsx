@@ -42,7 +42,7 @@ export const CreatePool = ({
     return (
       <div>
         <div className="my-2">
-          Create a staking pool so ur frens can stake with u!
+          You will get a link to your own personal staking pool
         </div>
         <div className="flex items-center justify-center mt-4 mb-2">
           <div>
@@ -85,7 +85,7 @@ export const CreatePool = ({
   return (
     <div>
       <div className="my-2">
-        Create a staking pool so ur frens can stake with u!
+        You will get a link to your own personal staking pool
       </div>
       <div className="flex items-center justify-center mt-4 mb-2">
         <div>
