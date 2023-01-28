@@ -70,7 +70,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
             href={`https://explorer.ssv.network/validators/${payloadData[0].slice(
               2
             )}`}
-            className="link link-primary px-2"
+            className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -80,7 +80,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
             href={`https://prater.beaconcha.in/validator/${payloadData[0].slice(
               2
             )}`}
-            className="link link-primary px-2"
+            className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -116,7 +116,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
           Allow again
         </button>
         <button
-          className="btn bg-gradient-to-r from-blue-500 to-teal-500 text-white my-2 mr-2"
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
           onClick={() => registerSSVValidator()}
         >
           Register SSV validator
@@ -128,7 +128,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   return (
     <div className="my-2 p-2">
       <button
-        className="btn bg-gradient-to-r from-blue-500 to-teal-500 text-white my-2 mr-2"
+        className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
         onClick={() => allow?.()}
       >
         Allow spending SSV

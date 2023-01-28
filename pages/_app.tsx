@@ -2,7 +2,11 @@ import "../styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
 import { Analytics } from "@vercel/analytics/react";
-import { RainbowKitProvider, getDefaultWallets } from "@rainbow-me/rainbowkit";
+import {
+  RainbowKitProvider,
+  getDefaultWallets,
+  lightTheme,
+} from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig, goerli } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -35,8 +39,13 @@ const wagmiClient = createClient({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        <div className="pattern-wavy pattern-blue-800 pattern-bg-white pattern-opacity-5 pattern-size-16 fixed top-0 left-0 right-0 bottom-0"></div>
+      <RainbowKitProvider
+        chains={chains}
+        theme={lightTheme({
+          accentColor: "#4554EA",
+        })}
+      >
+        <div className="pattern-wavy pattern-blue-600 pattern-bg-white pattern-opacity-5 pattern-size-16 fixed top-0 left-0 right-0 bottom-0"></div>
         <Component {...pageProps} />
         <Analytics />
       </RainbowKitProvider>

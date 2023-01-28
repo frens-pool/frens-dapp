@@ -184,7 +184,7 @@ export const SelectOperator = ({ setStep }: { setStep: any }) => {
       </div>
       <div className="font-bold">- temporary static -</div>
       <button
-        className="mt-2 btn bg-gradient-to-r from-blue-500 to-teal-500 text-white"
+        className="mt-2 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
         onClick={() => {
           setStep(4);
         }}

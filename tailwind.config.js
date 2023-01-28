@@ -19,6 +19,11 @@ module.exports = {
       animation: {
         wiggle: "wiggle 1s ease-in-out infinite",
       },
+      colors: {
+        "frens-main": "#4554EA",
+        "frens-blue": "#3F19EE",
+        "frens-teal": "#54DAE0",
+      },
     },
     patterns: {
       opacities: {

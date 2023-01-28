@@ -18,7 +18,7 @@ export const DepositForm = ({
   return (
     <div className="my-2 p-2">
       <div>Pool Balance: {balance?.formatted}</div>
-      <div className="text-blue-400 mb-2">
+      <div className="text-frens-main mb-2">
         Balance of 32 eth required for deposit
       </div>
 
@@ -40,7 +40,7 @@ export const DepositForm = ({
         </div>
       )}
       <button
-        className="btn bg-gradient-to-r from-blue-500 to-teal-500 text-white"
+        className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
         onClick={() => {
           setStep(3);
         }}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useEnsName } from "wagmi";
 import { queryOperator } from "hooks/graphql/queryOperator";
@@ -56,62 +57,64 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
 
   if (operatorENS) {
     return (
-      <div className="w-full md:w-3/5 mt-4 z-20">
-        <figure className="md:flex bg-white rounded-xl p-8 md:p-0 border-2 border-slate-400">
-          <img
-            className="w-24 h-24 md:w-48 md:h-auto rounded-full mx-auto"
-            src={operatorImage}
-            alt={operatorENS}
-            width="384"
-          />
-          <div className="py-6 px-8 text-center md:text-left space-y-4">
-            <blockquote>
-              <h1 className="text-lg font-medium text-white">
-                Your frenly pool operator
-              </h1>
-            </blockquote>
-            <figcaption className="font-medium">
-              <div className="text-sky-500">{operatorName}</div>
-              <div className="text-sky-500">{ensName}</div>
-              <div className=""></div>
-            </figcaption>
-            {/* <button onClick={follow}>Follow on Lens</button> */}
-            {ensName && (
-              <a
-                href={
-                  "https://lenster.xyz/u/" +
-                  ensName.replace(new RegExp(".eth$"), ".lens")
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Follow on Lens
-              </a>
-            )}
+      <div className="flex justify-center align-middle bg-white rounded-xl p-8 md:p-0 ">
+        <img
+          className="w-24 h-24 md:w-48 md:h-auto rounded-full"
+          src={operatorImage}
+          alt={operatorENS}
+          width="384"
+        />
+        <div className="py-6 px-8 text-center md:text-left space-y-2">
+          <blockquote>
+            <h1 className="text-lg font-medium">Your frenly pool operator</h1>
+          </blockquote>
+          <div className="font-medium mb-2">
+            <div className="text-frens-main">{operatorName}</div>
+            <div className="text-frens-main">{ensName}</div>
           </div>
-        </figure>
+          {/* <button onClick={follow}>Follow on Lens</button> */}
+          {ensName && (
+            <a
+              href={
+                "https://lenster.xyz/u/" +
+                ensName.replace(new RegExp(".eth$"), ".lens")
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-2"
+            >
+              Follow on Lens
+            </a>
+          )}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-3/5 my-4 z-20">
-      <div className="md:flex bg-white rounded-xl p-8 md:p-0 border-2 border-slate-400">
-        <div className="text-3xl text-white text-center p-2 md:p-14">🧑‍🤝‍🧑</div>
-        <div className="pt-2 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
-          <blockquote>
-            <h1 className="text-lg">Your frenly pool operator</h1>
-          </blockquote>
-          <figcaption className="">
-            <div className="text-sky-500 ">no ENS</div>
-            <div className="hidden md:block">
-              <div>
-                {operatorAddress
-                  ? operatorAddress
-                  : "couldn't query operator address"}
-              </div>
+    <div className="flex flex-wrap justify-center align-middle bg-white rounded-xl p-4 md:p-8">
+      <div className="flex justify-center p-2 mr-6">
+        <Image
+          src="/FRENS-logo-coloured.png"
+          alt="FRENS logo"
+          width="76"
+          height="48"
+        />
+      </div>
+
+      <div className="pt-0 md:pt-6 pr-0 md:pr-8 text-center md:text-left space-y-4">
+        <blockquote>
+          <h1 className="text-lg">Your frenly pool operator</h1>
+        </blockquote>
+        <div className="">
+          <div className="text-frens-main ">no ENS</div>
+          <div className="hidden md:block">
+            <div className="mb-4">
+              {operatorAddress
+                ? operatorAddress
+                : "couldn't query operator address"}
             </div>
-          </figcaption>
+          </div>
         </div>
       </div>
     </div>
