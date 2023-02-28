@@ -1,20 +1,19 @@
 import { queryPools } from "hooks/graphql/queryPools";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { Address, useAccount } from "wagmi";
 
 export const PoolList = () => {
   const { address } = useAccount();
-  const [userPools, setUserPools] = useState<any>([]);
+  const [userPools, setUserPools] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchUserPools();
-  }, []);
+    if (address)
+      fetchUserPools(address);
+  }, [address]);
 
-  const fetchUserPools = async () => {
-    let poolsOfUser = await queryPools({
-      operatorAddress: `0x${address?.toString().slice(2)}`,
-    });
+  const fetchUserPools = async (operatorAddress: Address) => {
+    let poolsOfUser = await queryPools({ operatorAddress });
     setUserPools(poolsOfUser.data.creates);
   };
 
