@@ -2,6 +2,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
+import { PoolList } from "components/dashboard/PoolList";
+import { ShareList } from "components/dashboard/ShareList";
 
 const Dashboard: NextPage = () => {
   return (
@@ -23,8 +25,8 @@ const Dashboard: NextPage = () => {
       <main className="flex flex-col justify-center items-center min-h-[93vh]">
         <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">Dashboard</h1>
-          <div>List of your pools</div>
-          <div>List of your NFT stakes</div>
+          <PoolList />
+          <ShareList />
         </div>
       </main>
       <Footer />
