@@ -99,7 +99,7 @@ export const StakeForm = ({
               }`}
               type="submit"
             >
-              {isDepositing ? "Confirm in Metamask" : "Stake"}
+              {isDepositing ? "Confirm in Metamask" : "Pool"}
             </button>
             {isDepositing ? (
               <div className="px-6 mb-4">
