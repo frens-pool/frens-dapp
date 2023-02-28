@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useAccount } from "wagmi";
+import { Address, useAccount } from "wagmi";
 import { useState } from "react";
 import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
@@ -12,7 +12,7 @@ import { NftGallery } from "components/staker/NftGallery";
 
 const Pool: NextPage = () => {
   const router = useRouter();
-  const poolAddress = router.query.pool;
+  const poolAddress = router.query.pool as Address|undefined;
 
   const [isDepositing, setIsDepositing] = useState(false);
   const { isConnected } = useAccount();
@@ -36,7 +36,7 @@ const Pool: NextPage = () => {
 
         <main className="flex flex-col justify-center items-center min-h-[93vh]">
           <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
-            <OperatorWidget poolAddress={poolAddress.toString()} />
+            <OperatorWidget poolAddress={poolAddress} />
           </div>
 
           <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
