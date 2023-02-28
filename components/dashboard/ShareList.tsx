@@ -43,7 +43,6 @@ export const ShareList = () => {
         async (nftID) => await jsonForNftId(FrensPoolShareContract, nftID)
       )
     );
-    console.log(userShares);
     setUserNFT(userShares);
   };
 
