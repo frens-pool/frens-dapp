@@ -94,8 +94,10 @@ export const NftGallery = ({
     nftID: string
   ) => {
     let tokenURI = await FrensPoolShareContract.tokenURI(nftID);
-    const json = Buffer.from(tokenURI.substring(29), "base64").toString();
-    return JSON.parse(json);
+    const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
+    let json = JSON.parse(jsonString);
+    json.nftID = nftID;
+    return json;
   };
 
   // if(!isConnected){
@@ -143,17 +145,17 @@ export const NftGallery = ({
 
       <div>Yours:</div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {userNFTs.map(({ name, image }) => (
+        {userNFTs.map(({ name, image, nftID }) => (
           <div key={name}>
-            <CardForNFT name={name} image={image} />
+            <CardForNFT name={name} image={image} nftID={nftID} />
           </div>
         ))}
       </div>
       <div className="mt-6">All:</div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {poolNFTs.map(({ name, image }) => (
+        {poolNFTs.map(({ name, image, nftID }) => (
           <div key={name}>
-            <CardForNFT name={name} image={image} />
+            <CardForNFT name={name} image={image} nftID={nftID} />
           </div>
         ))}
       </div>
