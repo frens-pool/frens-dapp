@@ -1,10 +1,10 @@
-import { useContractRead, useNetwork } from "wagmi";
+import { Address, useContractRead, useNetwork } from "wagmi";
 import StakingPool from "../../utils/StakingPool.json";
   
 export function usePoolOwner( {
     address,
   }: {
-    address: string,
+    address: Address,
   }) {
     const { chain } = useNetwork();
 
@@ -14,6 +14,6 @@ export function usePoolOwner( {
         functionName: 'owner',
     })
 
-    return { data, isLoading, isSuccess };
+    return { data: data as Address, isLoading, isSuccess };
 }
   

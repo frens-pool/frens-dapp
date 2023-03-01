@@ -1,5 +1,6 @@
 import { apolloClient } from "./apolloClient";
 import { gql } from "@apollo/client";
+import { Address } from "wagmi";
 
 const buildQuery = ({ operatorAddress }: { operatorAddress: string }) => {
   const query = `
@@ -93,7 +94,7 @@ const buildQuery = ({ operatorAddress }: { operatorAddress: string }) => {
 export const queryOperator = async ({
   operatorAddress,
 }: {
-  operatorAddress: string;
+  operatorAddress: Address;
 }) => {
   const queryForOperator = buildQuery({ operatorAddress });
   const response = await apolloClient.query({
