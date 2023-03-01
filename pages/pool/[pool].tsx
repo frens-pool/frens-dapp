@@ -9,6 +9,7 @@ import { StakeForm } from "components/staker/StakeForm";
 import { OperatorWidget } from "components/staker/OperatorWidget";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
+import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
 
 const Pool: NextPage = () => {
   const router = useRouter();
@@ -38,6 +39,8 @@ const Pool: NextPage = () => {
           <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
             <OperatorWidget poolAddress={poolAddress} />
           </div>
+
+          <ValidatorWidget poolAddress={poolAddress} />
 
           <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
             <StakeForm
