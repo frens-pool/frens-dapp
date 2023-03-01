@@ -41,7 +41,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
       setOperatorENS(ensName.toString());
       fetchOperatorProfile(operatorAddress);
     }
-  }, [ensName, operatorENS]);
+  }, [ensName, operatorAddress]);
 
   const fetchOperatorProfile = async (operatorAddress: Address) => {
     const operatorProfileFromFetch = await queryOperator({
@@ -58,7 +58,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
   if (operatorENS) {
     return (
       <div className="flex justify-center align-middle bg-white rounded-xl p-8 md:p-0 ">
-        <img
+        <Image
           className="w-24 h-24 md:w-48 md:h-auto rounded-full"
           src={operatorImage}
           alt={operatorENS}

@@ -4,15 +4,16 @@ import { Address } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import Web3 from "web3";
 
+const apiToken = process.env.NEXT_PUBLIC_ETHERSCAN_KEY
+const etherscan_url = "https://api-goerli.etherscan.io"
+const deposit_address = FrensContracts.DepositContract.address
+
 type Props = {
   poolAddress: Address;
 };
 
 export const ValidatorWidget = ({ poolAddress }: Props) => {
   const [publicKeys, setPublicKeys] = useState<string[]>([]);
-  const apiToken = process.env.NEXT_PUBLIC_ETHERSCAN_KEY
-  const etherscan_url = "https://api-goerli.etherscan.io"
-  const deposit_address = FrensContracts.DepositContract.address
 
   useEffect(() => {
     if (apiToken)

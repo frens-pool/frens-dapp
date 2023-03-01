@@ -30,7 +30,7 @@ export const NftGallery = ({
       setPoolNftArray(poolContract, poolIds);
       getUserNfts(poolContract, poolIds);
     }
-  }, [poolNftIds]);
+  }, [poolNftIds, provider]);
 
   const setPoolNftArray = async (
     poolContract: ethers.Contract,
