@@ -11,7 +11,7 @@ function CardForNFT({ name, image, nftID }: CardProps) {
   const { chain } = useNetwork();
   const openSeaLink =
     chain?.name === "Goerli"
-      ? `https://testnets.opensea.io/assets/goerli/${FrensContracts.FrensPoolShareTokenURI.goerliAddress}/${nftID}`
+      ? `https://testnets.opensea.io/assets/goerli/${FrensContracts.FrensPoolShareTokenURI.address}/${nftID}`
       : `https://opensea.io/assets/${FrensContracts.FrensPoolShareTokenURI.address}/${nftID}`;
 
   return (

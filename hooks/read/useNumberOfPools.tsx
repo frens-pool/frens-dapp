@@ -3,7 +3,7 @@ import { FrensContracts } from "utils/contracts";
 
 export function useNumberOfPools() {
   const { data, isError, isLoading } = useContractRead({
-    address: FrensContracts.StakingPoolFactoryNoProxy.address,
+    address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     functionName: "numberOfStakingPools",
   });

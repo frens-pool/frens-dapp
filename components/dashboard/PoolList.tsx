@@ -1,7 +1,10 @@
+import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 import { queryPools } from "hooks/graphql/queryPools";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Address, useAccount } from "wagmi";
+import { Address, useAccount, useContract } from "wagmi";
+import Web3 from "web3";
+import { FrensContracts } from "../../utils/contracts"
 
 export const PoolList = () => {
   const { address } = useAccount();

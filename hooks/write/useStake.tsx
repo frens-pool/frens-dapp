@@ -1,5 +1,5 @@
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
-import StakingPool from "../../utils/StakingPool.json";
+import { FrensContracts } from "utils/contracts";
 
 export function useStake({
   poolAddress,
@@ -19,7 +19,7 @@ export function useStake({
 
   const { config } = usePrepareContractWrite({
     address: poolAddress,
-    abi: StakingPool.abi,
+    abi: FrensContracts.StakingPool.abi,
     functionName: "stake",
     args,
   });

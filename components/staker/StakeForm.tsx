@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useBalance, useContractEvent } from "wagmi";
 import { useDeposit } from "../../hooks/write/useDeposit";
-import StakingPool from "../../utils/StakingPool.json";
+import { FrensContracts } from "utils/contracts";
 
 export const StakeForm = ({
   poolAddress,
@@ -54,7 +54,7 @@ export const StakeForm = ({
 
   useContractEvent({
     address: poolAddress.toString(),
-    abi: StakingPool.abi,
+    abi: FrensContracts.StakingPool.abi,
     eventName: "DepositToPool",
     listener: () => {
       setIsDepositing(false);

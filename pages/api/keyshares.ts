@@ -48,7 +48,7 @@ export default async function handler(req: any, res: any) {
 
     // Return all the needed params to build a transaction payload
     const ssvData = [
-      threshold.validatorPublicKey,
+      threshold.publicKey,
       operatorIdsArray,
       sharesPublicKeys,
       sharesEncrypted,

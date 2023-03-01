@@ -27,7 +27,7 @@ export const CreatePool = ({
   }
 
   useContractEvent({
-    address: FrensContracts.StakingPoolFactoryNoProxy.address,
+    address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     eventName: "Create",
     listener: (node) => {

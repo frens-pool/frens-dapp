@@ -15,7 +15,7 @@ const Pool: NextPage = () => {
   const router = useRouter();
   const poolAddress = router.query.pool as Address|undefined;
 
-  const [isDepositing, setIsDepositing] = useState(false);
+  const [isDepositing, setIsDepositing] = useState<boolean>(false);
   const { isConnected } = useAccount();
 
   if (poolAddress) {
@@ -60,7 +60,7 @@ const Pool: NextPage = () => {
             <div className="text-center font-bold my-2">Pool stakes</div>
             {isConnected ? (
               <NftGallery
-                poolAddress={poolAddress.toString()}
+                poolAddress={poolAddress}
                 isDepositing={isDepositing}
               />
             ) : (

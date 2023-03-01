@@ -1,16 +1,16 @@
-import { useContractRead } from "wagmi";
-import StakingPool from "../../utils/StakingPool.json";
-  
+import { Address, useContractRead } from "wagmi";
+import { FrensContracts } from "utils/contracts";
+import { BigNumber } from "ethers";
+
 export function usePoolTokenIDs( {
   poolAddress,
 }: {
-  poolAddress: string,
+  poolAddress: Address,
 }) {
   const { data, isError, isLoading } = useContractRead({
     address: poolAddress,
-    abi: StakingPool.abi,
+    abi: FrensContracts.StakingPool.abi,
     functionName: 'getIdsInThisPool',
   })
-  return { data, isError, isLoading };
+  return { data: data as BigNumber[], isError, isLoading };
 }
-  

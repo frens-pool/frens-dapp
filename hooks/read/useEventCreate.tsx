@@ -3,7 +3,7 @@ import { FrensContracts } from "utils/contracts";
 
 export function useEventCreate() {
   useContractEvent({
-    address: FrensContracts.StakingPoolFactoryNoProxy.address,
+    address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     eventName: "Create",
     listener: (event) => {
