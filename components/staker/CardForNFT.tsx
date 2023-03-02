@@ -18,7 +18,7 @@ function CardForNFT({ name, image, nftID }: CardProps) {
   return (
     <a href={openSeaLink} target="_blank" rel="noopener noreferrer">
       <div className="border-solid border-2 w-60 rounded-xl border-slate-500">
-        <Image src={image} className="w-full rounded-xl" alt="" />
+        <img src={image} className="w-full rounded-xl" alt="" />
         <div className="px-2">
           <div>{name}</div>
         </div>
