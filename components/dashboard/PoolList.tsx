@@ -8,8 +8,7 @@ export const PoolList = () => {
   const [userPools, setUserPools] = useState<any[]>([]);
 
   useEffect(() => {
-    if (address)
-      fetchUserPools(address);
+    if (address) fetchUserPools(address);
   }, [address]);
 
   const fetchUserPools = async (operatorAddress: Address) => {
@@ -22,11 +21,8 @@ export const PoolList = () => {
       <div>Your pools:</div>
       {userPools.map(({ contractAddress }: any) => (
         <div key={contractAddress}>
-          <Link
-            href={`/pool/${contractAddress}`}
-            className="underline text-frens-main"
-          >
-            {contractAddress}
+          <Link href={`/pool/${contractAddress}`}>
+            <a className="underline text-frens-main">{contractAddress}</a>
           </Link>
         </div>
       ))}

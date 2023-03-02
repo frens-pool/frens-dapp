@@ -5,7 +5,7 @@ import { Address } from "wagmi";
 const buildQuery = ({ operatorAddress }: { operatorAddress: string }) => {
   const query = `
   {
-    creates(where: {owner: "${operatorAddress}"}) {
+    creates(where: {creator: "${operatorAddress}"}) {
       contractAddress
     }
   }

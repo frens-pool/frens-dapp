@@ -11,8 +11,8 @@ export const ShareList = () => {
   const [userNFT, setUserNFT] = useState<any[]>([]);
 
   let FrensPoolShareContract = new ethers.Contract(
-    FrensContracts.FrensPoolShareTokenURI.address,
-    FrensContracts.FrensPoolShareTokenURI.abi,
+    FrensContracts.FrensPoolShare.address,
+    FrensContracts.FrensPoolShare.abi,
     provider
   );
 
