@@ -1,14 +1,15 @@
-import { useNetwork } from "wagmi";
+import { Address, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import Image from "next/image";
 
 type CardProps = {
-  name: String;
+  name: string;
   image: any;
-  nftID: String;
+  nftID: string;
+  poolAddress?: Address;
 };
 
-function CardForNFT({ name, image, nftID }: CardProps) {
+function CardForNFT({ name, image, nftID, poolAddress }: CardProps) {
   const { chain } = useNetwork();
   const openSeaLink =
     chain?.name === "Goerli"
@@ -16,14 +17,19 @@ function CardForNFT({ name, image, nftID }: CardProps) {
       : `https://opensea.io/assets/${FrensContracts.FrensPoolShare.address}/${nftID}`;
 
   return (
-    <a href={openSeaLink} target="_blank" rel="noopener noreferrer">
-      <div className="w-60 rounded-xl">
-        <img src={image} className="w-full rounded-xl" alt="" />
-        <div className="px-2 text-center">
-          <div className="text-center">{name}</div>
-        </div>
+    <div className="w-60 rounded-xl">
+      <img src={image} className="w-full rounded-xl" alt={name} />
+      <div className="px-2 text-center">
+        <a href={openSeaLink} target="_blank" rel="noopener noreferrer">
+          <div className="text-center">View on openshare</div>
+        </a>
+        {poolAddress && (
+          <a href={`/pool/${poolAddress}`} target="_blank" rel="noopener noreferrer">
+            <div className="text-center">View pool</div>
+          </a>
+        )}
       </div>
-    </a>
+    </div>
   );
 }
 
