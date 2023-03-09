@@ -1,9 +1,11 @@
+import { Address } from "wagmi";
+
 export const CreateKeys = ({
-  setStep,
+  nextStep,
   poolAddress,
 }: {
-  setStep: any;
-  poolAddress: string;
+  nextStep: () => void;
+  poolAddress: Address;
 }) => {
   return (
     <div className="my-2 p-2">
@@ -16,7 +18,7 @@ export const CreateKeys = ({
       <button
         className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
         onClick={() => {
-          setStep(2);
+          nextStep();
         }}
       >
         Next

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 import { Deposit } from "components/operator/Deposit";
-import { useBalance } from "wagmi";
+import { useBalance, Address } from "wagmi";
 
 export const DepositForm = ({
-  setStep,
+  nextStep,
   poolAddress,
 }: {
-  setStep: any;
-  poolAddress: any;
+  nextStep?: () => void;
+  poolAddress: Address;
 }) => {
   const [depositFileData, setDepositFileData] = useState();
   const { data: balance } = useBalance({
@@ -39,14 +39,16 @@ export const DepositForm = ({
           </button>
         </div>
       )}
-      <button
-        className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-        onClick={() => {
-          setStep(3);
-        }}
-      >
-        Next
-      </button>
+      {nextStep && (
+        <button
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+          onClick={() => {
+            nextStep!();
+          }}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 };

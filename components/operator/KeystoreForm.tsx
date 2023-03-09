@@ -2,10 +2,10 @@ import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 
 export const KeystoreForm = ({
-  setStep,
+  nextStep,
   setPayloadRegisterValidator,
 }: {
-  setStep: any;
+  nextStep: () => void;
   setPayloadRegisterValidator: any;
 }) => {
   const [pw, setPW] = useState("");
@@ -33,7 +33,7 @@ export const KeystoreForm = ({
       if (data.ssvData) {
         setPayloadRegisterValidator(data.ssvData);
         setPayloadError(false);
-        setStep(5);
+        nextStep();
       }
     });
   }

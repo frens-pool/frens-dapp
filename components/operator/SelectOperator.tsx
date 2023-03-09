@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { useEventCreate } from "../../hooks/read/useEventCreate";
 import { useCreatePool } from "../../hooks/write/useCreatePool";
 
-export const SelectOperator = ({ setStep }: { setStep: any }) => {
+export const SelectOperator = ({
+  nextStep
+}: {
+  nextStep: () => void;
+}) => {
   const [ssvOperators, setssvOperators] = useState([]);
   const [operatorList, setOperatorList] = useState(<></>);
   const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
@@ -186,7 +190,7 @@ export const SelectOperator = ({ setStep }: { setStep: any }) => {
       <button
         className="mt-2 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
         onClick={() => {
-          setStep(4);
+          nextStep();
         }}
       >
         Next
