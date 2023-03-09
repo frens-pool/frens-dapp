@@ -47,18 +47,18 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
     const operatorProfileFromFetch = await queryOperator({
       operatorAddress: operatorAddress,
     });
-    // @ts-ignore
+    
     setOperatorImage(
       operatorProfileFromFetch?.data?.defaultProfile?.picture?.original?.url
     );
-    // @ts-ignore
+    
     setOperatorName(operatorProfileFromFetch?.data?.defaultProfile?.name);
   };
 
   if (operatorENS) {
     return (
       <div className="flex justify-center align-middle bg-white rounded-xl p-8 md:p-0 ">
-        <Image
+        <img
           className="w-24 h-24 md:w-48 md:h-auto rounded-full"
           src={operatorImage}
           alt={operatorENS}
