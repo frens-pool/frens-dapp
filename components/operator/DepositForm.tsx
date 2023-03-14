@@ -15,6 +15,12 @@ export const DepositForm = ({
     address: poolAddress,
   });
 
+  const checkDepositData = (data:any) => {
+    // check network name of first validator in the deposit data
+    const network = data[0]?.network_name;
+    return network == "goerli"
+  }
+
   return (
     <div className="my-2 p-2">
       <div>Pool Balance: {balance?.formatted}</div>
@@ -26,7 +32,9 @@ export const DepositForm = ({
       <DropKeys
         onFileReceived={(data: any) => {
           const depositData = JSON.parse(data);
-          setDepositFileData(depositData[0]);
+          if (checkDepositData(depositData))
+            setDepositFileData(depositData[0]);
+          // else TODO
         }}
       />
       {depositFileData && Number(balance?.formatted) >= 32 ? (
