@@ -1,19 +1,25 @@
 import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 import { Deposit } from "components/operator/Deposit";
-import { useBalance } from "wagmi";
+import { useBalance, Address } from "wagmi";
 
 export const DepositForm = ({
-  setStep,
+  nextStep,
   poolAddress,
 }: {
-  setStep: any;
-  poolAddress: any;
+  nextStep?: () => void;
+  poolAddress: Address;
 }) => {
   const [depositFileData, setDepositFileData] = useState();
   const { data: balance } = useBalance({
     address: poolAddress,
   });
+
+  const checkDepositData = (data:any) => {
+    // check network name of first validator in the deposit data
+    const network = data[0]?.network_name;
+    return network == "goerli"
+  }
 
   return (
     <div className="my-2 p-2">
@@ -26,7 +32,9 @@ export const DepositForm = ({
       <DropKeys
         onFileReceived={(data: any) => {
           const depositData = JSON.parse(data);
-          setDepositFileData(depositData[0]);
+          if (checkDepositData(depositData))
+            setDepositFileData(depositData[0]);
+          // else TODO
         }}
       />
       {depositFileData && Number(balance?.formatted) >= 32 ? (
@@ -39,14 +47,16 @@ export const DepositForm = ({
           </button>
         </div>
       )}
-      <button
-        className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-        onClick={() => {
-          setStep(3);
-        }}
-      >
-        Next
-      </button>
+      {nextStep && (
+        <button
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+          onClick={() => {
+            nextStep!();
+          }}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 };

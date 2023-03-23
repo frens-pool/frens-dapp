@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAccount, useProvider } from "wagmi";
+import { Address, useAccount, useProvider } from "wagmi";
 import { BigNumber, ethers } from "ethers";
 import CardForNFT from "./CardForNFT";
 import { FrensContracts } from "utils/contracts";
@@ -9,8 +9,8 @@ export const NftGallery = ({
   poolAddress,
   isDepositing,
 }: {
-  poolAddress: any;
-  isDepositing: any;
+  poolAddress: Address;
+  isDepositing: boolean;
 }) => {
   const provider = useProvider();
   const { address: accountAddress, isConnected } = useAccount();
@@ -19,56 +19,54 @@ export const NftGallery = ({
   const [userNFTs, setUserNFTs] = useState<any[]>([]);
 
   useEffect(() => {
-    const FrensPoolShareContract = new ethers.Contract(
-      FrensContracts.FrensPoolShareTokenURI.address,
-      FrensContracts.FrensPoolShareTokenURI.abi,
+    const poolContract = new ethers.Contract(
+      FrensContracts.FrensPoolShare.address,
+      FrensContracts.FrensPoolShare.abi,
       provider
     );
 
     if (poolNftIds) {
-      const poolIds: string[] = (poolNftIds as BigNumber[]).map((x) =>
-        x.toString()
-      );
-      setPoolNftArray(FrensPoolShareContract, poolIds);
-      getUserNfts(FrensPoolShareContract, poolIds);
+      const poolIds: string[] = poolNftIds.map(x => x.toString());
+      setPoolNftArray(poolContract, poolIds);
+      getUserNfts(poolContract, poolIds);
     }
-  }, [poolNftIds]);
+  }, [poolNftIds, provider]);
 
   const setPoolNftArray = async (
-    FrensPoolShareContract: ethers.Contract,
+    poolContract: ethers.Contract,
     poolNftIDs: string[]
   ) => {
     const poolNft = await Promise.all(
       poolNftIDs.map(
-        async (nftID) => await jsonForNftId(FrensPoolShareContract, nftID)
+        async (nftID) => await jsonForNftId(poolContract, nftID)
       )
     );
     setPoolNFTs(poolNft);
   };
 
   const getUserNfts = async (
-    FrensPoolShareContract: ethers.Contract,
+    poolContract: ethers.Contract,
     poolNftIdsArray: string[]
   ) => {
     let userNftIDs = await getUserNftIds(
-      FrensPoolShareContract,
+      poolContract,
       accountAddress
     );
     const userPoolNfts = poolNftIdsArray.filter((id) =>
       userNftIDs.includes(id)
     ); // intersection
-    setUserNFTArray(FrensPoolShareContract, userPoolNfts);
+    setUserNFTArray(poolContract, userPoolNfts);
   };
 
   const getUserNftIds = async (
-    FrensPoolShareContract: ethers.Contract,
+    poolContract: ethers.Contract,
     ownerAddress: any
   ) => {
-    let ownerBalance = await FrensPoolShareContract.balanceOf(ownerAddress);
+    let ownerBalance = await poolContract.balanceOf(ownerAddress);
 
     let nfts: string[] = [];
     for (var i = 0; i < ownerBalance.toNumber(); i++) {
-      let nftId = await FrensPoolShareContract.tokenOfOwnerByIndex(
+      let nftId = await poolContract.tokenOfOwnerByIndex(
         ownerAddress,
         i
       );
@@ -78,22 +76,22 @@ export const NftGallery = ({
   };
 
   const setUserNFTArray = async (
-    FrensPoolShareContract: ethers.Contract,
+    poolContract: ethers.Contract,
     userNftIDs: string[]
   ) => {
     const userWalletNFTs = await Promise.all(
       userNftIDs.map(
-        async (nftID) => await jsonForNftId(FrensPoolShareContract, nftID)
+        async (nftID) => await jsonForNftId(poolContract, nftID)
       )
     );
     setUserNFTs(userWalletNFTs);
   };
 
   const jsonForNftId = async (
-    FrensPoolShareContract: ethers.Contract,
+    poolContract: ethers.Contract,
     nftID: string
   ) => {
-    let tokenURI = await FrensPoolShareContract.tokenURI(nftID);
+    const tokenURI = await poolContract.tokenURI(nftID);
     const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
     let json = JSON.parse(jsonString);
     json.nftID = nftID;

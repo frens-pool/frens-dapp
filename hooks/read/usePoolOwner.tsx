@@ -1,19 +1,19 @@
-import { useContractRead, useNetwork } from "wagmi";
-import StakingPool from "../../utils/StakingPool.json";
+import { Address, useContractRead, useNetwork } from "wagmi";
+import { FrensContracts } from "utils/contracts";
   
 export function usePoolOwner( {
     address,
   }: {
-    address: string,
+    address: Address,
   }) {
     const { chain } = useNetwork();
 
     const { data, isLoading, isSuccess } = useContractRead({
         address: address,
-        abi: StakingPool.abi,
+        abi: FrensContracts.StakingPool.abi,
         functionName: 'owner',
     })
 
-    return { data, isLoading, isSuccess };
+    return { data: data as Address, isLoading, isSuccess };
 }
   

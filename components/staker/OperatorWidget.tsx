@@ -1,17 +1,17 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useEnsName } from "wagmi";
+import { Address, useEnsName } from "wagmi";
 import { queryOperator } from "hooks/graphql/queryOperator";
 import { usePoolOwner } from "../../hooks/read/usePoolOwner";
 
 const chainId = 5; // 1 for mainnet, 5 for goerli
 
 type Props = {
-  poolAddress: string;
+  poolAddress: Address;
 };
 
 export const OperatorWidget = ({ poolAddress }: Props) => {
-  const [operatorAddress, setOperatorAddress] = useState("");
+  const [operatorAddress, setOperatorAddress] = useState<Address>();
   const [operatorENS, setOperatorENS] = useState("");
   const [operatorImage, setOperatorImage] = useState("");
   const [operatorName, setOperatorName] = useState("");
@@ -20,14 +20,14 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
   useEffect(() => {
     if (isSuccess) {
       if (poolOwner) {
-        setOperatorAddress(poolOwner.toString());
+        setOperatorAddress(poolOwner);
       }
     }
   }, [isSuccess, poolOwner]);
 
-  const poolOperatorAddress = (operatorAddress: string): `0x${string}` =>
+  const poolOperatorAddress = (operatorAddress: Address|undefined): Address =>
     operatorAddress
-      ? `0x${operatorAddress.toString().slice(2)}`
+      ? operatorAddress
       : "0x49792f9cd0a7DC957CA6658B18a3c2A6d8F36F2d";
 
   const { data: ensName } = useEnsName({
@@ -37,21 +37,21 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
   });
 
   useEffect(() => {
-    if (ensName) {
+    if (ensName && operatorAddress) {
       setOperatorENS(ensName.toString());
-      fetchOperatorProfile();
+      fetchOperatorProfile(operatorAddress);
     }
-  }, [ensName, operatorENS]);
+  }, [ensName, operatorAddress]);
 
-  const fetchOperatorProfile = async () => {
-    let operatorProfileFromFetch = await queryOperator({
-      operatorAddress: operatorAddress.toString(),
+  const fetchOperatorProfile = async (operatorAddress: Address) => {
+    const operatorProfileFromFetch = await queryOperator({
+      operatorAddress: operatorAddress,
     });
-    // @ts-ignore
+    
     setOperatorImage(
       operatorProfileFromFetch?.data?.defaultProfile?.picture?.original?.url
     );
-    // @ts-ignore
+    
     setOperatorName(operatorProfileFromFetch?.data?.defaultProfile?.name);
   };
 

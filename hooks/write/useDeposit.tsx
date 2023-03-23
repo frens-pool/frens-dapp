@@ -3,13 +3,13 @@ import {
   usePrepareContractWrite,
   useContractWrite,
 } from "wagmi";
-import StakingPool from "../../utils/StakingPool.json";
+import { FrensContracts } from "utils/contracts";
 
 export function useDeposit({ address, val }: { address: string, val: string }) {
 
   const { config } = usePrepareContractWrite({
     address: address,
-    abi: StakingPool.abi,
+    abi: FrensContracts.StakingPool.abi,
     functionName: 'depositToPool',
     overrides: {
       value: ethers.utils.parseEther(val),

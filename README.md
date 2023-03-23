@@ -17,6 +17,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
+## API keys
+
+To get the Validator's public keys, the Etherscan API is used.
+Create an API as documented on <https://docs.etherscan.io/getting-started/viewing-api-usage-statistics>, and add the key as `NEXT_PUBLIC_ETHERSCAN_KEY=<Your key>` in `.env.local`.
+
 ## Learn More
 
 To learn more about this stack, take a look at the following resources:
