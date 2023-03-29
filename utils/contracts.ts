@@ -4,9 +4,9 @@ import GoerliFrensPoolShare from "./goerli/FrensPoolShare.json";
 import GoerliFrensPoolShareTokenURI from "./goerli/FrensPoolShareTokenURI.json";
 import GoerliFrensStorage from "./goerli/FrensStorage.json";
 import GoerliStakingPool from "./goerli/StakingPool.json";
+import GoerliStakingPoolFactory from "./goerli/StakingPoolFactory.json";
 
 import DepositContract from "./DepositContract.json";
-import StakingPoolFactory from "./StakingPoolFactory.json";
 
 export const FrensContracts = {
   FrensStorage: {
@@ -14,13 +14,8 @@ export const FrensContracts = {
     abi: GoerliFrensStorage.abi,
   },
   StakingPoolFactory: {
-    address: "0x347B8146a0668F4beC261780E2DaDc90DEb11f96",
-    goerliAddress: "0x347B8146a0668F4beC261780E2DaDc90DEb11f96",
-    abi: StakingPoolFactory.abi,
-  },
-  StakingPoolFactoryNoProxy: {
-    address: "0x91F87Ab371b70a37E6F5664692B8c231E809d3B4",
-    goerliAddress: "0x91F87Ab371b70a37E6F5664692B8c231E809d3B4",
+    address: GoerliStakingPoolFactory.address,
+    abi: GoerliStakingPoolFactory.abi,
   },
   FrensMetaHelper: {
     address: GoerliFrensMetaHelper.address,

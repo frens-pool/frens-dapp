@@ -1,22 +1,25 @@
+import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-import { Address, useAccount, useProvider } from "wagmi";
-import { BigNumber, ethers } from "ethers";
-import CardForNFT from "./CardForNFT";
 import { FrensContracts } from "utils/contracts";
+import { Address, useAccount, useProvider } from "wagmi";
 import { usePoolTokenIDs } from "../../hooks/read/usePoolTokenIDs";
+import CardForNFT from "./CardForNFT";
 
 export const NftGallery = ({
   poolAddress,
   isDepositing,
+  shareIds,
 }: {
   poolAddress: Address;
   isDepositing: boolean;
+  shareIds: string[];
 }) => {
   const provider = useProvider();
   const { address: accountAddress, isConnected } = useAccount();
   const { data: poolNftIds } = usePoolTokenIDs({ poolAddress });
   const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
   const [userNFTs, setUserNFTs] = useState<any[]>([]);
+  const [shareIdNFTs, setShareIdNFTs] = useState<any[]>([]);
 
   useEffect(() => {
     const poolContract = new ethers.Contract(
@@ -25,8 +28,12 @@ export const NftGallery = ({
       provider
     );
 
+    if (shareIds) {
+      getShareIdNftArray(poolContract, shareIds);
+    }
+
     if (poolNftIds) {
-      const poolIds: string[] = poolNftIds.map(x => x.toString());
+      const poolIds: string[] = poolNftIds.map((x) => x.toString());
       setPoolNftArray(poolContract, poolIds);
       getUserNfts(poolContract, poolIds);
     }
@@ -37,9 +44,7 @@ export const NftGallery = ({
     poolNftIDs: string[]
   ) => {
     const poolNft = await Promise.all(
-      poolNftIDs.map(
-        async (nftID) => await jsonForNftId(poolContract, nftID)
-      )
+      poolNftIDs.map(async (nftID) => await jsonForNftId(poolContract, nftID))
     );
     setPoolNFTs(poolNft);
   };
@@ -48,10 +53,7 @@ export const NftGallery = ({
     poolContract: ethers.Contract,
     poolNftIdsArray: string[]
   ) => {
-    let userNftIDs = await getUserNftIds(
-      poolContract,
-      accountAddress
-    );
+    let userNftIDs = await getUserNftIds(poolContract, accountAddress);
     const userPoolNfts = poolNftIdsArray.filter((id) =>
       userNftIDs.includes(id)
     ); // intersection
@@ -66,10 +68,7 @@ export const NftGallery = ({
 
     let nfts: string[] = [];
     for (var i = 0; i < ownerBalance.toNumber(); i++) {
-      let nftId = await poolContract.tokenOfOwnerByIndex(
-        ownerAddress,
-        i
-      );
+      let nftId = await poolContract.tokenOfOwnerByIndex(ownerAddress, i);
       nfts.push(nftId.toString());
     }
     return nfts;
@@ -80,17 +79,22 @@ export const NftGallery = ({
     userNftIDs: string[]
   ) => {
     const userWalletNFTs = await Promise.all(
-      userNftIDs.map(
-        async (nftID) => await jsonForNftId(poolContract, nftID)
-      )
+      userNftIDs.map(async (nftID) => await jsonForNftId(poolContract, nftID))
     );
     setUserNFTs(userWalletNFTs);
   };
 
-  const jsonForNftId = async (
+  const getShareIdNftArray = async (
     poolContract: ethers.Contract,
-    nftID: string
+    shareIds: string[]
   ) => {
+    const shareIdNfts = await Promise.all(
+      shareIds.map(async (id) => await jsonForNftId(poolContract, id))
+    );
+    setShareIdNFTs(shareIdNfts);
+  };
+
+  const jsonForNftId = async (poolContract: ethers.Contract, nftID: string) => {
     const tokenURI = await poolContract.tokenURI(nftID);
     const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
     let json = JSON.parse(jsonString);
@@ -98,11 +102,19 @@ export const NftGallery = ({
     return json;
   };
 
-  // if(!isConnected){
-  //     <div className="flex flex-col items-center justify-center">
-  //         <div className="">Connect wallet to see 🧐</div>
-  //     </div>
-  // }
+  if (!isConnected) {
+    if (shareIdNFTs.length !== 0) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {shareIdNFTs.map(({ name, image, nftID }) => (
+            <div key={name}>
+              <CardForNFT name={name} image={image} nftID={nftID} />
+            </div>
+          ))}
+        </div>
+      );
+    }
+  }
 
   if (poolNFTs.length === 0) {
     return (

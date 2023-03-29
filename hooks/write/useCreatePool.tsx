@@ -1,8 +1,8 @@
 import {
-  usePrepareContractWrite,
+  useAccount,
   useContractWrite,
   useNetwork,
-  useAccount,
+  usePrepareContractWrite,
 } from "wagmi";
 
 import { FrensContracts } from "utils/contracts";
@@ -12,7 +12,7 @@ export function useCreatePool() {
   const { address: ownerAddress } = useAccount();
 
   const { config } = usePrepareContractWrite({
-    address: FrensContracts.StakingPoolFactoryNoProxy.address,
+    address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     functionName: "create",
     args: [ownerAddress, false],

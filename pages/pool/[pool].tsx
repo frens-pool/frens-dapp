@@ -11,7 +11,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Address, useAccount } from "wagmi";
-import { CurrentPoolShares } from "../../components/staker/CurrentPoolShares";
 
 interface Props {
   shareIds: string[];
@@ -72,14 +71,11 @@ const Pool: NextPage<Props> = ({ shareIds }) => {
             }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
-            {isConnected ? (
-              <NftGallery
-                poolAddress={poolAddress}
-                isDepositing={isDepositing}
-              />
-            ) : (
-              <CurrentPoolShares shareIds={shareIds} />
-            )}
+            <NftGallery
+              poolAddress={poolAddress}
+              isDepositing={isDepositing}
+              shareIds={shareIds}
+            />
           </div>
         </main>
         <Footer />
