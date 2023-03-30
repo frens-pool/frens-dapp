@@ -51,6 +51,8 @@ export const KeystoreForm = ({
     <div className="">
       <div className="my-2 p-2">
         <DropKeys
+          validateFile={(fileContent: any) => ({success:true})}
+
           onFileReceived={(data: any) => {
             handleKeystoreDrop(data);
           }}
