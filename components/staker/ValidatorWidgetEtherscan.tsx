@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Address } from "wagmi";
+import { Address, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import Web3 from "web3";
+import { beaconchainUrl } from "#/utils/externalUrls";
 
 const apiToken = process.env.NEXT_PUBLIC_ETHERSCAN_KEY
 const etherscan_url = "https://api-goerli.etherscan.io"
@@ -14,6 +15,7 @@ type Props = {
 
 export const ValidatorWidget = ({ poolAddress }: Props) => {
   const [publicKeys, setPublicKeys] = useState<string[]>([]);
+  const { chain } = useNetwork();
 
   useEffect(() => {
     if (apiToken)
@@ -37,7 +39,7 @@ export const ValidatorWidget = ({ poolAddress }: Props) => {
     return transactions.filter((t: any) => t.functionName.startsWith("stake("))
   }
 
-  const getPublicKeys = async (stake_transactions: any) : Promise<string[]> => {
+  const getPublicKeys = async (stake_transactions: any): Promise<string[]> => {
     return Promise.all(stake_transactions.map(async (t: any) => {
       const blockNumber = t.blockNumber
       const url = `${etherscan_url}/api?module=logs&action=getLogs&fromBlock=${blockNumber}&toBlock=${blockNumber}&address=${deposit_address}&apikey=${apiToken}`
@@ -54,7 +56,7 @@ export const ValidatorWidget = ({ poolAddress }: Props) => {
         const decoded = web3.eth.abi.decodeParameters(
           ["bytes", "bytes", "bytes", "bytes", "bytes"],
           data
-        );      
+        );
         console.log("decoded: ", decoded);
       }
 
@@ -78,7 +80,7 @@ export const ValidatorWidget = ({ poolAddress }: Props) => {
             {publicKeys.map((publicKey, index) => (
               <div key={publicKey}>
                 <Link
-                  href={`https://prater.beaconcha.in/validator/${publicKey}`}
+                  href={`${beaconchainUrl(chain)}/validator/${publicKey}`}
                   className="underline text-frens-main"
                 >
                   {`Validator performance information on Beaconcha.in`}

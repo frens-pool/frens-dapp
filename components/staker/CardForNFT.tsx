@@ -1,4 +1,4 @@
-import { Address, useNetwork } from "wagmi";
+import { Address, goerli, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import Image from "next/image";
 
@@ -12,7 +12,7 @@ type CardProps = {
 function CardForNFT({ name, image, nftID, poolAddress }: CardProps) {
   const { chain } = useNetwork();
   const openSeaLink =
-    chain?.name === "Goerli"
+    chain?.name === goerli.name
       ? `https://testnets.opensea.io/assets/goerli/${FrensContracts.FrensPoolShare.address}/${nftID}`
       : `https://opensea.io/assets/${FrensContracts.FrensPoolShare.address}/${nftID}`;
 
