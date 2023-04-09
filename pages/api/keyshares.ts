@@ -1,5 +1,4 @@
-import { Encryption, EthereumKeyStore, Threshold } from "ssv-keys";
-import { encode } from "js-base64";
+import { EthereumKeyStore, SSVKeys } from "ssv-keys";
 import Web3 from "web3";
 
 const operators = [
@@ -23,35 +22,35 @@ export default async function handler(req: any, res: any) {
     const keyStore = new EthereumKeyStore(JSON.stringify(bodyKeystore));
     const keyStorePW = body.password.toString();
 
-    const thresholdInstance = new Threshold();
+    const ssvKeys = new SSVKeys(SSVKeys.VERSION.V3);
+
     // Get public key using the keystore password
     const privateKey = await keyStore.getPrivateKey(keyStorePW);
-    const threshold = await thresholdInstance.create(privateKey, operatorIds);
-    let shares = new Encryption(operators, threshold.shares).encrypt();
-    // Loop through the operators RSA keys and format them as base64
-    shares = shares.map((share) => {
-      share.operatorPublicKey = encode(share.operatorPublicKey);
-      // Return the operator key and KeyShares (sharePublicKey & shareEncrypted)
-      return share;
-    });
+    const threshold = await ssvKeys.createThreshold(privateKey, operatorIds);
+    const shares = await ssvKeys.buildShares(
+      privateKey,
+      operatorIds,
+      operators
+    );
+
     const web3 = new Web3();
-    // Get all the public keys from the shares
-    const sharesPublicKeys = shares.map((share) => share.publicKey);
-    // Get all the private keys from the shares and encode them as ABI parameters
-    const sharesEncrypted = shares.map((share) =>
-      web3.eth.abi.encodeParameter("string", share.privateKey)
+    const tokenAmount = web3.utils.toBN(21342395400000000000).toString();
+
+    const payload = await ssvKeys.buildPayload(
+      ssvKeys.validatorPublicKey,
+      operatorIds,
+      shares,
+      tokenAmount
     );
 
     // Token amount (liquidation collateral and operational runway balance to be funded)
-    const tokenAmount = web3.utils.toBN(21342395400000000000).toString();
     const operatorIdsArray = Array.from(operatorIds);
 
     // Return all the needed params to build a transaction payload
     const ssvData = [
       threshold.validatorPublicKey,
       operatorIdsArray,
-      sharesPublicKeys,
-      sharesEncrypted,
+      payload.readable.shares,
       tokenAmount,
     ];
 

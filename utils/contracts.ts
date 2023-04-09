@@ -7,9 +7,9 @@ import GoerliStakingPool from "./goerli/StakingPool.json";
 import GoerliStakingPoolFactory from "./goerli/StakingPoolFactory.json";
 
 import DepositContract from "./DepositContract.json";
-import SSVToken from "./SSVToken.json";
-import SSVRegistry from "./SSVRegistry.json";
 import SSVNetwork from "./SSVNetwork.json";
+import SSVRegistry from "./SSVRegistry.json";
+import SSVToken from "./SSVToken.json";
 
 export const FrensContracts = {
   FrensStorage: {
@@ -45,14 +45,14 @@ export const FrensContracts = {
   },
   SSVTokenContract: {
     address: "0x3a9f01091C446bdE031E39ea8354647AFef091E7",
-    abi: SSVToken.abi
+    abi: SSVToken.abi,
   },
   SSVNetworkContract: {
-    address: "0xb9e155e65B5c4D66df28Da8E9a0957f06F11Bc04",
-    abi: SSVNetwork.abi
+    address: "0xAfdb141Dd99b5a101065f40e3D7636262dce65b3",
+    abi: SSVNetwork.abi,
   },
   SSVRegistryrContract: {
-    address: "0x49D395eFcE6233e116C69333F249e6cF128D5992",
-    abi: SSVRegistry.abi
-  }
+    address: "0x8dB45282d7C4559fd093C26f677B3837a5598914",
+    abi: SSVRegistry.abi,
+  },
 };

@@ -6,12 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "start:debug": "nest start --debug --watch"
   },
   "dependencies": {
     "@apollo/client": "^3.7.2",
     "@rainbow-me/rainbowkit": "^0.8.1",
     "@vercel/analytics": "^0.1.8",
+    "cluster-scanner": "github:bloxapp/cluster-scanner",
     "daisyui": "^2.46.0",
     "ethers": "^5.7.2",
     "graphql": "^16.6.0",
@@ -22,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.41.1",
+    "source-map-support": "^0.5.21",
     "ssv-keys": "github:bloxapp/ssv-keys",
     "wagmi": "^0.9.5",
     "web3": "^1.7.4"

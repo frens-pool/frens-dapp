@@ -1,15 +1,20 @@
-import { useState } from "react";
-import { ethers } from "ethers";
-import { useWaitForTransaction, useSigner, useNetwork } from "wagmi";
-import { useAllowance } from "../../hooks/write/useAllowance";
 import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl } from "#/utils/externalUrls";
+import { ethers } from "ethers";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { goerli, useNetwork, useSigner, useWaitForTransaction } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
+import { useAllowance } from "../../hooks/write/useAllowance";
 
 export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
+  const poolContract = useRouter().query["pool"];
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
 
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
+  const prov = publicProvider({ priority: 1 });
+  const nodeUrl = prov(goerli)?.provider().connection.url;
 
   const ssvNetworkContract = new ethers.Contract(
     FrensContracts.SSVNetworkContract.address,
@@ -29,9 +34,20 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   const registerSSVValidator = async () => {
     const action = "registerValidator";
+    const contractAddress = FrensContracts.SSVNetworkContract.address;
+    const clusterParams = {
+      contractAddress: contractAddress,
+      nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+      ownerAddress: (await signer?.getAddress()) as string,
+      operatorIds: payloadData[1],
+    };
+    const clusterData = await buildCluster(clusterParams);
+
+    const cluster = clusterData.cluster;
 
     let unsignedTx = await ssvNetworkContract.populateTransaction[action](
-      ...payloadData
+      ...payloadData,
+      cluster
     );
 
     const tx = await signer?.sendTransaction(unsignedTx);
@@ -142,3 +158,27 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
     </div>
   );
 };
+
+async function buildCluster(
+  clusterParams: {
+    contractAddress: string;
+    nodeUrl: string;
+    ownerAddress: string;
+    operatorIds: number[];
+  } | null
+) {
+  const clusterData = async () => {
+    const response = await fetch("/api/clusterScanner", {
+      method: "POST",
+      body: JSON.stringify(clusterParams),
+    });
+
+    if (response.status === 451) {
+      // Something went bad
+    } else {
+      return response.json();
+    }
+  };
+
+  return await clusterData();
+}
