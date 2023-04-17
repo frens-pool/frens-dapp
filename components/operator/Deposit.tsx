@@ -1,5 +1,6 @@
 import { useStake } from "../../hooks/write/useStake";
-import { useWaitForTransaction } from "wagmi";
+import { useNetwork, useWaitForTransaction } from "wagmi";
+import { etherscanUrl } from "#/utils/externalUrls";
 
 export const Deposit = ({
   poolAddress,
@@ -12,6 +13,8 @@ export const Deposit = ({
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   });
+  const { chain } = useNetwork();
+
 
   if (isSuccess) {
     <div className="mt-2 mb-4">✅ Deposit successful ✅</div>;
@@ -35,7 +38,7 @@ export const Deposit = ({
       {isLoading && (
         <div className="my-2">
           <a
-            href={`https://etherscan.io/tx/${data?.hash}`}
+            href={`${etherscanUrl(chain)}/tx/${data?.hash}`}
             target="_blank"
             rel="noopener noreferrer"
             className="link text-frens-main underline px-2"

@@ -1,11 +1,6 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { Address } from "wagmi";
-import { FrensContracts } from "utils/contracts";
-import Web3 from "web3";
-
-const deposit_address = FrensContracts.DepositContract.address
-
+import { Address, useNetwork } from "wagmi";
+import { beaconchainUrl } from "#/utils/externalUrls";
 import { usePoolPubKey } from "../../hooks/read/usePoolPubKey";
 
 type Props = {
@@ -14,8 +9,7 @@ type Props = {
 
 export const ValidatorWidget = ({ poolAddress }: Props) => {
   const { data: poolPubKey, isLoading, isSuccess } = usePoolPubKey({ address: poolAddress });
-
-
+  const { chain } = useNetwork();
 
   if (isLoading)
     return <>
@@ -32,7 +26,7 @@ export const ValidatorWidget = ({ poolAddress }: Props) => {
           <div className="font-medium mb-2">
             <div key={poolPubKey}>
               <Link
-                href={`https://prater.beaconcha.in/validator/${poolPubKey}`}
+                href={`${beaconchainUrl(chain)}/validator/${poolPubKey}`}
                 className="underline text-frens-main"
               >
                 Validator information on Beaconcha.in 📡
