@@ -1,11 +1,10 @@
 // import { ethers } from 'ethers';
 // import { SSVKeys, EthereumKeyStore } from 'ssv-keys';
+import { FrensContracts } from "#/utils/contracts";
 import {
   usePrepareContractWrite,
-  useContractWrite,
-  useNetwork
+  useContractWrite
 } from "wagmi";
-import SSVNetwork from "../../utils/SSVNetwork.json";
 
 // const split = async (
 //   keystore,   // string 
@@ -68,15 +67,9 @@ export function useSSVRegisterValidator(
     1000000000
   ];
 
-  const { chain } = useNetwork();
-  const contractAddr =
-    chain?.name === "Goerli"
-      ? "0x49D395eFcE6233e116C69333F249e6cF128D5992"
-      : "0x00000000000000000000000000000000deadb33f";
-
   const { config } = usePrepareContractWrite({
-    address: contractAddr,
-    abi: SSVNetwork.abi,
+    address: FrensContracts.SSVRegistryrContract.address,
+    abi: FrensContracts.SSVRegistryrContract.abi,
     functionName: 'registerValidator',
     args: payload,
   })

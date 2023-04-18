@@ -1,7 +1,20 @@
 import { useState } from "react";
-import { DropKeys } from "components/operator/DropKeys";
+import { DropKeys, validateFileFunction } from "components/operator/DropKeys";
 import { Deposit } from "components/operator/Deposit";
-import { useBalance, Address } from "wagmi";
+import { useBalance, Address, useNetwork } from "wagmi";
+
+
+type depositData = {
+  "pubkey": string,
+  "withdrawal_credentials": string,
+  "amount": bigint,
+  "signature": string,
+  "deposit_message_root": string,
+  "deposit_data_root": string,
+  "fork_version": string,
+  "network_name": string,
+  "deposit_cli_version": string
+}
 
 export const DepositForm = ({
   nextStep,
@@ -15,10 +28,28 @@ export const DepositForm = ({
     address: poolAddress,
   });
 
-  const checkDepositData = (data:any) => {
-    // check network name of first validator in the deposit data
-    const network = data[0]?.network_name;
-    return network == "goerli"
+  const { chain } = useNetwork();
+
+  // validate first validator in the deposit data
+  const checkDepositData = (fileContent: any) => {
+    try {
+      const depositData = JSON.parse(fileContent)[0] as depositData;
+
+      const network = depositData.network_name;
+      const withdrawal_credentials = depositData.withdrawal_credentials.toLowerCase();
+      const expectedWithdrawalAddress = `010000000000000000000000${poolAddress.substring(2)}`.toLowerCase();
+
+      if (network !== chain?.name) {
+        return { success: false, error: `Invalid network ${network}` }
+      }
+      if (withdrawal_credentials !== expectedWithdrawalAddress) {
+        return { success: false, error: `Invalid withdrawal address ${withdrawal_credentials}` }
+      }
+      return { success: true }
+    } catch (e) {
+      console.error(e)
+      return { success: false, error: "Invalid JSON file" }
+    }
   }
 
   return (
@@ -30,11 +61,10 @@ export const DepositForm = ({
 
       <div>upload the deposit file here</div>
       <DropKeys
+        validateFile={checkDepositData}
         onFileReceived={(data: any) => {
           const depositData = JSON.parse(data);
-          if (checkDepositData(depositData))
-            setDepositFileData(depositData[0]);
-          // else TODO
+          setDepositFileData(depositData[0]);
         }}
       />
       {depositFileData && Number(balance?.formatted) >= 32 ? (

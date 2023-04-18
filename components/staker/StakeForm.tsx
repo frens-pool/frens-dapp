@@ -1,9 +1,10 @@
+import { etherscanUrl } from "#/utils/externalUrls";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
-import { useAccount, useBalance, useContractEvent } from "wagmi";
+import { useAccount, useBalance, useContractEvent, useNetwork } from "wagmi";
 import { useDeposit } from "../../hooks/write/useDeposit";
 
 export const StakeForm = ({
@@ -16,6 +17,7 @@ export const StakeForm = ({
   setIsDepositing: any;
 }) => {
   const [maxDepositValue, setMaxDepositValue] = useState(32);
+  const { chain } = useNetwork();
 
   const {
     register,
@@ -48,7 +50,7 @@ export const StakeForm = ({
     write: deposit,
     isError,
   } = useDeposit({ address: poolAddress, val: stakeAmount });
-  const etherscanLink = `https://goerli.etherscan.io/tx/${depositData?.hash}`;
+  const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
   if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
 

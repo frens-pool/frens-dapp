@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { ethers } from "ethers";
-import { useWaitForTransaction, useSigner } from "wagmi";
+import { useWaitForTransaction, useSigner, useNetwork } from "wagmi";
 import { useAllowance } from "../../hooks/write/useAllowance";
-import SSVNetwork from "../../utils/SSVNetwork.json";
+import { FrensContracts } from "#/utils/contracts";
+import { beaconchainUrl } from "#/utils/externalUrls";
 
 export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
 
   const { data: signer } = useSigner();
+  const { chain } = useNetwork();
 
   const ssvNetworkContract = new ethers.Contract(
-    "0xb9e155e65B5c4D66df28Da8E9a0957f06F11Bc04",
-    SSVNetwork.abi,
+    FrensContracts.SSVNetworkContract.address,
+    FrensContracts.SSVNetworkContract.abi,
     signer as any
   );
 
@@ -77,7 +79,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
             ssv explorer
           </a>
           <a
-            href={`https://prater.beaconcha.in/validator/${payloadData[0].slice(
+            href={`${beaconchainUrl(chain)}/validator/${payloadData[0].slice(
               2
             )}`}
             className="link text-frens-main underline px-2"

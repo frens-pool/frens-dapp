@@ -11,7 +11,7 @@ export function usePoolPubKey({
   const { data, isLoading, isSuccess } = useContractRead({
     address: address,
     abi: FrensContracts.StakingPool.abi,
-    functionName: 'getPubKey',
+    functionName: 'pubKey',
   })
 
   return { data: data as Address, isLoading, isSuccess };
