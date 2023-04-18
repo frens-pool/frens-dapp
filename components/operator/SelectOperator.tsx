@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 
-export const SelectOperator = ({ nextStep }: { nextStep: () => void }) => {
+export const SelectOperator = ({
+  nextStep,
+  setOperators,
+}: {
+  nextStep: () => void;
+  setOperators: any;
+}) => {
   const [ssvOperators, setssvOperators] = useState<any[]>([]);
   const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
-  const [selectedOperators, setSelectedOperators] = useState<any[]>([]);
+  const [checkedOperators, setCheckedOperators] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchOperators = async () => {
@@ -32,7 +38,19 @@ export const SelectOperator = ({ nextStep }: { nextStep: () => void }) => {
       <tr key={i}>
         <th>
           <label>
-            <input type="checkbox" className="checkbox" />
+            <input
+              type="checkbox"
+              className="checkbox"
+              onChange={(e) => {
+                setCheckedOperators(
+                  e.target.checked
+                    ? [...checkedOperators, item]
+                    : checkedOperators.filter(
+                        (operator) => operator.id !== item.id
+                      )
+                );
+              }}
+            />
           </label>
         </th>
         <td>
@@ -77,6 +95,7 @@ export const SelectOperator = ({ nextStep }: { nextStep: () => void }) => {
       <button
         className="mt-2 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
         onClick={() => {
+          setOperators(checkedOperators);
           nextStep();
         }}
       >
