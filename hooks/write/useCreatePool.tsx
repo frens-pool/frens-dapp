@@ -7,15 +7,20 @@ import {
 
 import { FrensContracts } from "utils/contracts";
 
-export function useCreatePool() {
+export function useCreatePool(
+  validatorLocked: boolean,
+  frensLocked: boolean,
+  poolMin: string,
+  poolMax: string,
+  merkleRoot: any
+) {
   const { chain } = useNetwork();
   const { address: ownerAddress } = useAccount();
-
   const { config } = usePrepareContractWrite({
     address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     functionName: "create",
-    args: [ownerAddress, false],
+    args: [ownerAddress, validatorLocked, frensLocked, poolMin, poolMax, merkleRoot ],
   });
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 

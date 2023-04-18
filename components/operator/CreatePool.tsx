@@ -4,6 +4,8 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useCreatePool } from "../../hooks/write/useCreatePool";
 import { FrensContracts } from "utils/contracts";
 import { etherscanUrl } from "#/utils/externalUrls";
+import { useEffect, useState } from "react";
+import { AdvancedOptions } from "./AdvancedOptions";
 
 export const CreatePool = ({
   setStep,
@@ -18,7 +20,19 @@ export const CreatePool = ({
   const { openConnectModal } = useConnectModal();
   const { chain } = useNetwork();
 
-  const { data, isLoading, write: createPool } = useCreatePool();
+  const [frensLocked, setFrensLocked] = useState<boolean>(false);
+  const [poolMin, setPoolMin] = useState<string>("0");
+  const [poolMax, setPoolMax] = useState<string>("0");
+  const [merkleRoot, setMerkleRoot] = useState<any>();
+
+  useEffect(() => setFrensLocked(merkleRoot != undefined), [merkleRoot]);
+  const setAvancedOptions = (min: string,max: string, root: any) => {
+    setPoolMin(poolMin)
+    setPoolMax(poolMax)
+    setMerkleRoot(root)
+  }
+
+  const { data, isLoading, write: createPool } = useCreatePool(false, frensLocked, poolMin, poolMax, merkleRoot);
   let etherscanLink = "";
 
   function onCreatePool(): void {
@@ -27,6 +41,9 @@ export const CreatePool = ({
     // setTokenCode(inviteToken);
     if (createPool) createPool();
   }
+
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+  const toggleAddvanced = () => setShowAdvanced(!showAdvanced)
 
   useContractEvent({
     address: FrensContracts.StakingPoolFactory.address,
@@ -84,6 +101,19 @@ export const CreatePool = ({
     );
   }
 
+  const showAdvancedButton = () => (<label className="relative inline-flex items-center cursor-pointer">
+    <input type="checkbox" value="" className="sr-only peer" onClick={toggleAddvanced} />
+    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+    <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Advanced options</span>
+  </label>)
+
+  const advancedOptions = () => (
+    <>
+      <h2 className="text-3xl font-bold">Advanced options</h2>
+      <AdvancedOptions setAvancedOptions={setAvancedOptions} />
+    </>
+  )
+
   return (
     <div>
       <div className="my-2">
@@ -96,25 +126,35 @@ export const CreatePool = ({
               Loading ...
             </button>
           ) : (
-            <div>
-              {accountAddress ? (
-                <button
-                  className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
-                  onClick={() => onCreatePool()}
-                >
-                  Create Pool
-                </button>
-              ) : (
-                <button
-                  className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
-                  onClick={() => {
-                    if (openConnectModal) openConnectModal();
-                  }}
-                >
-                  Create Pool
-                </button>
-              )}
-            </div>
+            <>
+              <div>
+                {accountAddress ? (
+                  <button
+                    className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
+                    onClick={() => onCreatePool()}
+                  >
+                    Create Pool
+                  </button>
+                ) : (
+                  <button
+                    className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
+                    onClick={() => {
+                      if (openConnectModal) openConnectModal();
+                    }}
+                  >
+                    Create Pool
+                  </button>
+                )}
+              </div>
+              <div>
+                {showAdvancedButton()}
+                <div className={`${showAdvanced ? "block" : "hidden"}`}>
+                  <div className="text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
+                    {showAdvanced && advancedOptions()}
+                  </div>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>
