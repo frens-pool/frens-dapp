@@ -1,4 +1,4 @@
-import { useContractEvent, useAccount, useNetwork } from "wagmi";
+import { useContractEvent, useAccount, useNetwork, Address } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 import { useCreatePool } from "../../hooks/write/useCreatePool";
@@ -6,30 +6,33 @@ import { FrensContracts } from "utils/contracts";
 import { etherscanUrl } from "#/utils/externalUrls";
 import { useEffect, useState } from "react";
 import { AdvancedOptions } from "./AdvancedOptions";
+import web3 from "web3";
 
 export const CreatePool = ({
   setStep,
   setPoolContract,
-  setTokenCode,
+  setAllowedAddresses
 }: {
   setStep: any;
   setPoolContract: any;
-  setTokenCode: any;
+  setAllowedAddresses: (addresses: Address[]) => void
 }) => {
   const { address: accountAddress } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { chain } = useNetwork();
 
   const [frensLocked, setFrensLocked] = useState<boolean>(false);
-  const [poolMin, setPoolMin] = useState<string>("0");
-  const [poolMax, setPoolMax] = useState<string>("0");
+  const [poolMin, setPoolMin] = useState<string>(web3.utils.toWei("0", 'ether'));
+  const [poolMax, setPoolMax] = useState<string>(web3.utils.toWei("32", 'ether'));
   const [merkleRoot, setMerkleRoot] = useState<any>();
+  const [addresses, setAddresses] = useState<Address[]>([]);
 
   useEffect(() => setFrensLocked(merkleRoot != undefined), [merkleRoot]);
-  const setAvancedOptions = (min: string,max: string, root: any) => {
-    setPoolMin(poolMin)
-    setPoolMax(poolMax)
+  const setAvancedOptions = (min: string, max: string, root: any, addresses: Address[]) => {
+    setPoolMin(min)
+    setPoolMax(max)
     setMerkleRoot(root)
+    setAddresses(addresses)
   }
 
   const { data, isLoading, write: createPool } = useCreatePool(false, frensLocked, poolMin, poolMax, merkleRoot);
@@ -39,8 +42,14 @@ export const CreatePool = ({
     // const INVITATION_TOKEN_LENGTH = 9
     // const inviteToken = Math.random().toString(36).substring(2, INVITATION_TOKEN_LENGTH);
     // setTokenCode(inviteToken);
+    console.log("Creating pool:", false, frensLocked, poolMin, poolMax, merkleRoot)
     if (createPool) createPool();
   }
+
+  useEffect(() => {
+    if (addresses)
+      setAllowedAddresses(addresses);
+  }, [addresses]);
 
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const toggleAddvanced = () => setShowAdvanced(!showAdvanced)

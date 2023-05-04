@@ -7,11 +7,12 @@ import Footer from "components/shared/Footer";
 import { InviteFrens } from "components/operator/InviteFrens";
 import { CreatePool } from "components/operator/CreatePool";
 import { RunValidator } from "components/operator/RunValidator";
+import { Address } from "wagmi";
 
 const Operator: NextPage = () => {
   const poolAddress = useRouter().query["pool"];
   const [poolContract, setPoolContract] = useState("");
-  const [tokenCode, setTokenCode] = useState("abcdef");
+  const [allowedAddresses, setAllowedAddresses] = useState<Address[]>([]);
   const [step, setStep] = useState(1);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const Operator: NextPage = () => {
             <CreatePool
               setStep={setStep}
               setPoolContract={setPoolContract}
-              setTokenCode={setTokenCode}
+              setAllowedAddresses={setAllowedAddresses}
             />
           </div>
         </div>
@@ -53,6 +54,7 @@ const Operator: NextPage = () => {
           <div className={`${step == 2 || step == 3 ? "block" : "hidden"}`}>
             <InviteFrens
               poolContract={poolContract}
+              allowedAddresses={allowedAddresses}
               setStep={setStep}
               step={step}
             />

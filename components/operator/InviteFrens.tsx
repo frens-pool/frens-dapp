@@ -1,15 +1,18 @@
 import Link from "next/link";
+import { Address } from "wagmi";
 
 export const InviteFrens = ({
   poolContract,
   setStep,
   step,
+  allowedAddresses
 }: {
   poolContract: string;
   setStep: any;
   step: any;
+  allowedAddresses: Address[]
 }) => {
-  const link = `https://app.frens.fun/pool/${poolContract}`;
+  const link = `https://app.frens.fun/pool/${poolContract}?a=${allowedAddresses.join(",")}`;
 
   function copyToClipboard(copyMe: string): void {
     navigator.clipboard.writeText(copyMe);
@@ -19,7 +22,7 @@ export const InviteFrens = ({
     return (
       <div className="flex flex-col justify-center my-3 text-center underline text-frens-main">
         <Link
-          href={`/pool/${poolContract}`}
+          href={link}
           className="underline text-frens-main"
         >
           {link}

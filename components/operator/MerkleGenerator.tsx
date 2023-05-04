@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { utils } from "ethers";
 import { MerkleTree } from 'merkletreejs'
+import { Address } from "wagmi";
 
-export default function MerkleGenerator({setRoot }: {setRoot:(root:string|undefined)=>void}) {
+export default function MerkleGenerator(
+    { setRoot, setAllowedAddresses }:
+        {
+            setRoot: (root: string | undefined) => void,
+            setAllowedAddresses: (root: Address[]) => void
+        }) {
 
     const [addresses, setAddresses] = useState<string>("");
     const [feedback, setFeedback] = useState<string>("");
@@ -13,17 +19,20 @@ export default function MerkleGenerator({setRoot }: {setRoot:(root:string|undefi
 
         if (addresses.trim() === "")
             return
-        const feedback = addresses.split(",").map((a: string) => {
-            const address = a.trim()
-            if (!utils.isAddress(address))
-                return `"${address}" is not a valid address`
-        })
-        .filter(a => a !=="").join(",")
+        const feedback = addresses
+            .split(",")
+            .map((a: string) => {
+                const address = a.trim()
+                if (!utils.isAddress(address))
+                    return `"${address}" is not a valid address`
+            })
+            .filter(a => a).join(",")
 
         setFeedback(feedback)
 
         if (feedback == "") {
             makeTree()
+            setAllowedAddresses(getAddresses() as Address[])
         }
     }, [addresses]);
 

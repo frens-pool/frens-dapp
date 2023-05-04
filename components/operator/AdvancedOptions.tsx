@@ -1,16 +1,10 @@
-import { useContractEvent, useAccount, useNetwork } from "wagmi";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-
-import { useCreatePool } from "../../hooks/write/useCreatePool";
-import { FrensContracts } from "utils/contracts";
-import { etherscanUrl } from "#/utils/externalUrls";
+import { Address } from "wagmi";
 import { useEffect, useState } from "react";
 import MerkleGenerator from "./MerkleGenerator";
-import { utils } from "ethers";
 import web3 from "web3";
 
 interface Props {
-    setAvancedOptions: (min: string, max: string, root: any) => void;
+    setAvancedOptions: (min: string, max: string, root: any, addresses: Address[]) => void;
 }
 
 export const AdvancedOptions = ({ setAvancedOptions }: Props) => {
@@ -18,16 +12,16 @@ export const AdvancedOptions = ({ setAvancedOptions }: Props) => {
     const [minimum, setMinimum] = useState<number>(0.0);
     const [maximum, setMaximum] = useState<number>(32.0);
     const [root, setRoot] = useState<string>();
+    const [allowedAddresses, setAllowedAddresses] = useState<Address[]>([]);
 
     useEffect(() => {
-
         setAvancedOptions(
             web3.utils.toWei(minimum.toString(), 'ether'),
             web3.utils.toWei(maximum.toString(), 'ether'),
-            root
+            root,
+            allowedAddresses
         )
-    }
-        , [minimum, maximum, root]);
+    }, [minimum, maximum, root, allowedAddresses]);
 
     const cleanNumber = (value: string) => {
         const raw = Number.parseFloat(value)
@@ -64,7 +58,7 @@ export const AdvancedOptions = ({ setAvancedOptions }: Props) => {
                     step={0.001}
                 />
             </div>
-            <MerkleGenerator setRoot={setRoot} />
+            <MerkleGenerator setRoot={setRoot} setAllowedAddresses={setAllowedAddresses} />
         </div>
     );
 };

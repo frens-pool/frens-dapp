@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useBalance, useContractEvent, useNetwork } from "wagmi";
+import { Chain, useAccount, useBalance, useContractEvent, useNetwork } from "wagmi";
 import { useDeposit } from "../../hooks/write/useDeposit";
 import { FrensContracts } from "utils/contracts";
 import { etherscanUrl } from "#/utils/externalUrls";
@@ -11,10 +11,12 @@ export const StakeForm = ({
   poolAddress,
   isDepositing,
   setIsDepositing,
+  proof
 }: {
   poolAddress: any;
   isDepositing: any;
   setIsDepositing: any;
+  proof: string[]
 }) => {
   const [maxDepositValue, setMaxDepositValue] = useState(32);
   const { chain } = useNetwork();
@@ -45,12 +47,13 @@ export const StakeForm = ({
       setMaxDepositValue(maxDepositValue);
     },
   });
+
   const {
     data: depositData,
     write: deposit,
     isError,
-  } = useDeposit({ address: poolAddress, val: stakeAmount });
-  const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
+  } = useDeposit({ address: poolAddress, val: stakeAmount, proof: proof });
+  const etherscanLink = (chain: Chain, depositData: any) => `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
   if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
 
@@ -68,6 +71,7 @@ export const StakeForm = ({
   });
 
   return (
+
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white">
         <div className="text-center font-bold my-2">Select amount</div>
@@ -94,11 +98,10 @@ export const StakeForm = ({
           <div className="flex flex-col justify-center">
             <button
               disabled={isDepositing ? true : false}
-              className={`btn text-white ${
-                isDepositing
-                  ? "btn-primary"
-                  : "bg-gradient-to-r from-frens-blue to-frens-teal"
-              }`}
+              className={`btn text-white ${isDepositing
+                ? "btn-primary"
+                : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                }`}
               type="submit"
             >
               {isDepositing ? "Confirm in Metamask" : "Pool"}
@@ -130,7 +133,7 @@ export const StakeForm = ({
                   </div>
                   <a
                     className="underline text-frens-main pt-1"
-                    href={etherscanLink}
+                    href={etherscanLink(chain!, depositData)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

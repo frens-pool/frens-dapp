@@ -14,13 +14,12 @@ export function useCreatePool(
   poolMax: string,
   merkleRoot: any
 ) {
-  const { chain } = useNetwork();
   const { address: ownerAddress } = useAccount();
   const { config } = usePrepareContractWrite({
     address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     functionName: "create",
-    args: [ownerAddress, validatorLocked, frensLocked, poolMin, poolMax, merkleRoot ],
+    args: [ownerAddress, validatorLocked, frensLocked, poolMin, poolMax, merkleRoot],
   });
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 

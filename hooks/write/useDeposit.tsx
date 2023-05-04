@@ -5,7 +5,7 @@ import {
 } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 
-export function useDeposit({ address, val }: { address: string, val: string }) {
+export function useDeposit({ address, val, proof }: { address: string, val: string, proof: string[] }) {
 
   const { config } = usePrepareContractWrite({
     address: address,
@@ -14,7 +14,8 @@ export function useDeposit({ address, val }: { address: string, val: string }) {
     overrides: {
       value: ethers.utils.parseEther(val),
     },
+    args: [proof],
   })
-  const { data, isLoading, isSuccess, isError, write } = useContractWrite(config)
+  const { data, isLoading, isSuccess, isError, write, error, status } = useContractWrite(config)
   return { data, isLoading, isSuccess, isError, write };
 }

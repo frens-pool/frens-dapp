@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Address, useAccount } from "wagmi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
 import { StakeForm } from "components/staker/StakeForm";
@@ -10,13 +10,43 @@ import { OperatorWidget } from "components/staker/OperatorWidget";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
+import { utils } from "ethers";
+import { MerkleTree } from 'merkletreejs'
 
 const Pool: NextPage = () => {
   const router = useRouter();
-  const poolAddress = router.query.pool as Address|undefined;
+  const poolAddress = router.query.pool as Address | undefined;
 
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+  const [proof, setProof] = useState<string[]>([]);
+
+  const getAllowedAddresses = () => {
+    const allowedAddressesRaw = router.query.a as string | undefined
+    if (allowedAddressesRaw) {
+      return allowedAddressesRaw.split(",").map(a => a.trim() as Address)
+    }
+    return []
+  }
+
+  useEffect(() => {
+    if (isConnected && address) {
+      const addresses = getAllowedAddresses()
+      const leaves = addresses.map(x => utils.keccak256(x));
+      const newTree = new MerkleTree(leaves, utils.keccak256, { sort: true });
+      const newRoot = newTree.getHexRoot();
+      const index = addresses.indexOf(address)
+
+      if (index < 0)
+        return
+      const proof = newTree.getHexProof(leaves[index]);
+
+      setProof(proof)
+
+      console.log("proof", addresses[index], proof);
+      console.log("valid?", newTree.verify(proof, leaves[index], newRoot));
+    }
+  }, [])
 
   if (poolAddress) {
     return (
@@ -47,15 +77,15 @@ const Pool: NextPage = () => {
               poolAddress={poolAddress.toString()}
               isDepositing={isDepositing}
               setIsDepositing={setIsDepositing}
+              proof={proof}
             />
             <div className="border border-slate-400 rounded-md mx-4"></div>
             <PoolInfo poolAddress={poolAddress.toString()} />
           </div>
 
           <div
-            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
-              isConnected ? "block" : "block"
-            }`}
+            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${isConnected ? "block" : "block"
+              }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
             {isConnected ? (
