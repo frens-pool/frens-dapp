@@ -46,8 +46,8 @@ export const SelectOperator = ({
                   e.target.checked
                     ? [...checkedOperators, item]
                     : checkedOperators.filter(
-                        (operator) => operator.id !== item.id
-                      )
+                      (operator) => operator.id !== item.id
+                    )
                 );
               }}
             />
