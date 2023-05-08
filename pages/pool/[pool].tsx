@@ -21,15 +21,15 @@ const Pool: NextPage = () => {
   const { isConnected, address } = useAccount();
   const [proof, setProof] = useState<string[]>([]);
 
-  const getAllowedAddresses = () => {
-    const allowedAddressesRaw = router.query.a as string | undefined
-    if (allowedAddressesRaw) {
-      return allowedAddressesRaw.split(",").map(a => a.trim() as Address)
-    }
-    return []
-  }
 
   useEffect(() => {
+    const getAllowedAddresses = () => {
+      const allowedAddressesRaw = router.query.a as string | undefined
+      if (allowedAddressesRaw) {
+        return allowedAddressesRaw.split(",").map(a => a.trim() as Address)
+      }
+      return []
+    }
     if (isConnected && address) {
       const addresses = getAllowedAddresses()
       const leaves = addresses.map(x => utils.keccak256(x));
@@ -43,10 +43,10 @@ const Pool: NextPage = () => {
 
       setProof(proof)
 
-      console.log("proof", addresses[index], proof);
+      console.log("proof", address, addresses[index], proof, addresses);
       console.log("valid?", newTree.verify(proof, leaves[index], newRoot));
     }
-  }, [])
+  }, [isConnected, address, isDepositing, router])
 
   if (poolAddress) {
     return (
