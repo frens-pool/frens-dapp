@@ -46,7 +46,7 @@ const Pool: NextPage = () => {
       console.log("proof", address, addresses[index], proof, addresses);
       console.log("valid?", newTree.verify(proof, leaves[index], newRoot));
     }
-  }, [isConnected, address, isDepositing, router])
+  }, [isConnected, address, router])
 
   if (poolAddress) {
     return (

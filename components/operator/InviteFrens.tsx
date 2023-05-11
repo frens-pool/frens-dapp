@@ -12,7 +12,7 @@ export const InviteFrens = ({
   step: any;
   allowedAddresses: Address[]
 }) => {
-  const link = `https://app.frens.fun/pool/${poolContract}?a=${allowedAddresses.join(",")}`;
+  const link = `/pool/${poolContract}?a=${allowedAddresses.join(",")}`;
 
   function copyToClipboard(copyMe: string): void {
     navigator.clipboard.writeText(copyMe);
