@@ -11,5 +11,5 @@ export default async function handler(req: any, res: any) {
   const command = new SSVScannerCommand(params);
   const result = await command.scan();
 
-  return res.status(200).json({ cluster: Object.values(result.cluster) });
+  return res.status(200).json({ cluster: Object.values(result) });
 }

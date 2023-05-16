@@ -27,8 +27,6 @@ const Operator: NextPage = () => {
   const [operators, setOperators] = useState();
   const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
 
-  console.log("operators", operators);
-
   const number = (step: STEP) => ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"][step];
   const className = (current_step: STEP, step: STEP) =>
     `${current_step == step ? "block" : "hidden"}`;

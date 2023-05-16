@@ -23,7 +23,11 @@ export const KeystoreForm = ({
       }
       const response = await fetch("/api/keyshares", {
         method: "POST",
-        body: JSON.stringify({ keystore: keystoreFileData, password: pw }),
+        body: JSON.stringify({
+          keystore: keystoreFileData,
+          password: pw,
+          operators: operators,
+        }),
       });
       if (response.status === 451) {
         setPayloadError(true);

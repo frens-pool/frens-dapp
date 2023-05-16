@@ -3,18 +3,17 @@ import { DropKeys, validateFileFunction } from "components/operator/DropKeys";
 import { Deposit } from "components/operator/Deposit";
 import { useBalance, Address, useNetwork } from "wagmi";
 
-
 type depositData = {
-  "pubkey": string,
-  "withdrawal_credentials": string,
-  "amount": bigint,
-  "signature": string,
-  "deposit_message_root": string,
-  "deposit_data_root": string,
-  "fork_version": string,
-  "network_name": string,
-  "deposit_cli_version": string
-}
+  pubkey: string;
+  withdrawal_credentials: string;
+  amount: bigint;
+  signature: string;
+  deposit_message_root: string;
+  deposit_data_root: string;
+  fork_version: string;
+  network_name: string;
+  deposit_cli_version: string;
+};
 
 export const DepositForm = ({
   nextStep,
@@ -36,21 +35,27 @@ export const DepositForm = ({
       const depositData = JSON.parse(fileContent)[0] as depositData;
 
       const network = depositData.network_name;
-      const withdrawal_credentials = depositData.withdrawal_credentials.toLowerCase();
-      const expectedWithdrawalAddress = `010000000000000000000000${poolAddress.substring(2)}`.toLowerCase();
+      const withdrawal_credentials =
+        depositData.withdrawal_credentials.toLowerCase();
+      const expectedWithdrawalAddress =
+        `010000000000000000000000${poolAddress.substring(2)}`.toLowerCase();
 
-      if (network !== chain?.name) {
-        return { success: false, error: `Invalid network ${network}` }
+      // temp out for goerli demo
+      if (network !== chain?.network) {
+        return { success: false, error: `Invalid network ${network}` };
       }
       if (withdrawal_credentials !== expectedWithdrawalAddress) {
-        return { success: false, error: `Invalid withdrawal address ${withdrawal_credentials}` }
+        return {
+          success: false,
+          error: `Invalid withdrawal address ${withdrawal_credentials}`,
+        };
       }
-      return { success: true }
+      return { success: true };
     } catch (e) {
-      console.error(e)
-      return { success: false, error: "Invalid JSON file" }
+      console.error(e);
+      return { success: false, error: "Invalid JSON file" };
     }
-  }
+  };
 
   return (
     <div className="my-2 p-2">

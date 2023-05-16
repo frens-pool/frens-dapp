@@ -59,7 +59,6 @@ export const StakeForm = ({
     abi: FrensContracts.StakingPool.abi,
     eventName: "DepositToPool",
     listener: (amount, depositer, id) => {
-      console.log("The deposit was triggered.");
       setIsDepositing(false);
       reset();
       setTimeout(async () => {
