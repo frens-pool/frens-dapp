@@ -6,7 +6,13 @@ import { goerli, useNetwork, useSigner, useWaitForTransaction } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { useAllowance } from "../../hooks/write/useAllowance";
 
-export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
+export const SSVRegisterValidator = ({
+  payloadData,
+  operators,
+}: {
+  payloadData: any;
+  operatos: any;
+}) => {
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
 
@@ -40,6 +46,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
         operatorIds: payloadData[1],
       };
       const clusterDataTemp = await buildCluster(clusterParams);
+      console.log("clusterDataTemp", clusterDataTemp);
       setClusterData(clusterDataTemp.cluster[1]);
     }
   };
@@ -47,15 +54,19 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const registerSSVValidator = async () => {
     const action = "registerValidator";
 
+    const clusterParams = {
+      validatorCount: clusterData.validatorCount,
+      networkFeeIndex: clusterData.networkFeeIndex,
+      index: clusterData.index,
+      balance: clusterData.balance,
+      active: true,
+    };
+
+    console.log(clusterParams);
+
     let unsignedTx = await ssvNetworkContract.populateTransaction[action](
       ...payloadData,
-      {
-        validatorCount: clusterData.validatorCount,
-        networkFeeIndex: clusterData.networkFeeIndex,
-        index: clusterData.index,
-        balance: clusterData.balance,
-        active: true,
-      }
+      clusterParams
     );
 
     console.log(unsignedTx);

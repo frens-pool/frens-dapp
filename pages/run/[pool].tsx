@@ -99,7 +99,10 @@ const Operator: NextPage = () => {
               {number(STEP.SSV_REGISTER)} Register Validator
             </h1>
             <div className={className(step, STEP.SSV_REGISTER)}>
-              <SSVRegisterValidator payloadData={payloadRegisterValidator} />
+              <SSVRegisterValidator
+                payloadData={payloadRegisterValidator}
+                operators={operators}
+              />
             </div>
           </div>
         </main>

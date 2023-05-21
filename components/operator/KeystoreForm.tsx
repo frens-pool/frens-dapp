@@ -36,8 +36,8 @@ export const KeystoreForm = ({
       return response.json();
     };
     keyshareData().then((data) => {
-      if (data.ssvData) {
-        setPayloadRegisterValidator(data.ssvData);
+      if (data.publicKey) {
+        setPayloadRegisterValidator(data);
         setPayloadError(false);
         nextStep();
       }
