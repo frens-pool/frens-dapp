@@ -37,10 +37,9 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
         contractAddress: contractAddress,
         nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
         ownerAddress: (await signer?.getAddress()) as string,
-        operatorIds: [78, 79, 155, 365],
+        operatorIds: payloadData.payload.operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
-      console.log("clusterDataTemp", clusterDataTemp);
       setClusterData(clusterDataTemp.cluster[1]);
     }
   };
@@ -56,12 +55,6 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       active: true,
     };
 
-    console.log(clusterParams);
-
-    // TODO: SSV amount: then booom?!
-
-    console.log(payloadData);
-
     let unsignedTx = await ssvNetworkContract.populateTransaction[action](
       payloadData.payload.publicKey,
       payloadData.payload.operatorIds,
@@ -69,8 +62,6 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       payloadData.tokenAmount,
       clusterParams
     );
-
-    console.log(unsignedTx);
 
     const tx = await signer?.sendTransaction(unsignedTx);
     setRegisterTxHash(tx?.hash);
@@ -106,26 +97,22 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
         <div>✅ successfully registered ✅</div>
         <div className="my-2">
           <div>Check it out here:</div>
-          {/* <a
-            href={`https://explorer.ssv.network/validators/${payloadData[0].slice(
-              2
-            )}`}
+          <a
+            href={`https://explorer.ssv.network/validators/${payloadData.publicKey}`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
           >
             ssv explorer
-          </a> */}
-          {/* <a
-            href={`${beaconchainUrl(chain)}/validator/${payloadData[0].slice(
-              2
-            )}`}
+          </a>
+          <a
+            href={`${beaconchainUrl(chain)}/validator/${payloadData.publicKey}`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
           >
             beaconcha.in
-          </a> */}
+          </a>
         </div>
 
         <div>Dashboard for all your stakes/valis coming soon</div>

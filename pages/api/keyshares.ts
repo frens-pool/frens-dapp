@@ -34,7 +34,16 @@ export default async function handler(req: any, res: any) {
     });
 
     const web3 = new Web3();
-    const tokenAmount = web3.utils.toBN(70000000000000000000).toString();
+    // const tokenAmount = web3.utils.toBN(70000000000000000000).toString();
+
+    const operatorFees = bodyOperators.map((operator: any) => {
+      return operator.fee;
+    });
+    const sumOfFees: number = operatorFees.reduceRight(
+      (acc: number, cur: number) => Number(acc) + Number(cur),
+      0
+    );
+    const tokenAmount = web3.utils.toBN(2 * sumOfFees).toString();
 
     res.status(200).json({
       publicKey,
@@ -43,50 +52,6 @@ export default async function handler(req: any, res: any) {
       payload,
       tokenAmount,
     });
-
-    // const operatorIds = bodyOperators.map((operator: any) => {
-    //   return operator.id;
-    // });
-    // const operatorPublicKeys = bodyOperators.map((operator: any) => {
-    //   return operator.public_key;
-    // });
-    // const operatorFees = bodyOperators.map((operator: any) => {
-    //   return operator.fee;
-    // });
-    // const sumOfFees = operatorFees.reduce((a: any, b: any) => a + b);
-    // // console.log(sumOfFees);
-
-    // const keyStore = new EthereumKeyStore(JSON.stringify(bodyKeystore));
-    // const keyStorePW = body.password.toString();
-
-    // const ssvKeys = new SSVKeys();
-
-    // // Get public key using the keystore password
-    // const privateKey = await keyStore.getPrivateKey(keyStorePW);
-    // const shares = await ssvKeys.buildShares(privateKey, bodyOperators);
-
-    // const web3 = new Web3();
-    // const tokenAmount = web3.utils.toBN(20000000000000000000).toString();
-
-    // const payload = await ssvKeys.buildPayload(
-    //   ssvKeys.validatorPublicKey,
-    //   operatorIds,
-    //   shares,
-    //   tokenAmount
-    // );
-
-    // // Token amount (liquidation collateral and operational runway balance to be funded)
-    // const operatorIdsArray = Array.from(operatorIds);
-
-    // // Return all the needed params to build a transaction payload
-    // const ssvData = [
-    //   threshold.validatorPublicKey,
-    //   operatorIdsArray,
-    //   payload.readable.shares,
-    //   tokenAmount,
-    // ];
-
-    // console.log(ssvData);
 
     // res.status(200).json({ ssvData });
   } catch (err) {
