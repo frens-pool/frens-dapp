@@ -49,6 +49,7 @@ export const StakeForm = ({
     data: depositData,
     write: deposit,
     isError,
+    prepare_error
   } = useDeposit({ address: poolAddress, val: stakeAmount });
   const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
@@ -70,6 +71,14 @@ export const StakeForm = ({
     },
   });
 
+  const getErrorMessage = (prepare_error: any) => {
+    const message = prepare_error?.reason
+      .replace("execution reverted:", "")
+      ?? prepare_error.message
+
+    return message
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white">
@@ -85,6 +94,12 @@ export const StakeForm = ({
           />
           <span>ETH</span>
         </label>
+        {prepare_error && (
+          <div className="text-center font-medium my-2">
+            <div>Ur a true fren but unfortunatly</div>
+            <div className="text-red-500">{getErrorMessage(prepare_error)}</div>
+          </div>
+        )}
         {errors.ethInput && (
           <div className="text-center font-medium my-2">
             <div>Ur a true fren but unfortunatly</div>
@@ -97,11 +112,10 @@ export const StakeForm = ({
           <div className="flex flex-col justify-center">
             <button
               disabled={isDepositing ? true : false}
-              className={`btn text-white ${
-                isDepositing
-                  ? "btn-primary"
-                  : "bg-gradient-to-r from-frens-blue to-frens-teal"
-              }`}
+              className={`btn text-white ${isDepositing
+                ? "btn-primary"
+                : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                }`}
               type="submit"
             >
               {isDepositing ? "Confirm in Metamask" : "Pool"}
