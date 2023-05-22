@@ -1,4 +1,5 @@
 import { KeyShares, SSVKeys } from "ssv-keys";
+import Web3 from "web3";
 
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
@@ -31,13 +32,16 @@ export default async function handler(req: any, res: any) {
       operators,
       encryptedShares,
     });
-    console.log(payload);
+
+    const web3 = new Web3();
+    const tokenAmount = web3.utils.toBN(70000000000000000000).toString();
 
     res.status(200).json({
       publicKey,
       privateKey,
       encryptedShares,
       payload,
+      tokenAmount,
     });
 
     // const operatorIds = bodyOperators.map((operator: any) => {
