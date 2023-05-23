@@ -15,7 +15,7 @@ export function useCreatePool() {
     address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     functionName: "create",
-    args: [ownerAddress, false],
+    args: [ownerAddress],
   });
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
