@@ -1,13 +1,14 @@
+import { STEP_TYPE } from "#/pages";
 import Link from "next/link";
 
 export const InviteFrens = ({
   poolContract,
-  setStep,
-  step,
+  onFinish,
+  current_step
 }: {
   poolContract: string;
-  setStep: any;
-  step: any;
+  onFinish: () => void;
+  current_step: STEP_TYPE
 }) => {
   const link = `https://app.frens.fun/pool/${poolContract}`;
 
@@ -15,7 +16,7 @@ export const InviteFrens = ({
     navigator.clipboard.writeText(copyMe);
   }
 
-  if (step === 3) {
+  if (current_step === "Run") {
     return (
       <div className="flex flex-col justify-center my-3 text-center underline text-frens-main">
         <Link
@@ -40,7 +41,7 @@ export const InviteFrens = ({
           className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
           onClick={() => {
             copyToClipboard(link);
-            setStep(3);
+            onFinish();
           }}
         >
           Copy to clipboard

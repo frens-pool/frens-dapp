@@ -1,14 +1,12 @@
 import {
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
 } from "wagmi";
 
 import { FrensContracts } from "utils/contracts";
 
 export function useCreatePool() {
-  const { chain } = useNetwork();
   const { address: ownerAddress } = useAccount();
 
   const { config } = usePrepareContractWrite({

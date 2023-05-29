@@ -6,13 +6,11 @@ import { FrensContracts } from "utils/contracts";
 import { useCreatePool } from "../../hooks/write/useCreatePool";
 
 export const CreatePool = ({
-  setStep,
+  onFinish,
   setPoolContract,
-  setTokenCode,
 }: {
-  setStep: any;
+  onFinish: () => void;
   setPoolContract: any;
-  setTokenCode: any;
 }) => {
   const { address: accountAddress } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -34,7 +32,7 @@ export const CreatePool = ({
     eventName: "Create",
     listener: (node) => {
       setPoolContract(node);
-      setStep(2);
+      onFinish();
     },
   });
 
