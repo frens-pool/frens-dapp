@@ -1,38 +1,40 @@
-import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { Address, useAccount, useBalance, useContractEvent, useNetwork, useWaitForTransaction } from "wagmi";
+import { Address, useNetwork, useWaitForTransaction } from "wagmi";
 
 import { etherscanUrl } from "#/utils/externalUrls";
-import { FrensContracts } from "utils/contracts";
-import { useCreatePool } from "../../hooks/write/useCreatePool";
 import { useEffect, useState } from "react";
 
 import { DropKeys, validateFileFunction } from "components/operator/DropKeys";
-import { Deposit } from "components/operator/Deposit";
 import { DepositFileData } from "#/utils/DepositFileData";
 import { useSetPubkey } from "#/hooks/write/useSetPubkey";
 import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 
 interface Props {
   poolAddress: Address;
-  onFinish: () => void
+  onFinish: () => void;
 }
 
 export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
-
-
   const [depositFileData, setDepositFileData] = useState<DepositFileData>();
-  const { data, write: writeDepositFileData, prepare_error } = useSetPubkey({ poolAddress, depositFileData });
-  const { isSuccess: poolPubKeySuccess, data: poolPubKey } = usePoolPubKey({ address: poolAddress })
+  const {
+    data,
+    write: writeDepositFileData,
+    prepare_error,
+  } = useSetPubkey({ poolAddress, depositFileData });
+  const { isSuccess: poolPubKeySuccess, data: poolPubKey } = usePoolPubKey({
+    address: poolAddress,
+  });
 
   useEffect(() => {
     if (poolPubKeySuccess && poolPubKey) {
-      onFinish()
+      // onFinish()
     }
-  }, [poolPubKeySuccess, poolPubKey])
+  }, [poolPubKeySuccess, poolPubKey]);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
-    onSuccess: (data) => { onFinish() }
+    onSuccess: (data) => {
+      onFinish();
+    },
   });
   const { chain } = useNetwork();
 
@@ -65,20 +67,21 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
   };
 
   const getErrorMessage = (prepare_error: any) => {
-    const message = prepare_error?.reason
-      .replace("execution reverted:", "")
-      ?? prepare_error.message
+    const message =
+      prepare_error?.reason.replace("execution reverted:", "") ??
+      prepare_error.message;
 
-    return message
-  }
+    return message;
+  };
 
   return (
     <div className="my-2 p-2">
       <div>1. Create a deposit file</div>
       <ol>
         <li>Start wagyu</li>
-        <li>Use <code>{poolAddress}</code> as withdrawal address</li>
-
+        <li>
+          Use <code>{poolAddress}</code> as withdrawal address
+        </li>
       </ol>
       <div>2. Upload the deposit file here</div>
       <DropKeys
@@ -90,16 +93,19 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
       />
       <div>
         <button
-          className={`${isLoading
-            ? "btn btn-info no-animation my-2 mr-2"
-            : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
-            }`}
+          className={`${
+            isLoading
+              ? "btn btn-info no-animation my-2 mr-2"
+              : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
+          }`}
           onClick={() => {
             if (writeDepositFileData) writeDepositFileData();
           }}
           disabled={isLoading}
         >
-          {isLoading ? "Deposit configuration in progress..." : "Set deposit file"}
+          {isLoading
+            ? "Deposit configuration in progress..."
+            : "Set deposit file"}
         </button>
         {prepare_error && (
           <div className="text-center font-medium my-2">
@@ -122,4 +128,4 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
       </div>
     </div>
   );
-}
+};
