@@ -8,11 +8,9 @@ import CardForNFT from "./CardForNFT";
 export const NftGallery = ({
   poolAddress,
   isDepositing,
-  shareIds,
 }: {
   poolAddress: Address;
   isDepositing: boolean;
-  shareIds: string[];
 }) => {
   const provider = useProvider();
   const { address: accountAddress, isConnected } = useAccount();
@@ -27,10 +25,6 @@ export const NftGallery = ({
       FrensContracts.FrensPoolShare.abi,
       provider
     );
-
-    if (shareIds) {
-      getShareIdNftArray(poolContract, shareIds);
-    }
 
     if (poolNftIds) {
       const poolIds: string[] = poolNftIds.map((x) => x.toString());

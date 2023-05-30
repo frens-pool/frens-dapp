@@ -1,34 +1,22 @@
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
-import { CacheService } from "#/utils/cache/cacheService";
 import Footer from "components/shared/Footer";
 import Navbar from "components/shared/Navbar";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
 import { StakeForm } from "components/staker/StakeForm";
-import type { GetServerSideProps, NextPage } from "next";
+import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Address, useAccount } from "wagmi";
 
-interface Props {
-  shareIds: string[];
-}
-
-const Pool: NextPage<Props> = ({ shareIds }) => {
+const Pool: NextPage = ({}) => {
   const router = useRouter();
   const poolAddress = router.query.pool as Address | undefined;
 
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
 
-  const shareId = router.query.shareId;
-  if (shareId !== undefined) {
-    router.replace({ query: { pool: poolAddress } });
-    router.reload();
-  }
-
-  const [_, setShareIdInfo] = useState([]);
   const { isConnected } = useAccount();
 
   if (poolAddress) {
@@ -71,11 +59,7 @@ const Pool: NextPage<Props> = ({ shareIds }) => {
             }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
-            <NftGallery
-              poolAddress={poolAddress}
-              isDepositing={isDepositing}
-              shareIds={shareIds}
-            />
+            <NftGallery poolAddress={poolAddress} isDepositing={isDepositing} />
           </div>
         </main>
         <Footer />
@@ -84,18 +68,6 @@ const Pool: NextPage<Props> = ({ shareIds }) => {
   }
 
   return <div>loading animation!</div>;
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const poolAddress = context.query.pool;
-  const shareId = context.query.shareId;
-  if (shareId !== undefined) {
-    await CacheService.saveShareId(poolAddress as string, [shareId as string]);
-    return { props: {} };
-  }
-
-  const shareIds = await CacheService.getShareIds(poolAddress as string);
-  return { props: { shareIds: shareIds } };
 };
 
 export default Pool;
