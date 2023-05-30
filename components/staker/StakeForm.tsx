@@ -4,19 +4,18 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
-import { useAccount, useBalance, useContractEvent, useNetwork } from "wagmi";
+import { Address, useAccount, useBalance, useContractEvent, useNetwork } from "wagmi";
 import { useDeposit } from "../../hooks/write/useDeposit";
 
-export const StakeForm = ({
-  poolAddress,
-  isDepositing,
-  setIsDepositing,
-}: {
-  poolAddress: any;
-  isDepositing: any;
-  setIsDepositing: any;
-}) => {
+interface Props {
+  poolAddress: Address;
+  setPoolBalance: any
+}
+
+export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
   const [maxDepositValue, setMaxDepositValue] = useState(32);
+  const [isDepositing, setIsDepositing] = useState<boolean>(false);
+
   const { chain } = useNetwork();
 
   const {
@@ -43,6 +42,7 @@ export const StakeForm = ({
       const poolBalanceNumber: number = +data.formatted;
       const maxDepositValue = 32 - poolBalanceNumber;
       setMaxDepositValue(maxDepositValue);
+      setPoolBalance(data)
     },
   });
   const {

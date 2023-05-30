@@ -7,10 +7,10 @@ import CardForNFT from "./CardForNFT";
 
 export const NftGallery = ({
   poolAddress,
-  isDepositing,
+  poolBalance,
 }: {
   poolAddress: Address;
-  isDepositing: boolean;
+  poolBalance: number;
 }) => {
   const provider = useProvider();
   const { address: accountAddress, isConnected } = useAccount();
@@ -31,7 +31,8 @@ export const NftGallery = ({
       setPoolNftArray(poolContract, poolIds);
       getUserNfts(poolContract, poolIds);
     }
-  }, [poolNftIds, provider]);
+
+  }, [poolNftIds, provider, poolBalance]); // refresh when poolbalance changes
 
   const setPoolNftArray = async (
     poolContract: ethers.Contract,

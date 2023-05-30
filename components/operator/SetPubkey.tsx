@@ -24,6 +24,7 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
     address: poolAddress,
   });
 
+  //FIXME: auto-advance if poolPubKey is already set
   useEffect(() => {
     if (poolPubKeySuccess && poolPubKey) {
       // onFinish()
@@ -93,11 +94,10 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
       />
       <div>
         <button
-          className={`${
-            isLoading
-              ? "btn btn-info no-animation my-2 mr-2"
-              : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
-          }`}
+          className={`${isLoading
+            ? "btn btn-info no-animation my-2 mr-2"
+            : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
+            }`}
           onClick={() => {
             if (writeDepositFileData) writeDepositFileData();
           }}
@@ -107,7 +107,7 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
             ? "Deposit configuration in progress..."
             : "Set deposit file"}
         </button>
-        {prepare_error && (
+        {prepare_error && depositFileData && (
           <div className="text-center font-medium my-2">
             <div>Ur a true fren but unfortunatly</div>
             <div className="text-red-500">{getErrorMessage(prepare_error)}</div>
