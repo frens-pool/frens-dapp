@@ -22,40 +22,9 @@ export const DepositForm = ({
   nextStep?: () => void;
   poolAddress: Address;
 }) => {
-  const [depositFileData, setDepositFileData] = useState();
   const { data: balance } = useBalance({
     address: poolAddress,
   });
-
-  const { chain } = useNetwork();
-
-  // validate first validator in the deposit data
-  const checkDepositData = (fileContent: any) => {
-    try {
-      const depositData = JSON.parse(fileContent)[0] as depositData;
-
-      const network = depositData.network_name;
-      const withdrawal_credentials =
-        depositData.withdrawal_credentials.toLowerCase();
-      const expectedWithdrawalAddress =
-        `010000000000000000000000${poolAddress.substring(2)}`.toLowerCase();
-
-      // temp out for goerli demo
-      if (network !== chain?.network) {
-        return { success: false, error: `Invalid network ${network}` };
-      }
-      if (withdrawal_credentials !== expectedWithdrawalAddress) {
-        return {
-          success: false,
-          error: `Invalid withdrawal address ${withdrawal_credentials}`,
-        };
-      }
-      return { success: true };
-    } catch (e) {
-      console.error(e);
-      return { success: false, error: "Invalid JSON file" };
-    }
-  };
 
   return (
     <div className="my-2 p-2">
@@ -64,16 +33,8 @@ export const DepositForm = ({
         Balance of 32 eth required for deposit
       </div>
 
-      <div>upload the deposit file here</div>
-      <DropKeys
-        validateFile={checkDepositData}
-        onFileReceived={(data: any) => {
-          const depositData = JSON.parse(data);
-          setDepositFileData(depositData[0]);
-        }}
-      />
-      {depositFileData && Number(balance?.formatted) >= 32 ? (
-        <Deposit poolAddress={poolAddress} depositFileData={depositFileData} />
+      {Number(balance?.formatted) >= 32 ? (
+        <Deposit poolAddress={poolAddress} />
       ) : (
         <div>
           {/* <div className="text-orange-400">Pool 32 ETH first</div> */}

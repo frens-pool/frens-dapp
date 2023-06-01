@@ -20,16 +20,6 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
     write: writeDepositFileData,
     prepare_error,
   } = useSetPubkey({ poolAddress, depositFileData });
-  const { isSuccess: poolPubKeySuccess, data: poolPubKey } = usePoolPubKey({
-    address: poolAddress,
-  });
-
-  //FIXME: auto-advance if poolPubKey is already set
-  useEffect(() => {
-    if (poolPubKeySuccess && poolPubKey) {
-      // onFinish()
-    }
-  }, [poolPubKeySuccess, poolPubKey]);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,

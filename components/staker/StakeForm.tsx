@@ -1,7 +1,7 @@
 import { etherscanUrl } from "#/utils/externalUrls";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
 import { Address, useAccount, useBalance, useContractEvent, useNetwork } from "wagmi";
@@ -9,7 +9,7 @@ import { useDeposit } from "../../hooks/write/useDeposit";
 
 interface Props {
   poolAddress: Address;
-  setPoolBalance: any
+  setPoolBalance: Dispatch<SetStateAction<number>>
 }
 
 export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
@@ -42,7 +42,8 @@ export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
       const poolBalanceNumber: number = +data.formatted;
       const maxDepositValue = 32 - poolBalanceNumber;
       setMaxDepositValue(maxDepositValue);
-      setPoolBalance(data)
+      if (setPoolBalance)
+        setPoolBalance(poolBalanceNumber)
     },
   });
   const {

@@ -5,13 +5,16 @@ import { Address, useAccount, useProvider } from "wagmi";
 import { usePoolTokenIDs } from "../../hooks/read/usePoolTokenIDs";
 import CardForNFT from "./CardForNFT";
 
-export const NftGallery = ({
-  poolAddress,
-  poolBalance,
-}: {
+interface Props {
   poolAddress: Address;
   poolBalance: number;
-}) => {
+}
+
+
+export const NftGallery = ({
+  poolAddress,
+  poolBalance
+}: Props) => {
   const provider = useProvider();
   const { address: accountAddress, isConnected } = useAccount();
   const { data: poolNftIds } = usePoolTokenIDs({ poolAddress });
@@ -20,6 +23,7 @@ export const NftGallery = ({
   const [shareIdNFTs, setShareIdNFTs] = useState<any[]>([]);
 
   useEffect(() => {
+    console.log("XXX>XXXX>??>>>?????")
     const poolContract = new ethers.Contract(
       FrensContracts.FrensPoolShare.address,
       FrensContracts.FrensPoolShare.abi,
@@ -121,7 +125,7 @@ export const NftGallery = ({
 
   return (
     <div className="bg-white">
-      {isDepositing ? (
+      {!poolAddress ? (
         <div className="flex justify-center">
           <div className="mr-2">updating</div>
           <div role="status">

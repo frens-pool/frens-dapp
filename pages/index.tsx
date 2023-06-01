@@ -8,9 +8,10 @@ import { InviteFrens } from "components/operator/InviteFrens";
 import { CreatePool } from "components/operator/CreatePool";
 import { RunValidator } from "components/operator/RunValidator";
 import { SetPubkey } from "#/components/operator/SetPubkey";
-import { Address } from "wagmi";
+import { Address, useBalance } from "wagmi";
+import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 
-const STEPS = ["Create", "Upload", "Invite", "Run", "Ready"] as const;
+const STEPS = ["Create", "SetPubKey", "Invite", "Run", "Ready"] as const;
 export type STEP_TYPE = (typeof STEPS)[number];
 
 const Operator: NextPage = () => {
@@ -18,15 +19,33 @@ const Operator: NextPage = () => {
     ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"][STEPS.indexOf(step)];
 
   const poolAddress = useRouter().query["pool"];
-  const [poolContract, setPoolContract] = useState<Address>("0x0");
+  const [poolContract, setPoolContract] = useState<Address>("0x");
   const [step, setStep] = useState<STEP_TYPE>("Create");
+
+  const { isSuccess: poolPubKeySuccess, data: poolPubKey } = usePoolPubKey({ address: poolContract });
 
   useEffect(() => {
     if (poolAddress) {
       setPoolContract(poolAddress as Address);
-      // setStep("Upload");
     }
   }, [poolAddress]);
+
+  //auto-advance if poolPubKey is already set
+  const { data: poolBalance } = useBalance({ address: poolContract as Address });
+
+  useEffect(() => {
+    const poolBalanceNumber: number = poolBalance ? +poolBalance.formatted : 0.0;
+    console.log("status?", poolContract, poolPubKey, poolBalanceNumber)
+    if (poolBalanceNumber >= 32) {
+      setStep("Run");
+    } else if (poolPubKeySuccess && poolPubKey != "0x") {
+      setStep("Invite");
+    } else if (poolContract != "0x") {
+      setStep("SetPubKey");
+    } else {
+      setStep("Create");
+    }
+  }, [poolAddress, poolBalance, poolPubKey, poolPubKeySuccess]);
 
   const className = (current_step: STEP_TYPE, step: STEP_TYPE) =>
     `${current_step == step ? "block" : "hidden"}`;
@@ -52,16 +71,16 @@ const Operator: NextPage = () => {
           <h1 className="text-3xl font-bold">{number("Create")} Create Pool</h1>
           <div className={className(step, "Create")}>
             <CreatePool
-              onFinish={() => setStep("Upload")}
+              onFinish={() => setStep("SetPubKey")}
               setPoolContract={setPoolContract}
             />
           </div>
         </div>
         <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">
-            {number("Upload")} Upload deposit file
+            {number("SetPubKey")} Upload deposit file
           </h1>
-          <div className={className(step, "Upload")}>
+          <div className={className(step, "SetPubKey")}>
             <SetPubkey
               poolAddress={poolContract}
               onFinish={() => setStep("Invite")}
@@ -73,9 +92,8 @@ const Operator: NextPage = () => {
             {number("Invite")} Invite Friends
           </h1>
           <div
-            className={`${
-              step == "Invite" || step == "Run" ? "block" : "hidden"
-            }`}
+            className={`${step == "Invite" || step == "Run" ? "block" : "hidden"
+              }`}
           >
             <InviteFrens
               poolContract={poolContract}

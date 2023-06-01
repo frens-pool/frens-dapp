@@ -3,13 +3,11 @@ import { useNetwork, useWaitForTransaction } from "wagmi";
 import { etherscanUrl } from "#/utils/externalUrls";
 
 export const Deposit = ({
-  poolAddress,
-  depositFileData,
+  poolAddress
 }: {
   poolAddress: string;
-  depositFileData: any;
 }) => {
-  const { data, write: stake } = useStake({ poolAddress, depositFileData });
+  const { data, write: stake } = useStake({ poolAddress });
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
   });
@@ -23,11 +21,10 @@ export const Deposit = ({
   return (
     <div>
       <button
-        className={`${
-          isLoading
-            ? "btn btn-info no-animation my-2 mr-2"
-            : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
-        }`}
+        className={`${isLoading
+          ? "btn btn-info no-animation my-2 mr-2"
+          : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
+          }`}
         onClick={() => {
           if (stake) stake();
         }}
