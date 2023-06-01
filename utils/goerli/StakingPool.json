@@ -1,5 +1,5 @@
 {
-  "address": "0x8Bc3499f7f773434b168Cfe6A7a0A193E7586c6d",
+  
   "abi": [
     {
       "inputs": [
@@ -85,6 +85,7 @@
       "name": "Stake",
       "type": "event"
     },
+<<<<<<< HEAD
     {
       "stateMutability": "payable",
       "type": "fallback"
@@ -96,6 +97,12 @@
           "name": "_id",
           "type": "uint256"
         }
+=======
+    { "stateMutability": "payable", "type": "fallback" },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "_id", "type": "uint256" }
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       ],
       "name": "addToDeposit",
       "outputs": [],
@@ -106,22 +113,30 @@
       "inputs": [],
       "name": "artForPool",
       "outputs": [
+<<<<<<< HEAD
         {
           "internalType": "contract IFrensArt",
           "name": "",
           "type": "address"
         }
+=======
+        { "internalType": "contract IFrensArt", "name": "", "type": "address" }
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       ],
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [
+<<<<<<< HEAD
         {
           "internalType": "uint256",
           "name": "_id",
           "type": "uint256"
         }
+=======
+        { "internalType": "uint256", "name": "_id", "type": "uint256" }
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       ],
       "name": "claim",
       "outputs": [],
@@ -129,6 +144,7 @@
       "type": "function"
     },
     {
+<<<<<<< HEAD
       "inputs": [
         {
           "internalType": "uint256",
@@ -144,6 +160,11 @@
           "type": "uint256"
         }
       ],
+=======
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "depositForId",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
@@ -157,6 +178,7 @@
     {
       "inputs": [],
       "name": "deposit_data_root",
+<<<<<<< HEAD
       "outputs": [
         {
           "internalType": "bytes32",
@@ -164,10 +186,14 @@
           "type": "bytes32"
         }
       ],
+=======
+      "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
+<<<<<<< HEAD
       "inputs": [
         {
           "internalType": "uint256",
@@ -183,6 +209,11 @@
           "type": "uint256"
         }
       ],
+=======
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "frenPastClaim",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
@@ -214,6 +245,7 @@
     },
     {
       "inputs": [
+<<<<<<< HEAD
         {
           "internalType": "uint256",
           "name": "_id",
@@ -228,6 +260,12 @@
           "type": "uint256"
         }
       ],
+=======
+        { "internalType": "uint256", "name": "_id", "type": "uint256" }
+      ],
+      "name": "getDistributableShare",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
@@ -235,17 +273,22 @@
       "inputs": [],
       "name": "getIdsInThisPool",
       "outputs": [
+<<<<<<< HEAD
         {
           "internalType": "uint256[]",
           "name": "",
           "type": "uint256[]"
         }
+=======
+        { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       ],
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [
+<<<<<<< HEAD
         {
           "internalType": "uint256",
           "name": "_id",
@@ -260,12 +303,19 @@
           "type": "uint256"
         }
       ],
+=======
+        { "internalType": "uint256", "name": "_id", "type": "uint256" }
+      ],
+      "name": "getShare",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [],
       "name": "getState",
+<<<<<<< HEAD
       "outputs": [
         {
           "internalType": "string",
@@ -273,10 +323,14 @@
           "type": "string"
         }
       ],
+=======
+      "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
+<<<<<<< HEAD
       "inputs": [
         {
           "internalType": "uint256",
@@ -292,10 +346,16 @@
           "type": "uint256"
         }
       ],
+=======
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "idsInPool",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
+<<<<<<< HEAD
       "inputs": [
         {
           "internalType": "uint256",
@@ -311,12 +371,18 @@
           "type": "bool"
         }
       ],
+=======
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "locked",
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [],
       "name": "owner",
+<<<<<<< HEAD
       "outputs": [
         {
           "internalType": "address",
@@ -324,12 +390,16 @@
           "type": "address"
         }
       ],
+=======
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [],
       "name": "pubKey",
+<<<<<<< HEAD
       "outputs": [
         {
           "internalType": "bytes",
@@ -337,10 +407,14 @@
           "type": "bytes"
         }
       ],
+=======
+      "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
+<<<<<<< HEAD
       "inputs": [
         {
           "internalType": "uint256",
@@ -365,6 +439,14 @@
           "name": "rageQuitting",
           "type": "bool"
         }
+=======
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "rageQuitInfo",
+      "outputs": [
+        { "internalType": "uint256", "name": "price", "type": "uint256" },
+        { "internalType": "uint256", "name": "time", "type": "uint256" },
+        { "internalType": "bool", "name": "rageQuitting", "type": "bool" }
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       ],
       "stateMutability": "view",
       "type": "function"
@@ -391,21 +473,29 @@
     },
     {
       "inputs": [
+<<<<<<< HEAD
         {
           "internalType": "bytes",
           "name": "_pubKey",
           "type": "bytes"
         },
+=======
+        { "internalType": "bytes", "name": "_pubKey", "type": "bytes" },
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
         {
           "internalType": "bytes",
           "name": "_withdrawal_credentials",
           "type": "bytes"
         },
+<<<<<<< HEAD
         {
           "internalType": "bytes",
           "name": "_signature",
           "type": "bytes"
         },
+=======
+        { "internalType": "bytes", "name": "_signature", "type": "bytes" },
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
         {
           "internalType": "bytes32",
           "name": "_deposit_data_root",
@@ -420,6 +510,7 @@
     {
       "inputs": [],
       "name": "signature",
+<<<<<<< HEAD
       "outputs": [
         {
           "internalType": "bytes",
@@ -427,6 +518,9 @@
           "type": "bytes"
         }
       ],
+=======
+      "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
@@ -438,6 +532,7 @@
       "type": "function"
     },
     {
+<<<<<<< HEAD
       "inputs": [
         {
           "internalType": "bytes",
@@ -475,12 +570,18 @@
           "type": "uint256"
         }
       ],
+=======
+      "inputs": [],
+      "name": "totalClaims",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [],
       "name": "totalDeposits",
+<<<<<<< HEAD
       "outputs": [
         {
           "internalType": "uint256",
@@ -488,12 +589,16 @@
           "type": "uint256"
         }
       ],
+=======
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [],
       "name": "transferLocked",
+<<<<<<< HEAD
       "outputs": [
         {
           "internalType": "bool",
@@ -501,16 +606,23 @@
           "type": "bool"
         }
       ],
+=======
+      "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [
+<<<<<<< HEAD
         {
           "internalType": "address",
           "name": "newOwner",
           "type": "address"
         }
+=======
+        { "internalType": "address", "name": "newOwner", "type": "address" }
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       ],
       "name": "transferOwnership",
       "outputs": [],
@@ -518,6 +630,7 @@
       "type": "function"
     },
     {
+<<<<<<< HEAD
       "inputs": [],
       "name": "validatorLocked",
       "outputs": [
@@ -555,6 +668,11 @@
           "name": "_amount",
           "type": "uint256"
         }
+=======
+      "inputs": [
+        { "internalType": "uint256", "name": "_id", "type": "uint256" },
+        { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
       ],
       "name": "withdraw",
       "outputs": [],
@@ -564,6 +682,7 @@
     {
       "inputs": [],
       "name": "withdrawal_credentials",
+<<<<<<< HEAD
       "outputs": [
         {
           "internalType": "bytes",
@@ -968,3 +1087,12 @@
     }
   }
 }
+=======
+      "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    { "stateMutability": "payable", "type": "receive" }
+  ]
+}
+>>>>>>> afabad95de653db941b789972419e95cfceb7598
