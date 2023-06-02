@@ -8,12 +8,13 @@ import { FrensContracts } from "utils/contracts";
 
 export function useCreatePool() {
   const { address: ownerAddress } = useAccount();
+  const validatorLocked = true;
 
   const { config } = usePrepareContractWrite({
     address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     functionName: "create",
-    args: [ownerAddress],
+    args: [ownerAddress, validatorLocked],
   });
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
