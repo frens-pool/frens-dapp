@@ -1,5 +1,5 @@
-import { useContractEvent, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
+import { useContractEvent } from "wagmi";
 
 export function useEventCreate() {
   useContractEvent({

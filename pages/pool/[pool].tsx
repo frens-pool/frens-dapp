@@ -1,21 +1,22 @@
+import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
+import Footer from "components/shared/Footer";
+import Navbar from "components/shared/Navbar";
+import { PoolInfo } from "components/shared/PoolInfo";
+import { NftGallery } from "components/staker/NftGallery";
+import { OperatorWidget } from "components/staker/OperatorWidget";
+import { StakeForm } from "components/staker/StakeForm";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Address, useAccount } from "wagmi";
 import { useState } from "react";
-import Navbar from "components/shared/Navbar";
-import Footer from "components/shared/Footer";
-import { StakeForm } from "components/staker/StakeForm";
-import { OperatorWidget } from "components/staker/OperatorWidget";
-import { PoolInfo } from "components/shared/PoolInfo";
-import { NftGallery } from "components/staker/NftGallery";
-import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
+import { Address, useAccount } from "wagmi";
 
-const Pool: NextPage = () => {
+const Pool: NextPage = ({ }) => {
   const router = useRouter();
-  const poolAddress = router.query.pool as Address|undefined;
+  const poolAddress = router.query.pool as Address | undefined;
+  const [poolBalance, setPoolBalance] = useState<number>(0);
 
-  const [isDepositing, setIsDepositing] = useState<boolean>(false);
+
   const { isConnected } = useAccount();
 
   if (poolAddress) {
@@ -44,30 +45,19 @@ const Pool: NextPage = () => {
 
           <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
             <StakeForm
-              poolAddress={poolAddress.toString()}
-              isDepositing={isDepositing}
-              setIsDepositing={setIsDepositing}
+              poolAddress={poolAddress}
+              setPoolBalance={setPoolBalance}
             />
             <div className="border border-slate-400 rounded-md mx-4"></div>
             <PoolInfo poolAddress={poolAddress.toString()} />
           </div>
 
           <div
-            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
-              isConnected ? "block" : "block"
-            }`}
+            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${isConnected ? "block" : "block"
+              }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
-            {isConnected ? (
-              <NftGallery
-                poolAddress={poolAddress}
-                isDepositing={isDepositing}
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center">
-                <div className="">Connect wallet to see 🧐</div>
-              </div>
-            )}
+            <NftGallery poolAddress={poolAddress} poolBalance={poolBalance} />
           </div>
         </main>
         <Footer />

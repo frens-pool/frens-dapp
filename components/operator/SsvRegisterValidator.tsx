@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { FrensContracts } from "#/utils/contracts";
+import { beaconchainUrl } from "#/utils/externalUrls";
 import { ethers } from "ethers";
-import { useWaitForTransaction, useSigner } from "wagmi";
+import { useEffect, useState } from "react";
+import { goerli, useNetwork, useSigner, useWaitForTransaction } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
 import { useAllowance } from "../../hooks/write/useAllowance";
-import SSVNetwork from "../../utils/SSVNetwork.json";
 
 export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
+  const [clusterData, setClusterData] = useState<any>();
 
   const { data: signer } = useSigner();
+  const { chain } = useNetwork();
+  const prov = publicProvider({ priority: 1 });
 
   const ssvNetworkContract = new ethers.Contract(
-    "0xb9e155e65B5c4D66df28Da8E9a0957f06F11Bc04",
-    SSVNetwork.abi,
+    FrensContracts.SSVNetworkContract.address,
+    FrensContracts.SSVNetworkContract.abi,
     signer as any
   );
 
@@ -25,11 +30,37 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       hash: data?.hash,
     });
 
+  const getClusterData = async (payloadData: any) => {
+    if (payloadData) {
+      const contractAddress = FrensContracts.SSVNetworkContract.address;
+      const clusterParams = {
+        contractAddress: contractAddress,
+        nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+        ownerAddress: (await signer?.getAddress()) as string,
+        operatorIds: payloadData.payload.operatorIds,
+      };
+      const clusterDataTemp = await buildCluster(clusterParams);
+      setClusterData(clusterDataTemp.cluster[1]);
+    }
+  };
+
   const registerSSVValidator = async () => {
     const action = "registerValidator";
 
+    const clusterParams = {
+      validatorCount: clusterData.validatorCount,
+      networkFeeIndex: clusterData.networkFeeIndex,
+      index: clusterData.index,
+      balance: clusterData.balance,
+      active: true,
+    };
+
     let unsignedTx = await ssvNetworkContract.populateTransaction[action](
-      ...payloadData
+      payloadData.payload.publicKey,
+      payloadData.payload.operatorIds,
+      payloadData.payload.shares,
+      payloadData.tokenAmount,
+      clusterParams
     );
 
     const tx = await signer?.sendTransaction(unsignedTx);
@@ -67,9 +98,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
         <div className="my-2">
           <div>Check it out here:</div>
           <a
-            href={`https://explorer.ssv.network/validators/${payloadData[0].slice(
-              2
-            )}`}
+            href={`https://explorer.ssv.network/validators/${payloadData.publicKey}`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -77,9 +106,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
             ssv explorer
           </a>
           <a
-            href={`https://prater.beaconcha.in/validator/${payloadData[0].slice(
-              2
-            )}`}
+            href={`${beaconchainUrl(chain)}/validator/${payloadData.publicKey}`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -111,7 +138,10 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       <div className="my-2 p-2">
         <button
           className="btn btn-info no-animation my-2 mr-2"
-          onClick={() => allow?.()}
+          onClick={() => {
+            allow?.();
+            getClusterData(payloadData);
+          }}
         >
           Allow again
         </button>
@@ -129,7 +159,10 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
     <div className="my-2 p-2">
       <button
         className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-        onClick={() => allow?.()}
+        onClick={() => {
+          allow?.();
+          getClusterData(payloadData);
+        }}
       >
         Allow spending SSV
       </button>
@@ -140,3 +173,27 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
     </div>
   );
 };
+
+async function buildCluster(
+  clusterParams: {
+    contractAddress: string;
+    nodeUrl: string;
+    ownerAddress: string;
+    operatorIds: number[];
+  } | null
+) {
+  const clusterData = async () => {
+    const response = await fetch("/api/clusterScanner", {
+      method: "POST",
+      body: JSON.stringify(clusterParams),
+    });
+
+    if (response.status === 451) {
+      // Something went bad
+    } else {
+      return response.json();
+    }
+  };
+
+  return await clusterData();
+}

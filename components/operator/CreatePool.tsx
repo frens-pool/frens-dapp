@@ -1,20 +1,20 @@
-import { useContractEvent, useAccount } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAccount, useContractEvent, useNetwork } from "wagmi";
 
-import { useCreatePool } from "../../hooks/write/useCreatePool";
+import { etherscanUrl } from "#/utils/externalUrls";
 import { FrensContracts } from "utils/contracts";
+import { useCreatePool } from "../../hooks/write/useCreatePool";
 
 export const CreatePool = ({
-  setStep,
+  onFinish,
   setPoolContract,
-  setTokenCode,
 }: {
-  setStep: any;
+  onFinish: () => void;
   setPoolContract: any;
-  setTokenCode: any;
 }) => {
   const { address: accountAddress } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const { chain } = useNetwork();
 
   const { data, isLoading, write: createPool } = useCreatePool();
   let etherscanLink = "";
@@ -32,12 +32,12 @@ export const CreatePool = ({
     eventName: "Create",
     listener: (node) => {
       setPoolContract(node);
-      setStep(2);
+      onFinish();
     },
   });
 
   if (data) {
-    etherscanLink = `https://goerli.etherscan.io/tx/${data.hash}`;
+    etherscanLink = `${etherscanUrl(chain)}/tx/${data.hash}`;
 
     return (
       <div>
