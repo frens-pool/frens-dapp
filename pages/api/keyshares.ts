@@ -34,7 +34,7 @@ export default async function handler(req: any, res: any) {
     });
 
     const web3 = new Web3();
-    // const tokenAmount = web3.utils.toBN(70000000000000000000).toString();
+    const tokenAmount = web3.utils.toBN(20000000000000000000).toString();
 
     const operatorFees = bodyOperators.map((operator: any) => {
       return operator.fee;
@@ -43,7 +43,7 @@ export default async function handler(req: any, res: any) {
       (acc: number, cur: number) => Number(acc) + Number(cur),
       0
     );
-    const tokenAmount = web3.utils.toBN(2 * sumOfFees).toString();
+    // const tokenAmount = web3.utils.toBN(10 * sumOfFees).toString();
 
     res.status(200).json({
       publicKey,
