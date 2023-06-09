@@ -1,21 +1,22 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
+import { etherscanUrl } from "#/utils/externalUrls";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useBalance, useContractEvent } from "wagmi";
-import { useDeposit } from "../../hooks/write/useDeposit";
+import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
+import { Address, useAccount, useBalance, useContractEvent, useNetwork } from "wagmi";
+import { useDeposit } from "../../hooks/write/useDeposit";
 
-export const StakeForm = ({
-  poolAddress,
-  isDepositing,
-  setIsDepositing,
-}: {
-  poolAddress: any;
-  isDepositing: any;
-  setIsDepositing: any;
-}) => {
+interface Props {
+  poolAddress: Address;
+  setPoolBalance: Dispatch<SetStateAction<number>>
+}
+
+export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
   const [maxDepositValue, setMaxDepositValue] = useState(32);
+  const [isDepositing, setIsDepositing] = useState<boolean>(false);
+
+  const { chain } = useNetwork();
 
   const {
     register,
@@ -41,14 +42,17 @@ export const StakeForm = ({
       const poolBalanceNumber: number = +data.formatted;
       const maxDepositValue = 32 - poolBalanceNumber;
       setMaxDepositValue(maxDepositValue);
+      if (setPoolBalance)
+        setPoolBalance(poolBalanceNumber)
     },
   });
   const {
     data: depositData,
     write: deposit,
     isError,
+    prepare_error
   } = useDeposit({ address: poolAddress, val: stakeAmount });
-  const etherscanLink = `https://goerli.etherscan.io/tx/${depositData?.hash}`;
+  const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
   if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
 
@@ -56,14 +60,25 @@ export const StakeForm = ({
     address: poolAddress.toString(),
     abi: FrensContracts.StakingPool.abi,
     eventName: "DepositToPool",
-    listener: () => {
+    listener: (amount, depositer, id) => {
       setIsDepositing(false);
       reset();
-      setTimeout(() => {
-        router.reload();
+      setTimeout(async () => {
+        await router.push({
+          pathname: router.asPath,
+          query: { shareId: id.toString() },
+        });
       }, 100);
     },
   });
+
+  const getErrorMessage = (prepare_error: any) => {
+    const message = prepare_error?.reason
+      .replace("execution reverted:", "")
+      ?? prepare_error.message
+
+    return message
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -80,6 +95,12 @@ export const StakeForm = ({
           />
           <span>ETH</span>
         </label>
+        {prepare_error && (
+          <div className="text-center font-medium my-2">
+            <div>Ur a true fren but unfortunatly</div>
+            <div className="text-red-500">{getErrorMessage(prepare_error)}</div>
+          </div>
+        )}
         {errors.ethInput && (
           <div className="text-center font-medium my-2">
             <div>Ur a true fren but unfortunatly</div>
@@ -92,11 +113,10 @@ export const StakeForm = ({
           <div className="flex flex-col justify-center">
             <button
               disabled={isDepositing ? true : false}
-              className={`btn text-white ${
-                isDepositing
-                  ? "btn-primary"
-                  : "bg-gradient-to-r from-frens-blue to-frens-teal"
-              }`}
+              className={`btn text-white ${isDepositing
+                ? "btn-primary"
+                : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                }`}
               type="submit"
             >
               {isDepositing ? "Confirm in Metamask" : "Pool"}

@@ -1,10 +1,8 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Address, useEnsName } from "wagmi";
+import { Address, goerli, useEnsName, useNetwork } from "wagmi";
 import { queryOperator } from "hooks/graphql/queryOperator";
 import { usePoolOwner } from "../../hooks/read/usePoolOwner";
-
-const chainId = 5; // 1 for mainnet, 5 for goerli
 
 type Props = {
   poolAddress: Address;
@@ -17,6 +15,8 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
   const [operatorName, setOperatorName] = useState("");
 
   const { data: poolOwner, isSuccess } = usePoolOwner({ address: poolAddress });
+  const { chain } = useNetwork();
+
   useEffect(() => {
     if (isSuccess) {
       if (poolOwner) {
@@ -32,7 +32,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
 
   const { data: ensName } = useEnsName({
     address: poolOperatorAddress(operatorAddress),
-    chainId: chainId,
+    chainId: chain?.id ?? goerli.id,
     cacheTime: 1_000,
   });
 

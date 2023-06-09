@@ -1,21 +1,20 @@
 import {
-  usePrepareContractWrite,
-  useContractWrite,
-  useNetwork,
   useAccount,
+  useContractWrite,
+  usePrepareContractWrite,
 } from "wagmi";
 
 import { FrensContracts } from "utils/contracts";
 
 export function useCreatePool() {
-  const { chain } = useNetwork();
   const { address: ownerAddress } = useAccount();
+  const validatorLocked = true;
 
   const { config } = usePrepareContractWrite({
     address: FrensContracts.StakingPoolFactory.address,
     abi: FrensContracts.StakingPoolFactory.abi,
     functionName: "create",
-    args: [ownerAddress, false],
+    args: [ownerAddress, validatorLocked],
   });
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 

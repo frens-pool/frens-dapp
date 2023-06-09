@@ -15,13 +15,21 @@ const Operator: NextPage = () => {
   const router = useRouter();
   const poolAddress = router.query.pool as Address;
 
-  enum STEP { CREATE_KEYS=0, DEPOSIT, SELECT_OPERATOR, KEYSTORE_FORM, SSV_REGISTER };
+  enum STEP {
+    CREATE_KEYS = 0,
+    DEPOSIT,
+    SELECT_OPERATOR,
+    KEYSTORE_FORM,
+    SSV_REGISTER,
+  }
 
   const [step, setStep] = useState(STEP.CREATE_KEYS);
+  const [operators, setOperators] = useState();
   const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
 
-  const number = (step:STEP) => ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"][step];
-  const className = (current_step:STEP, step: STEP) => `${current_step == step ? "block" : "hidden"}`;
+  const number = (step: STEP) => ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"][step];
+  const className = (current_step: STEP, step: STEP) =>
+    `${current_step == step ? "block" : "hidden"}`;
 
   if (poolAddress) {
     return (
@@ -42,35 +50,55 @@ const Operator: NextPage = () => {
 
         <main className="flex flex-col justify-center items-center min-h-[93vh]">
           <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-            <h1 className="text-3xl font-bold">{number(STEP.CREATE_KEYS)} Create Keys</h1>
-            <div className={className(step,STEP.CREATE_KEYS)}>
-            <CreateKeys nextStep={() => setStep(STEP.DEPOSIT)} poolAddress={poolAddress} />
+            <h1 className="text-3xl font-bold">
+              {number(STEP.CREATE_KEYS)} Create Keys
+            </h1>
+            <div className={className(step, STEP.CREATE_KEYS)}>
+              <CreateKeys
+                nextStep={() => setStep(STEP.DEPOSIT)}
+                poolAddress={poolAddress}
+              />
             </div>
           </div>
           <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-            <h1 className="text-3xl font-bold">{number(STEP.DEPOSIT)} Deposit ETH</h1>
-            <div className={className(step,STEP.DEPOSIT)}>
-            <DepositForm nextStep={() => setStep(STEP.SELECT_OPERATOR)} poolAddress={poolAddress} />
+            <h1 className="text-3xl font-bold">
+              {number(STEP.DEPOSIT)} Deposit ETH
+            </h1>
+            <div className={className(step, STEP.DEPOSIT)}>
+              <DepositForm
+                nextStep={() => setStep(STEP.SELECT_OPERATOR)}
+                poolAddress={poolAddress}
+              />
             </div>
           </div>
           <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-            <h1 className="text-3xl font-bold">{number(STEP.SELECT_OPERATOR)} Select Operator</h1>
-            <div className={className(step,STEP.SELECT_OPERATOR)}>
-              <SelectOperator nextStep={() => setStep(STEP.KEYSTORE_FORM)} />
+            <h1 className="text-3xl font-bold">
+              {number(STEP.SELECT_OPERATOR)} Select Operator
+            </h1>
+            <div className={className(step, STEP.SELECT_OPERATOR)}>
+              <SelectOperator
+                nextStep={() => setStep(STEP.KEYSTORE_FORM)}
+                setOperators={setOperators}
+              />
             </div>
           </div>
           <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-            <h1 className="text-3xl font-bold">{number(STEP.KEYSTORE_FORM)} Upload Keystore</h1>
-            <div className={className(step,STEP.KEYSTORE_FORM)}>
+            <h1 className="text-3xl font-bold">
+              {number(STEP.KEYSTORE_FORM)} Upload Keystore
+            </h1>
+            <div className={className(step, STEP.KEYSTORE_FORM)}>
               <KeystoreForm
                 nextStep={() => setStep(STEP.SSV_REGISTER)}
+                operators={operators}
                 setPayloadRegisterValidator={setPayloadRegisterValidator}
               />
             </div>
           </div>
           <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-            <h1 className="text-3xl font-bold">{number(STEP.SSV_REGISTER)} Register Validator</h1>
-            <div className={className(step,STEP.SSV_REGISTER)}>
+            <h1 className="text-3xl font-bold">
+              {number(STEP.SSV_REGISTER)} Register Validator
+            </h1>
+            <div className={className(step, STEP.SSV_REGISTER)}>
               <SSVRegisterValidator payloadData={payloadRegisterValidator} />
             </div>
           </div>

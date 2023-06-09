@@ -1,5 +1,5 @@
-import { useContractRead, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
+import { useContractRead } from "wagmi";
 
 export function useNumberOfPools() {
   const { data, isError, isLoading } = useContractRead({

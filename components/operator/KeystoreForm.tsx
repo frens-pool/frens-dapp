@@ -2,9 +2,11 @@ import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 
 export const KeystoreForm = ({
+  operators,
   nextStep,
   setPayloadRegisterValidator,
 }: {
+  operators: any;
   nextStep: () => void;
   setPayloadRegisterValidator: any;
 }) => {
@@ -21,7 +23,11 @@ export const KeystoreForm = ({
       }
       const response = await fetch("/api/keyshares", {
         method: "POST",
-        body: JSON.stringify({ keystore: keystoreFileData, password: pw }),
+        body: JSON.stringify({
+          keystore: keystoreFileData,
+          password: pw,
+          operators: operators,
+        }),
       });
       if (response.status === 451) {
         setPayloadError(true);
@@ -30,8 +36,8 @@ export const KeystoreForm = ({
       return response.json();
     };
     keyshareData().then((data) => {
-      if (data.ssvData) {
-        setPayloadRegisterValidator(data.ssvData);
+      if (data.publicKey) {
+        setPayloadRegisterValidator(data);
         setPayloadError(false);
         nextStep();
       }
@@ -51,8 +57,7 @@ export const KeystoreForm = ({
     <div className="">
       <div className="my-2 p-2">
         <DropKeys
-          validateFile={(fileContent: any) => ({success:true})}
-
+          validateFile={(fileContent: any) => ({ success: true })}
           onFileReceived={(data: any) => {
             handleKeystoreDrop(data);
           }}

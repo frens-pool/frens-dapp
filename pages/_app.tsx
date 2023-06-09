@@ -10,14 +10,19 @@ import {
 import { configureChains, createClient, WagmiConfig, goerli } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import { infuraProvider } from "wagmi/providers/infura";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [goerli],
   [
-    alchemyProvider({
-      // This is Alchemy's default API key.
-      // You can get your own at https://dashboard.alchemyapi.io
-      apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY!,
+    // alchemyProvider({
+    //   // This is Alchemy's default API key.
+    //   // You can get your own at https://dashboard.alchemyapi.io
+    //   apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY!,
+    //   priority: 0,
+    // }),
+    infuraProvider({
+      apiKey: process.env.NEXT_PUBLIC_INFURA_KEY!,
       priority: 0,
     }),
     publicProvider({ priority: 1 }),

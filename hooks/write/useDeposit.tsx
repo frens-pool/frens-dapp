@@ -7,14 +7,14 @@ import { FrensContracts } from "utils/contracts";
 
 export function useDeposit({ address, val }: { address: string, val: string }) {
 
-  const { config } = usePrepareContractWrite({
+  const { config, error: prepare_error } = usePrepareContractWrite({
     address: address,
     abi: FrensContracts.StakingPool.abi,
     functionName: 'depositToPool',
     overrides: {
       value: ethers.utils.parseEther(val),
-    },
+    }
   })
-  const { data, isLoading, isSuccess, isError, write } = useContractWrite(config)
-  return { data, isLoading, isSuccess, isError, write };
+  const { data, isLoading, isSuccess, isError, write, error, status } = useContractWrite(config)
+  return { data, isLoading, isSuccess, isError, write, error, status, prepare_error };
 }
