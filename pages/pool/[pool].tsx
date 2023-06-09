@@ -1,4 +1,5 @@
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
+import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
 import Footer from "components/shared/Footer";
 import Navbar from "components/shared/Navbar";
 import { PoolInfo } from "components/shared/PoolInfo";
@@ -8,16 +9,30 @@ import { StakeForm } from "components/staker/StakeForm";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { Address, useAccount } from "wagmi";
+import { useEffect, useState } from "react";
+import { Address, useAccount, useBalance } from "wagmi";
 
-const Pool: NextPage = ({ }) => {
+const Pool: NextPage = ({}) => {
   const router = useRouter();
-  const poolAddress = router.query.pool as Address | undefined;
+  const poolAddress = router.query.pool as Address | "0x";
+  const { data: cachedPoolShareIds } = usePoolShareIDs({ poolAddress });
+  const { isConnected } = useAccount();
+  const { data: cachePoolBalance } = useBalance({
+    address: poolAddress,
+  });
+
+  const [poolShareIDs, setPoolShareIDs] = useState<any[]>([]);
   const [poolBalance, setPoolBalance] = useState<number>(0);
 
-
-  const { isConnected } = useAccount();
+  useEffect(() => {
+    if (cachedPoolShareIds) {
+      const shareIds: string[] = cachedPoolShareIds.map((x) => x.toString());
+      setPoolShareIDs(shareIds);
+    }
+    if (cachePoolBalance) {
+      setPoolBalance(Number(cachePoolBalance.formatted));
+    }
+  }, [cachedPoolShareIds]);
 
   if (poolAddress) {
     return (
@@ -46,18 +61,22 @@ const Pool: NextPage = ({ }) => {
           <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
             <StakeForm
               poolAddress={poolAddress}
+              poolShareIDs={poolShareIDs}
+              poolBalance={poolBalance}
+              setPoolShareIDs={setPoolShareIDs}
               setPoolBalance={setPoolBalance}
             />
             <div className="border border-slate-400 rounded-md mx-4"></div>
-            <PoolInfo poolAddress={poolAddress.toString()} />
+            <PoolInfo poolBalance={poolBalance} />
           </div>
 
           <div
-            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${isConnected ? "block" : "block"
-              }`}
+            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
+              isConnected ? "block" : "block"
+            }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
-            <NftGallery poolAddress={poolAddress} poolBalance={poolBalance} />
+            <NftGallery poolAddress={poolAddress} poolShareIDs={poolShareIDs} />
           </div>
         </main>
         <Footer />

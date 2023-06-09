@@ -2,41 +2,33 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { FrensContracts } from "utils/contracts";
 import { Address, useAccount, useProvider } from "wagmi";
-import { usePoolTokenIDs } from "../../hooks/read/usePoolTokenIDs";
+import { usePoolShareIDs } from "../../hooks/read/usePoolTokenIDs";
 import CardForNFT from "./CardForNFT";
 
 interface Props {
   poolAddress: Address;
-  poolBalance: number;
+  poolShareIDs: any[];
 }
 
-
-export const NftGallery = ({
-  poolAddress,
-  poolBalance
-}: Props) => {
+export const NftGallery = ({ poolAddress, poolShareIDs }: Props) => {
   const provider = useProvider();
   const { address: accountAddress, isConnected } = useAccount();
-  const { data: poolNftIds } = usePoolTokenIDs({ poolAddress });
   const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
   const [userNFTs, setUserNFTs] = useState<any[]>([]);
   const [shareIdNFTs, setShareIdNFTs] = useState<any[]>([]);
 
   useEffect(() => {
-    console.log("XXX>XXXX>??>>>?????")
     const poolContract = new ethers.Contract(
       FrensContracts.FrensPoolShare.address,
       FrensContracts.FrensPoolShare.abi,
       provider
     );
 
-    if (poolNftIds) {
-      const poolIds: string[] = poolNftIds.map((x) => x.toString());
-      setPoolNftArray(poolContract, poolIds);
-      getUserNfts(poolContract, poolIds);
+    if (poolShareIDs) {
+      setPoolNftArray(poolContract, poolShareIDs);
+      getUserNfts(poolContract, poolShareIDs);
     }
-
-  }, [poolNftIds, provider, poolBalance]); // refresh when poolbalance changes
+  }, [poolShareIDs, poolShareIDs]); // refresh when poolbalance changes
 
   const setPoolNftArray = async (
     poolContract: ethers.Contract,

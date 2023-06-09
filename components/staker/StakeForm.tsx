@@ -1,18 +1,34 @@
 import { etherscanUrl } from "#/utils/externalUrls";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
-import { Address, useAccount, useBalance, useContractEvent, useNetwork } from "wagmi";
+import {
+  Address,
+  useAccount,
+  useBalance,
+  useContractEvent,
+  useNetwork,
+} from "wagmi";
 import { useDeposit } from "../../hooks/write/useDeposit";
 
 interface Props {
   poolAddress: Address;
-  setPoolBalance: Dispatch<SetStateAction<number>>
+  poolShareIDs: any[];
+  poolBalance: number;
+  setPoolBalance: Dispatch<SetStateAction<number>>;
+  setPoolShareIDs: Dispatch<SetStateAction<any>>;
 }
 
-export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
+export const StakeForm = ({
+  poolAddress,
+  poolBalance,
+  poolShareIDs,
+  setPoolBalance,
+  setPoolShareIDs,
+}: Props) => {
   const [maxDepositValue, setMaxDepositValue] = useState(32);
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
 
@@ -25,8 +41,6 @@ export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
     formState: { errors },
     reset,
   } = useForm();
-  const router = useRouter();
-
   const ethInputForm = watch("ethInput");
   const stakeAmount = ethInputForm > 0 ? ethInputForm.toString() : "0.1";
 
@@ -36,21 +50,19 @@ export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
   };
 
   const { isConnected } = useAccount();
-  const { data: poolBalance } = useBalance({
+  const { data: poolBalanceData } = useBalance({
     address: poolAddress,
     onSuccess(data) {
       const poolBalanceNumber: number = +data.formatted;
       const maxDepositValue = 32 - poolBalanceNumber;
       setMaxDepositValue(maxDepositValue);
-      if (setPoolBalance)
-        setPoolBalance(poolBalanceNumber)
     },
   });
   const {
     data: depositData,
     write: deposit,
     isError,
-    prepare_error
+    prepare_error,
   } = useDeposit({ address: poolAddress, val: stakeAmount });
   const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
@@ -64,21 +76,22 @@ export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
       setIsDepositing(false);
       reset();
       setTimeout(async () => {
-        await router.push({
-          pathname: router.asPath,
-          query: { shareId: id.toString() },
-        });
+        if (setPoolShareIDs)
+          setPoolShareIDs([...poolShareIDs, id.toNumber().toString()]);
+        const amountStakedInEth = ethers.utils.formatEther(amount);
+        const newPoolBalance = poolBalance + Number(amountStakedInEth);
+        if (setPoolBalance) setPoolBalance(newPoolBalance);
       }, 100);
     },
   });
 
   const getErrorMessage = (prepare_error: any) => {
-    const message = prepare_error?.reason
-      .replace("execution reverted:", "")
-      ?? prepare_error.message
+    const message =
+      prepare_error?.reason.replace("execution reverted:", "") ??
+      prepare_error.message;
 
-    return message
-  }
+    return message;
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -113,10 +126,11 @@ export const StakeForm = ({ poolAddress, setPoolBalance }: Props) => {
           <div className="flex flex-col justify-center">
             <button
               disabled={isDepositing ? true : false}
-              className={`btn text-white ${isDepositing
-                ? "btn-primary"
-                : "bg-gradient-to-r from-frens-blue to-frens-teal"
-                }`}
+              className={`btn text-white ${
+                isDepositing
+                  ? "btn-primary"
+                  : "bg-gradient-to-r from-frens-blue to-frens-teal"
+              }`}
               type="submit"
             >
               {isDepositing ? "Confirm in Metamask" : "Pool"}

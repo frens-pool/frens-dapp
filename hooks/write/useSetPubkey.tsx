@@ -7,22 +7,15 @@ interface Props {
   depositFileData: DepositFileData | undefined;
 }
 
-export function useSetPubkey({
-  poolAddress,
-  depositFileData,
-}: Props) {
-
-  const prefix = (data: string | undefined) => `0x${data ?? ""}`
+export function useSetPubkey({ poolAddress, depositFileData }: Props) {
+  const prefix = (data: string | undefined) => `0x${data ?? ""}`;
 
   const args = [
     prefix(depositFileData?.pubkey),
     prefix(depositFileData?.withdrawal_credentials),
     prefix(depositFileData?.signature),
-    prefix(depositFileData?.deposit_data_root)
-  ]
-
-  // console.log("ARGS=", args);
-  // console.log("address", poolAddress);
+    prefix(depositFileData?.deposit_data_root),
+  ];
 
   const { config, error: prepare_error } = usePrepareContractWrite({
     address: poolAddress,
