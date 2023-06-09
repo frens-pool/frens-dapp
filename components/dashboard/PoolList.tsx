@@ -21,8 +21,11 @@ export const PoolList = () => {
       <div>Your pools:</div>
       {userPools.map(({ contractAddress }: any) => (
         <div key={contractAddress}>
-          <Link href={`/pool/${contractAddress}`}>
-            <a className="underline text-frens-main">{contractAddress}</a>
+          <Link
+            className="underline text-frens-main"
+            href={`/pool/${contractAddress}`}
+          >
+            {contractAddress}
           </Link>
         </div>
       ))}
