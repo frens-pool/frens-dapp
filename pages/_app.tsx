@@ -7,13 +7,13 @@ import {
   getDefaultWallets,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig, goerli } from "wagmi";
+import { configureChains, createClient, WagmiConfig, goerli, mainnet } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [goerli],
+  [goerli, mainnet],
   [
     // alchemyProvider({
     //   // This is Alchemy's default API key.

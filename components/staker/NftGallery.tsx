@@ -1,8 +1,8 @@
+import { useNetworkName } from "#/hooks/useNetworkName";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { FrensContracts } from "utils/contracts";
 import { Address, useAccount, useProvider } from "wagmi";
-import { usePoolShareIDs } from "../../hooks/read/usePoolTokenIDs";
 import CardForNFT from "./CardForNFT";
 
 interface Props {
@@ -16,11 +16,12 @@ export const NftGallery = ({ poolAddress, poolShareIDs }: Props) => {
   const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
   const [userNFTs, setUserNFTs] = useState<any[]>([]);
   const [shareIdNFTs, setShareIdNFTs] = useState<any[]>([]);
+  const network = useNetworkName();
 
   useEffect(() => {
     const poolContract = new ethers.Contract(
-      FrensContracts.FrensPoolShare.address,
-      FrensContracts.FrensPoolShare.abi,
+      FrensContracts[network].FrensPoolShare.address,
+      FrensContracts[network].FrensPoolShare.abi,
       provider
     );
 

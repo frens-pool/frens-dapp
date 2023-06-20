@@ -1,5 +1,6 @@
 import { FrensContracts } from "#/utils/contracts";
 import { usePrepareContractWrite, useContractWrite, useNetwork } from "wagmi";
+import { useNetworkName } from "../useNetworkName";
 
 export function useAllowance({
   spender,
@@ -8,10 +9,10 @@ export function useAllowance({
   spender: string;
   value: string;
 }) {
-  const { chain } = useNetwork();
+  const network = useNetworkName();
 
-  const SSVTokenContract = FrensContracts.SSVTokenContract
-  const registerContract = FrensContracts.SSVNetworkContract
+  const SSVTokenContract = FrensContracts[network].SSVTokenContract
+  const registerContract = FrensContracts[network].SSVNetworkContract
 
   const { config } = usePrepareContractWrite({
     address: SSVTokenContract.address,

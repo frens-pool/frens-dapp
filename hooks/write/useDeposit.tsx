@@ -4,12 +4,14 @@ import {
   useContractWrite,
 } from "wagmi";
 import { FrensContracts } from "utils/contracts";
+import { useNetworkName } from '../useNetworkName';
 
 export function useDeposit({ address, val }: { address: string, val: string }) {
+  const network = useNetworkName();
 
   const { config, error: prepare_error } = usePrepareContractWrite({
     address: address,
-    abi: FrensContracts.StakingPool.abi,
+    abi: FrensContracts[network].StakingPool.abi,
     functionName: 'depositToPool',
     overrides: {
       value: ethers.utils.parseEther(val),

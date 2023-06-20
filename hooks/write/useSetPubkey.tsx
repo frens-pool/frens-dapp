@@ -1,6 +1,7 @@
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import { DepositFileData } from "#/utils/DepositFileData";
+import { useNetworkName } from "../useNetworkName";
 
 interface Props {
   poolAddress: string;
@@ -9,6 +10,7 @@ interface Props {
 
 export function useSetPubkey({ poolAddress, depositFileData }: Props) {
   const prefix = (data: string | undefined) => `0x${data ?? ""}`;
+  const network = useNetworkName();
 
   const args = [
     prefix(depositFileData?.pubkey),
@@ -19,7 +21,7 @@ export function useSetPubkey({ poolAddress, depositFileData }: Props) {
 
   const { config, error: prepare_error } = usePrepareContractWrite({
     address: poolAddress,
-    abi: FrensContracts.StakingPool.abi,
+    abi: FrensContracts[network].StakingPool.abi,
     functionName: "setPubKey",
     args,
   });

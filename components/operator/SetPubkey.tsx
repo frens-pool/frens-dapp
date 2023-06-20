@@ -40,7 +40,6 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
       const expectedWithdrawalAddress =
         `010000000000000000000000${poolAddress.substring(2)}`.toLowerCase();
 
-      // temp out for goerli demo
       if (network !== chain?.network) {
         return { success: false, error: `Invalid network ${network}` };
       }

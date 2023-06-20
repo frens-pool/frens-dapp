@@ -4,6 +4,7 @@ import { useAccount, useContractEvent, useNetwork } from "wagmi";
 import { etherscanUrl } from "#/utils/externalUrls";
 import { FrensContracts } from "utils/contracts";
 import { useCreatePool } from "../../hooks/write/useCreatePool";
+import { useNetworkName } from "#/hooks/useNetworkName";
 
 export const CreatePool = ({
   onFinish,
@@ -15,6 +16,8 @@ export const CreatePool = ({
   const { address: accountAddress } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { chain } = useNetwork();
+  const network = useNetworkName();
+
 
   const { data, isLoading, write: createPool } = useCreatePool();
   let etherscanLink = "";
@@ -27,8 +30,8 @@ export const CreatePool = ({
   }
 
   useContractEvent({
-    address: FrensContracts.StakingPoolFactory.address,
-    abi: FrensContracts.StakingPoolFactory.abi,
+    address: FrensContracts[network].StakingPoolFactory.address,
+    abi: FrensContracts[network].StakingPoolFactory.abi,
     eventName: "Create",
     listener: (node) => {
       setPoolContract(node);

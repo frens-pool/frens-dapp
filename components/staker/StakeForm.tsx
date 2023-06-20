@@ -1,3 +1,4 @@
+import { useNetworkName } from "#/hooks/useNetworkName";
 import { etherscanUrl } from "#/utils/externalUrls";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
@@ -33,6 +34,7 @@ export const StakeForm = ({
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
 
   const { chain } = useNetwork();
+  const network = useNetworkName();
 
   const {
     register,
@@ -70,7 +72,7 @@ export const StakeForm = ({
 
   useContractEvent({
     address: poolAddress.toString(),
-    abi: FrensContracts.StakingPool.abi,
+    abi: FrensContracts[network].StakingPool.abi,
     eventName: "DepositToPool",
     listener: (amount, depositer, id) => {
       setIsDepositing(false);
@@ -126,11 +128,10 @@ export const StakeForm = ({
           <div className="flex flex-col justify-center">
             <button
               disabled={isDepositing ? true : false}
-              className={`btn text-white ${
-                isDepositing
-                  ? "btn-primary"
-                  : "bg-gradient-to-r from-frens-blue to-frens-teal"
-              }`}
+              className={`btn text-white ${isDepositing
+                ? "btn-primary"
+                : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                }`}
               type="submit"
             >
               {isDepositing ? "Confirm in Metamask" : "Pool"}
