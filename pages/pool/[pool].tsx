@@ -1,21 +1,23 @@
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Address, useAccount, useBalance } from "wagmi";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
-import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
 import Footer from "components/shared/Footer";
 import Navbar from "components/shared/Navbar";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
 import { StakeForm } from "components/staker/StakeForm";
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Address, useAccount, useBalance } from "wagmi";
+import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
+import { usePoolState } from "#/hooks/read/usePoolState";
 
 const Pool: NextPage = ({}) => {
   const router = useRouter();
   const poolAddress = router.query.pool as Address | "0x";
   const { data: cachedPoolShareIds } = usePoolShareIDs({ poolAddress });
+  const { data: poolState } = usePoolState({ poolAddress });
   const { isConnected } = useAccount();
   const { data: cachePoolBalance } = useBalance({
     address: poolAddress,
@@ -56,7 +58,23 @@ const Pool: NextPage = ({}) => {
             <OperatorWidget poolAddress={poolAddress} />
           </div>
 
-          {/* <ValidatorWidget poolAddress={poolAddress} /> */}
+          {poolState === "staked" ? (
+            <ValidatorWidget poolAddress={poolAddress} />
+          ) : (
+            <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
+              <StakeForm
+                poolAddress={poolAddress}
+                poolShareIDs={poolShareIDs}
+                poolBalance={poolBalance}
+                setPoolShareIDs={setPoolShareIDs}
+                setPoolBalance={setPoolBalance}
+              />
+              <div className="border border-slate-400 rounded-md mx-4"></div>
+              <PoolInfo poolBalance={poolBalance} />
+            </div>
+          )}
+
+          {/* <ValidatorWidget poolAddress={poolAddress} />
 
           <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
             <StakeForm
@@ -68,7 +86,7 @@ const Pool: NextPage = ({}) => {
             />
             <div className="border border-slate-400 rounded-md mx-4"></div>
             <PoolInfo poolBalance={poolBalance} />
-          </div>
+          </div> */}
 
           <div
             className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
