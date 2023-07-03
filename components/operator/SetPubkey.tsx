@@ -11,9 +11,10 @@ import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 interface Props {
   poolAddress: Address;
   onFinish: () => void;
+  nextStep: () => void;
 }
 
-export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
+export const SetPubkey = ({ poolAddress, onFinish, nextStep }: Props) => {
   const [depositFileData, setDepositFileData] = useState<DepositFileData>();
   const {
     data,
@@ -40,7 +41,6 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
       const expectedWithdrawalAddress =
         `010000000000000000000000${poolAddress.substring(2)}`.toLowerCase();
 
-      // temp out for goerli demo
       if (network !== chain?.network) {
         return { success: false, error: `Invalid network ${network}` };
       }
@@ -67,14 +67,6 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
 
   return (
     <div className="my-2 p-2">
-      <div>1. Create a deposit file</div>
-      <ol>
-        <li>Start wagyu</li>
-        <li>
-          Use <code>{poolAddress}</code> as withdrawal address
-        </li>
-      </ol>
-      <div>2. Upload the deposit file here</div>
       <DropKeys
         validateFile={checkDepositData}
         onFileReceived={(data: any) => {
@@ -83,20 +75,31 @@ export const SetPubkey = ({ poolAddress, onFinish }: Props) => {
         }}
       />
       <div>
-        <button
-          className={`${isLoading
-            ? "btn btn-info no-animation my-2 mr-2"
-            : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
+        <div>
+          <button
+            className={`${
+              isLoading
+                ? "btn btn-info no-animation my-2 mr-2"
+                : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
             }`}
-          onClick={() => {
-            if (writeDepositFileData) writeDepositFileData();
-          }}
-          disabled={isLoading}
-        >
-          {isLoading
-            ? "Deposit configuration in progress..."
-            : "Set deposit file"}
-        </button>
+            onClick={() => {
+              if (writeDepositFileData) writeDepositFileData();
+            }}
+            disabled={isLoading}
+          >
+            {isLoading
+              ? "Deposit configuration in progress..."
+              : "Set deposit file"}
+          </button>
+          <button
+            className="ml-4 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+            onClick={() => {
+              nextStep();
+            }}
+          >
+            Next
+          </button>
+        </div>
         {prepare_error && depositFileData && (
           <div className="text-center font-medium my-2">
             <div>Ur a true fren but unfortunatly</div>

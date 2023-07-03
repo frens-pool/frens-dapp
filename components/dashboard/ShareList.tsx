@@ -1,32 +1,34 @@
 import { useEffect, useState } from "react";
-import { Address, useAccount, useProvider } from "wagmi";
+import { Address, useAccount, useNetwork, useProvider } from "wagmi";
 import { ethers } from "ethers";
 import { FrensContracts } from "utils/contracts";
 import CardForNFT from "../staker/CardForNFT";
+import { useNetworkName } from "#/hooks/useNetworkName";
 
 export const ShareList = () => {
   const { address: accountAddress } = useAccount();
   const provider = useProvider();
   const [userNFTids, setUserNFTids] = useState<string[]>([]);
   const [userNFT, setUserNFT] = useState<NFTJson[]>([]);
+  const network = useNetworkName();
 
   type NFTJson = {
     "name": string,
     "description": String,
     "external_url": string,
     "attributes": [
-        {
-            "trait_type": "pool"| "deposit"|"claimable"|"pool state"| "pool creator",
-            "value": Address
-        }
+      {
+        "trait_type": "pool" | "deposit" | "claimable" | "pool state" | "pool creator",
+        "value": Address
+      }
     ],
     "image": string
     "nftID": string
-}
+  }
 
   let FrensPoolShareContract = new ethers.Contract(
-    FrensContracts.FrensPoolShare.address,
-    FrensContracts.FrensPoolShare.abi,
+    FrensContracts[network].FrensPoolShare.address,
+    FrensContracts[network].FrensPoolShare.abi,
     provider
   );
 
@@ -77,7 +79,7 @@ export const ShareList = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {userNFT.map((json) => (
           <div key={json.name}>
-            <CardForNFT name={json.name} image={json.image} nftID={json.nftID} poolAddress={json.attributes.find(x => x.trait_type == "pool")!.value}/>
+            <CardForNFT name={json.name} image={json.image} nftID={json.nftID} poolAddress={json.attributes.find(x => x.trait_type == "pool")!.value} />
           </div>
         ))}
       </div>

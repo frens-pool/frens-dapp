@@ -4,10 +4,10 @@ import { Address, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import Web3 from "web3";
 import { beaconchainUrl } from "#/utils/externalUrls";
+import { useNetworkName } from "#/hooks/useNetworkName";
 
 const apiToken = process.env.NEXT_PUBLIC_ETHERSCAN_KEY;
 const etherscan_url = "https://api-goerli.etherscan.io";
-const deposit_address = FrensContracts.DepositContract.address;
 
 type Props = {
   poolAddress: Address;
@@ -16,6 +16,8 @@ type Props = {
 export const ValidatorWidget = ({ poolAddress }: Props) => {
   const [publicKeys, setPublicKeys] = useState<string[]>([]);
   const { chain } = useNetwork();
+  const network = useNetworkName();
+  const deposit_address = FrensContracts[network].DepositContract.address;
 
   useEffect(() => {
     if (apiToken) fetchValidatorPublicKeysFromEtherscan(poolAddress);

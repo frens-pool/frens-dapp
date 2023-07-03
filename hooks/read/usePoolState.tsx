@@ -2,18 +2,14 @@ import { Address, useContractRead, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import { useNetworkName } from "../useNetworkName";
 
-export function usePoolPubKey({
-  address,
-}: {
-  address: Address,
-}) {
+export function usePoolState({ poolAddress }: { poolAddress: Address }) {
   const network = useNetworkName();
 
   const { data, isLoading, isSuccess } = useContractRead({
-    address: address,
+    address: poolAddress,
     abi: FrensContracts[network].StakingPool.abi,
-    functionName: 'pubKey',
-  })
+    functionName: "getState",
+  });
 
-  return { data: data as Address, isLoading, isSuccess };
+  return { data: data, isLoading, isSuccess };
 }

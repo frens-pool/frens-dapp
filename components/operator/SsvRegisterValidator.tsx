@@ -1,3 +1,4 @@
+import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl } from "#/utils/externalUrls";
 import { ethers } from "ethers";
@@ -9,14 +10,15 @@ import { useAllowance } from "../../hooks/write/useAllowance";
 export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
+  const network = useNetworkName();
 
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
   const prov = publicProvider({ priority: 1 });
 
   const ssvNetworkContract = new ethers.Contract(
-    FrensContracts.SSVNetworkContract.address,
-    FrensContracts.SSVNetworkContract.abi,
+    FrensContracts[network].SSVNetworkContract.address,
+    FrensContracts[network].SSVNetworkContract.abi,
     signer as any
   );
 
@@ -32,7 +34,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   const getClusterData = async (payloadData: any) => {
     if (payloadData) {
-      const contractAddress = FrensContracts.SSVNetworkContract.address;
+      const contractAddress = FrensContracts[network].SSVNetworkContract.address;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
