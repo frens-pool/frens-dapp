@@ -145,7 +145,7 @@ export const NftGallery = ({ poolAddress, poolShareIDs }: Props) => {
         <div></div>
       )}
 
-      <div>Yours:</div>
+      {/* <div>Yours:</div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {userNFTs.map(({ name, image, nftID }) => (
           <div key={name}>
@@ -153,7 +153,7 @@ export const NftGallery = ({ poolAddress, poolShareIDs }: Props) => {
           </div>
         ))}
       </div>
-      <div className="mt-6">All:</div>
+      <div className="mt-6">All:</div> */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {poolNFTs.map(({ name, image, nftID }) => (
           <div key={name}>

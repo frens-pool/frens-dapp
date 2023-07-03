@@ -56,7 +56,7 @@ const Pool: NextPage = ({}) => {
             <OperatorWidget poolAddress={poolAddress} />
           </div>
 
-          <ValidatorWidget poolAddress={poolAddress} />
+          {/* <ValidatorWidget poolAddress={poolAddress} /> */}
 
           <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
             <StakeForm

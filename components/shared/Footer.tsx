@@ -7,7 +7,7 @@ const Footer = () => (
         Made with ❤️ by your{" "}
         <span className=" text-frens-main undeline">FRENS</span> 🤙
       </a>
-      <div className="flex justify-center mt-4">
+      {/* <div className="flex justify-center mt-4">
         <Image
           src="/vercel-icon-dark.svg"
           alt="vercel"
@@ -26,7 +26,7 @@ const Footer = () => (
             Vercel
           </a>
         </div>
-      </div>
+      </div> */}
     </div>
   </footer>
 );

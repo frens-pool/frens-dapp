@@ -126,16 +126,27 @@ export const StakeForm = ({
       <div className="flex justify-center mt-2 mb-4">
         {isConnected ? (
           <div className="flex flex-col justify-center">
-            <button
-              disabled={isDepositing ? true : false}
-              className={`btn text-white ${isDepositing
-                ? "btn-primary"
-                : "bg-gradient-to-r from-frens-blue to-frens-teal"
+            {prepare_error ? (
+              <button
+                disabled
+                className="btn text-white btn-primary"
+                type="submit"
+              >
+                Pool
+              </button>
+            ) : (
+              <button
+                disabled={isDepositing ? true : false}
+                className={`btn text-white ${
+                  isDepositing
+                    ? "btn-primary"
+                    : "bg-gradient-to-r from-frens-blue to-frens-teal"
                 }`}
-              type="submit"
-            >
-              {isDepositing ? "Confirm in Metamask" : "Pool"}
-            </button>
+                type="submit"
+              >
+                {isDepositing ? "Confirm in Metamask" : "Pool"}
+              </button>
+            )}
             {isDepositing ? (
               <div className="px-6 mb-4">
                 <div className="my-2 text-center">
