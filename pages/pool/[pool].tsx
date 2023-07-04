@@ -63,8 +63,8 @@ const Pool: NextPage = ({}) => {
             <ValidatorWidget poolAddress={poolAddress} />
           )}
 
-          {poolBalance === 32 && poolState !== "staked" ? (
-            <PoolFullWidget poolAddress={poolAddress} />
+          {poolBalance === 32 || poolState === "staked" ? (
+            <PoolFullWidget poolAddress={poolAddress} poolState={poolState} />
           ) : (
             <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
               <StakeForm
