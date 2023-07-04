@@ -69,7 +69,7 @@ export const KeystoreForm = ({
         )}
         <div>Keystore password:</div>
         <input
-          type="text"
+          type="password"
           onChange={(e) => setPW(e.target.value)}
           className="input input-primary w-full max-w-xs my-2"
         />
