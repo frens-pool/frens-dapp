@@ -87,7 +87,7 @@ const Operator: NextPage = () => {
           </div>
           <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">
-              {number(STEP.SELECT_OPERATOR)} select four operator
+              {number(STEP.SELECT_OPERATOR)} select four operators
             </h1>
             <div className={className(step, STEP.SELECT_OPERATOR)}>
               <SelectOperator

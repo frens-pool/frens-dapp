@@ -9,6 +9,7 @@ import Navbar from "components/shared/Navbar";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
+import { PoolFullWidget } from "components/staker/PoolFullWidget";
 import { StakeForm } from "components/staker/StakeForm";
 import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
 import { usePoolState } from "#/hooks/read/usePoolState";
@@ -58,8 +59,12 @@ const Pool: NextPage = ({}) => {
             <OperatorWidget poolAddress={poolAddress} />
           </div>
 
-          {poolState === "staked" ? (
+          {poolState === "staked" && (
             <ValidatorWidget poolAddress={poolAddress} />
+          )}
+
+          {poolBalance === 32 && poolState !== "staked" ? (
+            <PoolFullWidget poolAddress={poolAddress} />
           ) : (
             <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
               <StakeForm
@@ -73,20 +78,6 @@ const Pool: NextPage = ({}) => {
               <PoolInfo poolBalance={poolBalance} />
             </div>
           )}
-
-          {/* <ValidatorWidget poolAddress={poolAddress} />
-
-          <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
-            <StakeForm
-              poolAddress={poolAddress}
-              poolShareIDs={poolShareIDs}
-              poolBalance={poolBalance}
-              setPoolShareIDs={setPoolShareIDs}
-              setPoolBalance={setPoolBalance}
-            />
-            <div className="border border-slate-400 rounded-md mx-4"></div>
-            <PoolInfo poolBalance={poolBalance} />
-          </div> */}
 
           <div
             className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
