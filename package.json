@@ -24,7 +24,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.41.1",
     "source-map-support": "^0.5.21",
-    "ssv-keys": "^0.0.18",
+    "ssv-keys": "github:bloxapp/ssv-keys",
     "wagmi": "^0.9.5",
     "web3": "^1.7.4"
   },

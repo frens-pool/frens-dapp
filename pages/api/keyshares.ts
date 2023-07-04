@@ -1,6 +1,11 @@
 import { KeyShares, SSVKeys } from "ssv-keys";
 import Web3 from "web3";
 
+// The nonce of the owner within the SSV contract (increments after each validator registration), obtained using the ssv-scanner tool
+const TEST_OWNER_NONCE = 1;
+// The cluster owner address
+const TEST_OWNER_ADDRESS = "0x81592c3de184a3e2c0dcb5a261bc107bfa91f494";
+
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     res.status(405).send({ message: "Only POST requests allowed" });
@@ -27,11 +32,18 @@ export default async function handler(req: any, res: any) {
     const encryptedShares = await ssvKeys.buildShares(privateKey, operators);
 
     const keyShares = new KeyShares();
-    const payload = await keyShares.buildPayload({
-      publicKey,
-      operators,
-      encryptedShares,
-    });
+    const payload = await keyShares.buildPayload(
+      {
+        publicKey,
+        operators,
+        encryptedShares,
+      },
+      {
+        ownerAddress: TEST_OWNER_ADDRESS,
+        ownerNonce: TEST_OWNER_NONCE,
+        privateKey,
+      }
+    );
 
     const web3 = new Web3();
     const tokenAmount = web3.utils.toBN(20000000000000000000).toString();
