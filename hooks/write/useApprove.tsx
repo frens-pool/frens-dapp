@@ -22,6 +22,6 @@ export function useApprove({
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
-
-  return { data, isLoading, isSuccess, write };
+  
+  return { data , isLoading, isSuccess, write };
 }

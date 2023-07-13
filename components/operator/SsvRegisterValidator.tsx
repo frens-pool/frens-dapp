@@ -29,13 +29,13 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const registerContract = FrensContracts[network].SSVNetworkContract
   const maxApproval = ((BigInt(2) ** BigInt(256)) - BigInt(1));
 
-  const { data  } = useApprove({
+  const { data, write : approve  } = useApprove({
     spender: registerContract.address,
     value: maxApproval.toString()
   });
 
   const { data : ssvAllowance} = useGetAllowance({
-    spender: registerContract.address
+    address: registerContract.address
   });
 
 
@@ -63,7 +63,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const registerSSVValidator = async () => {
     const action = "registerValidator";
     const [address] = await walletClient.getAddresses();
-
+debugger;
   const ssvNetworkContract = new ethers.Contract(
     FrensContracts[network].SSVNetworkContract.address,
     FrensContracts[network].SSVNetworkContract.abi,
@@ -86,7 +86,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       clusterParams
     );
 
-    const tx = await signer?.sendTransaction(unsignedTx);
+    const tx = await walletClient.sendTransaction(unsignedTx);
     setRegisterTxHash(tx?.hash);
   };
 
@@ -99,7 +99,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   // console.log("registerIsLoading", registerIsLoading);
   // console.log("registerIsSuccess", registerIsSuccess);
 
-    return(<>Allowance:{ssvAllowance}</>)
+    // return(<>Allowance:{ssvAllowance}</>)
 
   if (registerIsLoading) {
     return (
@@ -164,7 +164,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
         <button
           className="btn btn-info no-animation my-2 mr-2"
           onClick={() => {
-            allow?.();
+            approve?.();
             getClusterData(payloadData);
           }}
         >
@@ -185,7 +185,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       <button
         className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
         onClick={() => {
-          allow?.();
+          approve?.();
           getClusterData(payloadData);
         }}
       >
