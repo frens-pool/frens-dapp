@@ -1,5 +1,5 @@
-import { useNetwork, goerli, mainnet } from "wagmi";
-
+import { useNetwork } from "wagmi";
+import { goerli, mainnet} from "@wagmi/chains"
 export function useNetworkName() {
   const { chain } = useNetwork();
 
