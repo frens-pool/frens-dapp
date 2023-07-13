@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 import { SSVKeys, ISharesKeyPairs } from 'ssv-keys';
 import BigNumber from 'bignumber.js';
-import { useNetwork, useWaitForTransaction } from "wagmi";
 import { useWalletClient } from 'wagmi'
-import { goerli, mainnet} from "@wagmi/chains"
 import { FrensContracts } from "#/utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
 
@@ -26,7 +24,6 @@ export const KeystoreForm = ({
   const { data: walletClient } = useWalletClient()
   // Initialize SSVKeys SDK
   const ssvKeys = new SSVKeys();
-  // const keyShares = new KeyShares();
 
   function buildRegisterPayload() {
 
@@ -39,12 +36,13 @@ export const KeystoreForm = ({
 
         const operators_keygen = operators.map((operator: any) => ({
           id: operator.id,
-          publicKey: operator.public_key,
+          operatorKey: operator.public_key,
+          // TODO: in newer version this is renamed to publicKey ?
+          // publicKey: operator.public_key,
         }));
 
         const { publicKey, privateKey } = await ssvKeys.extractKeys(keystoreFileData, pw);
 
-        // const operators: [] = [{ publicKey, id }];
         const threshold: ISharesKeyPairs = await ssvKeys.createThreshold(privateKey, operators_keygen);
         const shares = await ssvKeys.encryptShares(operators_keygen, threshold.shares);
 
@@ -53,6 +51,8 @@ export const KeystoreForm = ({
         const ownerAddress = d.cluster[0].Owner;
         const ownerNonce = parseInt(d.cluster[1].index);
 
+        // TODO : this function does not exist. It's called "buildShares"
+        debugger;
         const payload = await ssvKeys.buildPayload({
           publicKey,
           operators,
@@ -63,21 +63,8 @@ export const KeystoreForm = ({
           privateKey
         });
 
-        // const encryptedShares = await ssvKeys.buildShares(privateKey, operators_keygen);
-
-
-
-        // const payload = await keyShares.buildPayload({
-        //   publicKey,
-        //   operators: operators_keygen,
-        //   encryptedShares,
-        // },
-        //   {
-        //     ownerAddress,
-        //     ownerNonce,
-        //     privateKey,
-        //   });
-
+       
+        debugger;
         console.dir(payload);
 
 
@@ -93,26 +80,25 @@ export const KeystoreForm = ({
         // );
 
         return {
-          // publicKey,
-          // privateKey,
-          // encryptedShares,
           payload,
           tokenAmount,
         };
 
-      } catch (e) {
+      } catch (error: any) {
+        console.log(error);
         setPayloadError(true);
         setLoading(false);
+        throw new Error(error);
       }
 
     };
 
     keyshareData().then((data) => {
-      // if (data.publicKey) {
       setPayloadRegisterValidator(data);
       setPayloadError(false);
       nextStep();
-      // }
+    }).finally(() => {
+      // what now ?      
     });
   }
 
