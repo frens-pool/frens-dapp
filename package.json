@@ -14,6 +14,7 @@
     "@rainbow-me/rainbowkit": "^1.0.6",
     "@vercel/analytics": "^0.1.8",
     "cluster-scanner": "github:bloxapp/cluster-scanner",
+    "crypto-browserify": "^3.12.0",
     "daisyui": "^2.46.0",
     "ethers": "^5.7.2",
     "graphql": "^16.6.0",
@@ -25,6 +26,7 @@
     "react-hook-form": "^7.41.1",
     "source-map-support": "^0.5.21",
     "ssv-keys": "^0.0.18",
+    "stream-browserify": "^3.0.0",
     "wagmi": "^1.3.8",
     "web3": "^1.7.4"
   },
