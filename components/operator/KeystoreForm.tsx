@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
-import { SSVKeys, ISharesKeyPairs } from 'ssv-keys';
-import BigNumber from 'bignumber.js';
-import { useWalletClient } from 'wagmi'
+import { ISharesKeyPairs, SSVKeys, KeyShares } from "ssv-keys";
+import BigNumber from "bignumber.js";
+import { useAccount } from "wagmi";
+
 import { FrensContracts } from "#/utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
 
 export const KeystoreForm = ({
-  operators,
+  operatorsList,
   nextStep,
   setPayloadRegisterValidator,
 }: {
-  operators: any;
+  operatorsList: any;
   nextStep: () => void;
   setPayloadRegisterValidator: any;
 }) => {
@@ -21,54 +22,60 @@ export const KeystoreForm = ({
   const [keystoreError, setKeystoreError] = useState(false);
   const [keystoreFileData, setKeystoreFileData] = useState<string>("");
   const network = useNetworkName();
-  const { data: walletClient } = useWalletClient()
-  // Initialize SSVKeys SDK
+  const { address: walletAddress } = useAccount();
+
   const ssvKeys = new SSVKeys();
 
   function buildRegisterPayload() {
-
     const keyshareData = async () => {
       try {
-
         if (!keystoreFileData) {
           setKeystoreError(true);
         }
 
-        const operators_keygen = operators.map((operator: any) => ({
+        const operators = operatorsList.map((operator: any) => ({
           id: operator.id,
           operatorKey: operator.public_key,
-          // TODO: in newer version this is renamed to publicKey ?
           // publicKey: operator.public_key,
         }));
 
-        const { publicKey, privateKey } = await ssvKeys.extractKeys(keystoreFileData, pw);
-        debugger;
-        // const threshold: ISharesKeyPairs = await ssvKeys.createThreshold(privateKey, operators_keygen);
-        const encryptedShares = await ssvKeys.buildShares(operators_keygen, operators);
-
-        const d = await getClusterData(operators_keygen.map((o: any) => o.id));
-
-        const ownerAddress = d.cluster[0].Owner;
-        const ownerNonce = parseInt(d.cluster[1].index);
-
-        debugger;
-        const payload = await ssvKeys.buildPayload({
-          publicKey,
+        const { publicKey, privateKey } = await ssvKeys.extractKeys(
+          keystoreFileData,
+          pw
+        );
+        const threshold: ISharesKeyPairs = await ssvKeys.createThreshold(
+          privateKey,
+          operators
+        );
+        const encryptedShares = await ssvKeys.encryptShares(
           operators,
-          encryptedShares
-        }, {
-          ownerAddress,
-          ownerNonce,
-          privateKey
-        });
+          threshold.shares
+        );
 
+        // SSV Cluster Data
+        const cData = await getClusterData(operators.map((o: any) => o.id));
+        const ownerAddress = cData.cluster[0].Owner;
+        const ownerNonce = parseInt(cData.cluster[1].index);
+
+        const keyShares = new KeyShares();
+        const payload = await keyShares.buildPayload(
+          {
+            publicKey,
+            operators,
+            encryptedShares,
+          },
+          {
+            ownerAddress,
+            ownerNonce,
+            privateKey,
+          }
+        );
 
         debugger;
-        console.dir(payload);
-
+        console.debug("payload: ", payload);
 
         // TODO : what is this arbitrary number ?
-        const tokenAmount = (new BigNumber(20000000000000000000)).toString();
+        const tokenAmount = new BigNumber(20000000000000000000).toString();
 
         // const operatorFees = operators.map((operator: any) => {
         //   return operator.fee;
@@ -82,23 +89,23 @@ export const KeystoreForm = ({
           payload,
           tokenAmount,
         };
-
       } catch (error: any) {
         console.log(error);
         setPayloadError(true);
         setLoading(false);
         throw new Error(error);
       }
-
     };
 
-    keyshareData().then((data) => {
-      setPayloadRegisterValidator(data);
-      setPayloadError(false);
-      nextStep();
-    }).finally(() => {
-      // what now ?      
-    });
+    keyshareData()
+      .then((data) => {
+        setPayloadRegisterValidator(data);
+        setPayloadError(false);
+        nextStep();
+      })
+      .finally(() => {
+        // what now ?
+      });
   }
 
   function handleKeystoreDrop(data: any) {
@@ -110,16 +117,14 @@ export const KeystoreForm = ({
     }
   }
 
-
   const getClusterData = async (operatorIds: any) => {
-    const [address] = await walletClient.getAddresses();
-
     if (operatorIds) {
-      const contractAddress = FrensContracts[network].SSVNetworkContract.address;
+      const contractAddress =
+        FrensContracts[network].SSVNetworkContract.address;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        ownerAddress: address,
+        ownerAddress: walletAddress as `0x${string}`,
         operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
@@ -150,7 +155,6 @@ export const KeystoreForm = ({
 
     return await clusterData();
   }
-
 
   return (
     <div className="">

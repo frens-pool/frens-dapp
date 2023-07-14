@@ -103,7 +103,7 @@ const Operator: NextPage = () => {
             <div className={className(step, STEP.KEYSTORE_FORM)}>
               <KeystoreForm
                 nextStep={() => setStep(STEP.SSV_REGISTER)}
-                operators={operators}
+                operatorsList={operators}
                 setPayloadRegisterValidator={setPayloadRegisterValidator}
               />
             </div>
