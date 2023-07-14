@@ -42,28 +42,27 @@ export const KeystoreForm = ({
         }));
 
         const { publicKey, privateKey } = await ssvKeys.extractKeys(keystoreFileData, pw);
-
-        const threshold: ISharesKeyPairs = await ssvKeys.createThreshold(privateKey, operators_keygen);
-        const shares = await ssvKeys.encryptShares(operators_keygen, threshold.shares);
+        debugger;
+        // const threshold: ISharesKeyPairs = await ssvKeys.createThreshold(privateKey, operators_keygen);
+        const encryptedShares = await ssvKeys.buildShares(operators_keygen, operators);
 
         const d = await getClusterData(operators_keygen.map((o: any) => o.id));
 
         const ownerAddress = d.cluster[0].Owner;
         const ownerNonce = parseInt(d.cluster[1].index);
 
-        // TODO : this function does not exist. It's called "buildShares"
         debugger;
         const payload = await ssvKeys.buildPayload({
           publicKey,
           operators,
-          shares
+          encryptedShares
         }, {
           ownerAddress,
           ownerNonce,
           privateKey
         });
 
-       
+
         debugger;
         console.dir(payload);
 
