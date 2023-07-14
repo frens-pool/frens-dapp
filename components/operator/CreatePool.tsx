@@ -18,7 +18,6 @@ export const CreatePool = ({
   const { chain } = useNetwork();
   const network = useNetworkName();
 
-
   const { data, isLoading, write: createPool } = useCreatePool();
   let etherscanLink = "";
 
@@ -30,11 +29,13 @@ export const CreatePool = ({
   }
 
   useContractEvent({
-    address: FrensContracts[network].StakingPoolFactory.address,
+    address: FrensContracts[network].StakingPoolFactory
+      .address as `0x${string}`,
     abi: FrensContracts[network].StakingPoolFactory.abi,
     eventName: "Create",
     listener: (node) => {
-      setPoolContract(node);
+      // @ts-ignore
+      setPoolContract(node[0].args.contractAddress);
       onFinish();
     },
   });
