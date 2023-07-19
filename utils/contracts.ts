@@ -20,10 +20,10 @@ import MainnetStakingPool from "./mainnet/StakingPool.json";
 import MainnetStakingPoolFactory from "./mainnet/StakingPoolFactory.json";
 import MainnetDepositContract from "./DepositContract.json";
 
-const unknownABI = { "abi": [] }
+const unknownABI = { abi: [] };
 
 export const FrensContracts = {
-  "mainnet": {
+  mainnet: {
     FrensStorage: {
       address: MainnetFrensStorage.address,
       abi: MainnetFrensStorage.abi,
@@ -68,7 +68,7 @@ export const FrensContracts = {
       abi: GoerliSSVRegistry.abi, // TODO
     },
   },
-  "goerli": {
+  goerli: {
     FrensStorage: {
       address: GoerliFrensStorage.address,
       abi: GoerliFrensStorage.abi,
@@ -105,14 +105,12 @@ export const FrensContracts = {
       abi: GoerliSSVToken.abi,
     },
     SSVNetworkContract: {
-      address: "0xAfdb141Dd99b5a101065f40e3D7636262dce65b3",
+      address: "0xC3CD9A0aE89Fff83b71b58b6512D43F8a41f363D",
       abi: GoerliSSVNetwork.abi,
     },
     SSVRegistryrContract: {
       address: "0x8dB45282d7C4559fd093C26f677B3837a5598914",
       abi: GoerliSSVRegistry.abi,
     },
-  }
-}
-
-  ;
+  },
+};
