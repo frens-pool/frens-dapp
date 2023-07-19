@@ -1,7 +1,7 @@
 import { queryPools } from "hooks/graphql/queryPools";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Address, useAccount, useContract } from "wagmi";
+import { Address, useAccount } from "wagmi";
 
 export const PoolList = () => {
   const { address } = useAccount();

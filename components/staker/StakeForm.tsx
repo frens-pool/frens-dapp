@@ -1,8 +1,7 @@
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { etherscanUrl } from "#/utils/externalUrls";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { ethers } from "ethers";
-import { useRouter } from "next/router";
+import { formatEther } from "viem";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
@@ -66,21 +65,25 @@ export const StakeForm = ({
     isError,
     prepare_error,
   } = useDeposit({ address: poolAddress, val: stakeAmount });
+  console.log(depositData);
   const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
   if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
 
   useContractEvent({
-    address: poolAddress.toString(),
+    address: poolAddress.toString() as `0x${string}`,
     abi: FrensContracts[network].StakingPool.abi,
     eventName: "DepositToPool",
-    listener: (amount, depositer, id) => {
+    listener: (log) => {
       setIsDepositing(false);
       reset();
       setTimeout(async () => {
         if (setPoolShareIDs)
-          setPoolShareIDs([...poolShareIDs, id.toNumber().toString()]);
-        const amountStakedInEth = ethers.utils.formatEther(amount);
+          setPoolShareIDs([
+            ...poolShareIDs,
+            (log as any)[0].args.id.toString(),
+          ]);
+        const amountStakedInEth = formatEther((log as any)[0].args.amount);
         const newPoolBalance = poolBalance + Number(amountStakedInEth);
         if (setPoolBalance) setPoolBalance(newPoolBalance);
       }, 100);
@@ -89,7 +92,7 @@ export const StakeForm = ({
 
   const getErrorMessage = (prepare_error: any) => {
     const message =
-      prepare_error?.reason.replace("execution reverted:", "") ??
+      prepare_error?.reason?.replace("execution reverted:", "") ??
       prepare_error.message;
 
     return message;
