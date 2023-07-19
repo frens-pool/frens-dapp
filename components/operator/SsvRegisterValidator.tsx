@@ -2,12 +2,14 @@ import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl } from "#/utils/externalUrls";
 import { ethers } from "ethers";
+import { getContract } from "viem";
 import { useState } from "react";
 import {
   useNetwork,
   useAccount,
   useWalletClient,
   useWaitForTransaction,
+  usePublicClient,
 } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { useApprove } from "../../hooks/write/useApprove";
@@ -20,6 +22,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const { address: walletAddress } = useAccount();
   const { chain } = useNetwork();
   const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
 
   const registerContract = FrensContracts[network].SSVNetworkContract;
   const maxApproval = BigInt(2) ** BigInt(256) - BigInt(1);
@@ -54,32 +57,33 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   };
 
   const registerSSVValidator = async () => {
-    if (walletAddress && walletClient) {
-      const action = "registerValidator";
-      const ssvNetworkContract = new ethers.Contract(
-        FrensContracts[network].SSVNetworkContract.address,
-        FrensContracts[network].SSVNetworkContract.abi,
-        walletClient
-      );
+    const clusterParams = {
+      validatorCount: clusterData.validatorCount,
+      networkFeeIndex: clusterData.networkFeeIndex,
+      index: clusterData.index,
+      balance: clusterData.balance,
+      active: true,
+    };
 
-      const clusterParams = {
-        validatorCount: clusterData.validatorCount,
-        networkFeeIndex: clusterData.networkFeeIndex,
-        index: clusterData.index,
-        balance: clusterData.balance,
-        active: true,
-      };
-
-      let unsignedTx = await ssvNetworkContract.populateTransaction[action](
+    const { request } = await publicClient.simulateContract({
+      account: walletAddress,
+      address: FrensContracts[network].SSVNetworkContract
+        .address as `0x${string}`,
+      abi: FrensContracts[network].SSVNetworkContract.abi,
+      args: [
         payloadData.payload.publicKey,
         payloadData.payload.operatorIds,
         payloadData.payload.sharesData,
         payloadData.tokenAmount,
-        clusterParams
-      );
+        clusterParams,
+      ],
+      functionName: "registerValidator",
+    });
 
-      const tx = await walletClient.sendTransaction(unsignedTx);
-      setRegisterTxHash(tx?.hash);
+    if (walletClient) {
+      const txHash = await walletClient.writeContract(request);
+      debugger;
+      setRegisterTxHash(txHash);
     }
   };
 
