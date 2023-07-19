@@ -48,7 +48,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        ownerAddress: walletAddress,
+        ownerAddress: walletAddress as `0x${string}`,
         operatorIds: payloadData.payload.operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
@@ -82,7 +82,6 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
     if (walletClient) {
       const txHash = await walletClient.writeContract(request);
-      debugger;
       setRegisterTxHash(txHash);
     }
   };

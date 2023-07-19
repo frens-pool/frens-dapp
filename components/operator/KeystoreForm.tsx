@@ -71,8 +71,8 @@ export const KeystoreForm = ({
           }
         );
 
-        debugger;
-        console.debug("payload: ", payload);
+        // doebugger;
+        // consle.debug("payload: ", payload);
 
         // TODO : what is this arbitrary number ?
         const tokenAmount = new BigNumber(20000000000000000000).toString();
