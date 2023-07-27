@@ -11,7 +11,6 @@ import {
   useWaitForTransaction,
   usePublicClient,
 } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
 import { useApprove } from "../../hooks/write/useApprove";
 import { useGetAllowance } from "../../hooks/read/useGetAllowance";
 
@@ -27,7 +26,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const registerContract = FrensContracts[network].SSVNetworkContract;
   const maxApproval = BigInt(2) ** BigInt(256) - BigInt(1);
 
-  const { data, write: approve } = useApprove({
+  const { data: approveData, write: approve } = useApprove({
     spender: registerContract.address,
     value: maxApproval.toString(),
   });
@@ -38,7 +37,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   const { isLoading: allowanceIsLoading, isSuccess: allowanceIsSuccess } =
     useWaitForTransaction({
-      hash: data?.hash,
+      hash: approveData?.hash,
     });
 
   const getClusterData = async (payloadData: any) => {
@@ -48,7 +47,8 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        ownerAddress: walletAddress as `0x${string}`,
+        // ownerAddress: walletAddress as `0x${string}`,
+        ownerAddress: "0x35E928fBAd7a404fbcffA51c85d2ccFd045663CB",
         operatorIds: payloadData.payload.operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);

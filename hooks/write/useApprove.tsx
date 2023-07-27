@@ -11,17 +11,16 @@ export function useApprove({
 }) {
   const network = useNetworkName();
 
-
-  const SSVTokenContract = FrensContracts[network].SSVTokenContract
+  const SSVTokenContract = FrensContracts[network].SSVTokenContract;
 
   const { config } = usePrepareContractWrite({
-    address: SSVTokenContract.address,
+    address: SSVTokenContract.address as `0x${string}`,
     abi: SSVTokenContract.abi,
     functionName: "approve",
     args: [spender, value],
   });
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
-  
-  return { data , isLoading, isSuccess, write };
+
+  return { data, isLoading, isSuccess, write };
 }

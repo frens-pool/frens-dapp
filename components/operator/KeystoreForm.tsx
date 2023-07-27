@@ -124,7 +124,8 @@ export const KeystoreForm = ({
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        ownerAddress: walletAddress as `0x${string}`,
+        // ownerAddress: walletAddress as `0x${string}`,
+        ownerAddress: "0x35E928fBAd7a404fbcffA51c85d2ccFd045663CB",
         operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
