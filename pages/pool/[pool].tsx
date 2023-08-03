@@ -85,7 +85,7 @@ const Pool: NextPage = ({}) => {
             }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
-            <NftGallery poolAddress={poolAddress} poolShareIDs={poolShareIDs} />
+            <NftGallery poolAddress={poolAddress} />
           </div>
         </main>
         <Footer />

@@ -1,6 +1,7 @@
-import { Address, goerli, useNetwork } from "wagmi";
+import { Address, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
+import { goerli, mainnet} from "@wagmi/chains"
 
 type CardProps = {
   name: string;
