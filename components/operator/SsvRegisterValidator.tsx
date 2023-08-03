@@ -2,43 +2,53 @@ import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl } from "#/utils/externalUrls";
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
-import { goerli, useNetwork, useSigner, useWaitForTransaction } from "wagmi";
-import { publicProvider } from "wagmi/providers/public";
-import { useAllowance } from "../../hooks/write/useAllowance";
+import { getContract } from "viem";
+import { useState } from "react";
+import {
+  useNetwork,
+  useAccount,
+  useWalletClient,
+  useWaitForTransaction,
+  usePublicClient,
+} from "wagmi";
+import { useApprove } from "../../hooks/write/useApprove";
+import { useGetAllowance } from "../../hooks/read/useGetAllowance";
 
 export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
-
-  const { data: signer } = useSigner();
+  const { address: walletAddress } = useAccount();
   const { chain } = useNetwork();
-  const prov = publicProvider({ priority: 1 });
+  const { data: walletClient } = useWalletClient();
+  const publicClient = usePublicClient();
 
-  const ssvNetworkContract = new ethers.Contract(
-    FrensContracts[network].SSVNetworkContract.address,
-    FrensContracts[network].SSVNetworkContract.abi,
-    signer as any
-  );
+  const registerContract = FrensContracts[network].SSVNetworkContract;
+  const maxApproval = BigInt(2) ** BigInt(256) - BigInt(1);
 
-  const { data, write: allow } = useAllowance({
-    spender: "",
-    value: "",
+  const { data: approveData, write: approve } = useApprove({
+    spender: registerContract.address,
+    value: maxApproval.toString(),
+  });
+
+  const { data: ssvAllowance } = useGetAllowance({
+    address: registerContract.address,
   });
 
   const { isLoading: allowanceIsLoading, isSuccess: allowanceIsSuccess } =
     useWaitForTransaction({
-      hash: data?.hash,
+      hash: approveData?.hash,
     });
 
   const getClusterData = async (payloadData: any) => {
     if (payloadData) {
-      const contractAddress = FrensContracts[network].SSVNetworkContract.address;
+      const contractAddress =
+        FrensContracts[network].SSVNetworkContract.address;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        ownerAddress: (await signer?.getAddress()) as string,
+        // ownerAddress: walletAddress as `0x${string}`,
+        ownerAddress: "0x35E928fBAd7a404fbcffA51c85d2ccFd045663CB",
         operatorIds: payloadData.payload.operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
@@ -47,8 +57,6 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   };
 
   const registerSSVValidator = async () => {
-    const action = "registerValidator";
-
     const clusterParams = {
       validatorCount: clusterData.validatorCount,
       networkFeeIndex: clusterData.networkFeeIndex,
@@ -57,16 +65,25 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       active: true,
     };
 
-    let unsignedTx = await ssvNetworkContract.populateTransaction[action](
-      payloadData.payload.publicKey,
-      payloadData.payload.operatorIds,
-      payloadData.payload.shares,
-      payloadData.tokenAmount,
-      clusterParams
-    );
+    const { request } = await publicClient.simulateContract({
+      account: walletAddress,
+      address: FrensContracts[network].SSVNetworkContract
+        .address as `0x${string}`,
+      abi: FrensContracts[network].SSVNetworkContract.abi,
+      args: [
+        payloadData.payload.publicKey,
+        payloadData.payload.operatorIds,
+        payloadData.payload.sharesData,
+        payloadData.tokenAmount,
+        clusterParams,
+      ],
+      functionName: "registerValidator",
+    });
 
-    const tx = await signer?.sendTransaction(unsignedTx);
-    setRegisterTxHash(tx?.hash);
+    if (walletClient) {
+      const txHash = await walletClient.writeContract(request);
+      setRegisterTxHash(txHash);
+    }
   };
 
   const { isLoading: registerIsLoading, isSuccess: registerIsSuccess } =
@@ -77,6 +94,8 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   // console.log("registerIsLoading", registerIsLoading);
   // console.log("registerIsSuccess", registerIsSuccess);
+
+  // return(<>Allowance:{ssvAllowance}</>)
 
   if (registerIsLoading) {
     return (
@@ -141,7 +160,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
         <button
           className="btn btn-info no-animation my-2 mr-2"
           onClick={() => {
-            allow?.();
+            approve?.();
             getClusterData(payloadData);
           }}
         >
@@ -162,7 +181,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       <button
         className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
         onClick={() => {
-          allow?.();
+          approve?.();
           getClusterData(payloadData);
         }}
       >

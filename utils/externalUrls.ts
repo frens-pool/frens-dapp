@@ -1,19 +1,18 @@
 import { Chain } from "wagmi";
-import { goerli } from "@wagmi/core";
 
 export function etherscanUrl(chain?: Chain) {
-  switch (chain) {
-    case goerli:
-      return `https://${chain?.name}.etherscan.io`;
+  switch (chain?.id) {
+    case 7:
+      return `https://goerli.etherscan.io`;
     default:
-      return `https://etherscan.io`;
+      return `https://goerli.etherscan.io`;
   }
 }
 
 export function beaconchainUrl(chain?: Chain) {
-  switch (chain) {
-    case goerli:
-      return `https://${chain?.name}.beaconcha.in`;
+  switch (chain?.id) {
+    case 7:
+      return `https://goerli.beaconcha.in`;
     default:
       return `https://prater.beaconcha.in`;
   }

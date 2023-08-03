@@ -14,7 +14,7 @@ export const SelectOperator = ({
   useEffect(() => {
     const fetchOperators = async () => {
       const data = await fetch(
-        "https://api.ssv.network/api/v3/prater/operators?page=1&perPage=5&ordering=performance.30d%3Adesc"
+        "https://api.ssv.network/api/v4/prater/operators?page=1&perPage=10&ordering=performance.30d%3Adesc"
       );
       const json = await data.json();
       setssvOperators(json.operators);

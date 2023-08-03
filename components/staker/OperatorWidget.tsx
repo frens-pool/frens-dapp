@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Address, goerli, useEnsName, useNetwork } from "wagmi";
+import { Address, useEnsName, useNetwork } from "wagmi";
 import { queryOperator } from "hooks/graphql/queryOperator";
 import { usePoolOwner } from "../../hooks/read/usePoolOwner";
 
@@ -25,14 +25,14 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
     }
   }, [isSuccess, poolOwner]);
 
-  const poolOperatorAddress = (operatorAddress: Address|undefined): Address =>
+  const poolOperatorAddress = (operatorAddress: Address | undefined): Address =>
     operatorAddress
       ? operatorAddress
       : "0x49792f9cd0a7DC957CA6658B18a3c2A6d8F36F2d";
 
   const { data: ensName } = useEnsName({
     address: poolOperatorAddress(operatorAddress),
-    chainId: chain?.id ?? goerli.id,
+    chainId: chain?.id ?? 5,
     cacheTime: 1_000,
   });
 
@@ -47,11 +47,11 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
     const operatorProfileFromFetch = await queryOperator({
       operatorAddress: operatorAddress,
     });
-    
+
     setOperatorImage(
       operatorProfileFromFetch?.data?.defaultProfile?.picture?.original?.url
     );
-    
+
     setOperatorName(operatorProfileFromFetch?.data?.defaultProfile?.name);
   };
 
@@ -90,7 +90,6 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
       </div>
     );
   }
-
   return (
     <div className="flex flex-wrap justify-center align-middle bg-white rounded-xl p-4 md:p-8">
       <div className="flex justify-center p-2 mr-6">
