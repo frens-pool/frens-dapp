@@ -80,6 +80,7 @@ const Operator: NextPage = () => {
               setPoolContract={setPoolContract}
             />
           </div>
+          <div>or <a href="/dashboard">open existing pools</a></div>
         </div>
         {/* <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">
