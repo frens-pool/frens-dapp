@@ -6,30 +6,19 @@ import { Address, useAccount, usePublicClient } from "wagmi";
 import CardForNFT from "../staker/CardForNFT";
 
 interface Props {
-  poolAddress: Address;
 }
 
-export const NftGallery = ({ }: Props) => {
+export const ShareList = ({ }: Props) => {
   const { address: accountAddress, isConnected } = useAccount();
-  // const { data: poolShareIDs } = usePoolShareIDs({ poolAddress });
-  const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
   const [userNFTs, setUserNFTs] = useState<any[]>([]);
-  const [shareIdNFTs, setShareIdNFTs] = useState<any[]>([]);
   const network = useNetworkName();
   const publicClient = usePublicClient();
 
   useEffect(() => {
-   
+    if (isConnected) {
       getUserNfts();
-   
-  }, []); // refresh when poolbalance changes
-
-  // const setPoolNftArray = async (  ) => {
-  //   const poolNft = await Promise.all(
-  //     poolShareIDs.map(async (nftID) => await jsonForNftId(nftID))
-  //   );
-  //   setPoolNFTs(poolNft);
-  // };
+    }
+  }, [isConnected]); // TODO: refresh when poolbalance changes
 
   const getUserNfts = async (
   ) => {
@@ -38,12 +27,10 @@ export const NftGallery = ({ }: Props) => {
   };
 
   const getUserNftIds = async (
-    poolShareContract: any,
     ownerAddress: any
   ) => {
-
     let ownerBalance = await publicClient.readContract({
-      address: FrensContracts[network].FrensPoolShare.address as `0x${string}`,
+      address: FrensContracts[network].FrensPoolShare.address,
       abi: FrensContracts[network].FrensPoolShare.abi,
       functionName: 'balanceOf',
       args: [ownerAddress]
@@ -52,7 +39,7 @@ export const NftGallery = ({ }: Props) => {
     let nfts: string[] = [];
     for (var i = 0; i < Number(ownerBalance); i++) {
       let nftId_ = await publicClient.readContract({
-        address: FrensContracts[network].FrensPoolShare.address as `0x${string}`,
+        address: FrensContracts[network].FrensPoolShare.address,
         abi: FrensContracts[network].FrensPoolShare.abi,
         functionName: 'tokenOfOwnerByIndex',
         args: [ownerAddress, i]
@@ -67,7 +54,7 @@ export const NftGallery = ({ }: Props) => {
     userNftIDs: string[]
   ) => {
     const userWalletNFTs = await Promise.all(
-      userNftIDs.map(async (nftID) => await jsonForNftId(poolShareContract, nftID))
+      userNftIDs.map(async (nftID) => await jsonForNftId(nftID))
     );
     setUserNFTs(userWalletNFTs);
   };
@@ -75,7 +62,7 @@ export const NftGallery = ({ }: Props) => {
   const jsonForNftId = async (nftID: string) => {
 
     let tokenURI_ = await publicClient.readContract({
-      address: FrensContracts[network].FrensPoolShare.address as `0x${string}`,
+      address: FrensContracts[network].FrensPoolShare.address,
       abi: FrensContracts[network].FrensPoolShare.abi,
       functionName: 'tokenURI',
       args: [nftID]
@@ -89,21 +76,21 @@ export const NftGallery = ({ }: Props) => {
     return json;
   };
 
-  if (!isConnected) {
-    if (shareIdNFTs.length !== 0) {
-      return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {shareIdNFTs.map(({ name, image, nftID }) => (
-            <div key={name}>
-              <CardForNFT name={name} image={image} nftID={nftID} />
-            </div>
-          ))}
-        </div>
-      );
-    }
-  }
+  // if (!isConnected) {
+  //   if (shareIdNFTs.length !== 0) {
+  //     return (
+  //       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+  //         {shareIdNFTs.map(({ name, image, nftID }) => (
+  //           <div key={name}>
+  //             <CardForNFT name={name} image={image} nftID={nftID} />
+  //           </div>
+  //         ))}
+  //       </div>
+  //     );
+  //   }
+  // }
 
-  if (poolNFTs.length === 0) {
+  if (userNFTs.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
         <div className="mb-4">None 🧐</div>
@@ -113,7 +100,7 @@ export const NftGallery = ({ }: Props) => {
 
   return (
     <div className="bg-white">
-      {!poolAddress ? (
+      {!userNFTs ? (
         <div className="flex justify-center">
           <div className="mr-2">updating</div>
           <div role="status">
@@ -141,7 +128,7 @@ export const NftGallery = ({ }: Props) => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {poolNFTs.map(({ name, image, nftID }) => (
+        {userNFTs.map(({ name, image, nftID }) => (
           <div key={name}>
             <CardForNFT name={name} image={image} nftID={nftID} />
           </div>

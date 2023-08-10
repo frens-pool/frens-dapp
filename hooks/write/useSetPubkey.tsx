@@ -1,10 +1,10 @@
-import { usePrepareContractWrite, useContractWrite } from "wagmi";
+import { usePrepareContractWrite, useContractWrite, Address } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import { DepositFileData } from "#/utils/DepositFileData";
 import { useNetworkName } from "../useNetworkName";
 
 interface Props {
-  poolAddress: string;
+  poolAddress: Address;
   depositFileData: DepositFileData | undefined;
 }
 
