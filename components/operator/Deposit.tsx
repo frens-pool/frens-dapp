@@ -1,11 +1,11 @@
 import { useStake } from "../../hooks/write/useStake";
-import { useNetwork, useWaitForTransaction } from "wagmi";
+import { Address, useNetwork, useWaitForTransaction } from "wagmi";
 import { etherscanUrl } from "#/utils/externalUrls";
 
 export const Deposit = ({
   poolAddress
 }: {
-  poolAddress: string;
+  poolAddress: Address;
 }) => {
   const { data, write: stake } = useStake({ poolAddress });
   const { isLoading, isSuccess } = useWaitForTransaction({
