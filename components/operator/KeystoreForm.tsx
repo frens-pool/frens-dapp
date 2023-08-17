@@ -74,8 +74,9 @@ export const KeystoreForm = ({
         // doebugger;
         // consle.debug("payload: ", payload);
 
-        // TODO : what is this arbitrary number ?
-        const tokenAmount = new BigNumber(20000000000000000000).toString();
+        // static at 1,5 SSV token per validator.
+        // assumption: exactly 4 operators
+        const tokenAmount = new BigNumber(6000000000000000000).toString();
 
         // const operatorFees = operators.map((operator: any) => {
         //   return operator.fee;
