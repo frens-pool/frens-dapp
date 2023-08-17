@@ -97,14 +97,14 @@ export const SetPubkey = ({
               ? "Deposit configuration in progress..."
               : "Set deposit file"}
           </button>
-          <button
+          {/* <button
             className="ml-4 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
             onClick={() => {
               nextStep();
             }}
           >
             Next
-          </button>
+          </button> */}
         </div>
         {prepare_error && depositFileData && (
           <div className="text-center font-medium my-2">
