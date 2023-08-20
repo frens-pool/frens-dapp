@@ -1,20 +1,25 @@
 import { Address, useNetwork, useWaitForTransaction } from "wagmi";
 
 import { etherscanUrl } from "#/utils/externalUrls";
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 
 import { DropKeys, validateFileFunction } from "components/operator/DropKeys";
 import { DepositFileData } from "#/utils/DepositFileData";
 import { useSetPubkey } from "#/hooks/write/useSetPubkey";
-import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 
 interface Props {
   poolAddress: Address;
   onFinish: () => void;
   nextStep: () => void;
+  updatePubKeyState: any;
 }
 
-export const SetPubkey = ({ poolAddress, onFinish, nextStep }: Props) => {
+export const SetPubkey = ({
+  poolAddress,
+  onFinish,
+  nextStep,
+  updatePubKeyState,
+}: Props) => {
   const [depositFileData, setDepositFileData] = useState<DepositFileData>();
   const {
     data,
@@ -25,6 +30,7 @@ export const SetPubkey = ({ poolAddress, onFinish, nextStep }: Props) => {
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: (data) => {
+      updatePubKeyState(depositFileData?.pubkey);
       onFinish();
     },
   });
@@ -91,14 +97,14 @@ export const SetPubkey = ({ poolAddress, onFinish, nextStep }: Props) => {
               ? "Deposit configuration in progress..."
               : "Set deposit file"}
           </button>
-          <button
+          {/* <button
             className="ml-4 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
             onClick={() => {
               nextStep();
             }}
           >
             Next
-          </button>
+          </button> */}
         </div>
         {prepare_error && depositFileData && (
           <div className="text-center font-medium my-2">
