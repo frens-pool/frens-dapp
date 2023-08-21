@@ -54,8 +54,10 @@ export const KeystoreForm = ({
 
         // SSV Cluster Data
         const cData = await getClusterData(operators.map((o: any) => o.id));
+        console.log("cData");
+        console.log(cData);
         const ownerAddress = cData.cluster[0].Owner;
-        const ownerNonce = parseInt(cData.cluster[1].index);
+        const ownerNonce = parseInt(cData.nonce);
 
         const keyShares = new KeyShares();
         const payload = await keyShares.buildPayload(
@@ -71,12 +73,9 @@ export const KeystoreForm = ({
           }
         );
 
-        // doebugger;
-        // consle.debug("payload: ", payload);
-
         // static at 1,5 SSV token per validator.
         // assumption: exactly 4 operators
-        const tokenAmount = new BigNumber(6000000000000000000).toString();
+        const tokenAmount = new BigNumber(5000000000000000000).toString();
 
         // const operatorFees = operators.map((operator: any) => {
         //   return operator.fee;
@@ -129,6 +128,7 @@ export const KeystoreForm = ({
         // ownerAddress: "0x35E928fBAd7a404fbcffA51c85d2ccFd045663CB",
         operatorIds,
       };
+      console.log("clusterParams", clusterParams);
       const clusterDataTemp = await buildCluster(clusterParams);
       return clusterDataTemp;
     }
