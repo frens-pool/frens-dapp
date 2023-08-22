@@ -151,7 +151,7 @@ export const ShareList = ({ }: Props) => {
             <div className="text-lg mt-2">Pool shares</div>
           </div>
           <div className="w-1/3 text-center p-4 border rounded shadow-lg mr-4">
-            <div className="text-5xl font-bold">{totalDeposit}</div>
+            <div className="text-5xl font-bold">{totalDeposit.toFixed(4).toString()}</div>
             <div className="text-lg mt-2">ETH deposited</div>
           </div>
 
