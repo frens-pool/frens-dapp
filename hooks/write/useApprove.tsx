@@ -14,7 +14,7 @@ export function useApprove({
   const SSVTokenContract = FrensContracts[network].SSVTokenContract;
 
   const { config } = usePrepareContractWrite({
-    address: SSVTokenContract.address as `0x${string}`,
+    address: SSVTokenContract.address,
     abi: SSVTokenContract.abi,
     functionName: "approve",
     args: [spender, value],

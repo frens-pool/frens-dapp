@@ -30,8 +30,7 @@ export const CreatePool = ({
   }
 
   useContractEvent({
-    address: FrensContracts[network].StakingPoolFactory
-      .address as `0x${string}`,
+    address: FrensContracts[network].StakingPoolFactory.address,
     abi: FrensContracts[network].StakingPoolFactory.abi,
     eventName: "Create",
     listener: (node) => {

@@ -71,7 +71,7 @@ export const StakeForm = ({
   if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
 
   useContractEvent({
-    address: poolAddress.toString() as `0x${string}`,
+    address: poolAddress,
     abi: FrensContracts[network].StakingPool.abi,
     eventName: "DepositToPool",
     listener: (log) => {
@@ -140,11 +140,10 @@ export const StakeForm = ({
             ) : (
               <button
                 disabled={isDepositing ? true : false}
-                className={`btn text-white ${
-                  isDepositing
-                    ? "btn-primary"
-                    : "bg-gradient-to-r from-frens-blue to-frens-teal"
-                }`}
+                className={`btn text-white ${isDepositing
+                  ? "btn-primary"
+                  : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                  }`}
                 type="submit"
               >
                 {isDepositing ? "Confirm in Metamask" : "Pool"}
