@@ -17,3 +17,15 @@ export function beaconchainUrl(chain?: Chain) {
       return `https://prater.beaconcha.in`;
   }
 }
+
+export function ssvExplorer(publicKey: string, chain?: Chain) {
+  // remove `0x` prefix
+  const publicKeyWithout0xPrefix = publicKey.replace(/^(0x)/, '');
+
+  switch (chain?.id) {
+    case 7:
+      return `https://goerli.explorer.ssv.network/validators/${publicKeyWithout0xPrefix}`;
+    default:
+      return `https://goerli.explorer.ssv.network/validators/${publicKeyWithout0xPrefix}`;
+  }
+}
