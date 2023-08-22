@@ -19,11 +19,11 @@ function CardForNFT({ name, image, nftID, poolAddress }: CardProps) {
       : `https://opensea.io/assets/${FrensContracts[network].FrensPoolShare.address}/${nftID}`;
 
   return (
-    <div className="w-60 rounded-xl">
-      <img src={image} className="w-full rounded-xl" alt={name} />
+    <div className=" rounded-xl">
+      <img src={image} className="max-w-10 rounded-xl" alt={name} />
       <div className="px-2 text-center">
         <a href={openSeaLink} target="_blank" rel="noopener noreferrer">
-          <div className="text-center">View on OpenSea</div>
+          <div className="text-center">View share on OpenSea</div>
         </a>
         {poolAddress && (
           <a href={`/pool/${poolAddress}`} target="_blank" rel="noopener noreferrer">

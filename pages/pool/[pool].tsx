@@ -35,7 +35,7 @@ const Pool: NextPage = ({}) => {
     if (cachePoolBalance) {
       setPoolBalance(Number(cachePoolBalance.formatted));
     }
-  }, [cachedPoolShareIds]);
+  }, [cachedPoolShareIds,cachePoolBalance]);
 
   if (poolAddress) {
     return (
@@ -85,7 +85,7 @@ const Pool: NextPage = ({}) => {
             }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
-            <NftGallery poolAddress={poolAddress} />
+            <NftGallery key={poolBalance} poolAddress={poolAddress} />
           </div>
         </main>
         <Footer />
