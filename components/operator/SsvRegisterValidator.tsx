@@ -67,8 +67,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
     const { request } = await publicClient.simulateContract({
       account: walletAddress,
-      address: FrensContracts[network].SSVNetworkContract
-        .address as `0x${string}`,
+      address: FrensContracts[network].SSVNetworkContract.address,
       abi: FrensContracts[network].SSVNetworkContract.abi,
       args: [
         payloadData.payload.publicKey,
@@ -92,10 +91,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       hash: registerTxHash,
     });
 
-  // console.log("registerIsLoading", registerIsLoading);
-  // console.log("registerIsSuccess", registerIsSuccess);
-
-  // return(<>Allowance:{ssvAllowance}</>)
+  console.log("payloadData", payloadData);
 
   if (registerIsLoading) {
     return (
@@ -119,7 +115,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
         <div className="my-2">
           <div>Check it out here:</div>
           <a
-            href={`https://explorer.ssv.network/validators/${payloadData.publicKey}`}
+            href={`https://goerli.explorer.ssv.network/validators/${payloadData.payload.publicKey}`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -127,7 +123,9 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
             ssv explorer
           </a>
           <a
-            href={`${beaconchainUrl(chain)}/validator/${payloadData.publicKey}`}
+            href={`${beaconchainUrl(chain)}/validator/${
+              payloadData.payload.publicKey
+            }`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -136,7 +134,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
           </a>
         </div>
 
-        <div>Dashboard for all your stakes/valis coming soon</div>
+        <div>Or checkout your validator dashboard</div>
       </div>
     );
   }

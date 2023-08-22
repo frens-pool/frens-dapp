@@ -14,9 +14,10 @@ export const SelectOperator = ({
   useEffect(() => {
     const fetchOperators = async () => {
       const data = await fetch(
-        "https://api.ssv.network/api/v4/prater/operators?page=1&perPage=30&ordering=performance.30d%3Adesc"
+        "https://api.ssv.network/api/v4/prater/operators?type=verified_operator&page=1&perPage=6&ordering=performance.30d%3Adesc"
       );
       const json = await data.json();
+      console.log(json);
       setssvOperators(json.operators);
     };
 
@@ -67,7 +68,13 @@ export const SelectOperator = ({
           <span className="badge badge-ghost badge-sm">last 30d</span>
         </td>
         <th>
-          <button className="btn btn-ghost btn-xs">details</button>
+          <a
+            href={`https://ssvscan.io/operator/${item.id}`}
+            className="btn btn-ghost btn-xs"
+            target="_blank"
+          >
+            details
+          </a>
         </th>
       </tr>
     );

@@ -1,11 +1,11 @@
-import { usePrepareContractWrite, useContractWrite } from "wagmi";
+import { usePrepareContractWrite, useContractWrite, Address } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import { useNetworkName } from "../useNetworkName";
 
 export function useStake({
   poolAddress
 }: {
-  poolAddress: string;
+  poolAddress: Address;
 }) {
   const network = useNetworkName();
 

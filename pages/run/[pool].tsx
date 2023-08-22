@@ -26,8 +26,13 @@ const Operator: NextPage = () => {
   }
 
   const [step, setStep] = useState(STEP.CREATE_KEYS);
+  const [pubKey, setPubKey] = useState("");
   const [operators, setOperators] = useState();
   const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
+
+  const updatePubKeyState = (newValue: any) => {
+    setPubKey(newValue);
+  };
 
   const number = (step: STEP) => ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"][step];
   const className = (current_step: STEP, step: STEP) =>
@@ -71,6 +76,7 @@ const Operator: NextPage = () => {
                 poolAddress={poolAddress}
                 onFinish={() => setStep(STEP.DEPOSIT)}
                 nextStep={() => setStep(STEP.DEPOSIT)}
+                updatePubKeyState={updatePubKeyState}
               />
             </div>
           </div>
@@ -79,10 +85,12 @@ const Operator: NextPage = () => {
               {number(STEP.DEPOSIT)} deposit ETH
             </h1>
             <div className={className(step, STEP.DEPOSIT)}>
-              <DepositForm
-                nextStep={() => setStep(STEP.SELECT_OPERATOR)}
-                poolAddress={poolAddress}
-              />
+              {pubKey && (
+                <DepositForm
+                  nextStep={() => setStep(STEP.SELECT_OPERATOR)}
+                  poolAddress={poolAddress}
+                />
+              )}
             </div>
           </div>
           <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
@@ -98,7 +106,7 @@ const Operator: NextPage = () => {
           </div>
           <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
             <h1 className="text-3xl font-bold">
-              {number(STEP.KEYSTORE_FORM)} upload keystore
+              {number(STEP.KEYSTORE_FORM)} split keyshare
             </h1>
             <div className={className(step, STEP.KEYSTORE_FORM)}>
               <KeystoreForm
