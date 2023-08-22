@@ -39,14 +39,13 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
     });
 
   const getClusterData = async (payloadData: any) => {
-    if (payloadData) {
-      const contractAddress =
-        FrensContracts[network].SSVNetworkContract.address;
+    if (payloadData && walletAddress && chain) {
+      const nodeUrl = chain.rpcUrls.default.http.at(0)!
+      const contractAddress = FrensContracts[network].SSVNetworkContract.address;
       const clusterParams = {
         contractAddress: contractAddress,
-        nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        ownerAddress: walletAddress as `0x${string}`,
-        // ownerAddress: "0x35E928fBAd7a404fbcffA51c85d2ccFd045663CB",
+        nodeUrl: nodeUrl,
+        ownerAddress: walletAddress,
         operatorIds: payloadData.payload.operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);

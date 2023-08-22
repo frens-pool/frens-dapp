@@ -1,7 +1,7 @@
 import { Address, useNetwork } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
-import { goerli, mainnet} from "@wagmi/chains"
+import { openseaUrl } from "#/utils/externalUrls";
 
 type CardProps = {
   name: string;
@@ -13,10 +13,7 @@ type CardProps = {
 function CardForNFT({ name, image, nftID, poolAddress }: CardProps) {
   const { chain } = useNetwork();
   const network = useNetworkName();
-  const openSeaLink =
-    chain?.name === goerli.name
-      ? `https://testnets.opensea.io/assets/goerli/${FrensContracts[network].FrensPoolShare.address}/${nftID}`
-      : `https://opensea.io/assets/${FrensContracts[network].FrensPoolShare.address}/${nftID}`;
+  const openSeaLink = openseaUrl(FrensContracts[network].FrensPoolShare.address, nftID)
 
   return (
     <div className="w-60 rounded-xl">

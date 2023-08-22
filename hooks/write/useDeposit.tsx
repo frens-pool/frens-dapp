@@ -7,7 +7,7 @@ export function useDeposit({ address, val }: { address: string; val: string }) {
   const network = useNetworkName();
 
   const { config, error: prepare_error } = usePrepareContractWrite({
-    address: address as `0x${string}`,
+    address: address,
     abi: FrensContracts[network].StakingPool.abi,
     functionName: "depositToPool",
     value: parseEther(val),

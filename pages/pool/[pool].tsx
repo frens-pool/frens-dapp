@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Address, useAccount, useBalance } from "wagmi";
+import { Address, useAccount, useBalance, useNetwork } from "wagmi";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
 import Footer from "components/shared/Footer";
 import Navbar from "components/shared/Navbar";
@@ -14,7 +14,7 @@ import { StakeForm } from "components/staker/StakeForm";
 import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
 import { usePoolState } from "#/hooks/read/usePoolState";
 
-const Pool: NextPage = ({}) => {
+const Pool: NextPage = ({ }) => {
   const router = useRouter();
   const poolAddress = router.query.pool as Address | "0x";
   const { data: cachedPoolShareIds } = usePoolShareIDs({ poolAddress });
@@ -36,6 +36,11 @@ const Pool: NextPage = ({}) => {
       setPoolBalance(Number(cachePoolBalance.formatted));
     }
   }, [cachedPoolShareIds]);
+
+  const { chain } = useNetwork();
+
+  if (chain)
+    console.dir(chain.rpcUrls.default.http)
 
   if (poolAddress) {
     return (
@@ -80,9 +85,8 @@ const Pool: NextPage = ({}) => {
           )}
 
           <div
-            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
-              isConnected ? "block" : "block"
-            }`}
+            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${isConnected ? "block" : "block"
+              }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
             <NftGallery poolAddress={poolAddress} />

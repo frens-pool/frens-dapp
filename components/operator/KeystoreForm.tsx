@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 import { ISharesKeyPairs, SSVKeys, KeyShares } from "ssv-keys";
 import BigNumber from "bignumber.js";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 
 import { FrensContracts } from "#/utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
@@ -23,6 +23,7 @@ export const KeystoreForm = ({
   const [keystoreFileData, setKeystoreFileData] = useState<string>("");
   const network = useNetworkName();
   const { address: walletAddress } = useAccount();
+  const { chain } = useNetwork();
 
   const ssvKeys = new SSVKeys();
 
@@ -118,14 +119,13 @@ export const KeystoreForm = ({
   }
 
   const getClusterData = async (operatorIds: any) => {
-    if (operatorIds) {
-      const contractAddress =
-        FrensContracts[network].SSVNetworkContract.address;
+    if (operatorIds && walletAddress && chain) {
+      const contractAddress = FrensContracts[network].SSVNetworkContract.address;
+      const nodeUrl = chain.rpcUrls.default.http.at(0)!
       const clusterParams = {
         contractAddress: contractAddress,
-        nodeUrl: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-        ownerAddress: walletAddress as `0x${string}`,
-        // ownerAddress: "0x35E928fBAd7a404fbcffA51c85d2ccFd045663CB",
+        nodeUrl: nodeUrl,
+        ownerAddress: walletAddress,
         operatorIds,
       };
       console.log("clusterParams", clusterParams);
