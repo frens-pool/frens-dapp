@@ -109,7 +109,7 @@ export const ShareList = ({ }: Props) => {
   if (userNFTs.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">You don't have shares in a pool 🧐</div>
+        <div className="mb-4">You don&apos;t have shares in a pool 🧐</div>
       </div>
     );
   }

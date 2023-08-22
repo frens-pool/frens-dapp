@@ -51,7 +51,7 @@ const Operator: NextPage = () => {
     } else {
       setStep("Create");
     }
-  }, [poolAddress, poolBalance, poolPubKey, poolPubKeySuccess]);
+  }, [poolAddress, poolBalance, poolPubKey, poolPubKeySuccess, poolContract]);
 
   const className = (current_step: STEP_TYPE, step: STEP_TYPE) =>
     `${current_step == step ? "block" : "hidden"}`;
@@ -102,9 +102,8 @@ const Operator: NextPage = () => {
             {number("Invite")} Invite Friends
           </h1>
           <div
-            className={`${
-              step == "Invite" || step == "Run" ? "block" : "hidden"
-            }`}
+            className={`${step == "Invite" || step == "Run" ? "block" : "hidden"
+              }`}
           >
             <InviteFrens
               poolContract={poolContract}

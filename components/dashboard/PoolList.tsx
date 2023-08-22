@@ -27,7 +27,7 @@ export const PoolList = () => {
   if (userPools.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">You haven't created any pools yet 🧐</div>
+        <div className="mb-4">You haven&apos;t created any pools yet 🧐</div>
         <Link href="/">
           <button
             className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
