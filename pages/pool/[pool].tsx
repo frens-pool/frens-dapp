@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Address, useAccount, useBalance, useNetwork } from "wagmi";
+import { Address, useAccount, useBalance } from "wagmi";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
 import Footer from "components/shared/Footer";
 import Navbar from "components/shared/Navbar";
@@ -35,12 +35,7 @@ const Pool: NextPage = ({ }) => {
     if (cachePoolBalance) {
       setPoolBalance(Number(cachePoolBalance.formatted));
     }
-  }, [cachedPoolShareIds,cachePoolBalance]);
-
-  const { chain } = useNetwork();
-
-  if (chain)
-    console.dir(chain.rpcUrls.default.http)
+  }, [cachedPoolShareIds, cachePoolBalance]);
 
   if (poolAddress) {
     return (

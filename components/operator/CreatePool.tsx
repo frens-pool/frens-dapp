@@ -20,7 +20,6 @@ export const CreatePool = ({
   const network = useNetworkName();
 
   const { data, isLoading, write: createPool } = useCreatePool();
-  let etherscanLink = "";
 
   function onCreatePool(): void {
     // const INVITATION_TOKEN_LENGTH = 9
@@ -41,7 +40,7 @@ export const CreatePool = ({
   });
 
   if (data) {
-    etherscanLink = `${etherscanUrl(chain)}/tx/${data.hash}`;
+    const etherscanLink = `${etherscanUrl(chain)}/tx/${data.hash}`;
 
     return (
       <div>

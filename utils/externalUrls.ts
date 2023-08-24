@@ -5,7 +5,7 @@ export function etherscanUrl(chain?: Chain) {
     case 7:
       return `https://goerli.etherscan.io`;
     default:
-      return `https://goerli.etherscan.io`;
+      return `https://etherscan.io`;
   }
 }
 
@@ -14,7 +14,7 @@ export function beaconchainUrl(chain?: Chain) {
     case 7:
       return `https://goerli.beaconcha.in`;
     default:
-      return `https://prater.beaconcha.in`;
+      return `https://beaconcha.in`;
   }
 }
 

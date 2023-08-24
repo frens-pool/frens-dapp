@@ -1,11 +1,8 @@
 import { useNetworkName } from "#/hooks/useNetworkName";
-import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { FrensContracts } from "utils/contracts";
 import { Address, useAccount, usePublicClient } from "wagmi";
 import CardForNFT from "./CardForNFT";
-import { getContract } from 'viem'
-import viem from 'viem';
 import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
 
 interface Props {
@@ -29,24 +26,21 @@ export const NftGallery = ({ poolAddress }: Props) => {
     const poolNft = await Promise.all(
       poolShareIDs.map(async (nftID) => await jsonForNftId(nftID.toString()))
     );
+    // console.log(poolNft)
     setPoolNFTs(poolNft);
   };
 
   const jsonForNftId = async (nftID: string) => {
-
-    let tokenURI_ = await publicClient.readContract({
+    const tokenURI = await publicClient.readContract({
       address: FrensContracts[network].FrensPoolShare.address,
       abi: FrensContracts[network].FrensPoolShare.abi,
       functionName: 'tokenURI',
       args: [nftID]
-    })
-
-    const tokenURI = tokenURI_ as string;
+    }) as string
 
     const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
-    let json = JSON.parse(jsonString);
-    json.nftID = nftID;
-    return json;
+    const json = JSON.parse(jsonString);
+    return { ...json, nftID };
   };
 
   if (poolNFTs.length === 0) {
