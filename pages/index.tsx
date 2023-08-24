@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
 import { InviteFrens } from "components/operator/InviteFrens";
 import { CreatePool } from "components/operator/CreatePool";
 import { RunValidator } from "components/operator/RunValidator";
-// import { SetPubkey } from "#/components/operator/SetPubkey";
 import { Address, useBalance } from "wagmi";
 import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 
@@ -81,22 +79,7 @@ const Operator: NextPage = () => {
               setPoolContract={setPoolContract}
             />
           </div>
-          <div>or <Link
-            className="underline text-frens-main"
-            href="/dashboard">open existing pools</Link>
-          </div>
         </div>
-        {/* <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">
-            {number("SetPubKey")} Upload deposit file
-          </h1>
-          <div className={className(step, "SetPubKey")}>
-            <SetPubkey
-              poolAddress={poolContract}
-              onFinish={() => setStep("Invite")}
-            />
-          </div>
-        </div> */}
         <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">
             {number("Invite")} Invite Friends

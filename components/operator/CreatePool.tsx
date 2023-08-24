@@ -1,5 +1,6 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount, useContractEvent, useNetwork } from "wagmi";
+import Link from "next/link";
 
 import { etherscanUrl } from "#/utils/externalUrls";
 import { FrensContracts } from "utils/contracts";
@@ -46,7 +47,7 @@ export const CreatePool = ({
     return (
       <div>
         <div className="my-2">
-          You will get a link to your own personal staking pool
+          You will get a link to your own personal staking pool abc
         </div>
         <div className="flex items-center justify-center mt-4 mb-2">
           <div>
@@ -119,6 +120,12 @@ export const CreatePool = ({
             </div>
           )}
         </div>
+      </div>
+      <div>
+        or{" "}
+        <Link className="underline text-frens-main" href="/dashboard">
+          open existing pools
+        </Link>
       </div>
     </div>
   );
