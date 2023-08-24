@@ -1,7 +1,7 @@
 import { Address, useNetwork, useWaitForTransaction } from "wagmi";
 
 import { etherscanUrl } from "#/utils/externalUrls";
-import { Dispatch, useEffect, useState } from "react";
+import { useState } from "react";
 
 import { DropKeys, validateFileFunction } from "components/operator/DropKeys";
 import { DepositFileData } from "#/utils/DepositFileData";
@@ -9,14 +9,12 @@ import { useSetPubkey } from "#/hooks/write/useSetPubkey";
 
 interface Props {
   poolAddress: Address;
-  onFinish: () => void;
   nextStep: () => void;
   updatePubKeyState: any;
 }
 
 export const SetPubkey = ({
   poolAddress,
-  onFinish,
   nextStep,
   updatePubKeyState,
 }: Props) => {
@@ -31,7 +29,7 @@ export const SetPubkey = ({
     hash: data?.hash,
     onSuccess: (data) => {
       updatePubKeyState(depositFileData?.pubkey);
-      onFinish();
+      nextStep();
     },
   });
   const { chain } = useNetwork();
@@ -85,7 +83,7 @@ export const SetPubkey = ({
           <button
             className={`${
               isLoading
-                ? "btn btn-info no-animation my-2 mr-2"
+                ? "btn btn-info no-animation my-2 mr-2 loading"
                 : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
             }`}
             onClick={() => {

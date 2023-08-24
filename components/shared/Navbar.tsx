@@ -36,7 +36,7 @@ const Navbar = () => (
             </a>
           </li> */}
           <li>
-            <Link href="/">Pool</Link>
+            <Link href="/">Create Pool</Link>
           </li>
           <li>
             <Link href="/dashboard">Dashboard</Link>

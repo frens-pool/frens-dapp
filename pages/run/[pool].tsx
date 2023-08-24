@@ -74,7 +74,6 @@ const Operator: NextPage = () => {
             <div className={className(step, STEP.DEPOSIT_FILE)}>
               <SetPubkey
                 poolAddress={poolAddress}
-                onFinish={() => setStep(STEP.DEPOSIT)}
                 nextStep={() => setStep(STEP.DEPOSIT)}
                 updatePubKeyState={updatePubKeyState}
               />

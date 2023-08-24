@@ -65,7 +65,7 @@ export const StakeForm = ({
     isError,
     prepare_error,
   } = useDeposit({ address: poolAddress, val: stakeAmount });
-  console.log(depositData);
+  // console.log(depositData);
   const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
   if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
@@ -86,7 +86,7 @@ export const StakeForm = ({
         const amountStakedInEth = formatEther((log as any)[0].args.amount);
         const newPoolBalance = poolBalance + Number(amountStakedInEth);
         if (setPoolBalance) setPoolBalance(newPoolBalance);
-      }, 100);
+      }, 1000);
     },
   });
 

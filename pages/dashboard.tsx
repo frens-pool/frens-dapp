@@ -4,6 +4,7 @@ import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
 import { PoolList } from "components/dashboard/PoolList";
 import { ShareList } from "components/dashboard/ShareList";
+import { ActionButtons } from "#/components/dashboard/ActionButtons";
 
 const Dashboard: NextPage = () => {
   return (
@@ -25,7 +26,9 @@ const Dashboard: NextPage = () => {
       <main className="flex flex-col justify-center items-center min-h-[93vh]">
         <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
           <h1 className="text-3xl font-bold">Dashboard</h1>
+          <h1 className="text-2xl font-bold">My Pools</h1>
           <PoolList />
+          <h1 className="text-2xl font-bold">My Shares</h1>
           <ShareList />
         </div>
       </main>

@@ -4,13 +4,17 @@ import { useEffect, useState } from "react";
 import { FrensContracts } from "utils/contracts";
 import { Address, useAccount, usePublicClient } from "wagmi";
 import CardForNFT from "../staker/CardForNFT";
+import Pool from "#/pages/pool/[pool]";
+
 
 interface Props {
 }
 
 export const ShareList = ({ }: Props) => {
   const { address: accountAddress, isConnected } = useAccount();
-  const [userNFTs, setUserNFTs] = useState<any[]>([]);
+  const [userNFTs, setUserNFTs] = useState<any[]>();
+  const [totalDeposit, setTotalDeposit] = useState<number>(0);
+  const [totalClaimable, setTotalClaimable] = useState<number>(0);
   const network = useNetworkName();
   const publicClient = usePublicClient();
 
@@ -56,7 +60,11 @@ export const ShareList = ({ }: Props) => {
     const userWalletNFTs = await Promise.all(
       userNftIDs.map(async (nftID) => await jsonForNftId(nftID))
     );
-    setUserNFTs(userWalletNFTs);
+    if (userWalletNFTs) {
+      setTotalDeposit(userWalletNFTs.reduce((total, n) => total + n.deposit, 0))
+      setTotalClaimable(userWalletNFTs.reduce((total, n) => total + n.claimable, 0))
+      setUserNFTs(userWalletNFTs);
+    }
   };
 
   const jsonForNftId = async (nftID: string) => {
@@ -73,27 +81,31 @@ export const ShareList = ({ }: Props) => {
     const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
     let json = JSON.parse(jsonString);
     json.nftID = nftID;
+    json.poolAddress = getAttributeValue(json, "pool");
+    json.deposit = parseFloat(getAttributeValue(json, "deposit").replace(" Eth", ""));
+    json.claimable = parseFloat(getAttributeValue(json, "claimable").replace(" Eth", ""));
     return json;
   };
 
-  // if (!isConnected) {
-  //   if (shareIdNFTs.length !== 0) {
-  //     return (
-  //       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-  //         {shareIdNFTs.map(({ name, image, nftID }) => (
-  //           <div key={name}>
-  //             <CardForNFT name={name} image={image} nftID={nftID} />
-  //           </div>
-  //         ))}
-  //       </div>
-  //     );
-  //   }
-  // }
+  const getAttributeValue = (json: any, name: string) => {
+    if (!json.attributes) return null;
+    const v = json.attributes.find((a: any) => { return a.trait_type === name });
+    return v?.value;
+  }
+
+  if (!userNFTs) {
+    return (
+      <div className="flex flex-col items-center justify-center bg-white">
+        <div className="mb-4">Loading...</div>
+      </div>
+    );
+  }
+
 
   if (userNFTs.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">None 🧐</div>
+        <div className="mb-4">You don&apos;t have shares in a pool 🧐</div>
       </div>
     );
   }
@@ -126,11 +138,32 @@ export const ShareList = ({ }: Props) => {
       ) : (
         <div></div>
       )}
+      <div className="pb-4">
+        <div className="w-full flex justify-between">
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {userNFTs.map(({ name, image, nftID }) => (
+
+          <div className="w-1/3 text-center p-4 border rounded shadow-lg mr-4">
+            <div className="text-5xl font-bold">{userNFTs.length}</div>
+            <div className="text-lg mt-2">Pool shares</div>
+          </div>
+          <div className="w-1/3 text-center p-4 border rounded shadow-lg mr-4">
+            <div className="text-5xl font-bold">{totalDeposit.toFixed(4).toString()}</div>
+            <div className="text-lg mt-2">ETH deposited</div>
+          </div>
+
+          <div className="w-1/3 text-center p-4 border rounded shadow-lg">
+            <div className="text-5xl font-bold">{totalClaimable.toFixed(4).toString()}</div>
+            <div className="text-lg mt-2">ETH claimable</div>
+          </div>
+
+
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+
+        {userNFTs.map(({ name, image, nftID, poolAddress }) => (
           <div key={name}>
-            <CardForNFT name={name} image={image} nftID={nftID} />
+            <CardForNFT name={name} image={image} nftID={nftID} poolAddress={poolAddress} />
           </div>
         ))}
       </div>
