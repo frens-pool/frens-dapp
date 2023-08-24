@@ -60,15 +60,11 @@ export const ShareList = ({ }: Props) => {
     const userWalletNFTs = await Promise.all(
       userNftIDs.map(async (nftID) => await jsonForNftId(nftID))
     );
-    let totalETHDeposit = 0;
-    let totalETHClaimable = 0;
-    userWalletNFTs && userWalletNFTs.map((n) => {
-      totalETHDeposit += n.deposit;
-      totalETHClaimable += n.claimable;
-    })
-    setTotalDeposit(totalETHDeposit);
-    setTotalClaimable(totalETHClaimable);
-    setUserNFTs(userWalletNFTs);
+    if (userWalletNFTs) {
+      setTotalDeposit(userWalletNFTs.reduce((total, n) => total + n.deposit, 0))
+      setTotalClaimable(userWalletNFTs.reduce((total, n) => total + n.claimable, 0))
+      setUserNFTs(userWalletNFTs);
+    }
   };
 
   const jsonForNftId = async (nftID: string) => {
