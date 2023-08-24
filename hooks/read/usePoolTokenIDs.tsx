@@ -10,6 +10,7 @@ export function usePoolShareIDs({ poolAddress }: { poolAddress: Address }) {
     address: poolAddress,
     abi: FrensContracts[network].StakingPool.abi,
     functionName: "getIdsInThisPool",
+    watch: true,
   });
   return { data: data as BigNumber[], isError, isLoading };
 }
