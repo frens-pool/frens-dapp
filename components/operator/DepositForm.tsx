@@ -1,27 +1,12 @@
-import { useState } from "react";
-import { DropKeys, validateFileFunction } from "components/operator/DropKeys";
+import { useBalance, Address } from "wagmi";
 import { Deposit } from "components/operator/Deposit";
-import { useBalance, Address, useNetwork } from "wagmi";
 
-type depositData = {
-  pubkey: string;
-  withdrawal_credentials: string;
-  amount: bigint;
-  signature: string;
-  deposit_message_root: string;
-  deposit_data_root: string;
-  fork_version: string;
-  network_name: string;
-  deposit_cli_version: string;
-};
-
-export const DepositForm = ({
-  nextStep,
-  poolAddress,
-}: {
-  nextStep?: () => void;
+interface Props {
   poolAddress: Address;
-}) => {
+  nextStep: () => void;
+}
+
+export const DepositForm = ({ nextStep, poolAddress }: Props) => {
   const { data: balance } = useBalance({
     address: poolAddress,
   });
@@ -34,10 +19,10 @@ export const DepositForm = ({
       </div>
 
       {Number(balance?.formatted) >= 32 ? (
-        <Deposit poolAddress={poolAddress} />
+        <Deposit poolAddress={poolAddress} nextStep={nextStep} />
       ) : (
         <div>
-          {/* <div className="text-orange-400">Pool 32 ETH first</div> */}
+          <div className="text-orange-400">Pool 32 ETH first</div>
           <button className="btn btn-primary mb-2" disabled>
             Deposit ETH to Beacon chain
           </button>

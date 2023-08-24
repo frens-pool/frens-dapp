@@ -89,8 +89,6 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
       hash: registerTxHash,
     });
 
-  console.log("payloadData", payloadData);
-
   if (registerIsLoading) {
     return (
       <div className="my-2 p-2">
@@ -121,7 +119,9 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
             ssv explorer
           </a>
           <a
-            href={`${beaconchainUrl(chain)}/validator/${payloadData.payload.publicKey}`}
+            href={`${beaconchainUrl(chain)}/validator/${
+              payloadData.payload.publicKey
+            }`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -137,7 +137,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   if (allowanceIsLoading) {
     return (
-      <div className="my-2 p-2">
+      <div className="flex my-0 p-2">
         <button className="btn btn-primary my-2 mr-2 loading" disabled>
           Tx pending...
         </button>
@@ -150,7 +150,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   if (allowanceIsSuccess) {
     return (
-      <div className="my-2 p-2">
+      <div className="flex my-2 p-2">
         <button
           className="btn btn-info no-animation my-2 mr-2"
           onClick={() => {
@@ -171,7 +171,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   }
 
   return (
-    <div className="my-2 p-2">
+    <div className="flex my-2 p-2">
       <button
         className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
         onClick={() => {
