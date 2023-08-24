@@ -28,7 +28,7 @@ export const DepositForm = ({ nextStep, poolAddress }: Props) => {
           </button>
         </div>
       )}
-      {nextStep && (
+      {/* {nextStep && (
         <button
           className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
           onClick={() => {
@@ -37,7 +37,7 @@ export const DepositForm = ({ nextStep, poolAddress }: Props) => {
         >
           Next
         </button>
-      )}
+      )} */}
     </div>
   );
 };

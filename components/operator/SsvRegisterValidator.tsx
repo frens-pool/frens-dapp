@@ -91,7 +91,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   if (registerIsLoading) {
     return (
-      <div className="my-2 p-2">
+      <div className="flex my-2 p-2">
         <button className="btn btn-primary my-2 mr-2" disabled>
           Allow again
         </button>

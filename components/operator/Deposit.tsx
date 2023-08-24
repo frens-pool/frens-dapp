@@ -27,7 +27,7 @@ export const Deposit = ({
       <button
         className={`${
           isLoading
-            ? "btn btn-info no-animation my-2 mr-2"
+            ? "btn btn-info no-animation my-2 mr-2 loading"
             : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
         }`}
         onClick={() => {
