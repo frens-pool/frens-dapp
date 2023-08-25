@@ -1,62 +1,60 @@
 import { useNetworkName } from "#/hooks/useNetworkName";
-import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { FrensContracts } from "utils/contracts";
 import { Address, useAccount, usePublicClient } from "wagmi";
 import CardForNFT from "../staker/CardForNFT";
-import Pool from "#/pages/pool/[pool]";
 
 
-interface Props {
-}
+export const ShareList = () => {
 
-export const ShareList = ({ }: Props) => {
+  type nftType = {
+    name: string,
+    image: string,
+    nftID: string,
+    poolAddress: Address,
+    deposit: number,
+    claimable: number
+  }
+
   const { address: accountAddress, isConnected } = useAccount();
-  const [userNFTs, setUserNFTs] = useState<any[]>();
+  const [userNFTs, setUserNFTs] = useState<nftType[]>();
   const [totalDeposit, setTotalDeposit] = useState<number>(0);
   const [totalClaimable, setTotalClaimable] = useState<number>(0);
   const network = useNetworkName();
   const publicClient = usePublicClient();
 
   useEffect(() => {
-    if (isConnected) {
-      getUserNfts();
+    if (isConnected && accountAddress) {
+      getUserNfts(accountAddress);
     }
-  }, [isConnected]); // TODO: refresh when poolbalance changes
+  }, [isConnected, accountAddress]);
 
-  const getUserNfts = async (
-  ) => {
-    let userNftIDs = await getUserNftIds(accountAddress);
+  const getUserNfts = async (accountAddress: Address) => {
+    const userNftIDs = await getUserNftIds(accountAddress);
     setUserNFTArray(userNftIDs);
   };
 
-  const getUserNftIds = async (
-    ownerAddress: any
-  ) => {
-    let ownerBalance = await publicClient.readContract({
-      address: FrensContracts[network].FrensPoolShare.address,
-      abi: FrensContracts[network].FrensPoolShare.abi,
-      functionName: 'balanceOf',
-      args: [ownerAddress]
-    })
-
-    let nfts: string[] = [];
-    for (var i = 0; i < Number(ownerBalance); i++) {
-      let nftId_ = await publicClient.readContract({
-        address: FrensContracts[network].FrensPoolShare.address,
-        abi: FrensContracts[network].FrensPoolShare.abi,
-        functionName: 'tokenOfOwnerByIndex',
-        args: [ownerAddress, i]
-      })
-      const nftId = nftId_ as BigInt;
-      nfts.push(nftId.toString());
-    }
-    return nfts;
+  const getUserNftIds = async (ownerAddress: Address) => {
+    const ownerBalance = Number(await readOwnerBalance(ownerAddress))
+    const indexes = Array(ownerBalance).fill(0) // create an array of indexes from 0 to ownerBalance
+    return await Promise.all(indexes.map((_, i) => readTokenOfOwnerByIndex(ownerAddress, i) as Promise<string>));
   };
 
-  const setUserNFTArray = async (
-    userNftIDs: string[]
-  ) => {
+  const readOwnerBalance = (ownerAddress: Address) => publicClient.readContract({
+    address: FrensContracts[network].FrensPoolShare.address,
+    abi: FrensContracts[network].FrensPoolShare.abi,
+    functionName: 'balanceOf',
+    args: [ownerAddress]
+  })
+
+  const readTokenOfOwnerByIndex = (ownerAddress: Address, index: number) => publicClient.readContract({
+    address: FrensContracts[network].FrensPoolShare.address,
+    abi: FrensContracts[network].FrensPoolShare.abi,
+    functionName: 'tokenOfOwnerByIndex',
+    args: [ownerAddress, index]
+  })
+
+  const setUserNFTArray = async (userNftIDs: string[]) => {
     const userWalletNFTs = await Promise.all(
       userNftIDs.map(async (nftID) => await jsonForNftId(nftID))
     );
@@ -67,24 +65,25 @@ export const ShareList = ({ }: Props) => {
     }
   };
 
-  const jsonForNftId = async (nftID: string) => {
+  const readTokenURI = (nftID: string) => publicClient.readContract({
+    address: FrensContracts[network].FrensPoolShare.address,
+    abi: FrensContracts[network].FrensPoolShare.abi,
+    functionName: 'tokenURI',
+    args: [nftID]
+  })
 
-    let tokenURI_ = await publicClient.readContract({
-      address: FrensContracts[network].FrensPoolShare.address,
-      abi: FrensContracts[network].FrensPoolShare.abi,
-      functionName: 'tokenURI',
-      args: [nftID]
-    })
-
-    const tokenURI = tokenURI_ as string;
-
+  const jsonForNftId = async (nftID: string): Promise<nftType> => {
+    const tokenURI = await readTokenURI(nftID) as string
     const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
-    let json = JSON.parse(jsonString);
-    json.nftID = nftID;
-    json.poolAddress = getAttributeValue(json, "pool");
-    json.deposit = parseFloat(getAttributeValue(json, "deposit").replace(" Eth", ""));
-    json.claimable = parseFloat(getAttributeValue(json, "claimable").replace(" Eth", ""));
-    return json;
+    const json = JSON.parse(jsonString);
+    return {
+      nftID,
+      name: json.name,
+      image: json.image,
+      poolAddress: getAttributeValue(json, "pool"),
+      deposit: parseFloat(getAttributeValue(json, "deposit").replace(" Eth", "")),
+      claimable: parseFloat(getAttributeValue(json, "claimable").replace(" Eth", ""))
+    }
   };
 
   const getAttributeValue = (json: any, name: string) => {

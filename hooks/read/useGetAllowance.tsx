@@ -15,7 +15,7 @@ export function useGetAllowance({ address }: { address: string }) {
   //   const registerContract = FrensContracts[network].SSVNetworkContract;
 
   const { data, isLoading, isSuccess } = useContractRead({
-    address: FrensContracts[network].SSVTokenContract.address as `0x${string}`,
+    address: FrensContracts[network].SSVTokenContract.address,
     abi: FrensContracts[network].SSVTokenContract.abi,
     functionName: "allowance",
     args: [address],

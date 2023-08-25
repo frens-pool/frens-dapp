@@ -25,24 +25,21 @@ export const NftGallery = ({ poolAddress }: Props) => {
     const poolNft = await Promise.all(
       poolShareIDs.map(async (nftID) => await jsonForNftId(nftID.toString()))
     );
+    // console.log(poolNft)
     setPoolNFTs(poolNft);
   };
 
   const jsonForNftId = async (nftID: string) => {
-
-    let tokenURI_ = await publicClient.readContract({
+    const tokenURI = await publicClient.readContract({
       address: FrensContracts[network].FrensPoolShare.address,
       abi: FrensContracts[network].FrensPoolShare.abi,
       functionName: 'tokenURI',
       args: [nftID]
-    })
-
-    const tokenURI = tokenURI_ as string;
+    }) as string
 
     const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
-    let json = JSON.parse(jsonString);
-    json.nftID = nftID;
-    return json;
+    const json = JSON.parse(jsonString);
+    return { ...json, nftID };
   };
 
   if (poolNFTs.length === 0) {

@@ -17,21 +17,10 @@ export const SelectOperator = ({
         "https://api.ssv.network/api/v4/prater/operators?type=verified_operator&page=1&perPage=6&ordering=performance.30d%3Adesc"
       );
       const json = await data.json();
-      console.log(json);
       setssvOperators(json.operators);
     };
 
-    // const fetchFrenOperator = async () => {
-    //   const data = await fetch(
-    //     "https://api.ssv.network/api/v1/operators/owned_by/0x9b18e9e9aa3dD35100b385b7035C0B1E44AfcA14?page=1&perPage=10"
-    //   );
-    //   const json = await data.json();
-    //   setFrenSsvOperatorIDs(json.operators);
-    // };
-
     fetchOperators().catch(console.error);
-
-    // fetchFrenOperator().catch(console.error);
   }, []);
 
   let operatorListRows = ssvOperators?.map((item, i) => {

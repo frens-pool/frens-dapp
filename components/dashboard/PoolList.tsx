@@ -12,7 +12,7 @@ export const PoolList = () => {
   }, [address]);
 
   const fetchUserPools = async (operatorAddress: Address) => {
-    let poolsOfUser = await queryPools({ operatorAddress });
+    const poolsOfUser = await queryPools({ operatorAddress });
     console.log(poolsOfUser);
     setUserPools(poolsOfUser.data.creates);
   };

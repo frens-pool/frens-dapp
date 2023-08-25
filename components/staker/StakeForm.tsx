@@ -62,7 +62,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
   if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
 
   useContractEvent({
-    address: poolAddress.toString() as `0x${string}`,
+    address: poolAddress,
     abi: FrensContracts[network].StakingPool.abi,
     eventName: "DepositToPool",
     listener: (log) => {
