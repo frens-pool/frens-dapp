@@ -11,31 +11,23 @@ import { NftGallery } from "components/staker/NftGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
 import { PoolFullWidget } from "components/staker/PoolFullWidget";
 import { StakeForm } from "components/staker/StakeForm";
-import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
 import { usePoolState } from "#/hooks/read/usePoolState";
 
-const Pool: NextPage = ({}) => {
+const Pool: NextPage = ({ }) => {
   const router = useRouter();
   const poolAddress = router.query.pool as Address | "0x";
-  const { data: cachedPoolShareIds } = usePoolShareIDs({ poolAddress });
   const { data: poolState } = usePoolState({ poolAddress });
   const { isConnected } = useAccount();
-  const { data: cachePoolBalance } = useBalance({
-    address: poolAddress,
-  });
 
-  const [poolShareIDs, setPoolShareIDs] = useState<any[]>([]);
   const [poolBalance, setPoolBalance] = useState<number>(0);
 
-  useEffect(() => {
-    if (cachedPoolShareIds) {
-      const shareIds: string[] = cachedPoolShareIds.map((x) => x.toString());
-      setPoolShareIDs(shareIds);
+  useBalance({
+    address: poolAddress,
+    watch: true,
+    onSuccess(data) {
+      if (setPoolBalance) setPoolBalance(+data.formatted)
     }
-    if (cachePoolBalance) {
-      setPoolBalance(Number(cachePoolBalance.formatted));
-    }
-  }, [cachedPoolShareIds,cachePoolBalance]);
+  });
 
   if (poolAddress) {
     return (
@@ -69,10 +61,6 @@ const Pool: NextPage = ({}) => {
             <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
               <StakeForm
                 poolAddress={poolAddress}
-                poolShareIDs={poolShareIDs}
-                poolBalance={poolBalance}
-                setPoolShareIDs={setPoolShareIDs}
-                setPoolBalance={setPoolBalance}
               />
               <div className="border border-slate-400 rounded-md mx-4"></div>
               <PoolInfo poolBalance={poolBalance} />
@@ -80,12 +68,11 @@ const Pool: NextPage = ({}) => {
           )}
 
           <div
-            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
-              isConnected ? "block" : "block"
-            }`}
+            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${isConnected ? "block" : "block"
+              }`}
           >
             <div className="text-center font-bold my-2">Pool stakes</div>
-            <NftGallery key={poolBalance} poolAddress={poolAddress} />
+            <NftGallery poolAddress={poolAddress} />
           </div>
         </main>
         <Footer />

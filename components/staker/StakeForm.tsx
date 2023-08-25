@@ -1,8 +1,7 @@
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { etherscanUrl } from "#/utils/externalUrls";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { formatEther } from "viem";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
 import {
@@ -16,19 +15,10 @@ import { useDeposit } from "../../hooks/write/useDeposit";
 
 interface Props {
   poolAddress: Address;
-  poolShareIDs: any[];
-  poolBalance: number;
-  setPoolBalance: Dispatch<SetStateAction<number>>;
-  setPoolShareIDs: Dispatch<SetStateAction<any>>;
 }
 
-export const StakeForm = ({
-  poolAddress,
-  poolBalance,
-  poolShareIDs,
-  setPoolBalance,
-  setPoolShareIDs,
-}: Props) => {
+export const StakeForm = ({ poolAddress }: Props) => {
+
   const [maxDepositValue, setMaxDepositValue] = useState(32);
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
 
@@ -51,8 +41,9 @@ export const StakeForm = ({
   };
 
   const { isConnected } = useAccount();
-  const { data: poolBalanceData } = useBalance({
+  useBalance({
     address: poolAddress,
+    watch: true,
     onSuccess(data) {
       const poolBalanceNumber: number = +data.formatted;
       const maxDepositValue = 32 - poolBalanceNumber;
@@ -77,16 +68,6 @@ export const StakeForm = ({
     listener: (log) => {
       setIsDepositing(false);
       reset();
-      setTimeout(async () => {
-        if (setPoolShareIDs)
-          setPoolShareIDs([
-            ...poolShareIDs,
-            (log as any)[0].args.id.toString(),
-          ]);
-        const amountStakedInEth = formatEther((log as any)[0].args.amount);
-        const newPoolBalance = poolBalance + Number(amountStakedInEth);
-        if (setPoolBalance) setPoolBalance(newPoolBalance);
-      }, 1000);
     },
   });
 
@@ -140,11 +121,10 @@ export const StakeForm = ({
             ) : (
               <button
                 disabled={isDepositing ? true : false}
-                className={`btn text-white ${
-                  isDepositing
-                    ? "btn-primary"
-                    : "bg-gradient-to-r from-frens-blue to-frens-teal"
-                }`}
+                className={`btn text-white ${isDepositing
+                  ? "btn-primary"
+                  : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                  }`}
                 type="submit"
               >
                 {isDepositing ? "Confirm in Metamask" : "Pool"}

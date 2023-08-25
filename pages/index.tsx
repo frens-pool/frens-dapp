@@ -33,7 +33,7 @@ const Operator: NextPage = () => {
 
   //auto-advance if poolPubKey is already set
   const { data: poolBalance } = useBalance({
-    address: poolContract as Address,
+    address: poolContract
   });
 
   useEffect(() => {
