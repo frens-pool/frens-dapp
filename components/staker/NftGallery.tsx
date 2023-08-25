@@ -1,7 +1,7 @@
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { useEffect, useState } from "react";
 import { FrensContracts } from "utils/contracts";
-import { Address, useAccount, usePublicClient } from "wagmi";
+import { Address, usePublicClient } from "wagmi";
 import CardForNFT from "./CardForNFT";
 import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
 
@@ -10,7 +10,6 @@ interface Props {
 }
 
 export const NftGallery = ({ poolAddress }: Props) => {
-  const { isConnected } = useAccount();
   const { data: poolShareIDs } = usePoolShareIDs({ poolAddress });
   const [poolNFTs, setPoolNFTs] = useState<any[]>([]);
   const network = useNetworkName();
@@ -20,7 +19,7 @@ export const NftGallery = ({ poolAddress }: Props) => {
     if (poolShareIDs) {
       setPoolNftArray();
     }
-  }, [poolShareIDs]); // refresh when poolbalance changes
+  }, [poolShareIDs])
 
   const setPoolNftArray = async () => {
     const poolNft = await Promise.all(

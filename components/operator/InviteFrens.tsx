@@ -1,6 +1,5 @@
 import { STEP_TYPE } from "#/pages";
 import Link from "next/link";
-import { Address, useBalance } from "wagmi";
 
 export const InviteFrens = ({
   poolContract,
