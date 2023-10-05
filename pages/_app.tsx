@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RainbowKitProvider
         chains={chains}
         theme={lightTheme({
-          accentColor: "#4554EA",
+          accentColor: "#3F19EE",
         })}
       >
         {/* <div className="pattern-wavy pattern-blue-600 pattern-bg-white pattern-opacity-5 pattern-size-16 fixed top-0 left-0 right-0 bottom-0"></div> */}

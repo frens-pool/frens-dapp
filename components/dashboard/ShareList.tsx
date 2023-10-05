@@ -4,17 +4,15 @@ import { FrensContracts } from "utils/contracts";
 import { Address, useAccount, usePublicClient } from "wagmi";
 import CardForNFT from "../staker/CardForNFT";
 
-
 export const ShareList = () => {
-
   type nftType = {
-    name: string,
-    image: string,
-    nftID: string,
-    poolAddress: Address,
-    deposit: number,
-    claimable: number
-  }
+    name: string;
+    image: string;
+    nftID: string;
+    poolAddress: Address;
+    deposit: number;
+    claimable: number;
+  };
 
   const { address: accountAddress, isConnected } = useAccount();
   const [userNFTs, setUserNFTs] = useState<nftType[]>();
@@ -35,45 +33,56 @@ export const ShareList = () => {
   };
 
   const getUserNftIds = async (ownerAddress: Address) => {
-    const ownerBalance = Number(await readOwnerBalance(ownerAddress))
-    const indexes = Array(ownerBalance).fill(0) // create an array of indexes from 0 to ownerBalance
-    return await Promise.all(indexes.map((_, i) => readTokenOfOwnerByIndex(ownerAddress, i) as Promise<string>));
+    const ownerBalance = Number(await readOwnerBalance(ownerAddress));
+    const indexes = Array(ownerBalance).fill(0); // create an array of indexes from 0 to ownerBalance
+    return await Promise.all(
+      indexes.map(
+        (_, i) => readTokenOfOwnerByIndex(ownerAddress, i) as Promise<string>
+      )
+    );
   };
 
-  const readOwnerBalance = (ownerAddress: Address) => publicClient.readContract({
-    address: FrensContracts[network].FrensPoolShare.address,
-    abi: FrensContracts[network].FrensPoolShare.abi,
-    functionName: 'balanceOf',
-    args: [ownerAddress]
-  })
+  const readOwnerBalance = (ownerAddress: Address) =>
+    publicClient.readContract({
+      address: FrensContracts[network].FrensPoolShare.address,
+      abi: FrensContracts[network].FrensPoolShare.abi,
+      functionName: "balanceOf",
+      args: [ownerAddress],
+    });
 
-  const readTokenOfOwnerByIndex = (ownerAddress: Address, index: number) => publicClient.readContract({
-    address: FrensContracts[network].FrensPoolShare.address,
-    abi: FrensContracts[network].FrensPoolShare.abi,
-    functionName: 'tokenOfOwnerByIndex',
-    args: [ownerAddress, index]
-  })
+  const readTokenOfOwnerByIndex = (ownerAddress: Address, index: number) =>
+    publicClient.readContract({
+      address: FrensContracts[network].FrensPoolShare.address,
+      abi: FrensContracts[network].FrensPoolShare.abi,
+      functionName: "tokenOfOwnerByIndex",
+      args: [ownerAddress, index],
+    });
 
   const setUserNFTArray = async (userNftIDs: string[]) => {
     const userWalletNFTs = await Promise.all(
       userNftIDs.map(async (nftID) => await jsonForNftId(nftID))
     );
     if (userWalletNFTs) {
-      setTotalDeposit(userWalletNFTs.reduce((total, n) => total + n.deposit, 0))
-      setTotalClaimable(userWalletNFTs.reduce((total, n) => total + n.claimable, 0))
+      setTotalDeposit(
+        userWalletNFTs.reduce((total, n) => total + n.deposit, 0)
+      );
+      setTotalClaimable(
+        userWalletNFTs.reduce((total, n) => total + n.claimable, 0)
+      );
       setUserNFTs(userWalletNFTs);
     }
   };
 
-  const readTokenURI = (nftID: string) => publicClient.readContract({
-    address: FrensContracts[network].FrensPoolShare.address,
-    abi: FrensContracts[network].FrensPoolShare.abi,
-    functionName: 'tokenURI',
-    args: [nftID]
-  })
+  const readTokenURI = (nftID: string) =>
+    publicClient.readContract({
+      address: FrensContracts[network].FrensPoolShare.address,
+      abi: FrensContracts[network].FrensPoolShare.abi,
+      functionName: "tokenURI",
+      args: [nftID],
+    });
 
   const jsonForNftId = async (nftID: string): Promise<nftType> => {
-    const tokenURI = await readTokenURI(nftID) as string
+    const tokenURI = (await readTokenURI(nftID)) as string;
     const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
     const json = JSON.parse(jsonString);
     return {
@@ -81,25 +90,30 @@ export const ShareList = () => {
       name: json.name,
       image: json.image,
       poolAddress: getAttributeValue(json, "pool"),
-      deposit: parseFloat(getAttributeValue(json, "deposit").replace(" Eth", "")),
-      claimable: parseFloat(getAttributeValue(json, "claimable").replace(" Eth", ""))
-    }
+      deposit: parseFloat(
+        getAttributeValue(json, "deposit").replace(" Eth", "")
+      ),
+      claimable: parseFloat(
+        getAttributeValue(json, "claimable").replace(" Eth", "")
+      ),
+    };
   };
 
   const getAttributeValue = (json: any, name: string) => {
     if (!json.attributes) return null;
-    const v = json.attributes.find((a: any) => { return a.trait_type === name });
+    const v = json.attributes.find((a: any) => {
+      return a.trait_type === name;
+    });
     return v?.value;
-  }
+  };
 
   if (!userNFTs) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">Loading...</div>
+        <div className="mb-4">Connect wallet to see your shares</div>
       </div>
     );
   }
-
 
   if (userNFTs.length === 0) {
     return (
@@ -139,30 +153,34 @@ export const ShareList = () => {
       )}
       <div className="pb-4">
         <div className="w-full flex justify-between">
-
-
           <div className="w-1/3 text-center p-4 border rounded shadow-lg mr-4">
             <div className="text-5xl font-bold">{userNFTs.length}</div>
             <div className="text-lg mt-2">Pool shares</div>
           </div>
           <div className="w-1/3 text-center p-4 border rounded shadow-lg mr-4">
-            <div className="text-5xl font-bold">{totalDeposit.toFixed(4).toString()}</div>
+            <div className="text-5xl font-bold">
+              {totalDeposit.toFixed(4).toString()}
+            </div>
             <div className="text-lg mt-2">ETH deposited</div>
           </div>
 
           <div className="w-1/3 text-center p-4 border rounded shadow-lg">
-            <div className="text-5xl font-bold">{totalClaimable.toFixed(4).toString()}</div>
+            <div className="text-5xl font-bold">
+              {totalClaimable.toFixed(4).toString()}
+            </div>
             <div className="text-lg mt-2">ETH claimable</div>
           </div>
-
-
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-
         {userNFTs.map(({ name, image, nftID, poolAddress }) => (
           <div key={name}>
-            <CardForNFT name={name} image={image} nftID={nftID} poolAddress={poolAddress} />
+            <CardForNFT
+              name={name}
+              image={image}
+              nftID={nftID}
+              poolAddress={poolAddress}
+            />
           </div>
         ))}
       </div>
