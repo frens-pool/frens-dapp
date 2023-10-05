@@ -1,12 +1,15 @@
 import Link from "next/link";
-import { Address, useNetwork } from "wagmi";
+import { Address, useAccount } from "wagmi";
 
 type Props = {
   poolAddress: Address;
+  operatorAddress: Address;
   poolState: any;
 };
 
-export const PoolFullWidget = ({ poolAddress, poolState }: Props) => {
+export const PoolFullWidget = ({ poolAddress, poolState, operatorAddress }: Props) => {
+  const { address } = useAccount()
+
   return (
     <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
       <div className="flex justify-center align-middle bg-white rounded-xl p-8 md:p-0 ">
@@ -15,7 +18,7 @@ export const PoolFullWidget = ({ poolAddress, poolState }: Props) => {
             <div className="font-medium mb-2">
               <div className="text-center">🎊 This Pool is fully staked 🎊</div>
             </div>
-            {poolState !== "staked" && (
+            {poolState !== "staked" && operatorAddress && operatorAddress === address && (
               <div key={poolAddress} className="text-center">
                 <Link
                   href={`/run/${poolAddress}`}

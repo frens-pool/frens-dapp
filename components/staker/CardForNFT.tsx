@@ -1,4 +1,4 @@
-import { Address, useNetwork } from "wagmi";
+import { Address } from "wagmi";
 import { FrensContracts } from "utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { openseaUrl } from "#/utils/externalUrls";
@@ -11,7 +11,6 @@ type CardProps = {
 };
 
 function CardForNFT({ name, image, nftID, poolAddress }: CardProps) {
-  const { chain } = useNetwork();
   const network = useNetworkName();
   const openSeaLink = openseaUrl(FrensContracts[network].FrensPoolShare.address, nftID)
 
