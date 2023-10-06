@@ -31,10 +31,7 @@ const Pool: NextPage = ({}) => {
 
   if (poolAddress) {
     return (
-      <div
-        className="bg-gradient-to-r from-cyan-50 to-blue-50 min-h-screen"
-        data-theme="winter"
-      >
+      <div className="" data-theme="winter">
         <Head>
           <title>FRENS Pool</title>
           <meta name="description" content="stake with friends" />
@@ -52,12 +49,6 @@ const Pool: NextPage = ({}) => {
             <div className="bg-white rounded-lg px-5 py-6 shadow sm:px-6">
               <div className="relative isolate overflow-hidden pt-0">
                 <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
-                  {/* Describtion */}
-                  <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
-                    <h1 className="text-base font-semibold leading-7 text-gray-900">
-                      Your friend wants to pool ETH with you
-                    </h1>
-                  </div>
                   {/* Pool Page */}
                   <div className="flex flex-col justify-center items-center min-h-[93vh]">
                     <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">

@@ -122,10 +122,14 @@ const Header = () => {
         <header className="py-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-white">
-              {router.asPath === "/" ? "Start Pooling" : ""}
+              {router.asPath === "/" ? "Create your staking pool" : ""}
               {router.asPath === "/dashboard" ? "Dashboard" : ""}
-              {router.asPath.split("/")[1] === "pool" ? "Pool" : ""}
-              {router.asPath.split("/")[1] === "/run" ? "Run Validator" : ""}
+              {router.asPath.split("/")[1] === "pool"
+                ? "Pool ETH with your friends"
+                : ""}
+              {router.asPath.split("/")[1] === "/run"
+                ? "Run your validator"
+                : ""}
             </h1>
           </div>
         </header>

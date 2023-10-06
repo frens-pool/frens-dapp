@@ -74,7 +74,7 @@ const Operator: NextPage = () => {
             <div className="relative isolate overflow-hidden pt-0">
               <div className="pt-6 pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                 <h1 className="text-base font-semibold leading-7 text-gray-900">
-                  Pool ETH in two easy steps
+                  Fuel your ETH staking in two easy steps
                 </h1>
               </div>
               <div className="grid grid-cols-1 gap-y-8">
