@@ -3,7 +3,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Header from "components/shared/Header";
-import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
 import { InviteFrens } from "components/operator/InviteFrens";
 import { CreatePool } from "components/operator/CreatePool";
@@ -56,10 +55,7 @@ const Operator: NextPage = () => {
     `${current_step == step ? "block" : "hidden"}`;
 
   return (
-    <div
-      className="bg-gradient-to-r from-cyan-50 to-blue-50"
-      data-theme="winter"
-    >
+    <div className="" data-theme="winter">
       <Head>
         <title>FRENS Pool</title>
         <meta name="description" content="stake with friends" />
@@ -74,35 +70,43 @@ const Operator: NextPage = () => {
       {/* Content */}
       <main className="relative -mt-32 ">
         <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg px-5 py-6 shadow sm:px-6">
+          <div className="bg-white min-h-[60vh] rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
             <div className="relative isolate overflow-hidden pt-0">
-              <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
-                {/* Describtion */}
-                <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
-                  <h1 className="text-base font-semibold leading-7 text-gray-900">
-                    Start pooling in three easy steps
-                  </h1>
-                </div>
-                {/* Steps */}
-                <div className="flex flex-col justify-center items-center min-h-[93vh]">
-                  <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                    <h1 className="text-3xl font-bold">
+              <div className="pt-6 pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
+                <h1 className="text-base font-semibold leading-7 text-gray-900">
+                  Pool ETH in two easy steps
+                </h1>
+              </div>
+              <div className="grid grid-cols-1 gap-y-8">
+                <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                  <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                    <div className="text-2xl font-medium leading-6 text-gray-900">
                       {number("Create")} Create Pool
-                    </h1>
-                    <div className={className(step, "Create")}>
-                      <CreatePool
-                        onFinish={() => setStep("Invite")}
-                        setPoolContract={setPoolContract}
-                      />
                     </div>
                   </div>
-                  <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                    <h1 className="text-3xl font-bold">
+                  <dl className="-my-3 divide-y divide-gray-100 px-6 text-sm leading-6">
+                    <div className={className(step, "Create")}>
+                      <div className="pt-4 pb-6">
+                        <CreatePool
+                          onFinish={() => setStep("Invite")}
+                          setPoolContract={setPoolContract}
+                        />
+                      </div>
+                    </div>
+                  </dl>
+                </div>
+                <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                  <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                    <div className="text-2xl font-medium leading-6 text-gray-900">
                       {number("Invite")} Invite Friends
-                    </h1>
+                    </div>
+                  </div>
+                  <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                     <div
                       className={`${
-                        step == "Invite" || step == "Run" ? "block" : "hidden"
+                        step == "Invite" || step == "Run"
+                          ? "block pt-4 pb-6"
+                          : "hidden"
                       }`}
                     >
                       <InviteFrens
@@ -110,16 +114,11 @@ const Operator: NextPage = () => {
                         onFinish={() => setStep("Run")}
                         current_step={step}
                       />
+                      <div className={className(step, "Run")}>
+                        <RunValidator poolContract={poolContract} />
+                      </div>
                     </div>
-                  </div>
-                  <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                    <h1 className="text-3xl font-bold">
-                      {number("Run")} Run Validator
-                    </h1>
-                    <div className={className(step, "Run")}>
-                      <RunValidator poolContract={poolContract} />
-                    </div>
-                  </div>
+                  </dl>
                 </div>
               </div>
             </div>
