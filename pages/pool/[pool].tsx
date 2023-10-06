@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Address, useAccount, useBalance } from "wagmi";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
+import Header from "components/shared/Header";
 import Footer from "components/shared/Footer";
-import Navbar from "components/shared/Navbar";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
@@ -13,7 +13,7 @@ import { PoolFullWidget } from "components/staker/PoolFullWidget";
 import { StakeForm } from "components/staker/StakeForm";
 import { usePoolState } from "#/hooks/read/usePoolState";
 
-const Pool: NextPage = ({ }) => {
+const Pool: NextPage = ({}) => {
   const router = useRouter();
   const poolAddress = router.query.pool as Address | "0x";
   const { data: poolState } = usePoolState({ poolAddress });
@@ -25,8 +25,8 @@ const Pool: NextPage = ({ }) => {
     address: poolAddress,
     watch: true,
     onSuccess(data) {
-      if (setPoolBalance) setPoolBalance(+data.formatted)
-    }
+      if (setPoolBalance) setPoolBalance(+data.formatted);
+    },
   });
 
   if (poolAddress) {
@@ -44,35 +44,57 @@ const Pool: NextPage = ({ }) => {
           />
         </Head>
 
-        <Navbar />
+        <Header />
 
-        <main className="flex flex-col justify-center items-center min-h-[93vh]">
-          <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
-            <OperatorWidget poolAddress={poolAddress} />
-          </div>
+        {/* Content */}
+        <main className="relative -mt-32 ">
+          <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-lg px-5 py-6 shadow sm:px-6">
+              <div className="relative isolate overflow-hidden pt-0">
+                <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
+                  {/* Describtion */}
+                  <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
+                    <h1 className="text-base font-semibold leading-7 text-gray-900">
+                      Your friend wants to pool ETH with you
+                    </h1>
+                  </div>
+                  {/* Pool Page */}
+                  <div className="flex flex-col justify-center items-center min-h-[93vh]">
+                    <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
+                      <OperatorWidget poolAddress={poolAddress} />
+                    </div>
 
-          {poolState === "staked" && (
-            <ValidatorWidget poolAddress={poolAddress} />
-          )}
+                    {poolState === "staked" && (
+                      <ValidatorWidget poolAddress={poolAddress} />
+                    )}
 
-          {poolBalance === 32 || poolState === "staked" ? (
-            <PoolFullWidget poolAddress={poolAddress} poolState={poolState} />
-          ) : (
-            <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
-              <StakeForm
-                poolAddress={poolAddress}
-              />
-              <div className="border border-slate-400 rounded-md mx-4"></div>
-              <PoolInfo poolBalance={poolBalance} />
+                    {poolBalance === 32 || poolState === "staked" ? (
+                      <PoolFullWidget
+                        poolAddress={poolAddress}
+                        poolState={poolState}
+                      />
+                    ) : (
+                      <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
+                        <StakeForm poolAddress={poolAddress} />
+                        <div className="border border-slate-400 rounded-md mx-4"></div>
+                        <PoolInfo poolBalance={poolBalance} />
+                      </div>
+                    )}
+
+                    <div
+                      className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${
+                        isConnected ? "block" : "block"
+                      }`}
+                    >
+                      <div className="text-center font-bold my-2">
+                        Pool stakes
+                      </div>
+                      <NftGallery poolAddress={poolAddress} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
-
-          <div
-            className={`z-20 w-11/12 md:w-2/3 p-4 my-6 border-2 border-slate-400 rounded-md bg-white ${isConnected ? "block" : "block"
-              }`}
-          >
-            <div className="text-center font-bold my-2">Pool stakes</div>
-            <NftGallery poolAddress={poolAddress} />
           </div>
         </main>
         <Footer />

@@ -2,19 +2,12 @@ import type { NextPage } from "next";
 import Head from "next/head";
 
 import Header from "components/shared/Header";
-
-import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
 import { PoolList } from "components/dashboard/PoolList";
 import { ShareList } from "components/dashboard/ShareList";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
-const secondaryNavigation = [
-  { name: "Last 7 days", href: "#", current: true },
-  { name: "Last 30 days", href: "#", current: false },
-  { name: "All-time", href: "#", current: false },
-];
 const stats = [
   {
     name: "My Pools #",
@@ -54,9 +47,10 @@ const Dashboard: NextPage = () => {
 
       <Header />
 
-      <main className="-mt-32">
+      {/* Content */}
+      <main className="relative -mt-32 ">
         <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-          <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
+          <div className="bg-white rounded-lg px-5 py-6 shadow sm:px-6">
             <div className="relative isolate overflow-hidden pt-0">
               <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
                 {/* Heading */}
@@ -124,8 +118,6 @@ const Dashboard: NextPage = () => {
         </div>
       </main>
       <Footer />
-
-      {/* <Navbar /> */}
     </div>
   );
 };

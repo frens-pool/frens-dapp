@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Header from "components/shared/Header";
 import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
 import { InviteFrens } from "components/operator/InviteFrens";
@@ -33,7 +34,7 @@ const Operator: NextPage = () => {
 
   //auto-advance if poolPubKey is already set
   const { data: poolBalance } = useBalance({
-    address: poolContract
+    address: poolContract,
   });
 
   useEffect(() => {
@@ -68,37 +69,60 @@ const Operator: NextPage = () => {
         />
       </Head>
 
-      <Navbar />
+      <Header />
 
-      <main className="flex flex-col justify-center items-center min-h-[93vh]">
-        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">{number("Create")} Create Pool</h1>
-          <div className={className(step, "Create")}>
-            <CreatePool
-              onFinish={() => setStep("Invite")}
-              setPoolContract={setPoolContract}
-            />
-          </div>
-        </div>
-        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">
-            {number("Invite")} Invite Friends
-          </h1>
-          <div
-            className={`${step == "Invite" || step == "Run" ? "block" : "hidden"
-              }`}
-          >
-            <InviteFrens
-              poolContract={poolContract}
-              onFinish={() => setStep("Run")}
-              current_step={step}
-            />
-          </div>
-        </div>
-        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">{number("Run")} Run Validator</h1>
-          <div className={className(step, "Run")}>
-            <RunValidator poolContract={poolContract} />
+      {/* Content */}
+      <main className="relative -mt-32 ">
+        <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-lg px-5 py-6 shadow sm:px-6">
+            <div className="relative isolate overflow-hidden pt-0">
+              <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
+                {/* Describtion */}
+                <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
+                  <h1 className="text-base font-semibold leading-7 text-gray-900">
+                    Start pooling in three easy steps
+                  </h1>
+                </div>
+                {/* Steps */}
+                <div className="flex flex-col justify-center items-center min-h-[93vh]">
+                  <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
+                    <h1 className="text-3xl font-bold">
+                      {number("Create")} Create Pool
+                    </h1>
+                    <div className={className(step, "Create")}>
+                      <CreatePool
+                        onFinish={() => setStep("Invite")}
+                        setPoolContract={setPoolContract}
+                      />
+                    </div>
+                  </div>
+                  <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
+                    <h1 className="text-3xl font-bold">
+                      {number("Invite")} Invite Friends
+                    </h1>
+                    <div
+                      className={`${
+                        step == "Invite" || step == "Run" ? "block" : "hidden"
+                      }`}
+                    >
+                      <InviteFrens
+                        poolContract={poolContract}
+                        onFinish={() => setStep("Run")}
+                        current_step={step}
+                      />
+                    </div>
+                  </div>
+                  <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
+                    <h1 className="text-3xl font-bold">
+                      {number("Run")} Run Validator
+                    </h1>
+                    <div className={className(step, "Run")}>
+                      <RunValidator poolContract={poolContract} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
