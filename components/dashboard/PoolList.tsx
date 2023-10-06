@@ -1,23 +1,14 @@
-import { queryPools } from "hooks/graphql/queryPools";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Address, useAccount } from "wagmi";
+
 import { UserGroupIcon } from "@heroicons/react/20/solid";
+import { Address } from "wagmi";
 
-export const PoolList = () => {
-  const { address } = useAccount();
-  const [userPools, setUserPools] = useState<any[]>();
+interface Props {
+  userPools: Address[]
+}
 
-  useEffect(() => {
-    if (address) fetchUserPools(address);
-  }, [address]);
 
-  const fetchUserPools = async (operatorAddress: Address) => {
-    const poolsOfUser = await queryPools({ operatorAddress });
-    console.log(poolsOfUser);
-    setUserPools(poolsOfUser.data.creates);
-  };
-
+export const PoolList = ({ userPools }: Props) => {
   if (!userPools) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
@@ -25,6 +16,7 @@ export const PoolList = () => {
       </div>
     );
   }
+
   if (userPools.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
@@ -40,7 +32,7 @@ export const PoolList = () => {
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-">
-      {userPools.map(({ contractAddress }: any) => (
+      {userPools.map(contractAddress => (
         <div
           key={contractAddress}
           className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
