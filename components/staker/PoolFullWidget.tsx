@@ -8,7 +8,7 @@ type Props = {
 
 export const PoolFullWidget = ({ poolAddress, poolState }: Props) => {
   return (
-    <div className="z-20 w-11/12 md:w-2/3 border-2 border-slate-400 rounded-md bg-white mt-6">
+    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
       <div className="flex justify-center align-middle bg-white rounded-xl p-8 md:p-0 ">
         <div className="py-6 px-8 text-center md:text-left space-y-2">
           <div className="font-medium mb-2">

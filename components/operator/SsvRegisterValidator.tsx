@@ -40,8 +40,9 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
 
   const getClusterData = async (payloadData: any) => {
     if (payloadData && walletAddress && chain) {
-      const nodeUrl = chain.rpcUrls.default.http.at(0)!
-      const contractAddress = FrensContracts[network].SSVNetworkContract.address;
+      const nodeUrl = chain.rpcUrls.default.http.at(0)!;
+      const contractAddress =
+        FrensContracts[network].SSVNetworkContract.address;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: nodeUrl,
@@ -105,7 +106,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   }
   if (registerIsSuccess) {
     return (
-      <div className="my-2 p-2">
+      <div className="w-2/5 mx-auto my-2 p-2">
         <div>✅ successfully registered ✅</div>
         <div className="my-2">
           <div>Check it out here:</div>

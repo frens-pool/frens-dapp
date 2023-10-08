@@ -61,81 +61,113 @@ const Operator: NextPage = () => {
                   {/* Describtion */}
                   <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                     <h1 className="text-base font-semibold leading-7 text-gray-900">
-                      You got the 32 ETH. Congrats. Lets start your validator.
+                      You pooled 32 ETH? Congrats. Lets start your validator.
                     </h1>
                   </div>
                   {/* Run Content */}
-                  <div className="flex flex-col justify-center items-center min-h-[93vh]">
-                    <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                      <h1 className="text-3xl font-bold">
-                        {number(STEP.CREATE_KEYS)} create keys
-                      </h1>
-                      <div className={className(step, STEP.CREATE_KEYS)}>
-                        <CreateKeys
-                          nextStep={() => setStep(STEP.DEPOSIT_FILE)}
-                          poolAddress={poolAddress}
-                        />
+                  <div className="grid grid-cols-1 gap-y-8">
+                    {/* Step 1 */}
+                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                      <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                        <div className="text-2xl font-medium leading-6 text-gray-900">
+                          {number(STEP.CREATE_KEYS)} create keys
+                        </div>
                       </div>
+                      <dl className="-my-3 divide-y divide-gray-100 px-6 text-sm leading-6">
+                        <div className={className(step, STEP.CREATE_KEYS)}>
+                          <div className="pt-4 pb-6">
+                            <CreateKeys
+                              nextStep={() => setStep(STEP.DEPOSIT_FILE)}
+                              poolAddress={poolAddress}
+                            />
+                          </div>
+                        </div>
+                      </dl>
                     </div>
-                    <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                      <h1 className="text-3xl font-bold">
-                        {number(STEP.DEPOSIT_FILE)} upload deposit file
-                      </h1>
-                      <div className={className(step, STEP.DEPOSIT_FILE)}>
-                        <SetPubkey
-                          poolAddress={poolAddress}
-                          nextStep={() => setStep(STEP.DEPOSIT)}
-                          updatePubKeyState={updatePubKeyState}
-                        />
+                    {/* Step 2 */}
+                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                      <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                        <div className="text-2xl font-medium leading-6 text-gray-900">
+                          {number(STEP.DEPOSIT_FILE)} upload deposit file
+                        </div>
                       </div>
-                    </div>
-                    <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                      <h1 className="text-3xl font-bold">
-                        {number(STEP.DEPOSIT)} deposit ETH
-                      </h1>
-                      <div className={className(step, STEP.DEPOSIT)}>
-                        {pubKey && (
-                          <DepositForm
-                            nextStep={() => setStep(STEP.SELECT_OPERATOR)}
+                      <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
+                        <div className={className(step, STEP.DEPOSIT_FILE)}>
+                          <SetPubkey
                             poolAddress={poolAddress}
+                            nextStep={() => setStep(STEP.DEPOSIT)}
+                            updatePubKeyState={updatePubKeyState}
                           />
-                        )}
-                      </div>
+                        </div>
+                      </dl>
                     </div>
-                    <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                      <h1 className="text-3xl font-bold">
-                        {number(STEP.SELECT_OPERATOR)} select four operators
-                      </h1>
-                      <div className={className(step, STEP.SELECT_OPERATOR)}>
-                        <SelectOperator
-                          nextStep={() => setStep(STEP.KEYSTORE_FORM)}
-                          setOperators={setOperators}
-                        />
+                    {/* Step 3 */}
+                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                      <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                        <div className="text-2xl font-medium leading-6 text-gray-900">
+                          {number(STEP.DEPOSIT)} deposit ETH
+                        </div>
                       </div>
+                      <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
+                        <div className={className(step, STEP.DEPOSIT)}>
+                          {pubKey && (
+                            <DepositForm
+                              nextStep={() => setStep(STEP.SELECT_OPERATOR)}
+                              poolAddress={poolAddress}
+                            />
+                          )}
+                        </div>
+                      </dl>
                     </div>
-                    <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                      <h1 className="text-3xl font-bold">
-                        {number(STEP.KEYSTORE_FORM)} split keyshare
-                      </h1>
-                      <div className={className(step, STEP.KEYSTORE_FORM)}>
-                        <KeystoreForm
-                          nextStep={() => setStep(STEP.SSV_REGISTER)}
-                          operatorsList={operators}
-                          setPayloadRegisterValidator={
-                            setPayloadRegisterValidator
-                          }
-                        />
+                    {/* Step 4 */}
+                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                      <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                        <div className="text-2xl font-medium leading-6 text-gray-900">
+                          {number(STEP.SELECT_OPERATOR)} select four operators
+                        </div>
                       </div>
+                      <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
+                        <div className={className(step, STEP.SELECT_OPERATOR)}>
+                          <SelectOperator
+                            nextStep={() => setStep(STEP.KEYSTORE_FORM)}
+                            setOperators={setOperators}
+                          />
+                        </div>
+                      </dl>
                     </div>
-                    <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-                      <h1 className="text-3xl font-bold">
-                        {number(STEP.SSV_REGISTER)} register validator
-                      </h1>
-                      <div className={className(step, STEP.SSV_REGISTER)}>
-                        <SSVRegisterValidator
-                          payloadData={payloadRegisterValidator}
-                        />
+                    {/* Step 5 */}
+                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                      <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                        <div className="text-2xl font-medium leading-6 text-gray-900">
+                          {number(STEP.KEYSTORE_FORM)} split keyshare
+                        </div>
                       </div>
+                      <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
+                        <div className={className(step, STEP.KEYSTORE_FORM)}>
+                          <KeystoreForm
+                            nextStep={() => setStep(STEP.SSV_REGISTER)}
+                            operatorsList={operators}
+                            setPayloadRegisterValidator={
+                              setPayloadRegisterValidator
+                            }
+                          />
+                        </div>
+                      </dl>
+                    </div>
+                    {/* Step 6 */}
+                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                      <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                        <div className="text-2xl font-medium leading-6 text-gray-900">
+                          {number(STEP.SSV_REGISTER)} register validator
+                        </div>
+                      </div>
+                      <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
+                        <div className={className(step, STEP.SSV_REGISTER)}>
+                          <SSVRegisterValidator
+                            payloadData={payloadRegisterValidator}
+                          />
+                        </div>
+                      </dl>
                     </div>
                   </div>
                 </div>

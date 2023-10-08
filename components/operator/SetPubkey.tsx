@@ -70,7 +70,7 @@ export const SetPubkey = ({
   };
 
   return (
-    <div className="my-2 p-2">
+    <div className="w-2/5 mx-auto my-2 p-2">
       <DropKeys
         validateFile={checkDepositData}
         onFileReceived={(data: any) => {
