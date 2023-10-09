@@ -14,7 +14,7 @@ export const OperatorWidget = ({ poolAddress }: Props) => {
   const [operatorImage, setOperatorImage] = useState("");
   const [operatorName, setOperatorName] = useState("");
 
-  const { data: poolOwner, isSuccess } = usePoolOwner({ address: poolAddress });
+  const { poolOwner, isSuccess } = usePoolOwner({ poolAddress });
   const { chain } = useNetwork();
 
   useEffect(() => {
