@@ -6,16 +6,11 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 const navigation = [
   { name: "Dashboard", href: "/dashboard", current: true },
   {
-    name: "Pool",
-    href: "/pool/0xdfef1f44cafd2c5024f173e565672faa7f8b4ab9",
+    name: "All Pools",
+    href: "/pools",
     current: false,
   },
-  {
-    name: "Run",
-    href: "/run/0xdfef1f44cafd2c5024f173e565672faa7f8b4ab9",
-    current: false,
-  },
-  { name: "Create", href: "/", current: false },
+  { name: "New Pool", href: "/", current: false },
 ];
 
 function classNames(...classes: string[]) {
