@@ -12,6 +12,7 @@ import { OperatorWidget } from "components/staker/OperatorWidget";
 import { PoolFullWidget } from "components/staker/PoolFullWidget";
 import { StakeForm } from "components/staker/StakeForm";
 import { usePoolState } from "#/hooks/read/usePoolState";
+import { usePoolOwner } from "#/hooks/read/usePoolOwner";
 
 const Pool: NextPage = ({}) => {
   const router = useRouter();
@@ -27,6 +28,16 @@ const Pool: NextPage = ({}) => {
       if (setPoolBalance) setPoolBalance(+data.formatted);
     },
   });
+
+  const [operatorAddress, setOperatorAddress] = useState<Address>("0x49792f9cd0a7DC957CA6658B18a3c2A6d8F36F2d"); //default
+  const { data: poolOwner, isSuccess } = usePoolOwner({ address: poolAddress });
+  useEffect(() => {
+    if (isSuccess) {
+      if (poolOwner) {
+        setOperatorAddress(poolOwner);
+      }
+    }
+  }, [isSuccess, poolOwner]);
 
   if (poolAddress) {
     return (
@@ -80,7 +91,7 @@ const Pool: NextPage = ({}) => {
                 </div>
               </div>
             </div>
-          </div>
+           </div>
         </main>
         <Footer />
       </div>

@@ -4,6 +4,7 @@ import { Address, useAccount } from "wagmi";
 
 type Props = {
   poolAddress: Address;
+  operatorAddress: Address;
   poolState: any;
 };
 

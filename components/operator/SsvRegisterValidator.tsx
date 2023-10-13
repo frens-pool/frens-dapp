@@ -130,7 +130,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
           </a>
         </div>
 
-        <div>Or checkout your validator dashboard</div>
+        <div>Or <a href={`/pool/${payloadData.payload.publicKey}`}>checkout your validator dashboard</a></div>
       </div>
     );
   }
