@@ -13,7 +13,7 @@ const Pools: NextPage = () => {
   const userPools = useAllPools();
 
   return (
-    <div className="bg-gray-100" data-theme="winter">
+    <div className="bg-white" data-theme="winter">
       <Head>
         <title>FRENS Pool</title>
         <meta name="description" content="stake with friends" />

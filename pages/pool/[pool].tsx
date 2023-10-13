@@ -46,7 +46,7 @@ const Pool: NextPage = ({}) => {
 
   if (poolAddress) {
     return (
-      <div className="" data-theme="winter">
+      <div className="bg-white" data-theme="winter">
         <Head>
           <title>FRENS Pool</title>
           <meta name="description" content="stake with friends" />
