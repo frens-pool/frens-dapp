@@ -33,7 +33,7 @@ const Dashboard: NextPage = () => {
       value: totalDeposit.toFixed(4).toString(),
     },
     {
-      name: "ETH claimalbe",
+      name: "ETH claimable",
       value: totalClaimable.toFixed(4).toString(),
     },
   ];

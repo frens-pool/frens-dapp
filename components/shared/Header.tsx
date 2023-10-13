@@ -36,12 +36,12 @@ const Header = () => {
                       <img
                         className="block h-8"
                         src="/FRENS_logo_white.png"
-                        alt="Your Company"
+                        alt="Staking with Frens"
                       />
                       <img
                         className="block h-8 pl-2"
                         src="/FRENS_writing_white.png"
-                        alt="Your Company"
+                        alt="Staking with Frens"
                       />
                     </div>
                     <div className="hidden lg:ml-10 lg:block">
