@@ -7,10 +7,10 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard", current: true },
   {
     name: "All Pools",
-    href: "/pools",
+    href: "/",
     current: false,
   },
-  { name: "New Pool", href: "/", current: false },
+  { name: "New Pool", href: "/create", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -117,12 +117,13 @@ const Header = () => {
         <header className="py-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-white">
-              {router.asPath === "/" ? "Create your staking pool" : ""}
+              {router.asPath === "/" ? "Join a staking pool" : ""}
+              {router.asPath === "/create" ? "Create your staking pool" : ""}
               {router.asPath === "/dashboard" ? "Dashboard" : ""}
               {router.asPath.split("/")[1] === "pool"
                 ? "Pool ETH with your friends"
                 : ""}
-              {router.asPath.split("/")[1] === "/run"
+              {router.asPath.split("/")[1] === "run"
                 ? "Run your validator"
                 : ""}
             </h1>

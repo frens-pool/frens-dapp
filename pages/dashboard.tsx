@@ -97,7 +97,10 @@ const Dashboard: NextPage = () => {
                 <h1 className="text-base font-semibold leading-7 text-gray-900">
                   My Pools
                 </h1>
-                <Link href="/" className="ml-auto flex items-center gap-x-1">
+                <Link
+                  href="/create"
+                  className="ml-auto flex items-center gap-x-1"
+                >
                   <button className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white">
                     <PlusSmallIcon
                       className="-ml-1.5 h-5 w-5"
