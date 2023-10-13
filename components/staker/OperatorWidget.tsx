@@ -2,10 +2,11 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Address, useEnsName, useNetwork } from "wagmi";
 import { queryOperator } from "hooks/graphql/queryOperator";
+import { usePoolOwner } from "../../hooks/read/usePoolOwner";
 
 type Props = {
   poolAddress: Address;
-  operatorAddress: Address
+  operatorAddress: Address;
 };
 
 export const OperatorWidget = ({ poolAddress, operatorAddress }: Props) => {

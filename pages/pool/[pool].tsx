@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Address, useBalance } from "wagmi";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
 import Header from "components/shared/Header";
@@ -16,7 +16,7 @@ import { usePoolOwner } from "#/hooks/read/usePoolOwner";
 
 const Pool: NextPage = ({}) => {
   const router = useRouter();
-  const poolAddress = router.query.pool as Address | "0x";
+  const poolAddress = router.query.pool as Address;
   const { data: poolState } = usePoolState({ poolAddress });
 
   const [poolBalance, setPoolBalance] = useState<number>(0);
@@ -29,8 +29,13 @@ const Pool: NextPage = ({}) => {
     },
   });
 
-  const [operatorAddress, setOperatorAddress] = useState<Address>("0x49792f9cd0a7DC957CA6658B18a3c2A6d8F36F2d"); //default
-  const { data: poolOwner, isSuccess } = usePoolOwner({ address: poolAddress });
+  const [operatorAddress, setOperatorAddress] = useState<Address>(
+    "0x49792f9cd0a7DC957CA6658B18a3c2A6d8F36F2d"
+  ); //default
+  const { poolOwner, isSuccess } = usePoolOwner({
+    poolAddress: poolAddress,
+  });
+
   useEffect(() => {
     if (isSuccess) {
       if (poolOwner) {
@@ -61,7 +66,10 @@ const Pool: NextPage = ({}) => {
                 <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
                   {/* Pool Page */}
                   <div className="grid grid-cols-1 gap-y-8">
-                    <OperatorWidget poolAddress={poolAddress} />
+                    <OperatorWidget
+                      poolAddress={poolAddress}
+                      operatorAddress={operatorAddress}
+                    />
                     {poolState === "staked" && (
                       <ValidatorWidget poolAddress={poolAddress} />
                     )}
@@ -69,6 +77,7 @@ const Pool: NextPage = ({}) => {
                       <PoolFullWidget
                         poolAddress={poolAddress}
                         poolState={poolState}
+                        operatorAddress={operatorAddress}
                       />
                     ) : (
                       <div className="text-center overflow-hidden rounded-xl border border-gray-200">
@@ -91,7 +100,7 @@ const Pool: NextPage = ({}) => {
                 </div>
               </div>
             </div>
-           </div>
+          </div>
         </main>
         <Footer />
       </div>
