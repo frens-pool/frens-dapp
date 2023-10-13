@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { UserGroupIcon } from "@heroicons/react/20/solid";
 import { Address } from "wagmi";
@@ -8,7 +7,7 @@ interface Props {
   pools: Address[];
 }
 
-export const PoolList = ({ pools }: Props) => {
+export const UserPoolList = ({ pools }: Props) => {
   if (!pools) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
@@ -20,11 +19,16 @@ export const PoolList = ({ pools }: Props) => {
   if (pools.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">Connect wallet to see your pools 🧐</div>
-        <ConnectButton />
+        <div className="mb-4">You haven&apos;t created any pools yet 🧐</div>
+        <Link href="/">
+          <button className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white">
+            Create a pool
+          </button>
+        </Link>
       </div>
     );
   }
+
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-">
       {pools.map((contractAddress) => (

@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import Header from "components/shared/Header";
 import Footer from "components/shared/Footer";
-import { PoolList } from "components/dashboard/PoolList";
+import { UserPoolList } from "#/components/dashboard/UserPoolList";
 import { ShareList } from "components/dashboard/ShareList";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
@@ -110,7 +110,7 @@ const Dashboard: NextPage = () => {
                   </button>
                 </Link>
               </div>
-              <PoolList userPools={userPools} />
+              <UserPoolList pools={userPools} />
             </div>
             {/* Heading */}
             <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">

@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useAllPools } from "#/hooks/read/useAllPools";
 
 const Pools: NextPage = () => {
-  const userPools = useAllPools();
+  const allPools = useAllPools();
 
   return (
     <div className="bg-white" data-theme="winter">
@@ -48,7 +48,7 @@ const Pools: NextPage = () => {
                   </button>
                 </Link>
               </div>
-              <PoolList userPools={userPools} />
+              <PoolList pools={allPools} />
             </div>
           </div>
         </div>
