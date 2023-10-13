@@ -1,64 +1,19 @@
-import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import Navbar from "components/shared/Navbar";
+
+import Header from "components/shared/Header";
 import Footer from "components/shared/Footer";
-import { InviteFrens } from "components/operator/InviteFrens";
-import { CreatePool } from "components/operator/CreatePool";
-import { RunValidator } from "components/operator/RunValidator";
-import { Address, useBalance } from "wagmi";
-import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
+import { PoolList } from "components/dashboard/PoolList";
+import { PlusSmallIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
 
-const STEPS = ["Create", "Invite", "Run", "Ready"] as const;
-export type STEP_TYPE = (typeof STEPS)[number];
+import { useAllPools } from "#/hooks/read/useAllPools";
 
-const Operator: NextPage = () => {
-  const number = (step: STEP_TYPE) =>
-    ["1️⃣", "2️⃣", "3️⃣", "4️⃣"][STEPS.indexOf(step)];
-
-  const poolAddress = useRouter().query["pool"];
-  const [poolContract, setPoolContract] = useState<Address>("0x");
-  const [step, setStep] = useState<STEP_TYPE>("Create");
-
-  const { isSuccess: poolPubKeySuccess, data: poolPubKey } = usePoolPubKey({
-    address: poolContract,
-  });
-
-  useEffect(() => {
-    if (poolAddress) {
-      setPoolContract(poolAddress as Address);
-    }
-  }, [poolAddress]);
-
-  //auto-advance if poolPubKey is already set
-  const { data: poolBalance } = useBalance({
-    address: poolContract
-  });
-
-  useEffect(() => {
-    const poolBalanceNumber: number = poolBalance
-      ? +poolBalance.formatted
-      : 0.0;
-    if (poolBalanceNumber >= 32) {
-      setStep("Run");
-    } else if (poolPubKeySuccess && poolPubKey != "0x") {
-      setStep("Invite");
-    } else if (poolContract != "0x") {
-      setStep("Invite");
-    } else {
-      setStep("Create");
-    }
-  }, [poolAddress, poolBalance, poolPubKey, poolPubKeySuccess, poolContract]);
-
-  const className = (current_step: STEP_TYPE, step: STEP_TYPE) =>
-    `${current_step == step ? "block" : "hidden"}`;
+const Pools: NextPage = () => {
+  const userPools = useAllPools();
 
   return (
-    <div
-      className="bg-gradient-to-r from-cyan-50 to-blue-50"
-      data-theme="winter"
-    >
+    <div className="bg-gray-100" data-theme="winter">
       <Head>
         <title>FRENS Pool</title>
         <meta name="description" content="stake with friends" />
@@ -68,37 +23,33 @@ const Operator: NextPage = () => {
         />
       </Head>
 
-      <Navbar />
+      <Header />
 
-      <main className="flex flex-col justify-center items-center min-h-[93vh]">
-        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">{number("Create")} Create Pool</h1>
-          <div className={className(step, "Create")}>
-            <CreatePool
-              onFinish={() => setStep("Invite")}
-              setPoolContract={setPoolContract}
-            />
-          </div>
-        </div>
-        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">
-            {number("Invite")} Invite Friends
-          </h1>
-          <div
-            className={`${step == "Invite" || step == "Run" ? "block" : "hidden"
-              }`}
-          >
-            <InviteFrens
-              poolContract={poolContract}
-              onFinish={() => setStep("Run")}
-              current_step={step}
-            />
-          </div>
-        </div>
-        <div className="z-20 w-11/12 md:w-2/3 text-center flex flex-col items-center border-2 border-slate-400 rounded-md mb-4 p-3 bg-white">
-          <h1 className="text-3xl font-bold">{number("Run")} Run Validator</h1>
-          <div className={className(step, "Run")}>
-            <RunValidator poolContract={poolContract} />
+      {/* Content */}
+      <main className="relative -mt-32 ">
+        <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
+            {/* Heading */}
+            <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">
+              <div className="pb-4 flex justify-between mx-auto max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
+                <h1 className="text-base font-semibold leading-7 text-gray-900">
+                  Pool List
+                </h1>
+                <Link
+                  href="/create"
+                  className="ml-auto flex items-center gap-x-1"
+                >
+                  <button className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white">
+                    <PlusSmallIcon
+                      className="-ml-1.5 h-5 w-5"
+                      aria-hidden="true"
+                    />
+                    New pool
+                  </button>
+                </Link>
+              </div>
+              <PoolList userPools={userPools} />
+            </div>
           </div>
         </div>
       </main>
@@ -107,4 +58,4 @@ const Operator: NextPage = () => {
   );
 };
 
-export default Operator;
+export default Pools;

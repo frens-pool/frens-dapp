@@ -12,7 +12,7 @@ export const DepositForm = ({ nextStep, poolAddress }: Props) => {
   });
 
   return (
-    <div className="my-2 p-2">
+    <div className="w-2/5 mx-auto my-2 p-2">
       <div>Pool Balance: {balance?.formatted}</div>
       <div className="text-frens-main mb-2">
         Balance of 32 eth required for deposit

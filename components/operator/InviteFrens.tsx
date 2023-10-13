@@ -1,14 +1,14 @@
-import { STEP_TYPE } from "#/pages";
+import { STEP_TYPE } from "#/pages/create";
 import Link from "next/link";
 
 export const InviteFrens = ({
   poolContract,
   onFinish,
-  current_step
+  current_step,
 }: {
   poolContract: string;
   onFinish: () => void;
-  current_step: STEP_TYPE
+  current_step: STEP_TYPE;
 }) => {
   const link = `https://app.frens.fun/pool/${poolContract}`;
 

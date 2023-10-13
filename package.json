@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.2",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
     "@rainbow-me/rainbowkit": "^1.0.6",
     "@vercel/analytics": "^0.1.8",
     "abitype": "^0.9.3",

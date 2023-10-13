@@ -120,8 +120,9 @@ export const KeystoreForm = ({
 
   const getClusterData = async (operatorIds: any) => {
     if (operatorIds && walletAddress && chain) {
-      const contractAddress = FrensContracts[network].SSVNetworkContract.address;
-      const nodeUrl = chain.rpcUrls.default.http.at(0)!
+      const contractAddress =
+        FrensContracts[network].SSVNetworkContract.address;
+      const nodeUrl = chain.rpcUrls.default.http.at(0)!;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: nodeUrl,
@@ -159,48 +160,46 @@ export const KeystoreForm = ({
   }
 
   return (
-    <div className="">
-      <div className="my-2 p-2">
-        <DropKeys
-          validateFile={(fileContent: any) => ({ success: true })}
-          onFileReceived={(data: any) => {
-            handleKeystoreDrop(data);
+    <div className="w-2/5 mx-auto my-2 p-2">
+      <DropKeys
+        validateFile={(fileContent: any) => ({ success: true })}
+        onFileReceived={(data: any) => {
+          handleKeystoreDrop(data);
+        }}
+      />
+      {keystoreError ? (
+        <div className="text-red-600 mb-4">pls upload a keystore file</div>
+      ) : (
+        <></>
+      )}
+      <div>Keystore password:</div>
+      <input
+        type="password"
+        onChange={(e) => setPW(e.target.value)}
+        className="input input-primary w-full max-w-xs my-2"
+      />
+      {payloadError ? (
+        <div className="text-red-600 mb-4">
+          likely wrong password, try again
+        </div>
+      ) : (
+        <></>
+      )}
+      {loading ? (
+        <button className="btn loading text-white" disabled>
+          Verifying
+        </button>
+      ) : (
+        <button
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+          onClick={() => {
+            buildRegisterPayload();
+            setLoading(true);
           }}
-        />
-        {keystoreError ? (
-          <div className="text-red-600 mb-4">pls upload a keystore file</div>
-        ) : (
-          <></>
-        )}
-        <div>Keystore password:</div>
-        <input
-          type="password"
-          onChange={(e) => setPW(e.target.value)}
-          className="input input-primary w-full max-w-xs my-2"
-        />
-        {payloadError ? (
-          <div className="text-red-600 mb-4">
-            likely wrong password, try again
-          </div>
-        ) : (
-          <></>
-        )}
-        {loading ? (
-          <button className="btn loading text-white" disabled>
-            Verifying
-          </button>
-        ) : (
-          <button
-            className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-            onClick={() => {
-              buildRegisterPayload();
-              setLoading(true);
-            }}
-          >
-            Next
-          </button>
-        )}
-      </div>
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 };

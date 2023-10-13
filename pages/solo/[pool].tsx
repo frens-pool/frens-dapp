@@ -23,10 +23,7 @@ const Operator: NextPage = () => {
 
   if (poolAddress) {
     return (
-      <div
-        className="bg-gradient-to-r from-cyan-50 to-blue-50"
-        data-theme="winter"
-      >
+      <div className="" data-theme="winter">
         <Head>
           <title>FRENS Pool: Solo validator</title>
           <meta name="description" content="stake with friends" />

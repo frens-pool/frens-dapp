@@ -119,12 +119,12 @@ export const CreatePool = ({
           )}
         </div>
       </div>
-      <div>
+      {/* <div>
         or{" "}
         <Link className="underline text-frens-main" href="/dashboard">
           open existing pools
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };
