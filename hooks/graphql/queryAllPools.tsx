@@ -1,8 +1,7 @@
 import { graphClient } from "./graphClient";
 import { gql } from "@apollo/client";
-import { Address } from "wagmi";
 
-const buildQuery = ({ operatorAddress }: { operatorAddress: string }) => {
+const buildQuery = () => {
   const query = `
   {
     creates(first: 100) {
@@ -13,12 +12,8 @@ const buildQuery = ({ operatorAddress }: { operatorAddress: string }) => {
   return query;
 };
 
-export const queryAllPools = async ({
-  operatorAddress,
-}: {
-  operatorAddress: Address;
-}) => {
-  const queryForPools = buildQuery({ operatorAddress });
+export const queryAllPools = async () => {
+  const queryForPools = buildQuery();
   const response = await graphClient.query({
     query: gql(queryForPools),
   });

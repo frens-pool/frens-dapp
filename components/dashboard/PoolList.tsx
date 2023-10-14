@@ -9,22 +9,14 @@ interface Props {
 }
 
 export const PoolList = ({ pools }: Props) => {
-  if (!pools) {
+  if (!pools || pools.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">Connect wallet to see your pools</div>
+        <div className="mb-4">Sth is wrong. Pls contact us.</div>
       </div>
     );
   }
 
-  if (pools.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">Connect wallet to see your pools 🧐</div>
-        <ConnectButton />
-      </div>
-    );
-  }
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-">
       {pools.map((contractAddress) => (
