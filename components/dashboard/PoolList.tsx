@@ -12,7 +12,7 @@ export const PoolList = ({ pools }: Props) => {
   if (!pools || pools.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">Sth is wrong. Pls contact us.</div>
+        <div className="mb-4">Loading...</div>
       </div>
     );
   }
