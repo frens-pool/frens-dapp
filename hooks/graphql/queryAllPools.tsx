@@ -4,8 +4,12 @@ import { gql } from "@apollo/client";
 const buildQuery = () => {
   const query = `
   {
-    creates(first: 100) {
+    creates(first: 60) {
+      deposits {
+        amount
+      }
       contractAddress
+      creator
     }
   }
   `;

@@ -12,6 +12,7 @@ import { goerli, mainnet } from "@wagmi/chains";
 // import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const { chains, publicClient } = configureChains(
   [goerli],
@@ -35,20 +36,27 @@ const wagmiConfig = createConfig({
   publicClient,
 });
 
+const client = new ApolloClient({
+  uri: "https://api.studio.thegraph.com/query/46611/frens-graph/version/latest",
+  cache: new InMemoryCache(),
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider
-        chains={chains}
-        theme={lightTheme({
-          accentColor: "#3F19EE",
-        })}
-      >
-        <div className="z-0 pattern-wavy pattern-blue-600 pattern-bg-white pattern-opacity-5 pattern-size-16 fixed top-0 left-0 right-0 bottom-0"></div>
-        <Component {...pageProps} />
-        <Analytics />
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <ApolloProvider client={client}>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider
+          chains={chains}
+          theme={lightTheme({
+            accentColor: "#3F19EE",
+          })}
+        >
+          <div className="z-0 pattern-wavy pattern-blue-600 pattern-bg-white pattern-opacity-5 pattern-size-16 fixed top-0 left-0 right-0 bottom-0"></div>
+          <Component {...pageProps} />
+          <Analytics />
+        </RainbowKitProvider>
+      </WagmiConfig>
+    </ApolloProvider>
   );
 }
 
