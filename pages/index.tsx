@@ -3,15 +3,11 @@ import Head from "next/head";
 
 import Header from "components/shared/Header";
 import Footer from "components/shared/Footer";
-import { PoolList } from "components/dashboard/PoolList";
+import { Pools } from "components/dashboard/Pools";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
-import { useAllPools } from "#/hooks/read/useAllPools";
-
-const Pools: NextPage = () => {
-  const allPools = useAllPools();
-
+const Home: NextPage = () => {
   return (
     <div className="bg-white" data-theme="winter">
       <Head>
@@ -48,7 +44,7 @@ const Pools: NextPage = () => {
                   </button>
                 </Link>
               </div>
-              <PoolList pools={allPools} />
+              <Pools />
             </div>
           </div>
         </div>
@@ -58,4 +54,4 @@ const Pools: NextPage = () => {
   );
 };
 
-export default Pools;
+export default Home;

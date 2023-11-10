@@ -1,15 +1,30 @@
 import Link from "next/link";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useQuery, gql } from "@apollo/client";
 
 import { UserGroupIcon } from "@heroicons/react/20/solid";
 import { Address } from "wagmi";
 
-interface Props {
-  pools: Address[];
+interface Pool {
+  contractAddress: Address;
+  creator: Address;
 }
 
-export const PoolList = ({ pools }: Props) => {
-  if (!pools || pools.length === 0) {
+const GET_POOLS = gql`
+  query GetPools {
+    creates(first: 60) {
+      deposits {
+        amount
+      }
+      contractAddress
+      creator
+    }
+  }
+`;
+
+export const Pools = () => {
+  const { loading, error, data } = useQuery(GET_POOLS);
+
+  if (loading) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
         <div className="mb-4">Loading...</div>
@@ -19,17 +34,17 @@ export const PoolList = ({ pools }: Props) => {
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-">
-      {pools.map((contractAddress) => (
+      {data.creates.map((pool: Pool) => (
         <div
-          key={contractAddress}
+          key={pool.contractAddress}
           className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
         >
           <UserGroupIcon className="-ml-1.5 h-5 w-5" aria-hidden="true" />
           <Link
             className="underline text-frens-main"
-            href={`/pool/${contractAddress}`}
+            href={`/pool/${pool.contractAddress}`}
           >
-            {contractAddress}
+            {pool.contractAddress}
           </Link>
         </div>
       ))}
