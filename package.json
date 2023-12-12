@@ -17,11 +17,11 @@
     "@vercel/analytics": "^0.1.8",
     "abitype": "^0.9.3",
     "crypto-browserify": "^3.12.0",
-    "daisyui": "^2.46.0",
+    "daisyui": "^4.4.19",
     "ethers": "^5.7.2",
     "graphql": "^16.8.1",
     "lens-protocol": "^0.1.5",
-    "next": "^13.1.0",
+    "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
@@ -30,7 +30,7 @@
     "ssv-keys": "github:bloxapp/ssv-keys#v1.0.1",
     "ssv-scanner": "github:bloxapp/ssv-scanner#v1.0.0.rc0",
     "stream-browserify": "^3.0.0",
-    "wagmi": "^1.3.8",
+    "wagmi": "^1.4.10",
     "web3": "^1.7.4"
   },
   "devDependencies": {
