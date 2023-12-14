@@ -20,7 +20,7 @@ export function beaconchainUrl(chain?: Chain) {
 
 export function ssvExplorer(publicKey: string, chain?: Chain) {
   // remove `0x` prefix
-  const publicKeyWithout0xPrefix = publicKey.replace(/^(0x)/, '');
+  const publicKeyWithout0xPrefix = publicKey.replace(/^(0x)/, "");
 
   switch (chain?.id) {
     case 7:
@@ -33,7 +33,7 @@ export function ssvExplorer(publicKey: string, chain?: Chain) {
 export function openseaUrl(poolAddress: Address, nftID: string, chain?: Chain) {
   switch (chain?.id) {
     case 7:
-      return `https://testnets.opensea.io/assets/goerli/${poolAddress}/${nftID}`
+      return `https://testnets.opensea.io/assets/goerli/${poolAddress}/${nftID}`;
     default:
       return `https://opensea.io/assets/${poolAddress}/${nftID}`;
   }

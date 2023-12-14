@@ -1,15 +1,15 @@
-import GoerliFrensArt from "./goerli/FrensArt.json";
-import GoerliFrensMetaHelper from "./goerli/FrensMetaHelper.json";
-import GoerliFrensPoolShare from "./goerli/FrensPoolShare.json";
-import GoerliFrensPoolShareTokenURI from "./goerli/FrensPoolShareTokenURI.json";
-import GoerliFrensStorage from "./goerli/FrensStorage.json";
-import GoerliStakingPool from "./goerli/StakingPool.json";
-import GoerliStakingPoolFactory from "./goerli/StakingPoolFactory.json";
+import GoerliFrensArt from "./abis/frensGoerli/FrensArt.json";
+import GoerliFrensMetaHelper from "./abis/frensGoerli/FrensMetaHelper.json";
+import GoerliFrensPoolShare from "./abis/frensGoerli/FrensPoolShare.json";
+import GoerliFrensPoolShareTokenURI from "./abis/frensGoerli/FrensPoolShareTokenURI.json";
+import GoerliFrensStorage from "./abis/frensGoerli/FrensStorage.json";
+import GoerliStakingPool from "./abis/frensGoerli/StakingPool.json";
+import GoerliStakingPoolFactory from "./abis/frensGoerli/StakingPoolFactory.json";
 
-import GoerliDepositContract from "./DepositContract.json";
-import GoerliSSVNetwork from "./GoerliSSVNetwork.json";
-import GoerliSSVRegistry from "./GoerliSSVRegistry.json";
-import GoerliSSVToken from "./GoerliSSVToken.json";
+import GoerliDepositContract from "./abis/DepositContract.json";
+import GoerliSSVNetwork from "./abis/ssvGoerli/SSVNetwork.json";
+import GoerliSSVViews from "./abis/ssvGoerli/SSVNetworkViews.json";
+import GoerliSSVToken from "./abis/ssvGoerli/SSVToken.json";
 
 import MainnetFrensArt from "./mainnet/FrensArt.json";
 import MainnetFrensMetaHelper from "./mainnet/FrensMetaHelper.json";
@@ -18,7 +18,7 @@ import MainnetFrensPoolShareTokenURI from "./mainnet/FrensPoolShareTokenURI.json
 import MainnetFrensStorage from "./mainnet/FrensStorage.json";
 import MainnetStakingPool from "./mainnet/StakingPool.json";
 import MainnetStakingPoolFactory from "./mainnet/StakingPoolFactory.json";
-import MainnetDepositContract from "./DepositContract.json";
+import MainnetDepositContract from "./abis/DepositContract.json";
 import { Address } from "wagmi";
 
 const unknownABI = { abi: [] };
@@ -62,11 +62,11 @@ export const FrensContracts = {
     },
     SSVNetworkContract: {
       address: "0x0" as Address,
-      abi: GoerliSSVNetwork.abi, // TODO
+      abi: GoerliSSVNetwork, // TODO
     },
     SSVRegistryrContract: {
       address: "0x0" as Address,
-      abi: GoerliSSVRegistry.abi, // TODO
+      abi: GoerliSSVViews, // TODO
     },
   },
   goerli: {
@@ -107,11 +107,11 @@ export const FrensContracts = {
     },
     SSVNetworkContract: {
       address: "0xC3CD9A0aE89Fff83b71b58b6512D43F8a41f363D" as Address,
-      abi: GoerliSSVNetwork.abi,
+      abi: GoerliSSVNetwork,
     },
-    SSVRegistryrContract: {
-      address: "0x8dB45282d7C4559fd093C26f677B3837a5598914" as Address,
-      abi: GoerliSSVRegistry.abi,
+    SSVNetworkViewsContract: {
+      address: "0xAE2C84c48272F5a1746150ef333D5E5B51F68763" as Address,
+      abi: GoerliSSVViews,
     },
   },
 };
