@@ -1,4 +1,6 @@
-import { useRouter } from "next/router";
+"use client";
+
+import { usePathname } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -18,7 +20,7 @@ function classNames(...classes: string[]) {
 }
 
 const Header = () => {
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className="min-h-full">
@@ -51,7 +53,7 @@ const Header = () => {
                             key={item.name}
                             href={item.href}
                             className={classNames(
-                              item.href === router.asPath
+                              item.href === pathname
                                 ? "bg-frens-blue text-white"
                                 : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
                               "rounded-md py-2 px-3 text-sm font-medium"
@@ -117,15 +119,13 @@ const Header = () => {
         <header className="py-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-white">
-              {router.asPath === "/" ? "Join a staking pool" : ""}
-              {router.asPath === "/create" ? "Create your staking pool" : ""}
-              {router.asPath === "/dashboard" ? "Dashboard" : ""}
-              {router.asPath.split("/")[1] === "pool"
+              {pathname === "/" ? "Join a staking pool" : ""}
+              {pathname === "/create" ? "Create your staking pool" : ""}
+              {pathname === "/dashboard" ? "Dashboard" : ""}
+              {pathname?.split("/")[1] === "pool"
                 ? "Pool ETH with your friends"
                 : ""}
-              {router.asPath.split("/")[1] === "run"
-                ? "Run your validator"
-                : ""}
+              {pathname?.split("/")[1] === "run" ? "Run your validator" : ""}
             </h1>
           </div>
         </header>
