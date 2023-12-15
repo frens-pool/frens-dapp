@@ -21,32 +21,46 @@ import MainnetStakingPoolFactory from "./mainnet/StakingPoolFactory.json";
 import MainnetDepositContract from "./abis/DepositContract.json";
 import { Address } from "wagmi";
 
+import {
+  GOERLI_FRENS_ART,
+  GOERLI_FRENS_META,
+  GOERLI_FRENS_ORACLE,
+  GOERLI_FRENS_POOLSHARE,
+  GOERLI_FRENS_POOLSHARE_TOKENURI,
+  GOERLI_FRENS_STORAGE,
+  GOERLI_FRENS_STAKINGPOOL_FACTORY,
+  GOERLI_DEPOSIT_CONTRACT,
+  GOERLI_SSV_NETWORK,
+  GOERLI_SSV_NETWORK_VIEWS,
+  GOERLI_SSV_NETWORK_TOKEN,
+} from "./constants/goerliAddresses";
+
 const unknownABI = { abi: [] };
 
 export const FrensContracts = {
   mainnet: {
     FrensStorage: {
-      address: MainnetFrensStorage.address as Address,
+      address: GOERLI_FRENS_STORAGE as Address,
       abi: MainnetFrensStorage.abi,
     },
     StakingPoolFactory: {
-      address: MainnetStakingPoolFactory.address as Address,
+      address: GOERLI_FRENS_STAKINGPOOL_FACTORY as Address,
       abi: MainnetStakingPoolFactory.abi,
     },
     FrensMetaHelper: {
-      address: MainnetFrensMetaHelper.address as Address,
+      address: GOERLI_FRENS_META as Address,
       abi: MainnetFrensMetaHelper.abi,
     },
     FrensPoolShare: {
-      address: MainnetFrensPoolShare.address as Address,
+      address: GOERLI_FRENS_POOLSHARE as Address,
       abi: MainnetFrensPoolShare.abi,
     },
     FrensPoolShareTokenURI: {
-      address: MainnetFrensPoolShareTokenURI.address as Address,
+      address: GOERLI_FRENS_POOLSHARE_TOKENURI as Address,
       abi: MainnetFrensPoolShareTokenURI.abi,
     },
     FrensArt: {
-      address: MainnetFrensArt.address as Address,
+      address: GOERLI_FRENS_ART as Address,
       abi: MainnetFrensArt.abi,
     },
     StakingPool: {
@@ -71,46 +85,46 @@ export const FrensContracts = {
   },
   goerli: {
     FrensStorage: {
-      address: GoerliFrensStorage.address as Address,
+      address: GOERLI_FRENS_STORAGE as Address,
       abi: GoerliFrensStorage.abi,
     },
     StakingPoolFactory: {
-      address: GoerliStakingPoolFactory.address as Address,
+      address: GOERLI_FRENS_STAKINGPOOL_FACTORY as Address,
       abi: GoerliStakingPoolFactory.abi,
     },
     FrensMetaHelper: {
-      address: GoerliFrensMetaHelper.address as Address,
+      address: GOERLI_FRENS_META as Address,
       abi: GoerliFrensMetaHelper.abi,
     },
     FrensPoolShare: {
-      address: GoerliFrensPoolShare.address as Address,
+      address: GOERLI_FRENS_POOLSHARE as Address,
       abi: GoerliFrensPoolShare.abi,
     },
     FrensPoolShareTokenURI: {
-      address: GoerliFrensPoolShareTokenURI.address as Address,
+      address: GOERLI_FRENS_POOLSHARE_TOKENURI as Address,
       abi: GoerliFrensPoolShareTokenURI.abi,
     },
     FrensArt: {
-      address: GoerliFrensArt.address as Address,
+      address: GOERLI_FRENS_ART as Address,
       abi: GoerliFrensArt.abi,
     },
     StakingPool: {
       abi: GoerliStakingPool.abi,
     },
     DepositContract: {
-      address: "0xff50ed3d0ec03ac01d4c79aad74928bff48a7b2b" as Address,
+      address: GOERLI_DEPOSIT_CONTRACT as Address,
       abi: GoerliDepositContract,
     },
     SSVTokenContract: {
-      address: "0x3a9f01091C446bdE031E39ea8354647AFef091E7" as Address,
+      address: GOERLI_SSV_NETWORK_TOKEN as Address,
       abi: GoerliSSVToken.abi,
     },
     SSVNetworkContract: {
-      address: "0xC3CD9A0aE89Fff83b71b58b6512D43F8a41f363D" as Address,
+      address: GOERLI_SSV_NETWORK as Address,
       abi: GoerliSSVNetwork,
     },
     SSVNetworkViewsContract: {
-      address: "0xAE2C84c48272F5a1746150ef333D5E5B51F68763" as Address,
+      address: GOERLI_SSV_NETWORK_VIEWS as Address,
       abi: GoerliSSVViews,
     },
   },
