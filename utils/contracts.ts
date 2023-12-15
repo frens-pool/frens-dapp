@@ -78,7 +78,7 @@ export const FrensContracts = {
       address: "0x0" as Address,
       abi: GoerliSSVNetwork, // TODO
     },
-    SSVRegistryrContract: {
+    SSVNetworkViewsContract: {
       address: "0x0" as Address,
       abi: GoerliSSVViews, // TODO
     },

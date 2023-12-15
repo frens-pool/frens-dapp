@@ -4,32 +4,6 @@ import { FrensContracts } from "#/utils/contracts";
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
 import { useNetworkName } from "../useNetworkName";
 
-// const split = async (
-//   keystore,   // string
-//   keystorePassword,
-//   operators,
-//   operatorIds,
-//   ssvAmount,
-// ) => {
-//   const ssvKeys = new SSVKeys();
-//   const keyStore = new EthereumKeyStore(keystore);
-//   const privateKey = await keyStore.getPrivateKey(keystorePassword);
-
-//   // Step 2: Build shares from operator IDs and public keys
-//   const threshold = await ssvKeys.createThreshold(privateKey, operatorIds);
-//   const shares = await ssvKeys.encryptShares(operators, threshold.shares);
-
-//   // Step 3: Build final web3 transaction payload
-//   const payload = await ssvKeys.buildPayload(
-//     threshold.validatorPublicKey,
-//     operatorIds,
-//     shares,
-//     ssvAmount,
-//   );
-//   console.log(payload);
-//   return payload;
-// }
-
 export function useSSVRegisterValidator({
   keystore,
   keystorePassword,
@@ -66,8 +40,8 @@ export function useSSVRegisterValidator({
   ];
 
   const { config } = usePrepareContractWrite({
-    address: FrensContracts[network].SSVRegistryrContract.address,
-    abi: FrensContracts[network].SSVRegistryrContract.abi,
+    address: FrensContracts[network].SSVNetworkContract.address,
+    abi: FrensContracts[network].SSVNetworkContract.abi,
     functionName: "registerValidator",
     args: payload,
   });
