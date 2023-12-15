@@ -1,7 +1,8 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import Header from "components/shared/Header";
 import Footer from "components/shared/Footer";
 import { InviteFrens } from "components/operator/InviteFrens";
@@ -13,11 +14,13 @@ import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 const STEPS = ["Create", "Invite", "Run", "Ready"] as const;
 export type STEP_TYPE = (typeof STEPS)[number];
 
-const Operator: NextPage = () => {
+const Create: NextPage = () => {
   const number = (step: STEP_TYPE) =>
     ["1️⃣", "2️⃣", "3️⃣", "4️⃣"][STEPS.indexOf(step)];
 
-  const poolAddress = useRouter().query["pool"];
+  const params = useParams();
+  const poolAddress = params?.pool as Address;
+
   const [poolContract, setPoolContract] = useState<Address>("0x");
   const [step, setStep] = useState<STEP_TYPE>("Create");
 
@@ -56,17 +59,7 @@ const Operator: NextPage = () => {
 
   return (
     <div className="bg-white" data-theme="winter">
-      <Head>
-        <title>FRENS Pool</title>
-        <meta name="description" content="stake with friends" />
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤙</text></svg>"
-        />
-      </Head>
-
       <Header />
-
       {/* Content */}
       <main className="relative -mt-32 ">
         <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
@@ -130,4 +123,4 @@ const Operator: NextPage = () => {
   );
 };
 
-export default Operator;
+export default Create;

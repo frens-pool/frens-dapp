@@ -1,7 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import Header from "components/shared/Header";
 import Footer from "components/shared/Footer";
 import { SelectOperator } from "components/operator/SelectOperator";
@@ -13,8 +15,8 @@ import { SetPubkey } from "#/components/operator/SetPubkey";
 import { Address } from "wagmi";
 
 const Operator: NextPage = () => {
-  const router = useRouter();
-  const poolAddress = router.query.pool as Address;
+  const params = useParams();
+  const poolAddress = params?.pool as Address;
 
   enum STEP {
     CREATE_KEYS = 0,

@@ -1,6 +1,6 @@
-import type { NextPage } from "next";
-import Head from "next/head";
+"use client";
 
+import type { NextPage } from "next";
 import Header from "components/shared/Header";
 import Footer from "components/shared/Footer";
 import { UserPoolList } from "#/components/dashboard/UserPoolList";
@@ -40,17 +40,7 @@ const Dashboard: NextPage = () => {
 
   return (
     <div className="bg-white" data-theme="winter">
-      <Head>
-        <title>FRENS Pool</title>
-        <meta name="description" content="stake with friends" />
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤙</text></svg>"
-        />
-      </Head>
-
       <Header />
-
       {/* Content */}
       <main className="relative -mt-32 ">
         <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">

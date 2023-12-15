@@ -1,6 +1,8 @@
+"use client";
+
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Address, useBalance } from "wagmi";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
@@ -15,10 +17,10 @@ import { usePoolState } from "#/hooks/read/usePoolState";
 import { usePoolOwner } from "#/hooks/read/usePoolOwner";
 
 const Pool: NextPage = ({}) => {
-  const router = useRouter();
-  const poolAddress = router.query.pool as Address;
-  const { data: poolState } = usePoolState({ poolAddress });
+  const params = useParams();
+  const poolAddress = params?.pool as Address;
 
+  const { data: poolState } = usePoolState({ poolAddress });
   const [poolBalance, setPoolBalance] = useState<number>(0);
 
   useBalance({

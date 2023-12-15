@@ -1,7 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import Navbar from "components/shared/Navbar";
 import Footer from "components/shared/Footer";
 import { CreateKeys } from "components/operator/CreateKeys";
@@ -9,8 +11,8 @@ import { DepositForm } from "components/operator/DepositForm";
 import { Address } from "wagmi";
 
 const Operator: NextPage = () => {
-  const router = useRouter();
-  const poolAddress = router.query.pool as Address; //FIXME: better error handling
+  const params = useParams();
+  const poolAddress = params?.pool as Address;
 
   enum STEP {
     DEPOSIT,

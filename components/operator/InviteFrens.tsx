@@ -1,4 +1,4 @@
-import { STEP_TYPE } from "#/pages/create";
+import { STEP_TYPE } from "#/app/create/page";
 import Link from "next/link";
 
 export const InviteFrens = ({
