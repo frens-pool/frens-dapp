@@ -22,9 +22,6 @@ export const CreatePool = ({
   const { data, isLoading, write: createPool } = useCreatePool();
 
   function onCreatePool(): void {
-    // const INVITATION_TOKEN_LENGTH = 9
-    // const inviteToken = Math.random().toString(36).substring(2, INVITATION_TOKEN_LENGTH);
-    // setTokenCode(inviteToken);
     if (createPool) createPool();
   }
 

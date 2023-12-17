@@ -1,18 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", current: true },
   {
     name: "All Pools",
     href: "/",
     current: false,
   },
+  { name: "Dashboard", href: "/dashboard", current: true },
   { name: "New Pool", href: "/create", current: false },
+  { name: "Run Validator", href: "/run", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -34,22 +36,27 @@ const Header = () => {
               <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
                   <div className="flex items-center px-2 lg:px-0">
-                    <div className="flex flex-shrink-0">
-                      <img
-                        className="block h-8"
-                        src="/FRENS_logo_white.png"
-                        alt="Staking with Frens"
-                      />
-                      <img
-                        className="block h-8 pl-2"
-                        src="/FRENS_writing_white.png"
-                        alt="Staking with Frens"
-                      />
-                    </div>
+                    <Link
+                      href="/"
+                      className="text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium"
+                    >
+                      <div className="flex flex-shrink-0">
+                        <img
+                          className="block h-8"
+                          src="/FRENS_logo_white.png"
+                          alt="Staking with Frens"
+                        />
+                        <img
+                          className="block h-8 pl-2"
+                          src="/FRENS_writing_white.png"
+                          alt="Staking with Frens"
+                        />
+                      </div>
+                    </Link>
                     <div className="hidden lg:ml-10 lg:block">
                       <div className="flex space-x-4">
                         {navigation.map((item) => (
-                          <a
+                          <Link
                             key={item.name}
                             href={item.href}
                             className={classNames(
@@ -61,7 +68,7 @@ const Header = () => {
                             aria-current={item.current ? "page" : undefined}
                           >
                             {item.name}
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>

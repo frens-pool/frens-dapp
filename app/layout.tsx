@@ -1,6 +1,8 @@
 import "../utils/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { Metadata } from "next";
+// import Header from "../components/shared/Header";
+import Footer from "../components/shared/Footer";
 import { Providers } from "../components/providers";
 import { ApolloWrapper } from "../components/apolloWrapper";
 
@@ -29,6 +31,7 @@ export default function RootLayout({
           <ApolloWrapper>
             <div className="z-0 pattern-wavy pattern-blue-600 pattern-bg-white pattern-opacity-5 pattern-size-16 fixed top-0 left-0 right-0 bottom-0"></div>
             {children}
+            <Footer />
           </ApolloWrapper>
         </Providers>
       </body>

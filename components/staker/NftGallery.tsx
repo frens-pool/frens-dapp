@@ -1,7 +1,7 @@
-import { useNetworkName } from "#/hooks/useNetworkName";
 import { useEffect, useState } from "react";
-import { FrensContracts } from "utils/contracts";
 import { Address, usePublicClient } from "wagmi";
+import { FrensContracts } from "utils/contracts";
+import { useNetworkName } from "#/hooks/useNetworkName";
 import CardForNFT from "./CardForNFT";
 import { usePoolShareIDs } from "#/hooks/read/usePoolTokenIDs";
 
@@ -19,7 +19,7 @@ export const NftGallery = ({ poolAddress }: Props) => {
     if (poolShareIDs) {
       setPoolNftArray();
     }
-  }, [poolShareIDs])
+  }, [poolShareIDs]);
 
   const setPoolNftArray = async () => {
     const poolNft = await Promise.all(
@@ -30,12 +30,12 @@ export const NftGallery = ({ poolAddress }: Props) => {
   };
 
   const jsonForNftId = async (nftID: string) => {
-    const tokenURI = await publicClient.readContract({
+    const tokenURI = (await publicClient.readContract({
       address: FrensContracts[network].FrensPoolShare.address,
       abi: FrensContracts[network].FrensPoolShare.abi,
-      functionName: 'tokenURI',
-      args: [nftID]
-    }) as string
+      functionName: "tokenURI",
+      args: [nftID],
+    })) as string;
 
     const jsonString = Buffer.from(tokenURI.substring(29), "base64").toString();
     const json = JSON.parse(jsonString);

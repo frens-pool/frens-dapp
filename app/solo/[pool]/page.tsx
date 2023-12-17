@@ -5,7 +5,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useParams } from "next/navigation";
 import Navbar from "components/shared/Navbar";
-import Footer from "components/shared/Footer";
 import { CreateKeys } from "components/operator/CreateKeys";
 import { DepositForm } from "components/operator/DepositForm";
 import { Address } from "wagmi";
@@ -50,11 +49,14 @@ const Operator: NextPage = () => {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
-  return <div>loading animation!</div>;
+  return (
+    <div className="flex flex-col items-center justify-center bg-white">
+      <span className="loading loading-spinner loading-lg text-frens-main"></span>
+    </div>
+  );
 };
 
 export default Operator;

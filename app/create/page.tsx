@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import { useParams } from "next/navigation";
 import Header from "components/shared/Header";
-import Footer from "components/shared/Footer";
 import { InviteFrens } from "components/operator/InviteFrens";
 import { CreatePool } from "components/operator/CreatePool";
 import { RunValidator } from "components/operator/RunValidator";
@@ -118,7 +117,6 @@ const Create: NextPage = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };
