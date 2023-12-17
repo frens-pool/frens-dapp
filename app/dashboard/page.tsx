@@ -114,7 +114,6 @@ const Dashboard: NextPage = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -181,7 +181,11 @@ const Operator: NextPage = () => {
       </div>
     );
   }
-  return <div>loading animation!</div>;
+  return (
+    <div className="flex flex-col items-center justify-center bg-white">
+      <span className="loading loading-spinner loading-lg text-frens-main"></span>
+    </div>
+  );
 };
 
 export default Operator;

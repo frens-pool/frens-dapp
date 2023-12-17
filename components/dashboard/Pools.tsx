@@ -32,7 +32,7 @@ export const Pools = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">Loading...</div>
+        <span className="loading loading-spinner loading-lg text-frens-main"></span>
       </div>
     );
   }

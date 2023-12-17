@@ -1,25 +1,29 @@
 "use client";
 
 import type { NextPage } from "next";
-
 import Header from "components/shared/Header";
-import { Pools } from "components/dashboard/Pools";
+import Footer from "components/shared/Footer";
+import { UserPoolList } from "#/components/dashboard/UserPoolList";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
-const Home: NextPage = () => {
+import { useUserPools } from "#/hooks/read/useUserPools";
+
+const Run: NextPage = () => {
+  const userPools = useUserPools();
+
   return (
     <div className="bg-white" data-theme="winter">
       <Header />
       {/* Content */}
       <main className="relative -mt-32 ">
         <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-          <div className="bg-white min-h-[60vh] rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
+          <div className="bg-white rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
             {/* Heading */}
-            <div className="pb-4 pt-0 sm:pt-6 sm:flex-nowrap sm:pb-6">
+            <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">
               <div className="pb-4 flex justify-between mx-auto max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                 <h1 className="text-base font-semibold leading-7 text-gray-900">
-                  Pool List
+                  My Pools
                 </h1>
                 <Link
                   href="/create"
@@ -34,7 +38,7 @@ const Home: NextPage = () => {
                   </button>
                 </Link>
               </div>
-              <Pools />
+              <UserPoolList pools={userPools} />
             </div>
           </div>
         </div>
@@ -43,4 +47,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Run;

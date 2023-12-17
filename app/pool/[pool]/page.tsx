@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Address, useBalance } from "wagmi";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
 import Header from "components/shared/Header";
-import Footer from "components/shared/Footer";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
@@ -104,12 +103,15 @@ const Pool: NextPage = ({}) => {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
 
-  return <div>loading animation!</div>;
+  return (
+    <div className="flex flex-col items-center justify-center bg-white">
+      <span className="loading loading-spinner loading-lg text-frens-main"></span>
+    </div>
+  );
 };
 
 export default Pool;
