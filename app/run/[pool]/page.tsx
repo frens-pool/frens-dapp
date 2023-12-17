@@ -12,9 +12,11 @@ import { KeystoreForm } from "components/operator/KeystoreForm";
 import { CreateKeys } from "components/operator/CreateKeys";
 import { DepositForm } from "components/operator/DepositForm";
 import { SetPubkey } from "#/components/operator/SetPubkey";
-import { Address } from "wagmi";
+import { Address, useAccount } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Operator: NextPage = () => {
+  const { isConnected } = useAccount();
   const params = useParams();
   const poolAddress = params?.pool as Address;
 
@@ -40,7 +42,7 @@ const Operator: NextPage = () => {
   const className = (current_step: STEP, step: STEP) =>
     `${current_step == step ? "block" : "hidden"}`;
 
-  if (poolAddress) {
+  if (isConnected) {
     return (
       <div className="bg-white" data-theme="winter">
         <Head>
@@ -182,8 +184,18 @@ const Operator: NextPage = () => {
     );
   }
   return (
-    <div className="flex flex-col items-center justify-center bg-white">
-      <span className="loading loading-spinner loading-lg text-frens-main"></span>
+    <div className="bg-white" data-theme="winter">
+      <Header />
+      <main className="relative -mt-32 ">
+        <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="bg-white min-h-[60vh] flex flex-col items-center justify-center rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
+            <div>Connect wallet to run a validator</div>
+            <div className="mt-6">
+              <ConnectButton />
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

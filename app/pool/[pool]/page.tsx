@@ -4,11 +4,12 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Address, useBalance } from "wagmi";
+import { Address, useBalance, useAccount } from "wagmi";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
 import Header from "components/shared/Header";
 import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
+import { NftGraphGallery } from "components/staker/NftGraphGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
 import { PoolFullWidget } from "components/staker/PoolFullWidget";
 import { StakeForm } from "components/staker/StakeForm";
@@ -19,6 +20,7 @@ const Pool: NextPage = ({}) => {
   const params = useParams();
   const poolAddress = params?.pool as Address;
 
+  const { isConnected } = useAccount();
   const { data: poolState } = usePoolState({ poolAddress });
   const [poolBalance, setPoolBalance] = useState<number>(0);
 
@@ -45,71 +47,67 @@ const Pool: NextPage = ({}) => {
     }
   }, [isSuccess, poolOwner]);
 
-  if (poolAddress) {
-    return (
-      <div className="bg-white" data-theme="winter">
-        <Head>
-          <title>FRENS Pool</title>
-          <meta name="description" content="stake with friends" />
-          <link
-            rel="icon"
-            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤙</text></svg>"
-          />
-        </Head>
+  return (
+    <div className="bg-white" data-theme="winter">
+      <Head>
+        <title>FRENS Pool</title>
+        <meta name="description" content="stake with friends" />
+        <link
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤙</text></svg>"
+        />
+      </Head>
 
-        <Header />
+      <Header />
 
-        {/* Content */}
-        <main className="relative -mt-32 ">
-          <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-            <div className="bg-white rounded-lg px-5 py-6 shadow sm:px-6">
-              <div className="relative isolate overflow-hidden pt-0">
-                <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
-                  {/* Pool Page */}
-                  <div className="grid grid-cols-1 gap-y-8">
-                    <OperatorWidget
+      {/* Content */}
+      <main className="relative -mt-32 ">
+        <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-lg px-5 py-6 shadow sm:px-6">
+            <div className="relative isolate overflow-hidden pt-0">
+              <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
+                {/* Pool Page */}
+                <div className="grid grid-cols-1 gap-y-8">
+                  <OperatorWidget
+                    poolAddress={poolAddress}
+                    operatorAddress={operatorAddress}
+                  />
+                  {poolState === "staked" && (
+                    <ValidatorWidget poolAddress={poolAddress} />
+                  )}
+                  {poolBalance === 32 || poolState === "staked" ? (
+                    <PoolFullWidget
                       poolAddress={poolAddress}
+                      poolState={poolState}
                       operatorAddress={operatorAddress}
                     />
-                    {poolState === "staked" && (
-                      <ValidatorWidget poolAddress={poolAddress} />
-                    )}
-                    {poolBalance === 32 || poolState === "staked" ? (
-                      <PoolFullWidget
-                        poolAddress={poolAddress}
-                        poolState={poolState}
-                        operatorAddress={operatorAddress}
-                      />
-                    ) : (
-                      <div className="text-center overflow-hidden rounded-xl border border-gray-200">
-                        <div className="pt-4 pb-2">
-                          <StakeForm poolAddress={poolAddress} />
-                          <div className="border-[0.5px] border-gray-200 rounded-md mx-4"></div>
-                          <PoolInfo poolBalance={poolBalance} />
-                        </div>
-                      </div>
-                    )}
+                  ) : (
                     <div className="text-center overflow-hidden rounded-xl border border-gray-200">
-                      <div className="pt-2 text-center font-bold my-2">
-                        Pool stakes
+                      <div className="pt-4 pb-2">
+                        <StakeForm poolAddress={poolAddress} />
+                        <div className="border-[0.5px] border-gray-200 rounded-md mx-4"></div>
+                        <PoolInfo poolBalance={poolBalance} />
                       </div>
-                      <div className="p-4">
+                    </div>
+                  )}
+                  <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                    <div className="pt-2 text-center font-bold my-2">
+                      Pool stakes
+                    </div>
+                    <div className="p-4">
+                      {isConnected ? (
                         <NftGallery poolAddress={poolAddress} />
-                      </div>
+                      ) : (
+                        <NftGraphGallery poolAddress={poolAddress} />
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </main>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col items-center justify-center bg-white">
-      <span className="loading loading-spinner loading-lg text-frens-main"></span>
+        </div>
+      </main>
     </div>
   );
 };
