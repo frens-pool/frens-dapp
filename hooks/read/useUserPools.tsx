@@ -1,19 +1,19 @@
-import { Address, useAccount, usePublicClient } from "wagmi";
+import { Address, useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { queryPools } from "hooks/graphql/queryPools";
 
-export function useUserPools() {
-  const { address } = useAccount();
+export function useUserPools(userAddress: Address) {
   const [userPools, setUserPools] = useState<Address[]>([]);
 
   useEffect(() => {
-    if (address) fetchUserPools(address);
-  }, [address]);
+    fetchUserPools(userAddress);
+  }, [userAddress]);
 
   const fetchUserPools = async (operatorAddress: Address) => {
     const poolsOfUser = await queryPools({ operatorAddress });
-    // console.log(poolsOfUser);
-    setUserPools(poolsOfUser.data.creates.map((_: any) => _.contractAddress as Address))
+    setUserPools(
+      poolsOfUser.data.creates.map((_: any) => _.contractAddress as Address)
+    );
   };
 
   return userPools;

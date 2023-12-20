@@ -2,7 +2,7 @@
 
 import type { NextPage } from "next";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
+import { Address, useAccount } from "wagmi";
 import Header from "components/shared/Header";
 import { UserPoolList } from "#/components/dashboard/UserPoolList";
 import { ShareList } from "components/dashboard/ShareList";
@@ -17,9 +17,9 @@ function classNames(...classes: string[]) {
 }
 
 const Dashboard: NextPage = () => {
-  const { isConnected } = useAccount();
   const { userNFTs, totalDeposit, totalClaimable } = useUserNfts();
-  const userPools = useUserPools();
+  const { isConnected, address } = useAccount();
+  const userPools = useUserPools(address as Address);
 
   const stats = [
     {
