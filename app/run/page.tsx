@@ -7,12 +7,13 @@ import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
 import { useUserPools } from "#/hooks/read/useUserPools";
-import { useAccount } from "wagmi";
+import { Address, useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Run: NextPage = () => {
-  const { isConnected } = useAccount();
-  const userPools = useUserPools();
+  const { isConnected, address } = useAccount();
+  console.log("address", address);
+  const userPools = useUserPools(address as Address);
 
   if (isConnected) {
     return (

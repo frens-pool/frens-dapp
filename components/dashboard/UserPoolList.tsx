@@ -20,7 +20,7 @@ export const UserPoolList = ({ pools }: Props) => {
     return (
       <div className="flex flex-col items-center justify-center bg-white">
         <div className="mb-4">You haven&apos;t created any pools yet 🧐</div>
-        <Link href="/">
+        <Link href="/create">
           <button className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white">
             Create a pool
           </button>
