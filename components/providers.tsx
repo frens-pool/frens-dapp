@@ -6,11 +6,7 @@ import {
   connectorsForWallets,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
-import {
-  injectedWallet,
-  metaMaskWallet,
-  walletConnectWallet,
-} from "@rainbow-me/rainbowkit/wallets";
+import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
@@ -20,7 +16,7 @@ const appInfo = {
   appName: "FRENS",
 };
 const apiKey = process.env.NEXT_PUBLIC_INFURA_KEY || "";
-const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "default-project-id";
+const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "frens-pool";
 
 const { chains, publicClient } = configureChains(
   [goerli],
@@ -32,19 +28,12 @@ const { chains, publicClient } = configureChains(
   ]
 );
 
-const needsInjectedWalletFallback =
-  typeof window !== "undefined" &&
-  (window as any).ethereum &&
-  !(window as any).ethereum.isMetaMask &&
-  !(window as any).ethereum.isCoinbaseWallet;
-
 const connectors = connectorsForWallets([
   {
     groupName: "Wallets",
     wallets: [
+      injectedWallet({ chains }),
       metaMaskWallet({ projectId, chains }),
-      walletConnectWallet({ projectId, chains }),
-      ...(needsInjectedWalletFallback ? [injectedWallet({ chains })] : []),
     ],
   },
 ]);
