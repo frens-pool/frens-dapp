@@ -179,7 +179,6 @@ const Operator: NextPage = () => {
             </div>
           </div>
         </main>
-        <Footer />
       </div>
     );
   }
