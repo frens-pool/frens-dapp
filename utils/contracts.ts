@@ -11,13 +11,13 @@ import GoerliSSVNetwork from "./abis/ssvGoerli/SSVNetwork.json";
 import GoerliSSVViews from "./abis/ssvGoerli/SSVNetworkViews.json";
 import GoerliSSVToken from "./abis/ssvGoerli/SSVToken.json";
 
-import MainnetFrensArt from "./mainnet/FrensArt.json";
-import MainnetFrensMetaHelper from "./mainnet/FrensMetaHelper.json";
-import MainnetFrensPoolShare from "./mainnet/FrensPoolShare.json";
-import MainnetFrensPoolShareTokenURI from "./mainnet/FrensPoolShareTokenURI.json";
-import MainnetFrensStorage from "./mainnet/FrensStorage.json";
-import MainnetStakingPool from "./mainnet/StakingPool.json";
-import MainnetStakingPoolFactory from "./mainnet/StakingPoolFactory.json";
+import MainnetFrensArt from "./abis/frensGoerli/FrensArt.json";
+import MainnetFrensMetaHelper from "./abis/frensGoerli/FrensMetaHelper.json";
+import MainnetFrensPoolShare from "./abis/frensGoerli/FrensPoolShare.json";
+import MainnetFrensPoolShareTokenURI from "./abis/frensGoerli/FrensPoolShareTokenURI.json";
+import MainnetFrensStorage from "./abis/frensGoerli/FrensStorage.json";
+import MainnetStakingPool from "./abis/frensGoerli/StakingPool.json";
+import MainnetStakingPoolFactory from "./abis/frensGoerli/StakingPoolFactory.json";
 import MainnetDepositContract from "./abis/DepositContract.json";
 import { Address } from "wagmi";
 

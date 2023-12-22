@@ -1,4 +1,4 @@
-import { Address, useAccount } from "wagmi";
+import { Address } from "wagmi";
 import { useEffect, useState } from "react";
 import { queryPools } from "hooks/graphql/queryPools";
 
