@@ -42,7 +42,7 @@ const Dashboard: NextPage = () => {
 
   if (isConnected) {
     return (
-      <div className="bg-white" data-theme="winter">
+      <div>
         <Header />
         {/* Content */}
         <main className="relative -mt-32 ">

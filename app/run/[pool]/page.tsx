@@ -5,7 +5,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useParams } from "next/navigation";
 import Header from "components/shared/Header";
-import Footer from "components/shared/Footer";
 import { SelectOperator } from "components/operator/SelectOperator";
 import { SSVRegisterValidator } from "components/operator/SsvRegisterValidator";
 import { KeystoreForm } from "components/operator/KeystoreForm";
@@ -44,18 +43,8 @@ const Operator: NextPage = () => {
 
   if (isConnected) {
     return (
-      <div className="bg-white" data-theme="winter">
-        <Head>
-          <title>FRENS Pool</title>
-          <meta name="description" content="stake with friends" />
-          <link
-            rel="icon"
-            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤙</text></svg>"
-          />
-        </Head>
-
+      <div>
         <Header />
-
         {/* Content */}
         <main className="relative -mt-32 ">
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">

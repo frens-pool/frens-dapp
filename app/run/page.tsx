@@ -12,12 +12,11 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Run: NextPage = () => {
   const { isConnected, address } = useAccount();
-  console.log("address", address);
   const userPools = useUserPools(address as Address);
 
   if (isConnected) {
     return (
-      <div className="bg-white" data-theme="winter">
+      <div>
         <Header />
         {/* Content */}
         <main className="relative -mt-32 ">

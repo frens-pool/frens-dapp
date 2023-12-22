@@ -57,7 +57,7 @@ const Create: NextPage = () => {
     `${current_step == step ? "block" : "hidden"}`;
 
   return (
-    <div className="bg-white" data-theme="winter">
+    <div>
       <Header />
       {/* Content */}
       <main className="relative -mt-32 ">
