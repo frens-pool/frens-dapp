@@ -9,7 +9,7 @@ import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
-    <div className="bg-white" data-theme="winter">
+    <div>
       <Header />
       {/* Content */}
       <main className="relative -mt-32 ">

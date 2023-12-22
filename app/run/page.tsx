@@ -1,23 +1,22 @@
 "use client";
 
 import type { NextPage } from "next";
-import Header from "components/shared/Header";
-import { UserPoolList } from "#/components/dashboard/UserPoolList";
-import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
-
-import { useUserPools } from "#/hooks/read/useUserPools";
 import { Address, useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { PlusSmallIcon } from "@heroicons/react/20/solid";
+
+import Header from "components/shared/Header";
+import { UserPoolList } from "#/components/dashboard/UserPoolList";
+import { useUserPools } from "#/hooks/read/useUserPools";
 
 const Run: NextPage = () => {
   const { isConnected, address } = useAccount();
-  console.log("address", address);
   const userPools = useUserPools(address as Address);
 
   if (isConnected) {
     return (
-      <div className="bg-white" data-theme="winter">
+      <div>
         <Header />
         {/* Content */}
         <main className="relative -mt-32 ">

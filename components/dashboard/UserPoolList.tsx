@@ -1,7 +1,8 @@
 import Link from "next/link";
-
-import { UserGroupIcon } from "@heroicons/react/20/solid";
+import Image from "next/image";
 import { Address } from "wagmi";
+
+import { RunValidator } from "components/operator/RunValidator";
 
 interface Props {
   pools: Address[];
@@ -30,21 +31,34 @@ export const UserPoolList = ({ pools }: Props) => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-">
-      {pools.map((contractAddress) => (
-        <div
-          key={contractAddress}
-          className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
-        >
-          <UserGroupIcon className="-ml-1.5 h-5 w-5" aria-hidden="true" />
+    <div>
+      <div>Pools ready for registering:</div>
+      <div>
+        These validators are fully staked and you can run them.
+        <RunValidator
+          poolContract={"0xDCe46E570D8d2f5FCfA2208288e1DF0DD5F72c05"}
+        />
+      </div>
+      <div>All my pool:</div>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-">
+        {pools.map((contractAddress) => (
           <Link
-            className="underline text-frens-main"
             href={`/pool/${contractAddress}`}
+            key={contractAddress}
+            className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-2 py-2 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
           >
-            {contractAddress}
+            <div className="flex justify-center p-2 mr-6">
+              <Image
+                src="/FRENS-logo-coloured.png"
+                alt="FRENS logo"
+                width="38"
+                height="24"
+              />
+            </div>{" "}
+            <div className="">{contractAddress}</div>
           </Link>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

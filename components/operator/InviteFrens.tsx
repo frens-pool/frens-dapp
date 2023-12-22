@@ -16,15 +16,14 @@ export const InviteFrens = ({
     navigator.clipboard.writeText(copyMe);
   }
 
-  if (current_step === "Run") {
+  if (current_step === "Ready") {
     return (
-      <div className="flex flex-col justify-center my-3 text-center underline text-frens-main">
-        <Link
-          href={`/pool/${poolContract}`}
-          className="underline text-frens-main"
-        >
-          {link}
-        </Link>
+      <div className="flex flex-col justify-center">
+        <div className="my-2 text-center underline">
+          <Link href={`/pool/${poolContract}`} className="underline">
+            {link}
+          </Link>
+        </div>
       </div>
     );
   }

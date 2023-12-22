@@ -1,7 +1,5 @@
-import Image from "next/image";
-
 const Footer = () => (
-  <footer className="z-20 flex justify-center content-center p-8">
+  <footer className="bg-white z-20 flex justify-center content-center p-8">
     <div className="z-20">
       <a href="https://frens.fun/" target="_blank" rel="noopener noreferrer">
         Made with ❤️ by your{" "}
