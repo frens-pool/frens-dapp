@@ -18,7 +18,6 @@ interface Props {
 }
 
 export const StakeForm = ({ poolAddress }: Props) => {
-
   const [maxDepositValue, setMaxDepositValue] = useState(32);
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
 
@@ -82,17 +81,17 @@ export const StakeForm = ({ poolAddress }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white">
-        <div className="text-center font-bold my-2">Select amount</div>
+        <div className="text-center font-bold my-2">Select ETH amount</div>
         <label className="input-group flex justify-center">
           <input
             {...register("ethInput", { max: maxDepositValue })}
             id="ethInput"
             type="number"
             placeholder="0.1"
+            min="0"
             step="any"
             className="input input-bordered w-1/3"
           />
-          <span>ETH</span>
         </label>
         {prepare_error && (
           <div className="text-center font-medium my-2">
@@ -121,10 +120,11 @@ export const StakeForm = ({ poolAddress }: Props) => {
             ) : (
               <button
                 disabled={isDepositing ? true : false}
-                className={`btn text-white ${isDepositing
-                  ? "btn-primary"
-                  : "bg-gradient-to-r from-frens-blue to-frens-teal"
-                  }`}
+                className={`btn text-white ${
+                  isDepositing
+                    ? "btn-primary"
+                    : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                }`}
                 type="submit"
               >
                 {isDepositing ? "Confirm in Metamask" : "Pool"}

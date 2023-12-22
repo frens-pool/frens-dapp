@@ -3,19 +3,16 @@
 import { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import { useParams } from "next/navigation";
+import { Address } from "wagmi";
 import Header from "components/shared/Header";
 import { InviteFrens } from "components/operator/InviteFrens";
 import { CreatePool } from "components/operator/CreatePool";
-import { RunValidator } from "components/operator/RunValidator";
-import { Address, useBalance } from "wagmi";
-import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 
-const STEPS = ["Create", "Invite", "Run", "Ready"] as const;
+const STEPS = ["Create", "Invite", "Ready"] as const;
 export type STEP_TYPE = (typeof STEPS)[number];
 
 const Create: NextPage = () => {
-  const number = (step: STEP_TYPE) =>
-    ["1️⃣", "2️⃣", "3️⃣", "4️⃣"][STEPS.indexOf(step)];
+  const number = (step: STEP_TYPE) => ["1️⃣", "2️⃣", "3️⃣"][STEPS.indexOf(step)];
 
   const params = useParams();
   const poolAddress = params?.pool as Address;
@@ -23,35 +20,19 @@ const Create: NextPage = () => {
   const [poolContract, setPoolContract] = useState<Address>("0x");
   const [step, setStep] = useState<STEP_TYPE>("Create");
 
-  const { isSuccess: poolPubKeySuccess, data: poolPubKey } = usePoolPubKey({
-    address: poolContract,
-  });
-
   useEffect(() => {
     if (poolAddress) {
       setPoolContract(poolAddress as Address);
     }
   }, [poolAddress]);
 
-  //auto-advance if poolPubKey is already set
-  const { data: poolBalance } = useBalance({
-    address: poolContract,
-  });
-
   useEffect(() => {
-    const poolBalanceNumber: number = poolBalance
-      ? +poolBalance.formatted
-      : 0.0;
-    if (poolBalanceNumber >= 32) {
-      setStep("Run");
-    } else if (poolPubKeySuccess && poolPubKey != "0x") {
-      setStep("Invite");
-    } else if (poolContract != "0x") {
+    if (poolContract != "0x") {
       setStep("Invite");
     } else {
       setStep("Create");
     }
-  }, [poolAddress, poolBalance, poolPubKey, poolPubKeySuccess, poolContract]);
+  }, [poolAddress, poolContract]);
 
   const className = (current_step: STEP_TYPE, step: STEP_TYPE) =>
     `${current_step == step ? "block" : "hidden"}`;
@@ -96,19 +77,16 @@ const Create: NextPage = () => {
                   <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                     <div
                       className={`${
-                        step == "Invite" || step == "Run"
+                        step == "Invite" || step == "Ready"
                           ? "block pt-4 pb-6"
                           : "hidden"
                       }`}
                     >
                       <InviteFrens
                         poolContract={poolContract}
-                        onFinish={() => setStep("Run")}
+                        onFinish={() => setStep("Ready")}
                         current_step={step}
                       />
-                      <div className={className(step, "Run")}>
-                        <RunValidator poolContract={poolContract} />
-                      </div>
                     </div>
                   </dl>
                 </div>

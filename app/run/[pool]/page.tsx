@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useParams } from "next/navigation";
 import Header from "components/shared/Header";
 import { SelectOperator } from "components/operator/SelectOperator";
