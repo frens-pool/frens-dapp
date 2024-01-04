@@ -24,7 +24,7 @@ const Dashboard: NextPage = () => {
   const stats = [
     {
       name: "My Pools #",
-      value: userPools.length,
+      value: userPools?.length,
     },
     {
       name: "Pool Shares #",
@@ -103,7 +103,7 @@ const Dashboard: NextPage = () => {
                     </button>
                   </Link>
                 </div>
-                <UserPoolList pools={userPools} />
+                <UserPoolList operatorAddress={address as Address} />
               </div>
               {/* Heading */}
               <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">

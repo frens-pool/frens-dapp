@@ -1,20 +1,24 @@
 import { Address } from "wagmi";
-import { useEffect, useState } from "react";
-import { queryPools } from "hooks/graphql/queryPools";
+import { useQuery, gql } from "@apollo/client";
 
-export function useUserPools(userAddress: Address) {
-  const [userPools, setUserPools] = useState<Address[]>([]);
+const buildQuery = ({ operatorAddress }: { operatorAddress: string }) => {
+  const query = `
+  {
+    creates(where: {creator: "${operatorAddress}"}) {
+      deposits {
+        amount
+      }
+      contractAddress
+      creator
+    }
+  }
+  `;
+  return query;
+};
 
-  useEffect(() => {
-    fetchUserPools(userAddress);
-  }, [userAddress]);
+export function useUserPools(operatorAddress: Address) {
+  const userPoolsQuery = buildQuery({ operatorAddress });
+  const { loading, error, data } = useQuery(gql(userPoolsQuery));
 
-  const fetchUserPools = async (operatorAddress: Address) => {
-    const poolsOfUser = await queryPools({ operatorAddress });
-    setUserPools(
-      poolsOfUser.data.creates.map((_: any) => _.contractAddress as Address)
-    );
-  };
-
-  return userPools;
+  return data;
 }
