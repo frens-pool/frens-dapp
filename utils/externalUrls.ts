@@ -1,5 +1,16 @@
 import { Address, Chain } from "wagmi";
 
+export function subgraphUrl(chain?: Chain) {
+  switch (chain?.id) {
+    case 7:
+      return `https://api.studio.thegraph.com/query/46611/frens-goerli/version/latest`;
+    case 17000:
+      return `https://api.studio.thegraph.com/query/46611/frens-holesky/version/latest`;
+    default:
+      return `https://api.studio.thegraph.com/query/46611/frens-goerli/version/latest`;
+  }
+}
+
 export function etherscanUrl(chain?: Chain) {
   switch (chain?.id) {
     case 7:
