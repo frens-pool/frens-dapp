@@ -8,7 +8,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, goerli } from "wagmi/chains";
+import { mainnet, goerli, holesky } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 
@@ -19,7 +19,7 @@ const apiKey = process.env.NEXT_PUBLIC_INFURA_KEY || "";
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "frens-pool";
 
 const { chains, publicClient } = configureChains(
-  [goerli],
+  [holesky, goerli],
   [
     infuraProvider({
       apiKey: apiKey,

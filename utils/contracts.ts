@@ -11,13 +11,13 @@ import GoerliSSVNetwork from "./abis/ssvGoerli/SSVNetwork.json";
 import GoerliSSVViews from "./abis/ssvGoerli/SSVNetworkViews.json";
 import GoerliSSVToken from "./abis/ssvGoerli/SSVToken.json";
 
-import MainnetFrensArt from "./mainnet/FrensArt.json";
-import MainnetFrensMetaHelper from "./mainnet/FrensMetaHelper.json";
-import MainnetFrensPoolShare from "./mainnet/FrensPoolShare.json";
-import MainnetFrensPoolShareTokenURI from "./mainnet/FrensPoolShareTokenURI.json";
-import MainnetFrensStorage from "./mainnet/FrensStorage.json";
-import MainnetStakingPool from "./mainnet/StakingPool.json";
-import MainnetStakingPoolFactory from "./mainnet/StakingPoolFactory.json";
+import MainnetFrensArt from "./abis/frensGoerli/FrensArt.json";
+import MainnetFrensMetaHelper from "./abis/frensGoerli/FrensMetaHelper.json";
+import MainnetFrensPoolShare from "./abis/frensGoerli/FrensPoolShare.json";
+import MainnetFrensPoolShareTokenURI from "./abis/frensGoerli/FrensPoolShareTokenURI.json";
+import MainnetFrensStorage from "./abis/frensGoerli/FrensStorage.json";
+import MainnetStakingPool from "./abis/frensGoerli/StakingPool.json";
+import MainnetStakingPoolFactory from "./abis/frensGoerli/StakingPoolFactory.json";
 import MainnetDepositContract from "./abis/DepositContract.json";
 import { Address } from "wagmi";
 
@@ -34,6 +34,20 @@ import {
   GOERLI_SSV_NETWORK_VIEWS,
   GOERLI_SSV_NETWORK_TOKEN,
 } from "./constants/goerliAddresses";
+
+import {
+  HOLESKY_FRENS_ART,
+  HOLESKY_FRENS_META,
+  HOLESKY_FRENS_ORACLE,
+  HOLESKY_FRENS_POOLSHARE,
+  HOLESKY_FRENS_POOLSHARE_TOKENURI,
+  HOLESKY_FRENS_STORAGE,
+  HOLESKY_FRENS_STAKINGPOOL_FACTORY,
+  HOLESKY_DEPOSIT_CONTRACT,
+  HOLESKY_SSV_NETWORK,
+  HOLESKY_SSV_NETWORK_VIEWS,
+  HOLESKY_SSV_NETWORK_TOKEN,
+} from "./constants/holeskyAddresses";
 
 const unknownABI = { abi: [] };
 
@@ -81,6 +95,51 @@ export const FrensContracts = {
     SSVNetworkViewsContract: {
       address: "0x0" as Address,
       abi: GoerliSSVViews, // TODO
+    },
+  },
+  holesky: {
+    FrensStorage: {
+      address: HOLESKY_FRENS_STORAGE as Address,
+      abi: GoerliFrensStorage.abi,
+    },
+    StakingPoolFactory: {
+      address: HOLESKY_FRENS_STAKINGPOOL_FACTORY as Address,
+      abi: GoerliStakingPoolFactory.abi,
+    },
+    FrensMetaHelper: {
+      address: HOLESKY_FRENS_META as Address,
+      abi: GoerliFrensMetaHelper.abi,
+    },
+    FrensPoolShare: {
+      address: HOLESKY_FRENS_POOLSHARE as Address,
+      abi: GoerliFrensPoolShare.abi,
+    },
+    FrensPoolShareTokenURI: {
+      address: HOLESKY_FRENS_POOLSHARE_TOKENURI as Address,
+      abi: GoerliFrensPoolShareTokenURI.abi,
+    },
+    FrensArt: {
+      address: HOLESKY_FRENS_ART as Address,
+      abi: GoerliFrensArt.abi,
+    },
+    StakingPool: {
+      abi: GoerliStakingPool.abi,
+    },
+    DepositContract: {
+      address: HOLESKY_DEPOSIT_CONTRACT as Address,
+      abi: GoerliDepositContract,
+    },
+    SSVTokenContract: {
+      address: HOLESKY_SSV_NETWORK_TOKEN as Address,
+      abi: GoerliSSVToken.abi,
+    },
+    SSVNetworkContract: {
+      address: HOLESKY_SSV_NETWORK as Address,
+      abi: GoerliSSVNetwork,
+    },
+    SSVNetworkViewsContract: {
+      address: HOLESKY_SSV_NETWORK_VIEWS as Address,
+      abi: GoerliSSVViews,
     },
   },
   goerli: {

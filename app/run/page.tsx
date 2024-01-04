@@ -21,7 +21,7 @@ const Run: NextPage = () => {
         {/* Content */}
         <main className="relative -mt-32 ">
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-            <div className="bg-white rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
+            <div className="bg-white min-h-[60vh] rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
               {/* Heading */}
               <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">
                 <div className="pb-4 flex justify-between mx-auto max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
