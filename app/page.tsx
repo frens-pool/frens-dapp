@@ -3,7 +3,7 @@
 import type { NextPage } from "next";
 
 import Header from "components/shared/Header";
-import { Pools } from "components/dashboard/Pools";
+import { PoolList } from "components/shared/PoolList";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
                   </button>
                 </Link>
               </div>
-              <Pools />
+              <PoolList />
             </div>
           </div>
         </div>

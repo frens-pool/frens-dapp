@@ -41,7 +41,7 @@ const Run: NextPage = () => {
                     </button>
                   </Link>
                 </div>
-                <UserPoolList pools={userPools} />
+                <UserPoolList operatorAddress={address as Address} />
               </div>
             </div>
           </div>

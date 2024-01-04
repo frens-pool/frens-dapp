@@ -26,7 +26,7 @@ const GET_POOLS = gql`
   }
 `;
 
-export const Pools = () => {
+export const PoolList = () => {
   const { loading, error, data } = useQuery(GET_POOLS);
 
   if (loading) {
