@@ -4,6 +4,8 @@ export function etherscanUrl(chain?: Chain) {
   switch (chain?.id) {
     case 7:
       return `https://goerli.etherscan.io`;
+    case 17000:
+      return `https://holesky.etherscan.io`;
     default:
       return `https://etherscan.io`;
   }
@@ -13,6 +15,8 @@ export function beaconchainUrl(chain?: Chain) {
   switch (chain?.id) {
     case 7:
       return `https://goerli.beaconcha.in`;
+    case 17000:
+      return `https://holesky.beaconcha.in`;
     default:
       return `https://beaconcha.in`;
   }
@@ -25,8 +29,10 @@ export function ssvExplorer(publicKey: string, chain?: Chain) {
   switch (chain?.id) {
     case 7:
       return `https://goerli.explorer.ssv.network/validators/${publicKeyWithout0xPrefix}`;
+    case 17000:
+      return `https://holesky.explorer.ssv.network/validators/${publicKeyWithout0xPrefix}`;
     default:
-      return `https://goerli.explorer.ssv.network/validators/${publicKeyWithout0xPrefix}`;
+      return `https://explorer.ssv.network/validators/${publicKeyWithout0xPrefix}`;
   }
 }
 
@@ -34,6 +40,8 @@ export function openseaUrl(poolAddress: Address, nftID: string, chain?: Chain) {
   switch (chain?.id) {
     case 7:
       return `https://testnets.opensea.io/assets/goerli/${poolAddress}/${nftID}`;
+    case 17000:
+      return `https://testnets.opensea.io/assets/holesky/${poolAddress}/${nftID}`;
     default:
       return `https://opensea.io/assets/${poolAddress}/${nftID}`;
   }
