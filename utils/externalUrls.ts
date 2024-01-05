@@ -2,7 +2,7 @@ import { Address, Chain } from "wagmi";
 
 export function subgraphUrl(chain?: Chain) {
   switch (chain?.id) {
-    case 7:
+    case 5:
       return `https://api.studio.thegraph.com/query/46611/frens-goerli/version/latest`;
     case 17000:
       return `https://api.studio.thegraph.com/query/46611/frens-holesky/version/latest`;
@@ -13,7 +13,7 @@ export function subgraphUrl(chain?: Chain) {
 
 export function etherscanUrl(chain?: Chain) {
   switch (chain?.id) {
-    case 7:
+    case 5:
       return `https://goerli.etherscan.io`;
     case 17000:
       return `https://holesky.etherscan.io`;
@@ -24,7 +24,7 @@ export function etherscanUrl(chain?: Chain) {
 
 export function beaconchainUrl(chain?: Chain) {
   switch (chain?.id) {
-    case 7:
+    case 5:
       return `https://goerli.beaconcha.in`;
     case 17000:
       return `https://holesky.beaconcha.in`;
@@ -38,7 +38,7 @@ export function ssvExplorer(publicKey: string, chain?: Chain) {
   const publicKeyWithout0xPrefix = publicKey.replace(/^(0x)/, "");
 
   switch (chain?.id) {
-    case 7:
+    case 5:
       return `https://goerli.explorer.ssv.network/validators/${publicKeyWithout0xPrefix}`;
     case 17000:
       return `https://holesky.explorer.ssv.network/validators/${publicKeyWithout0xPrefix}`;
@@ -49,7 +49,7 @@ export function ssvExplorer(publicKey: string, chain?: Chain) {
 
 export function openseaUrl(poolAddress: Address, nftID: string, chain?: Chain) {
   switch (chain?.id) {
-    case 7:
+    case 5:
       return `https://testnets.opensea.io/assets/goerli/${poolAddress}/${nftID}`;
     case 17000:
       return `https://testnets.opensea.io/assets/holesky/${poolAddress}/${nftID}`;
