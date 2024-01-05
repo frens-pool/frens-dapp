@@ -57,3 +57,14 @@ export function openseaUrl(poolAddress: Address, nftID: string, chain?: Chain) {
       return `https://opensea.io/assets/${poolAddress}/${nftID}`;
   }
 }
+
+export function operatorsUrl(page: number, perPage: number, chain?: Chain) {
+  switch (chain?.id) {
+    case 7:
+      return `https://api.ssv.network/api/v4/goerli/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
+    case 17000:
+      return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
+    default:
+      return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
+  }
+}

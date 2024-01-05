@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNetwork } from "wagmi";
+import { operatorsUrl } from "#/utils/externalUrls";
 
 export const SelectOperator = ({
   nextStep,
@@ -10,12 +12,11 @@ export const SelectOperator = ({
   const [ssvOperators, setssvOperators] = useState<any[]>([]);
   const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
   const [checkedOperators, setCheckedOperators] = useState<any[]>([]);
+  const { chain } = useNetwork();
 
   useEffect(() => {
     const fetchOperators = async () => {
-      const data = await fetch(
-        "https://api.ssv.network/api/v4/prater/operators?type=verified_operator&page=1&perPage=6&ordering=performance.30d%3Adesc"
-      );
+      const data = await fetch(operatorsUrl(1, 6, chain));
       const json = await data.json();
       setssvOperators(json.operators);
     };
@@ -36,8 +37,8 @@ export const SelectOperator = ({
                   e.target.checked
                     ? [...checkedOperators, item]
                     : checkedOperators.filter(
-                        (operator) => operator.id !== item.id
-                      )
+                      (operator) => operator.id !== item.id
+                    )
                 );
               }}
             />
