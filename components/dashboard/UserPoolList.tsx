@@ -67,7 +67,7 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
   return (
     <div>
-      <div className="mt-4 mb-2 text-base font-semibold leading-7 text-gray-900">
+      <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
         Take action. You can run this validator
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -89,6 +89,10 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {poolStates?.map(
           (pool: PoolType) =>
+            pool.deposits?.reduce(
+              (acc, current) => acc + parseInt(current.amount, 10),
+              0
+            ) !== 32000000000000000000 &&
             pool.poolState === "accepting deposits" && (
               <PoolCard pool={pool} key={pool.contractAddress} />
             )
