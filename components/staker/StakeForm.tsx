@@ -93,12 +93,13 @@ export const StakeForm = ({ poolAddress }: Props) => {
             className="input input-bordered w-1/3"
           />
         </label>
-        {prepare_error && (
+        {/*temp disable - causes error on full stake*/}
+        {/* {prepare_error && (
           <div className="text-center font-medium my-2">
             <div>Ur a true fren but unfortunatly</div>
             <div className="text-red-500">{getErrorMessage(prepare_error)}</div>
           </div>
-        )}
+        )} */}
         {errors.ethInput && (
           <div className="text-center font-medium my-2">
             <div>Ur a true fren but unfortunatly</div>
