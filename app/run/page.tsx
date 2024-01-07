@@ -8,11 +8,9 @@ import { PlusSmallIcon } from "@heroicons/react/20/solid";
 
 import Header from "components/shared/Header";
 import { UserPoolList } from "#/components/dashboard/UserPoolList";
-import { useUserPools } from "#/hooks/read/useUserPools";
 
 const Run: NextPage = () => {
   const { isConnected, address } = useAccount();
-  const userPools = useUserPools(address as Address);
 
   if (isConnected) {
     return (
