@@ -34,8 +34,6 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
   const [poolStates, setPoolStates] = useState<any[]>([]);
   const publicClient = usePublicClient();
 
-  console.log(poolStates);
-
   useEffect(() => {
     if (poolCreates) {
       setPoolStatesArray();
@@ -69,42 +67,44 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
   return (
     <div>
-      <div>Take action. You can run this validator</div>
+      <div className="mt-4 mb-2 text-base font-semibold leading-7 text-gray-900">
+        Take action. You can run this validator
+      </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          {poolStates?.map(
-            (pool: PoolType) =>
-              pool.deposits?.reduce(
-                (acc, current) => acc + parseInt(current.amount, 10),
-                0
-              ) === 32000000000000000000 &&
-              pool.poolState === "accepting deposits" && (
-                <PoolCard pool={pool} />
-              )
-          )}
-        </div>
+        {poolStates?.map(
+          (pool: PoolType) =>
+            pool.deposits?.reduce(
+              (acc, current) => acc + parseInt(current.amount, 10),
+              0
+            ) === 32000000000000000000 &&
+            pool.poolState === "accepting deposits" && (
+              <PoolCard pool={pool} key={pool.contractAddress} />
+            )
+        )}
       </div>
 
-      <div>Still colleting</div>
+      <div className="mt-4 mb-2 text-base font-semibold leading-7 text-gray-900">
+        Still colleting
+      </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          {poolStates?.map(
-            (pool: PoolType) =>
-              pool.poolState === "accepting deposits" && (
-                <PoolCard pool={pool} />
-              )
-          )}
-        </div>
+        {poolStates?.map(
+          (pool: PoolType) =>
+            pool.poolState === "accepting deposits" && (
+              <PoolCard pool={pool} key={pool.contractAddress} />
+            )
+        )}
       </div>
 
-      <div>Good job you setup these valis setup!</div>
+      <div className="mt-4 mb-2 text-base font-semibold leading-7 text-gray-900">
+        Good job you setup these valis setup!
+      </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
-          {poolStates?.map(
-            (pool: PoolType) =>
-              pool.poolState === "staked" && <PoolCard pool={pool} />
-          )}
-        </div>
+        {poolStates?.map(
+          (pool: PoolType) =>
+            pool.poolState === "staked" && (
+              <PoolCard pool={pool} key={pool.contractAddress} />
+            )
+        )}
       </div>
     </div>
   );
