@@ -14,7 +14,6 @@ const navigation = [
   },
   { name: "Dashboard", href: "/dashboard", current: true },
   { name: "New Pool", href: "/create", current: false },
-  { name: "Run Validator", href: "/run", current: false },
 ];
 
 function classNames(...classes: string[]) {

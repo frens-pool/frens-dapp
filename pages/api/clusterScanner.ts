@@ -6,9 +6,6 @@ export default async function handler(req: any, res: any) {
     return;
   }
 
-  // const command = new SSVScannerCommand(params);
-  // const result = await command.scan();
-
   const inputParams = JSON.parse(req.body);
   console.log("inputParams");
   console.log(inputParams);

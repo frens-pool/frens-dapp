@@ -16,7 +16,7 @@ export const SelectOperator = ({
 
   useEffect(() => {
     const fetchOperators = async () => {
-      const data = await fetch(operatorsUrl(1, 6, chain));
+      const data = await fetch(operatorsUrl(1, 8, chain));
       const json = await data.json();
       setssvOperators(json.operators);
     };
@@ -37,8 +37,8 @@ export const SelectOperator = ({
                   e.target.checked
                     ? [...checkedOperators, item]
                     : checkedOperators.filter(
-                      (operator) => operator.id !== item.id
-                    )
+                        (operator) => operator.id !== item.id
+                      )
                 );
               }}
             />

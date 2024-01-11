@@ -2,12 +2,12 @@ import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 import { ISharesKeyPairs, SSVKeys, KeyShares } from "ssv-keys";
 import BigNumber from "bignumber.js";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount, useNetwork, usePublicClient } from "wagmi";
 
 import { FrensContracts } from "#/utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
 
-export const KeystoreForm = ({
+export const SplitKeyshares = ({
   operatorsList,
   nextStep,
   setPayloadRegisterValidator,
@@ -24,6 +24,7 @@ export const KeystoreForm = ({
   const network = useNetworkName();
   const { address: walletAddress } = useAccount();
   const { chain } = useNetwork();
+  const publicClient = usePublicClient();
 
   const ssvKeys = new SSVKeys();
 
@@ -54,6 +55,7 @@ export const KeystoreForm = ({
         );
 
         // SSV Cluster Data
+        console.log(operators);
         const cData = await getClusterData(operators.map((o: any) => o.id));
         console.log("cData");
         console.log(cData);

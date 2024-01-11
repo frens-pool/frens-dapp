@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import Header from "components/shared/Header";
 import { SelectOperator } from "components/operator/SelectOperator";
 import { SSVRegisterValidator } from "components/operator/SsvRegisterValidator";
-import { KeystoreForm } from "components/operator/KeystoreForm";
+import { SplitKeyshares } from "#/components/operator/SplitKeyshares";
 import { CreateKeys } from "components/operator/CreateKeys";
 import { DepositForm } from "components/operator/DepositForm";
 import { SetPubkey } from "#/components/operator/SetPubkey";
@@ -27,7 +27,7 @@ const Operator: NextPage = () => {
     SSV_REGISTER,
   }
 
-  const [step, setStep] = useState(STEP.CREATE_KEYS);
+  const [step, setStep] = useState(STEP.SELECT_OPERATOR);
   const [pubKey, setPubKey] = useState("");
   const [operators, setOperators] = useState();
   const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
@@ -136,7 +136,7 @@ const Operator: NextPage = () => {
                       </div>
                       <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                         <div className={className(step, STEP.KEYSTORE_FORM)}>
-                          <KeystoreForm
+                          <SplitKeyshares
                             nextStep={() => setStep(STEP.SSV_REGISTER)}
                             operatorsList={operators}
                             setPayloadRegisterValidator={
