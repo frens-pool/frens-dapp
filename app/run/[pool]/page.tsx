@@ -27,7 +27,7 @@ const Operator: NextPage = () => {
     SSV_REGISTER,
   }
 
-  const [step, setStep] = useState(STEP.SELECT_OPERATOR);
+  const [step, setStep] = useState(STEP.CREATE_KEYS);
   const [pubKey, setPubKey] = useState("");
   const [operators, setOperators] = useState();
   const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
