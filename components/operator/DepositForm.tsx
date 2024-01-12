@@ -13,13 +13,11 @@ export const DepositForm = ({ nextStep, poolAddress }: Props) => {
 
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
-      <div>Pool Balance: {balance?.formatted}</div>
-      <div className="text-frens-main mb-2">
-        Balance of 32 eth required for deposit
-      </div>
-
       {Number(balance?.formatted) >= 32 ? (
-        <Deposit poolAddress={poolAddress} nextStep={nextStep} />
+        <div>
+          <div>You are ready to deposit</div>
+          <Deposit poolAddress={poolAddress} nextStep={nextStep} />
+        </div>
       ) : (
         <div>
           <div className="text-orange-400">Pool 32 ETH first</div>

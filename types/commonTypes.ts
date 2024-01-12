@@ -10,3 +10,7 @@ export type PoolType = {
   deposits: DepositsType[];
   poolState: String;
 };
+
+export type SsvValidator = {
+  is_valid: boolean;
+};

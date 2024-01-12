@@ -33,6 +33,17 @@ export function beaconchainUrl(chain?: Chain) {
   }
 }
 
+export function openseaUrl(poolAddress: Address, nftID: string, chain?: Chain) {
+  switch (chain?.id) {
+    case 5:
+      return `https://testnets.opensea.io/assets/goerli/${poolAddress}/${nftID}`;
+    case 17000:
+      return `https://testnets.opensea.io/assets/holesky/${poolAddress}/${nftID}`;
+    default:
+      return `https://opensea.io/assets/${poolAddress}/${nftID}`;
+  }
+}
+
 export function ssvExplorer(publicKey: string, chain?: Chain) {
   // remove `0x` prefix
   const publicKeyWithout0xPrefix = publicKey.replace(/^(0x)/, "");
@@ -47,24 +58,24 @@ export function ssvExplorer(publicKey: string, chain?: Chain) {
   }
 }
 
-export function openseaUrl(poolAddress: Address, nftID: string, chain?: Chain) {
+export function ssvOperatorApi(page: number, perPage: number, chain?: Chain) {
   switch (chain?.id) {
     case 5:
-      return `https://testnets.opensea.io/assets/goerli/${poolAddress}/${nftID}`;
-    case 17000:
-      return `https://testnets.opensea.io/assets/holesky/${poolAddress}/${nftID}`;
-    default:
-      return `https://opensea.io/assets/${poolAddress}/${nftID}`;
-  }
-}
-
-export function operatorsUrl(page: number, perPage: number, chain?: Chain) {
-  switch (chain?.id) {
-    case 7:
-      return `https://api.ssv.network/api/v4/goerli/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
+      return `https://api.ssv.network/api/v4/prater/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
     case 17000:
       return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
     default:
       return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
+  }
+}
+
+export function ssvValidatorApi(publicKey: string, chain?: Chain) {
+  switch (chain?.id) {
+    case 5:
+      return `https://api.ssv.network/api/v4/prater/validators/${publicKey}`;
+    case 17000:
+      return `https://api.ssv.network/api/v4/holesky/validators/${publicKey}`;
+    default:
+      return `https://api.ssv.network/api/v4/mainnet/validators/${publicKey}`;
   }
 }
