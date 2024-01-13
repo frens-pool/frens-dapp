@@ -32,6 +32,10 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
   const poolCreates = userPools?.creates;
   const [poolStates, setPoolStates] = useState<any[]>([]);
+  const [registerThesePools, setRegisterThesePools] = useState<PoolType[]>([]);
+  const [openPools, setOpenPools] = useState<PoolType[]>([]);
+  const [stakedPools, setStakedPools] = useState<PoolType[]>([]);
+
   const publicClient = usePublicClient();
 
   useEffect(() => {
@@ -39,6 +43,32 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
       setPoolStatesArray();
     }
   }, [poolCreates]);
+
+  useEffect(() => {
+    {
+      poolStates?.map((pool: PoolType) => {
+        const poolBalance = pool.deposits?.reduce(
+          (acc, current) => acc + parseInt(current.amount, 10),
+          0
+        );
+        if (
+          poolBalance === 32000000000000000000 &&
+          pool.poolState === "accepting deposits"
+        ) {
+          setRegisterThesePools([...registerThesePools, pool]);
+        }
+        if (
+          poolBalance !== 32000000000000000000 &&
+          pool.poolState === "accepting deposits"
+        ) {
+          setOpenPools([...openPools, pool]);
+        }
+        if (pool.poolState === "staked") {
+          setStakedPools([...stakedPools, pool]);
+        }
+      });
+    }
+  }, [poolStates]);
 
   const setPoolStatesArray = async () => {
     const statesOfPools = await Promise.all(
@@ -67,49 +97,46 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
   return (
     <div>
-      <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
-        Take action. You can run this validator
-      </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {poolStates?.map(
-          (pool: PoolType) =>
-            pool.deposits?.reduce(
-              (acc, current) => acc + parseInt(current.amount, 10),
-              0
-            ) === 32000000000000000000 &&
-            pool.poolState === "accepting deposits" && (
+      {registerThesePools.length > 0 && (
+        <div>
+          <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
+            Take action. You can run this validator
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {registerThesePools?.map((pool: PoolType) => (
               <PoolCard pool={pool} key={pool.contractAddress} />
-            )
-        )}
-      </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-      <div className="mt-4 mb-2 text-base font-semibold leading-7 text-gray-900">
-        Still colleting
-      </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {poolStates?.map(
-          (pool: PoolType) =>
-            pool.deposits?.reduce(
-              (acc, current) => acc + parseInt(current.amount, 10),
-              0
-            ) !== 32000000000000000000 &&
-            pool.poolState === "accepting deposits" && (
+      {openPools.length > 0 && (
+        <div>
+          <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
+            Still collecting
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {openPools?.map((pool: PoolType) => (
               <PoolCard pool={pool} key={pool.contractAddress} />
-            )
-        )}
-      </div>
+            ))}
+          </div>
+        </div>
+      )}
 
-      <div className="mt-4 mb-2 text-base font-semibold leading-7 text-gray-900">
-        Good job you setup these valis setup!
-      </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {poolStates?.map(
-          (pool: PoolType) =>
-            pool.poolState === "staked" && (
+      {stakedPools.length > 0 && (
+        <div>
+          <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
+            Still collecting
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {stakedPools?.map((pool: PoolType) => (
               <PoolCard pool={pool} key={pool.contractAddress} />
-            )
-        )}
-      </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {poolStates.length === 0 && <div>No pools yet</div>}
     </div>
   );
 };
