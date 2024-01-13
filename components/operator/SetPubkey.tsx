@@ -63,7 +63,7 @@ export const SetPubkey = ({
 
   const getErrorMessage = (prepare_error: any) => {
     const message =
-      prepare_error?.reason.replace("execution reverted:", "") ??
+      // prepare_error?.reason.replace("execution reverted:", "") ??
       prepare_error.message;
 
     return message;

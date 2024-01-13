@@ -1,5 +1,6 @@
 import { useNetwork } from "wagmi";
 import { holesky, goerli, mainnet } from "wagmi/chains";
+
 export function useNetworkName() {
   const { chain } = useNetwork();
 

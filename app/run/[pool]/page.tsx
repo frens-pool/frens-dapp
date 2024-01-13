@@ -1,46 +1,88 @@
 "use client";
 
-import { useState } from "react";
 import type { NextPage } from "next";
 import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Address, useAccount, useBalance, useNetwork } from "wagmi";
+
 import Header from "components/shared/Header";
 import { SelectOperator } from "components/operator/SelectOperator";
 import { SSVRegisterValidator } from "components/operator/SsvRegisterValidator";
-import { KeystoreForm } from "components/operator/KeystoreForm";
+import { SplitKeyshares } from "#/components/operator/SplitKeyshares";
 import { CreateKeys } from "components/operator/CreateKeys";
 import { DepositForm } from "components/operator/DepositForm";
 import { SetPubkey } from "#/components/operator/SetPubkey";
-import { Address, useAccount } from "wagmi";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { PoolStatus } from "#/components/operator/PoolStatus";
+import { usePoolState } from "#/hooks/read/usePoolState";
+import { usePoolOwner } from "#/hooks/read/usePoolOwner";
+import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
+import { ssvValidatorApi } from "#/utils/externalUrls";
 
-const Operator: NextPage = () => {
-  const { isConnected } = useAccount();
+enum STEP {
+  CREATE_KEYS = 0,
+  DEPOSIT_FILE,
+  DEPOSIT,
+  SELECT_OPERATOR,
+  KEYSTORE_FORM,
+  SSV_REGISTER,
+  DONE,
+}
+
+const RunPool: NextPage = () => {
   const params = useParams();
   const poolAddress = params?.pool as Address;
+  const { chain } = useNetwork();
+  const { data: poolState } = usePoolState({ poolAddress });
+  const { poolOwner } = usePoolOwner({ poolAddress });
+  const { isConnected, address: connectedAddress } = useAccount();
+  const { data: poolPubKey } = usePoolPubKey({ address: poolAddress });
 
-  enum STEP {
-    CREATE_KEYS = 0,
-    DEPOSIT_FILE,
-    DEPOSIT,
-    SELECT_OPERATOR,
-    KEYSTORE_FORM,
-    SSV_REGISTER,
-  }
-
+  const [ssvValidator, setssvValidator] = useState<any>();
+  const [poolBalance, setPoolBalance] = useState<number>(0);
   const [step, setStep] = useState(STEP.CREATE_KEYS);
   const [pubKey, setPubKey] = useState("");
   const [operators, setOperators] = useState();
   const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
 
-  const updatePubKeyState = (newValue: any) => {
-    setPubKey(newValue);
-  };
-
   const number = (step: STEP) => ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"][step];
   const className = (current_step: STEP, step: STEP) =>
     `${current_step == step ? "block" : "hidden"}`;
 
-  if (isConnected) {
+  useBalance({
+    address: poolAddress,
+    watch: true,
+    onSuccess(data) {
+      if (setPoolBalance) setPoolBalance(+data.formatted);
+    },
+  });
+
+  useEffect(() => {
+    if (poolState === "staked") {
+      setStep(STEP.SELECT_OPERATOR);
+    }
+  }, [poolAddress]);
+
+  useEffect(() => {
+    if (poolPubKey != "0x") {
+      const fetchSsvValidator = async () => {
+        const data = await fetch(ssvValidatorApi(poolPubKey, chain));
+        const json = await data.json();
+        setssvValidator(json);
+        console.log(json);
+        if (json) {
+          setStep(STEP.DONE);
+        }
+      };
+      fetchSsvValidator().catch(console.error);
+    }
+  }, []);
+
+  const updatePubKeyState = (newValue: any) => {
+    setPubKey(newValue);
+  };
+
+  if (isConnected && poolOwner === connectedAddress) {
     return (
       <div>
         <Header />
@@ -53,9 +95,17 @@ const Operator: NextPage = () => {
                   {/* Describtion */}
                   <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                     <h1 className="text-base font-semibold leading-7 text-gray-900">
-                      You pooled 32 ETH? Congrats. Lets start your validator.
+                      Ready ot spin up your validator? Lets do it.
                     </h1>
                   </div>
+                  {/* Dev purpose */}
+                  <PoolStatus
+                    poolState={poolState}
+                    poolOwner={poolOwner}
+                    poolBalance={poolBalance}
+                    connectedAddress={connectedAddress!}
+                    ssvValidator={ssvValidator}
+                  />
                   {/* Run Content */}
                   <div className="grid grid-cols-1 gap-y-8">
                     {/* Step 1 */}
@@ -136,7 +186,7 @@ const Operator: NextPage = () => {
                       </div>
                       <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                         <div className={className(step, STEP.KEYSTORE_FORM)}>
-                          <KeystoreForm
+                          <SplitKeyshares
                             nextStep={() => setStep(STEP.SSV_REGISTER)}
                             operatorsList={operators}
                             setPayloadRegisterValidator={
@@ -176,7 +226,8 @@ const Operator: NextPage = () => {
       <main className="relative -mt-32 ">
         <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
           <div className="bg-white min-h-[60vh] flex flex-col items-center justify-center rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
-            <div>Connect wallet to run a validator</div>
+            <div>Connect pool owner wallet to run a validator</div>
+            {/* <div>Pool owner is: {poolOwner}</div> */}
             <div className="mt-6">
               <ConnectButton />
             </div>
@@ -187,4 +238,4 @@ const Operator: NextPage = () => {
   );
 };
 
-export default Operator;
+export default RunPool;

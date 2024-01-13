@@ -24,7 +24,7 @@ const Dashboard: NextPage = () => {
   const stats = [
     {
       name: "My Pools #",
-      value: userPools?.length,
+      value: userPools?.creates.length,
     },
     {
       name: "Pool Shares #",
