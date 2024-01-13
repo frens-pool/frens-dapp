@@ -1,22 +1,63 @@
-import { useBalance, Address } from "wagmi";
+import { Address, useBalance, useNetwork, useWaitForTransaction } from "wagmi";
+import { useStake } from "../../hooks/write/useStake";
+import { etherscanUrl } from "#/utils/externalUrls";
+
 import { Deposit } from "components/operator/Deposit";
 
-interface Props {
+interface DepositFormProps {
   poolAddress: Address;
   nextStep: () => void;
 }
 
-export const DepositForm = ({ nextStep, poolAddress }: Props) => {
+export const DepositForm = ({ nextStep, poolAddress }: DepositFormProps) => {
   const { data: balance } = useBalance({
     address: poolAddress,
   });
+
+  const { data, write: stake } = useStake({ poolAddress });
+  const { chain } = useNetwork();
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      nextStep();
+    },
+  });
+  console.log("Deposit isSuccess", isSuccess);
 
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
       {Number(balance?.formatted) >= 32 ? (
         <div>
           <div>You are ready to deposit</div>
-          <Deposit poolAddress={poolAddress} nextStep={nextStep} />
+          <div>
+            <button
+              className={`${
+                isLoading
+                  ? "btn btn-info no-animation my-2 mr-2 loading"
+                  : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
+              }`}
+              onClick={() => {
+                if (stake) stake();
+              }}
+              disabled={isLoading}
+            >
+              {isLoading
+                ? "Deposit in progress..."
+                : "Deposit ETH to Beacon chain"}
+            </button>
+            {isLoading && (
+              <div className="my-2">
+                <a
+                  href={`${etherscanUrl(chain)}/tx/${data?.hash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link text-frens-main underline px-2"
+                >
+                  tx on Etherscan
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <div>

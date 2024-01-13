@@ -64,14 +64,18 @@ const RunPool: NextPage = () => {
   }, [poolAddress]);
 
   useEffect(() => {
-    if (poolPubKey != "0x") {
+    if (poolState === "staked" && poolPubKey) {
       const fetchSsvValidator = async () => {
-        const data = await fetch(ssvValidatorApi(poolPubKey, chain));
-        const json = await data.json();
-        setssvValidator(json);
-        console.log(json);
-        if (json) {
-          setStep(STEP.DONE);
+        const response = await fetch(ssvValidatorApi(poolPubKey, chain));
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        } else {
+          const data = await response.json();
+          setssvValidator(data);
+          console.log(data);
+          if (data) {
+            setStep(STEP.DONE);
+          }
         }
       };
       fetchSsvValidator().catch(console.error);
