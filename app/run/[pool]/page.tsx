@@ -51,7 +51,6 @@ const RunPool: NextPage = () => {
 
   useBalance({
     address: poolAddress,
-    watch: true,
     onSuccess(data) {
       if (setPoolBalance) setPoolBalance(+data.formatted);
     },
@@ -80,7 +79,7 @@ const RunPool: NextPage = () => {
       };
       fetchSsvValidator().catch(console.error);
     }
-  }, []);
+  }, [poolState]);
 
   const updatePubKeyState = (newValue: any) => {
     setPubKey(newValue);
@@ -160,6 +159,7 @@ const RunPool: NextPage = () => {
                             <DepositForm
                               nextStep={() => setStep(STEP.SELECT_OPERATOR)}
                               poolAddress={poolAddress}
+                              poolBalance={poolBalance}
                             />
                           )}
                         </div>
@@ -210,6 +210,7 @@ const RunPool: NextPage = () => {
                       <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                         <div className={className(step, STEP.SSV_REGISTER)}>
                           <SSVRegisterValidator
+                            operators={operators}
                             payloadData={payloadRegisterValidator}
                           />
                         </div>

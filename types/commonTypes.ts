@@ -11,6 +11,17 @@ export type PoolType = {
   poolState: String;
 };
 
-export type SsvValidator = {
+export type SsvValidatorType = {
   is_valid: boolean;
+};
+
+export type SsvOperatorType = {
+  id: number;
+  checked: boolean;
+  name: string;
+  is_active: number;
+  performance: any;
+  fee: number;
+  validators_count: number;
+  address_whitelist: string;
 };

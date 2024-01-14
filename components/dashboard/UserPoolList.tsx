@@ -126,7 +126,7 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
       {stakedPools.length > 0 && (
         <div>
           <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
-            Still collecting
+            Up and running
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {stakedPools?.map((pool: PoolType) => (

@@ -1,12 +1,12 @@
-import { SsvValidator } from "#/types/commonTypes";
+import { SsvValidatorType } from "#/types/commonTypes";
 import { Address } from "wagmi";
 
 interface PoolStatus {
   poolOwner: Address;
   poolState: any;
-  poolBalance: any;
+  poolBalance: number;
   connectedAddress: Address;
-  ssvValidator: SsvValidator;
+  ssvValidator: SsvValidatorType;
 }
 
 export const PoolStatus = ({

@@ -1,21 +1,32 @@
 "use client";
 
-import { useState } from "react";
 import type { NextPage } from "next";
+import { useState, useEffect } from "react";
+import { useBalance } from "wagmi";
 import { useParams } from "next/navigation";
 import { CreateKeys } from "components/operator/CreateKeys";
 import { DepositForm } from "components/operator/DepositForm";
 import { Address } from "wagmi";
 import Header from "#/components/shared/Header";
 
+enum STEP {
+  DEPOSIT,
+}
+
 const Operator: NextPage = () => {
   const params = useParams();
   const poolAddress = params?.pool as Address;
 
-  enum STEP {
-    DEPOSIT,
-  }
   const [step, setStep] = useState<STEP>(STEP.DEPOSIT);
+  const [poolBalance, setPoolBalance] = useState<number>(0);
+
+  useBalance({
+    address: poolAddress,
+    watch: true,
+    onSuccess(data) {
+      if (setPoolBalance) setPoolBalance(+data.formatted);
+    },
+  });
 
   const number = (step: STEP) => ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"][step];
   const className = (current_step: STEP, step: STEP) =>
@@ -34,6 +45,7 @@ const Operator: NextPage = () => {
               <DepositForm
                 poolAddress={poolAddress}
                 nextStep={() => setStep(STEP.DEPOSIT)}
+                poolBalance={poolBalance}
               />
             </div>
           </div>
