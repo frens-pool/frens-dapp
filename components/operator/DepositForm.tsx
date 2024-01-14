@@ -2,18 +2,17 @@ import { Address, useBalance, useNetwork, useWaitForTransaction } from "wagmi";
 import { useStake } from "../../hooks/write/useStake";
 import { etherscanUrl } from "#/utils/externalUrls";
 
-import { Deposit } from "components/operator/Deposit";
-
 interface DepositFormProps {
   poolAddress: Address;
   nextStep: () => void;
+  poolBalance: number;
 }
 
-export const DepositForm = ({ nextStep, poolAddress }: DepositFormProps) => {
-  const { data: balance } = useBalance({
-    address: poolAddress,
-  });
-
+export const DepositForm = ({
+  nextStep,
+  poolAddress,
+  poolBalance,
+}: DepositFormProps) => {
   const { data, write: stake } = useStake({ poolAddress });
   const { chain } = useNetwork();
   const { isLoading, isSuccess } = useWaitForTransaction({
@@ -22,11 +21,10 @@ export const DepositForm = ({ nextStep, poolAddress }: DepositFormProps) => {
       nextStep();
     },
   });
-  console.log("Deposit isSuccess", isSuccess);
 
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
-      {Number(balance?.formatted) >= 32 ? (
+      {poolBalance >= 32 ? (
         <div>
           <div>You are ready to deposit</div>
           <div>

@@ -160,6 +160,7 @@ const RunPool: NextPage = () => {
                             <DepositForm
                               nextStep={() => setStep(STEP.SELECT_OPERATOR)}
                               poolAddress={poolAddress}
+                              poolBalance={poolBalance}
                             />
                           )}
                         </div>

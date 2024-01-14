@@ -4,7 +4,7 @@ import { Address } from "wagmi";
 interface PoolStatus {
   poolOwner: Address;
   poolState: any;
-  poolBalance: any;
+  poolBalance: number;
   connectedAddress: Address;
   ssvValidator: SsvValidator;
 }
