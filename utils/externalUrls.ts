@@ -58,14 +58,34 @@ export function ssvExplorer(publicKey: string, chain?: Chain) {
   }
 }
 
-export function ssvOperatorApi(page: number, perPage: number, chain?: Chain) {
+export function ssvOperatorListApi(
+  page: number,
+  perPage: number,
+  chain?: Chain
+) {
   switch (chain?.id) {
     case 5:
-      return `https://api.ssv.network/api/v4/prater/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
+      return `https://api.ssv.network/api/v4/prater/operators?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
     case 17000:
-      return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
+      return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
     default:
-      return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&ordering=performance.30d%3Adesc`;
+      return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
+  }
+}
+
+export function ssvOperatorApi(
+  page: number,
+  perPage: number,
+  name: string,
+  chain?: Chain
+) {
+  switch (chain?.id) {
+    case 5:
+      return `https://api.ssv.network/api/v4/prater/operators?page=${page}&perPage=${perPage}&search=${name}`;
+    case 17000:
+      return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&${name}`;
+    default:
+      return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&${name}`;
   }
 }
 

@@ -51,7 +51,6 @@ const RunPool: NextPage = () => {
 
   useBalance({
     address: poolAddress,
-    watch: true,
     onSuccess(data) {
       if (setPoolBalance) setPoolBalance(+data.formatted);
     },
@@ -80,7 +79,7 @@ const RunPool: NextPage = () => {
       };
       fetchSsvValidator().catch(console.error);
     }
-  }, []);
+  }, [poolState]);
 
   const updatePubKeyState = (newValue: any) => {
     setPubKey(newValue);

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNetwork } from "wagmi";
-import { ssvOperatorApi } from "#/utils/externalUrls";
+import { ssvOperatorApi, ssvOperatorListApi } from "#/utils/externalUrls";
+import { SsvOperatorType } from "#/types/commonTypes";
+import SearchOperator from "./SearchOperator";
+import { SelectedOperators } from "./SelectedOperators";
 
 export const SelectOperator = ({
   nextStep,
@@ -9,20 +12,24 @@ export const SelectOperator = ({
   nextStep: () => void;
   setOperators: any;
 }) => {
-  const [ssvOperators, setssvOperators] = useState<any[]>([]);
+  const [ssvOperators, setssvOperators] = useState<SsvOperatorType[]>([]);
   const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
   const [checkedOperators, setCheckedOperators] = useState<any[]>([]);
   const { chain } = useNetwork();
 
   useEffect(() => {
     const fetchOperators = async () => {
-      const data = await fetch(ssvOperatorApi(1, 8, chain));
+      const data = await fetch(ssvOperatorListApi(1, 8, chain));
       const json = await data.json();
       setssvOperators(json.operators);
     };
 
     fetchOperators().catch(console.error);
   }, []);
+
+  const addSSVOperator = (searchOperator: SsvOperatorType) => {
+    setssvOperators([searchOperator, ...ssvOperators]);
+  };
 
   let operatorListRows = ssvOperators?.map((item, i) => {
     return (
@@ -72,6 +79,8 @@ export const SelectOperator = ({
 
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
+      <SelectedOperators checkedOperators={checkedOperators} />
+      <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
       <div className="overflow-x-auto w-full">
         <table className="table w-full">
           <thead>
