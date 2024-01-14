@@ -17,9 +17,11 @@ export type SsvValidatorType = {
 
 export type SsvOperatorType = {
   id: number;
+  checked: boolean;
   name: string;
   is_active: number;
   performance: any;
   fee: number;
   validators_count: number;
+  address_whitelist: string;
 };

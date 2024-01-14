@@ -58,6 +58,17 @@ export function ssvExplorer(publicKey: string, chain?: Chain) {
   }
 }
 
+export function ssvScanUrl(operatorId: number, chain?: Chain) {
+  switch (chain?.id) {
+    case 5:
+      return `https://testnet.ssvscan.io/operator/${operatorId}`;
+    case 17000:
+      return `https://holesky.ssvscan.io/operator/${operatorId}`;
+    default:
+      return `https://ssvscan.io/operator/${operatorId}`;
+  }
+}
+
 export function ssvOperatorListApi(
   page: number,
   perPage: number,

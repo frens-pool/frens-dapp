@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useNetwork } from "wagmi";
-import { ssvOperatorApi, ssvOperatorListApi } from "#/utils/externalUrls";
+import { ssvScanUrl, ssvOperatorListApi } from "#/utils/externalUrls";
 import { SsvOperatorType } from "#/types/commonTypes";
 import SearchOperator from "./SearchOperator";
 import { SelectedOperators } from "./SelectedOperators";
@@ -19,7 +19,7 @@ export const SelectOperator = ({
 
   useEffect(() => {
     const fetchOperators = async () => {
-      const data = await fetch(ssvOperatorListApi(1, 8, chain));
+      const data = await fetch(ssvOperatorListApi(1, 6, chain));
       const json = await data.json();
       setssvOperators(json.operators);
     };
@@ -28,57 +28,77 @@ export const SelectOperator = ({
   }, []);
 
   const addSSVOperator = (searchOperator: SsvOperatorType) => {
-    setssvOperators([searchOperator, ...ssvOperators]);
+    setssvOperators([...ssvOperators, searchOperator]);
+    setCheckedOperators([...checkedOperators, searchOperator]);
+  };
+  console.log(ssvOperators);
+  console.log(checkedOperators);
+
+  const handleCheck = (
+    e: { target: { checked: any } },
+    item: SsvOperatorType
+  ) => {
+    setCheckedOperators(
+      e.target.checked
+        ? [...checkedOperators, item]
+        : checkedOperators.filter((operator) => operator.id !== item.id)
+    );
   };
 
   let operatorListRows = ssvOperators?.map((item, i) => {
+    console.log("i", i);
     return (
       <tr key={i}>
         <th>
           <label>
-            <input
-              type="checkbox"
-              className="checkbox"
-              onChange={(e) => {
-                setCheckedOperators(
-                  e.target.checked
-                    ? [...checkedOperators, item]
-                    : checkedOperators.filter(
-                        (operator) => operator.id !== item.id
-                      )
-                );
-              }}
-            />
+            {i < 6 ? (
+              <input
+                type="checkbox"
+                className="checkbox"
+                onChange={(e) => {
+                  handleCheck(e, item);
+                }}
+              />
+            ) : (
+              <input
+                type="checkbox"
+                className="checkbox"
+                defaultChecked
+                onChange={(e) => {
+                  handleCheck(e, item);
+                }}
+              />
+            )}
           </label>
         </th>
         <td>
           <div className="flex items-center space-x-3">
             <div>
               <div className="font-bold">{item.name}</div>
-              <div className="text-sm opacity-50">verified</div>
             </div>
           </div>
         </td>
         <td>
           {parseFloat(item.performance["30d"]).toFixed(4)}%
           <br />
-          <span className="badge badge-ghost badge-sm">last 30d</span>
         </td>
-        <th>
+        <td>{item.validators_count}</td>
+        <td>{item.address_whitelist ? "yes" : "no"}</td>
+        <td>
           <a
-            href={`https://ssvscan.io/operator/${item.id}`}
+            href={ssvScanUrl(item.id, chain)}
             className="btn btn-ghost btn-xs"
             target="_blank"
           >
             details
           </a>
-        </th>
+        </td>
       </tr>
     );
   });
 
   return (
-    <div className="w-2/5 mx-auto my-2 p-2">
+    <div className="w-3/5 mx-auto my-2 p-2">
       <SelectedOperators checkedOperators={checkedOperators} />
       <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
       <div className="overflow-x-auto w-full">
@@ -91,8 +111,16 @@ export const SelectOperator = ({
                 </label>
               </th>
               <th>Name</th>
-              <th>Performance</th>
-              <th></th>
+              <th>
+                <div>Performance</div>
+                <span className="badge badge-ghost badge-sm">last 24h</span>
+              </th>
+              <th>
+                <div>Validator</div>
+                Count
+              </th>
+              <th>Permissioned</th>
+              <th>ssvScan</th>
             </tr>
           </thead>
           <tbody>{operatorListRows}</tbody>
