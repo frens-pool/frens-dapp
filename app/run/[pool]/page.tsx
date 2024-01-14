@@ -210,6 +210,7 @@ const RunPool: NextPage = () => {
                       <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                         <div className={className(step, STEP.SSV_REGISTER)}>
                           <SSVRegisterValidator
+                            operators={operators}
                             payloadData={payloadRegisterValidator}
                           />
                         </div>

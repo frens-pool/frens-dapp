@@ -1,9 +1,9 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useNetwork } from "wagmi";
+import { formatEther } from "viem";
 import { ssvScanUrl, ssvOperatorListApi } from "#/utils/externalUrls";
 import { SsvOperatorType } from "#/types/commonTypes";
 import SearchOperator from "./SearchOperator";
-import { SelectedOperators } from "./SelectedOperators";
 
 export const SelectOperator = ({
   nextStep,
@@ -45,18 +45,17 @@ export const SelectOperator = ({
     );
   };
 
-  let operatorListRows = ssvOperators?.map((item, i) => {
-    console.log("i", i);
+  let operatorListRows = ssvOperators?.map((operator, index) => {
     return (
-      <tr key={i}>
+      <tr key={index}>
         <th>
           <label>
-            {i < 6 ? (
+            {index < 6 ? (
               <input
                 type="checkbox"
                 className="checkbox"
                 onChange={(e) => {
-                  handleCheck(e, item);
+                  handleCheck(e, operator);
                 }}
               />
             ) : (
@@ -65,7 +64,7 @@ export const SelectOperator = ({
                 className="checkbox"
                 defaultChecked
                 onChange={(e) => {
-                  handleCheck(e, item);
+                  handleCheck(e, operator);
                 }}
               />
             )}
@@ -74,19 +73,20 @@ export const SelectOperator = ({
         <td>
           <div className="flex items-center space-x-3">
             <div>
-              <div className="font-bold">{item.name}</div>
+              <div className="font-bold">{operator.name}</div>
             </div>
           </div>
         </td>
         <td>
-          {parseFloat(item.performance["30d"]).toFixed(4)}%
+          {parseFloat(operator.performance["30d"]).toFixed(4)}%
           <br />
         </td>
-        <td>{item.validators_count}</td>
-        <td>{item.address_whitelist ? "yes" : "no"}</td>
+        <td>{operator.fee}</td>
+        <td>{operator.validators_count}</td>
+        <td>{operator.address_whitelist ? "yes" : "no"}</td>
         <td>
           <a
-            href={ssvScanUrl(item.id, chain)}
+            href={ssvScanUrl(operator.id, chain)}
             className="btn btn-ghost btn-xs"
             target="_blank"
           >
@@ -99,7 +99,6 @@ export const SelectOperator = ({
 
   return (
     <div className="w-3/5 mx-auto my-2 p-2">
-      <SelectedOperators checkedOperators={checkedOperators} />
       <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
       <div className="overflow-x-auto w-full">
         <table className="table w-full">
@@ -115,6 +114,7 @@ export const SelectOperator = ({
                 <div>Performance</div>
                 <span className="badge badge-ghost badge-sm">last 24h</span>
               </th>
+              <th>SSV Fee</th>
               <th>
                 <div>Validator</div>
                 Count

@@ -9,10 +9,17 @@ import {
   useWaitForTransaction,
   usePublicClient,
 } from "wagmi";
+import { SelectedOperators } from "./SelectedOperators";
 import { useApprove } from "../../hooks/write/useApprove";
 import { useGetAllowance } from "../../hooks/read/useGetAllowance";
 
-export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
+export const SSVRegisterValidator = ({
+  payloadData,
+  operators,
+}: {
+  payloadData: any;
+  operators: any;
+}) => {
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
@@ -92,6 +99,7 @@ export const SSVRegisterValidator = ({ payloadData }: { payloadData: any }) => {
   if (registerIsLoading) {
     return (
       <div className="flex my-2 p-2 justify-center">
+        <div>{/* <SelectedOperators /> */}</div>
         <button className="btn btn-primary my-2 mr-2" disabled>
           Allow again
         </button>

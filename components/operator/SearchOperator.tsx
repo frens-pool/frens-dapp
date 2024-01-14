@@ -1,5 +1,5 @@
 import { SsvOperatorType } from "#/types/commonTypes";
-import { ssvOperatorApi } from "#/utils/externalUrls";
+import { ssvOperatorApi, ssvScanUrl } from "#/utils/externalUrls";
 import React, { useState, useEffect } from "react";
 
 interface SearchOperatorProps {
@@ -25,6 +25,49 @@ const SearchOperator = ({ chain, addSSVOperator }: SearchOperatorProps) => {
     fetchData();
   };
 
+  let operatorListRows = results?.map((operator, index) => {
+    return (
+      <tr key={index}>
+        <th>
+          <label>
+            <input
+              type="checkbox"
+              className="checkbox"
+              onChange={(e) => {
+                addSSVOperator(operator);
+                setResults([]);
+                setQuery("");
+              }}
+            />
+          </label>
+        </th>
+        <td>
+          <div className="flex items-center space-x-3">
+            <div>
+              <div className="font-bold">{operator.name}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          {parseFloat(operator.performance["30d"]).toFixed(4)}%
+          <br />
+        </td>
+        <td>{operator.fee}</td>
+        <td>{operator.validators_count}</td>
+        <td>{operator.address_whitelist ? "yes" : "no"}</td>
+        <td>
+          <a
+            href={ssvScanUrl(operator.id, chain)}
+            className="btn btn-ghost btn-xs"
+            target="_blank"
+          >
+            details
+          </a>
+        </td>
+      </tr>
+    );
+  });
+
   return (
     <div>
       <input
@@ -35,26 +78,16 @@ const SearchOperator = ({ chain, addSSVOperator }: SearchOperatorProps) => {
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <button className="btn" onClick={handleSearchClick}>
+      <button className="ml-2 btn" onClick={handleSearchClick}>
         Search
       </button>
 
       {results && (
-        <ul>
-          {results.map((operator) => (
-            <li key={operator.id}>
-              <div>{operator.name}</div>
-              <input
-                type="checkbox"
-                className="checkbox"
-                onChange={(e) => {
-                  console.log(operator);
-                  addSSVOperator(operator);
-                }}
-              />
-            </li>
-          ))}
-        </ul>
+        <div className="overflow-x-auto w-full">
+          <table className="table w-full">
+            <tbody>{operatorListRows}</tbody>
+          </table>
+        </div>
       )}
     </div>
   );
