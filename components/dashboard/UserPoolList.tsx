@@ -14,6 +14,7 @@ const buildQuery = ({ operatorAddress }: { operatorAddress: string }) => {
   const query = `
   {
     creates(where: {creator: "${operatorAddress}"}) {
+      id
       deposits {
         amount
       }
@@ -44,37 +45,34 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
     }
   }, [poolCreates]);
 
-  useEffect(() => {
-    {
-      poolStates?.map((pool: PoolType) => {
-        const poolBalance = pool.deposits?.reduce(
-          (acc, current) => acc + parseInt(current.amount, 10),
-          0
-        );
-        if (
-          poolBalance === 32000000000000000000 &&
-          pool.poolState === "accepting deposits"
-        ) {
-          setRegisterThesePools([...registerThesePools, pool]);
-        }
-        if (
-          poolBalance !== 32000000000000000000 &&
-          pool.poolState === "accepting deposits"
-        ) {
-          setOpenPools([...openPools, pool]);
-        }
-        if (pool.poolState === "staked") {
-          setStakedPools([...stakedPools, pool]);
-        }
-      });
-    }
-  }, [poolStates]);
-
   const setPoolStatesArray = async () => {
     const statesOfPools = await Promise.all(
       poolCreates.map(async (pool: PoolType) => await getStateOfPool(pool))
     );
     setPoolStates(statesOfPools);
+  };
+
+  const setPoolState = (pool: PoolType, poolState: String) => {
+    const poolBalance = pool.deposits?.reduce(
+      (acc, current) => acc + parseInt(current.amount, 10),
+      0
+    );
+
+    if (
+      poolBalance === 32000000000000000000 &&
+      poolState === "accepting deposits"
+    ) {
+      setRegisterThesePools((prevPools) => [...prevPools, pool]);
+    }
+    if (
+      poolBalance !== 32000000000000000000 &&
+      poolState === "accepting deposits"
+    ) {
+      setOpenPools((prevPools) => [...prevPools, pool]);
+    }
+    if (poolState === "staked") {
+      setStakedPools((prevPools) => [...prevPools, pool]);
+    }
   };
 
   const getStateOfPool = async (pool: PoolType) => {
@@ -84,6 +82,7 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
       functionName: "getState",
     })) as string;
 
+    setPoolState(pool, poolState);
     return { ...pool, poolState };
   };
 
@@ -104,7 +103,7 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {registerThesePools?.map((pool: PoolType) => (
-              <PoolCard pool={pool} key={pool.contractAddress} />
+              <PoolCard pool={pool} key={pool.id} />
             ))}
           </div>
         </div>
@@ -117,7 +116,7 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {openPools?.map((pool: PoolType) => (
-              <PoolCard pool={pool} key={pool.contractAddress} />
+              <PoolCard pool={pool} key={pool.id} />
             ))}
           </div>
         </div>
@@ -130,7 +129,7 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {stakedPools?.map((pool: PoolType) => (
-              <PoolCard pool={pool} key={pool.contractAddress} />
+              <PoolCard pool={pool} key={pool.id} />
             ))}
           </div>
         </div>

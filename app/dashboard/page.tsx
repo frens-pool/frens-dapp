@@ -3,12 +3,13 @@
 import type { NextPage } from "next";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Address, useAccount } from "wagmi";
+import Link from "next/link";
+import { PlusSmallIcon } from "@heroicons/react/20/solid";
+
 import Header from "components/shared/Header";
 import { UserPoolList } from "#/components/dashboard/UserPoolList";
 import { ShareList } from "components/dashboard/ShareList";
-import { PlusSmallIcon } from "@heroicons/react/20/solid";
-import Link from "next/link";
-
+import FeeRecCheckSet from "#/components/dashboard/FeeRecCheckSet";
 import { useUserNfts } from "#/hooks/read/useUserNFTs";
 import { useUserPools } from "#/hooks/read/useUserPools";
 
@@ -18,8 +19,8 @@ function classNames(...classes: string[]) {
 
 const Dashboard: NextPage = () => {
   const { userNFTs, totalDeposit, totalClaimable } = useUserNfts();
-  const { isConnected, address } = useAccount();
-  const userPools = useUserPools(address as Address);
+  const { isConnected, address: owner } = useAccount();
+  const userPools = useUserPools(owner as Address);
 
   const stats = [
     {
@@ -36,6 +37,10 @@ const Dashboard: NextPage = () => {
     },
     {
       name: "ETH claimable",
+      value: totalClaimable.toFixed(4).toString(),
+    },
+    {
+      name: "SSV Cluster Balances",
       value: totalClaimable.toFixed(4).toString(),
     },
   ];
@@ -56,6 +61,9 @@ const Dashboard: NextPage = () => {
                       Statistics
                     </h1>
                   </div>
+                  <button className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white">
+                    Claim ETH
+                  </button>
                   {/* Stats */}
                   <div className="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
                     <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
@@ -81,6 +89,7 @@ const Dashboard: NextPage = () => {
                       ))}
                     </dl>
                   </div>
+                  <FeeRecCheckSet owner={owner as Address} />
                 </div>
               </div>
 
@@ -103,7 +112,7 @@ const Dashboard: NextPage = () => {
                     </button>
                   </Link>
                 </div>
-                <UserPoolList operatorAddress={address as Address} />
+                <UserPoolList operatorAddress={owner as Address} />
               </div>
               {/* Heading */}
               <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">

@@ -5,6 +5,7 @@ export type DepositsType = {
 };
 
 export type PoolType = {
+  id: string;
   contractAddress: Address;
   creator: Address;
   deposits: DepositsType[];
