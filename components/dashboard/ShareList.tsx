@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { FrensContracts } from "utils/contracts";
 import { Address, useAccount, usePublicClient } from "wagmi";
 import CardForNFT from "../staker/CardForNFT";
+import ClaimReward from "./ClaimReward";
 import { nftType } from "#/hooks/read/useUserNFTs";
 
 interface Props {
@@ -56,14 +57,19 @@ export const ShareList = ({ userNFTs }: Props) => {
       )}
 
       <div className="grid grid-cols-3 gap-4">
-        {userNFTs.map(({ name, image, nftID, poolAddress }) => (
-          <div key={name}>
+        {userNFTs.map(({ name, image, nftID, poolAddress, claimable }) => (
+          <div key={`${name}_${nftID?.toString()}`}>
             <CardForNFT
               name={name}
               image={image}
               nftID={nftID}
               poolAddress={poolAddress}
             />
+            {claimable > 0 && (
+              <div className="text-center">
+                <ClaimReward poolAddress={poolAddress} nftID={nftID} claimable={claimable} />
+              </div>
+            )}
           </div>
         ))}
       </div>

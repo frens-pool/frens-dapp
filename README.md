@@ -19,8 +19,14 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 ## API keys
 
+### Etherscan
 To get the Validator's public keys, the Etherscan API is used.
 Create an API as documented on <https://docs.etherscan.io/getting-started/viewing-api-usage-statistics>, and add the key as `NEXT_PUBLIC_ETHERSCAN_KEY=<Your key>` in `.env.local`.
+
+### Infura
+To use the public RPC to read data from the blockchain, you'll need an Infura key.
+Add this key as `NEXT_PUBLIC_INFURA_KEY=<Your key>` in `.env.local`.
+
 
 ## Learn More
 
