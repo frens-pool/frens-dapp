@@ -110,3 +110,14 @@ export function ssvValidatorApi(publicKey: string, chain?: Chain) {
       return `https://api.ssv.network/api/v4/mainnet/validators/${publicKey}`;
   }
 }
+
+export function ssvAccountApi(owner: Address, chain?: Chain) {
+  switch (chain?.id) {
+    case 5:
+      return `https://api.ssv.network/api/v4/prater/accounts/${owner}`;
+    case 17000:
+      return `https://api.ssv.network/api/v4/holesky/accounts/${owner}`;
+    default:
+      return `https://api.ssv.network/api/v4/mainnet/accounts/${owner}`;
+  }
+}

@@ -6,8 +6,6 @@ import { Address, useAccount } from "wagmi";
 import Header from "components/shared/Header";
 import { UserPoolList } from "#/components/dashboard/UserPoolList";
 import { ShareList } from "components/dashboard/ShareList";
-import { SSVCard } from "#/components/dashboard/SSVCard";
-
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 
@@ -68,8 +66,8 @@ const Dashboard: NextPage = () => {
                             statIdx % 2 === 1
                               ? "sm:border-l"
                               : statIdx === 2
-                                ? "lg:border-l"
-                                : "",
+                              ? "lg:border-l"
+                              : "",
                             "flex items-baseline flex-wrap justify-between gap-y-2 gap-x-4 border-t border-gray-900/5 px-4 py-10 sm:px-6 lg:border-t-0 xl:px-8"
                           )}
                         >
@@ -83,9 +81,6 @@ const Dashboard: NextPage = () => {
                       ))}
                     </dl>
                   </div>
-
-                  {/* <SSVCard /> */}
-
                 </div>
               </div>
 
