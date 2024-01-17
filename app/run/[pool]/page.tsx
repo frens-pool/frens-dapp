@@ -103,13 +103,13 @@ const RunPool: NextPage = () => {
                     </h1>
                   </div>
                   {/* Dev purpose */}
-                  <PoolStatus
+                  {/* <PoolStatus
                     poolState={poolState}
                     poolOwner={poolOwner}
                     poolBalance={poolBalance}
                     connectedAddress={connectedAddress!}
                     ssvValidator={ssvValidator}
-                  />
+                  /> */}
                   {/* Run Content */}
                   <div className="grid grid-cols-1 gap-y-8">
                     {/* Step 1 */}

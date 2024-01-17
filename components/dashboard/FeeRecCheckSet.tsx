@@ -36,7 +36,7 @@ function FeeRecCheckSet({ owner }: FeeRecCheckSetInterface) {
   // console.log(feeRecipient);
 
   if (feeRecipient) {
-    return <div>feeRecipient set</div>;
+    return <div></div>;
   }
 
   return (

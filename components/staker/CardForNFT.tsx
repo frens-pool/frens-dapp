@@ -20,19 +20,21 @@ function CardForNFT({ name, image, nftID, poolAddress }: CardProps) {
   );
 
   return (
-    <div className=" rounded-xl">
-      <img src={image} className="max-w-10 rounded-xl" alt={name} />
+    <div className="rounded-xl">
+      <a href={openSeaLink} target="_blank" rel="noopener noreferrer">
+        <img src={image} className="max-w-10 rounded-xl" alt={name} />
+      </a>
+
       <div className="px-2 text-center">
-        <a href={openSeaLink} target="_blank" rel="noopener noreferrer">
-          <div className="text-center">View share on OpenSea</div>
-        </a>
         {poolAddress && (
           <a
             href={`/pool/${poolAddress}`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="text-center">View pool</div>
+            <div className="text-center underline text-frens-main py-1">
+              View pool
+            </div>
           </a>
         )}
       </div>

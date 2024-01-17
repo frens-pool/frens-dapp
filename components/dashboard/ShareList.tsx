@@ -7,7 +7,7 @@ import ClaimReward from "./ClaimReward";
 import { nftType } from "#/hooks/read/useUserNFTs";
 
 interface Props {
-  userNFTs: nftType[],
+  userNFTs: nftType[];
 }
 
 export const ShareList = ({ userNFTs }: Props) => {
@@ -58,7 +58,10 @@ export const ShareList = ({ userNFTs }: Props) => {
 
       <div className="grid grid-cols-3 gap-4">
         {userNFTs.map(({ name, image, nftID, poolAddress, claimable }) => (
-          <div key={`${name}_${nftID?.toString()}`}>
+          <div
+            className="items-center space-x-1 rounded-lg border border-gray-300 bg-white px-3 py-3 shadow-sm"
+            key={`${name}_${nftID?.toString()}`}
+          >
             <CardForNFT
               name={name}
               image={image}
@@ -67,7 +70,11 @@ export const ShareList = ({ userNFTs }: Props) => {
             />
             {claimable > 0 && (
               <div className="text-center">
-                <ClaimReward poolAddress={poolAddress} nftID={nftID} claimable={claimable} />
+                <ClaimReward
+                  poolAddress={poolAddress}
+                  nftID={nftID}
+                  claimable={claimable}
+                />
               </div>
             )}
           </div>
