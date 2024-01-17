@@ -30,6 +30,9 @@ export const InviteFrens = ({
 
   return (
     <div className="flex flex-col justify-center">
+      <div className="my-2">
+        You can now share this link to your friends to stake in this pool
+      </div>
       <div className="my-2 text-center underline">
         <Link href={`/pool/${poolContract}`} className="underline">
           {link}
@@ -43,7 +46,7 @@ export const InviteFrens = ({
             onFinish();
           }}
         >
-          Copy to clipboard
+          Copy link to clipboard
         </button>
       </div>
     </div>

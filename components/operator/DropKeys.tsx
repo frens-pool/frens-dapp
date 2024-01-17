@@ -6,8 +6,10 @@ export type validateFileFunction = (fileContent: any) => {
   error?: string
 }
 
-export const DropKeys = ({ validateFile, onFileReceived }: {
-  onFileReceived: any, validateFile: validateFileFunction
+export const DropKeys = ({ validateFile, onFileReceived, filename }: {
+  onFileReceived: any,
+  validateFile: validateFileFunction,
+  filename: string
 }) => {
   const [showDropzone, setShowDropzone] = useState(true);
   const [feedback, setFeedback] = useState<string>();
@@ -70,7 +72,7 @@ export const DropKeys = ({ validateFile, onFileReceived }: {
             <button className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white no-animation my-2">
               Click to select file
             </button>
-            <div>or simply drop it here</div>
+            <div>filename should be <b>{filename}</b></div>
             {feedback && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 <strong className="font-bold">{feedback}</strong>

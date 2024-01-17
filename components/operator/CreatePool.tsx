@@ -41,9 +41,9 @@ export const CreatePool = ({
 
     return (
       <div>
-        <div className="my-2">
-          You will get a link to your own personal staking pool abc
-        </div>
+        {/* <div className="my-2">
+          You will get a link to your own personal staking pool
+        </div> */}
         <div className="flex items-center justify-center mt-4 mb-2">
           <div>
             <div className="my-2">just a sec ... pool is getting created</div>
@@ -68,9 +68,9 @@ export const CreatePool = ({
 
   return (
     <div>
-      <div className="my-2">
+      {/* <div className="my-2">
         You will get a link to your own personal staking pool
-      </div>
+      </div> */}
       <div className="flex items-center justify-center mt-4 mb-2">
         <div>
           {isLoading ? (
