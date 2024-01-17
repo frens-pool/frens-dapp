@@ -26,7 +26,7 @@ export const DepositForm = ({
     <div className="w-2/5 mx-auto my-2 p-2">
       {poolBalance >= 32 ? (
         <div>
-          <div>You are ready to deposit</div>
+          <div>You are ready to deposit your 32 ETH to the staking contract.</div>
           <div>
             <button
               className={`${
@@ -61,7 +61,7 @@ export const DepositForm = ({
         <div>
           <div className="text-orange-400">Pool 32 ETH first</div>
           <button className="btn btn-primary mb-2" disabled>
-            Deposit ETH to Beacon chain
+            Deposit ETH
           </button>
         </div>
       )}

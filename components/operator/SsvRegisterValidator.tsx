@@ -8,6 +8,7 @@ import {
   useWalletClient,
   useWaitForTransaction,
   usePublicClient,
+  Address
 } from "wagmi";
 import { SelectedOperators } from "./SelectedOperators";
 import { useApprove } from "../../hooks/write/useApprove";
@@ -16,10 +17,15 @@ import { useGetAllowance } from "../../hooks/read/useGetAllowance";
 export const SSVRegisterValidator = ({
   payloadData,
   operators,
+  poolAddress
 }: {
   payloadData: any;
   operators: any;
+  poolAddress: Address
 }) => {
+
+console.log("payload=",payloadData)
+
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
@@ -46,22 +52,25 @@ export const SSVRegisterValidator = ({
     });
 
   const getClusterData = async (payloadData: any) => {
-    if (payloadData && walletAddress && chain) {
+    if (payloadData && poolAddress && chain) {
       const nodeUrl = chain.rpcUrls.default.http.at(0)!;
       const contractAddress =
         FrensContracts[network].SSVNetworkContract.address;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: nodeUrl,
-        ownerAddress: walletAddress,
+        ownerAddress: poolAddress,
         operatorIds: payloadData.payload.operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
       setClusterData(clusterDataTemp.cluster[1]);
+      console.log("getClusterData output=",clusterDataTemp)
     }
   };
 
+
   const registerSSVValidator = async () => {
+    console.log("clusterdata=",clusterData);
     const clusterParams = {
       validatorCount: clusterData.validatorCount,
       networkFeeIndex: clusterData.networkFeeIndex,

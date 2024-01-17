@@ -1,4 +1,5 @@
 import { Address } from "wagmi";
+import Link from "next/link";
 
 export const CreateKeys = ({
   nextStep,
@@ -9,7 +10,12 @@ export const CreateKeys = ({
 }) => {
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
-      <div>use Wagyu Key Gen and set this withdrawal address</div>
+      <div>use <Link
+          href="https://wagyu.gg/"
+          className="underline"
+          target="_blank"
+        >
+          Wagyu Key Gen</Link> and set this withdrawal address</div>
       <div className="bg-slate-200 rounded-md p-4 my-2">
         <code>{poolAddress}</code>
       </div>
