@@ -21,7 +21,21 @@ export const SelectOperator = ({
     const fetchOperators = async () => {
       const data = await fetch(ssvOperatorListApi(1, 6, chain));
       const json = await data.json();
-      setssvOperators(json.operators);
+
+      // filter out permissioned Operators
+      const filteredOperators =
+        json.operators?.reduce(
+          (acc: Array<SsvOperatorType>, item: SsvOperatorType) => {
+            if (!item.address_whitelist) {
+              acc.push(item);
+            }
+            return acc;
+          },
+          []
+        ) || [];
+
+      // json.operators.reduce((coll,op)=>{ if (!op.address_whitelist) { coll.push(op) ; return coll;} },[]);
+      setssvOperators(filteredOperators);
     };
 
     fetchOperators().catch(console.error);

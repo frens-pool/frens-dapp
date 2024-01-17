@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 import { ISharesKeyPairs, SSVKeys, KeyShares } from "ssv-keys";
 import BigNumber from "bignumber.js";
-import { useAccount, useNetwork, usePublicClient } from "wagmi";
+import { useAccount, useNetwork, usePublicClient, Address } from "wagmi";
 
 import { FrensContracts } from "#/utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
@@ -11,10 +11,12 @@ export const SplitKeyshares = ({
   operatorsList,
   nextStep,
   setPayloadRegisterValidator,
+  poolAddress
 }: {
   operatorsList: any;
   nextStep: () => void;
   setPayloadRegisterValidator: any;
+  poolAddress: Address
 }) => {
   const [pw, setPW] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,6 @@ export const SplitKeyshares = ({
   const [keystoreError, setKeystoreError] = useState(false);
   const [keystoreFileData, setKeystoreFileData] = useState<string>("");
   const network = useNetworkName();
-  const { address: walletAddress } = useAccount();
   const { chain } = useNetwork();
   const publicClient = usePublicClient();
 
@@ -121,14 +122,14 @@ export const SplitKeyshares = ({
   }
 
   const getClusterData = async (operatorIds: any) => {
-    if (operatorIds && walletAddress && chain) {
+    if (operatorIds && poolAddress && chain) {
       const contractAddress =
         FrensContracts[network].SSVNetworkContract.address;
       const nodeUrl = chain.rpcUrls.default.http.at(0)!;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: nodeUrl,
-        ownerAddress: walletAddress,
+        ownerAddress: poolAddress,  
         operatorIds,
       };
       console.log("clusterParams", clusterParams);
@@ -164,6 +165,7 @@ export const SplitKeyshares = ({
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
       <DropKeys
+        filename="keystore-m_xxxxxxxxxx.json"
         validateFile={(fileContent: any) => ({ success: true })}
         onFileReceived={(data: any) => {
           handleKeystoreDrop(data);

@@ -119,17 +119,19 @@ export const StakeForm = ({ poolAddress }: Props) => {
                 Pool
               </button>
             ) : (
-              <button
-                disabled={isDepositing ? true : false}
-                className={`btn text-white ${
-                  isDepositing
-                    ? "btn-primary"
-                    : "bg-gradient-to-r from-frens-blue to-frens-teal"
-                }`}
-                type="submit"
-              >
-                {isDepositing ? "Confirm in Metamask" : "Pool"}
-              </button>
+              <>{!isDepositing && (
+                <button
+                  disabled={isDepositing ? true : false}
+                  className={`btn text-white ${isDepositing
+                      ? "btn-primary"
+                      : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                    }`}
+                  type="submit"
+                >
+                  Pool
+                </button>
+              )}
+              </>
             )}
             {isDepositing ? (
               <div className="px-6 mb-4">

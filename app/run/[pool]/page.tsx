@@ -41,6 +41,7 @@ const RunPool: NextPage = () => {
   const [ssvValidator, setssvValidator] = useState<any>();
   const [poolBalance, setPoolBalance] = useState<number>(0);
   const [step, setStep] = useState(STEP.CREATE_KEYS);
+  // const [step, setStep] = useState(STEP.SELECT_OPERATOR);
   const [pubKey, setPubKey] = useState("");
   const [operators, setOperators] = useState();
   const [payloadRegisterValidator, setPayloadRegisterValidator] = useState();
@@ -98,7 +99,7 @@ const RunPool: NextPage = () => {
                   {/* Describtion */}
                   <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                     <h1 className="text-base font-semibold leading-7 text-gray-900">
-                      Ready ot spin up your validator? Lets do it.
+                      Ready to spin up your validator? Lets do it!
                     </h1>
                   </div>
                   {/* Dev purpose */}
@@ -196,6 +197,7 @@ const RunPool: NextPage = () => {
                             setPayloadRegisterValidator={
                               setPayloadRegisterValidator
                             }
+                            poolAddress={poolAddress}
                           />
                         </div>
                       </dl>
@@ -210,6 +212,7 @@ const RunPool: NextPage = () => {
                       <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                         <div className={className(step, STEP.SSV_REGISTER)}>
                           <SSVRegisterValidator
+                            poolAddress={poolAddress}
                             operators={operators}
                             payloadData={payloadRegisterValidator}
                           />
