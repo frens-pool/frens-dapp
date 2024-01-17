@@ -104,7 +104,7 @@ export const SSVRegisterValidator = ({
           Allow again
         </button>
         <button
-          className="btn btn-primary loading text-white my-2 mr-2"
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white my-2 mr-2"
           disabled
         >
           Register in progress
@@ -139,10 +139,15 @@ export const SSVRegisterValidator = ({
         </div>
 
         <div>
-          Or{" "}
-          <a href={`/pool/${payloadData.payload.publicKey}`}>
-            checkout your validator dashboard
-          </a>
+          All done?
+          <div>
+            <a
+              className="link text-frens-main underline px-2"
+              href={`/dashboard`}
+            >
+              checkout dashboard
+            </a>
+          </div>
         </div>
       </div>
     );

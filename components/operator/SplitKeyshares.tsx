@@ -188,7 +188,10 @@ export const SplitKeyshares = ({
         <></>
       )}
       {loading ? (
-        <button className="btn loading text-white" disabled>
+        <button
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white"
+          disabled
+        >
           Verifying
         </button>
       ) : (

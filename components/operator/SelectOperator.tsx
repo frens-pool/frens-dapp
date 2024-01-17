@@ -98,7 +98,7 @@ export const SelectOperator = ({
   });
 
   return (
-    <div className="w-3/5 mx-auto my-2 p-2">
+    <div className="w-4/5 mx-auto my-2 p-2">
       <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
       <div className="overflow-x-auto w-full">
         <table className="table w-full">
