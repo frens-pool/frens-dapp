@@ -8,6 +8,7 @@ import {
   useWalletClient,
   useWaitForTransaction,
   usePublicClient,
+  Address
 } from "wagmi";
 import { SelectedOperators } from "./SelectedOperators";
 import { useApprove } from "../../hooks/write/useApprove";
@@ -16,10 +17,15 @@ import { useGetAllowance } from "../../hooks/read/useGetAllowance";
 export const SSVRegisterValidator = ({
   payloadData,
   operators,
+  poolAddress
 }: {
   payloadData: any;
   operators: any;
+  poolAddress: Address
 }) => {
+
+console.log("payload=",payloadData)
+
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
@@ -46,22 +52,25 @@ export const SSVRegisterValidator = ({
     });
 
   const getClusterData = async (payloadData: any) => {
-    if (payloadData && walletAddress && chain) {
+    if (payloadData && poolAddress && chain) {
       const nodeUrl = chain.rpcUrls.default.http.at(0)!;
       const contractAddress =
         FrensContracts[network].SSVNetworkContract.address;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: nodeUrl,
-        ownerAddress: walletAddress,
+        ownerAddress: poolAddress,
         operatorIds: payloadData.payload.operatorIds,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
       setClusterData(clusterDataTemp.cluster[1]);
+      console.log("getClusterData output=",clusterDataTemp)
     }
   };
 
+
   const registerSSVValidator = async () => {
+    console.log("clusterdata=",clusterData);
     const clusterParams = {
       validatorCount: clusterData.validatorCount,
       networkFeeIndex: clusterData.networkFeeIndex,
@@ -104,7 +113,7 @@ export const SSVRegisterValidator = ({
           Allow again
         </button>
         <button
-          className="btn btn-primary loading text-white my-2 mr-2"
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white my-2 mr-2"
           disabled
         >
           Register in progress
@@ -139,10 +148,15 @@ export const SSVRegisterValidator = ({
         </div>
 
         <div>
-          Or{" "}
-          <a href={`/pool/${payloadData.payload.publicKey}`}>
-            checkout your validator dashboard
-          </a>
+          All done?
+          <div>
+            <a
+              className="link text-frens-main underline px-2"
+              href={`/dashboard`}
+            >
+              checkout dashboard
+            </a>
+          </div>
         </div>
       </div>
     );

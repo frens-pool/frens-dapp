@@ -21,7 +21,21 @@ export const SelectOperator = ({
     const fetchOperators = async () => {
       const data = await fetch(ssvOperatorListApi(1, 6, chain));
       const json = await data.json();
-      setssvOperators(json.operators);
+
+      // filter out permissioned Operators
+      const filteredOperators =
+        json.operators?.reduce(
+          (acc: Array<SsvOperatorType>, item: SsvOperatorType) => {
+            if (!item.address_whitelist) {
+              acc.push(item);
+            }
+            return acc;
+          },
+          []
+        ) || [];
+
+      // json.operators.reduce((coll,op)=>{ if (!op.address_whitelist) { coll.push(op) ; return coll;} },[]);
+      setssvOperators(filteredOperators);
     };
 
     fetchOperators().catch(console.error);
@@ -98,7 +112,7 @@ export const SelectOperator = ({
   });
 
   return (
-    <div className="w-3/5 mx-auto my-2 p-2">
+    <div className="w-4/5 mx-auto my-2 p-2">
       <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
       <div className="overflow-x-auto w-full">
         <table className="table w-full">

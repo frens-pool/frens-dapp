@@ -26,12 +26,12 @@ export const DepositForm = ({
     <div className="w-2/5 mx-auto my-2 p-2">
       {poolBalance >= 32 ? (
         <div>
-          <div>You are ready to deposit</div>
+          <div>You are ready to deposit your 32 ETH to the staking contract.</div>
           <div>
             <button
               className={`${
                 isLoading
-                  ? "btn btn-info no-animation my-2 mr-2 loading"
+                  ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mb-2 disabled loading"
                   : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
               }`}
               onClick={() => {
@@ -44,7 +44,7 @@ export const DepositForm = ({
                 : "Deposit ETH to Beacon chain"}
             </button>
             {isLoading && (
-              <div className="my-2">
+              <div className="mb-2">
                 <a
                   href={`${etherscanUrl(chain)}/tx/${data?.hash}`}
                   target="_blank"
@@ -61,7 +61,7 @@ export const DepositForm = ({
         <div>
           <div className="text-orange-400">Pool 32 ETH first</div>
           <button className="btn btn-primary mb-2" disabled>
-            Deposit ETH to Beacon chain
+            Deposit ETH
           </button>
         </div>
       )}

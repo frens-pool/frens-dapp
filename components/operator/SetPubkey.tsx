@@ -62,9 +62,7 @@ export const SetPubkey = ({
   };
 
   const getErrorMessage = (prepare_error: any) => {
-    const message =
-      // prepare_error?.reason.replace("execution reverted:", "") ??
-      prepare_error.message;
+    const message = prepare_error.message;
 
     return message;
   };
@@ -72,6 +70,7 @@ export const SetPubkey = ({
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
       <DropKeys
+        filename="deposit_data-xxxxxxxxxx.json"
         validateFile={checkDepositData}
         onFileReceived={(data: any) => {
           const depositData = JSON.parse(data);
@@ -83,9 +82,9 @@ export const SetPubkey = ({
           <button
             className={`${
               isLoading
-                ? "btn btn-info no-animation my-2 mr-2 loading"
+                ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mb-2 loading"
                 : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
-            }`}
+              }`}
             onClick={() => {
               if (writeDepositFileData) writeDepositFileData();
             }}
@@ -95,14 +94,6 @@ export const SetPubkey = ({
               ? "Deposit configuration in progress..."
               : "Set deposit file"}
           </button>
-          {/* <button
-            className="ml-4 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-            onClick={() => {
-              nextStep();
-            }}
-          >
-            Next
-          </button> */}
         </div>
         {prepare_error && depositFileData && (
           <div className="text-center font-medium my-2">
