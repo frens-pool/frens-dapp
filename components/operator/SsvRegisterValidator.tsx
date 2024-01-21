@@ -10,7 +10,7 @@ import {
   usePublicClient,
   Address,
 } from "wagmi";
-import { encodeFunctionData } from "viem";
+import { encodeAbiParameters, encodeFunctionData } from "viem";
 import { SelectedOperators } from "./SelectedOperators";
 import { useApprove } from "../../hooks/write/useApprove";
 import { useGetAllowance } from "../../hooks/read/useGetAllowance";
@@ -80,8 +80,11 @@ export const SSVRegisterValidator = ({
       active: true,
     };
 
+
+
+
     // function data to send to the SSV contract
-    const encodedData = encodeFunctionData({
+    const encodedFunctionData = encodeFunctionData({
       abi: FrensContracts[network].SSVNetworkContract.abi,
       args: [
         payloadData.payload.publicKey,
@@ -92,6 +95,24 @@ export const SSVRegisterValidator = ({
       ],
       functionName: "registerValidator",
     });
+
+    console.log("encodedFunctionData",encodedFunctionData);
+
+    debugger;
+    const functionABI = FrensContracts[network].SSVNetworkContract.abi.find((f) => { return f.name === "registerValidator"});
+    console.log("functionABI",functionABI);
+
+    const encodedData = encodeAbiParameters(functionABI?.inputs || [],
+      [
+        payloadData.payload.publicKey,
+        payloadData.payload.operatorIds,
+        payloadData.payload.sharesData,
+        payloadData.tokenAmount,
+        clusterParams,
+      ],
+    );
+
+    console.log("encodedData",encodedData);
 
     const { request } = await publicClient.simulateContract({
       account: walletAddress,
