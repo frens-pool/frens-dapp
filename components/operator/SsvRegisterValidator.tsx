@@ -96,34 +96,34 @@ export const SSVRegisterValidator = ({
       functionName: "registerValidator",
     });
 
+    // console.log("encodedFunctionData",encodedFunctionData);
+
+    // debugger;
+    // const functionABI = FrensContracts[network].SSVNetworkContract.abi.find((f) => { return f.name === "registerValidator"});
+    // console.log("functionABI",functionABI);
+
+    // const encodedData = encodeAbiParameters(functionABI?.inputs || [],
+    //   [
+    //     payloadData.payload.publicKey,
+    //     payloadData.payload.operatorIds,
+    //     payloadData.payload.sharesData,
+    //     0, //payloadData.tokenAmount,
+    //     clusterParams,
+    //   ],
+    // );
+
     console.log("encodedFunctionData",encodedFunctionData);
-
-    debugger;
-    const functionABI = FrensContracts[network].SSVNetworkContract.abi.find((f) => { return f.name === "registerValidator"});
-    console.log("functionABI",functionABI);
-
-    const encodedData = encodeAbiParameters(functionABI?.inputs || [],
-      [
-        payloadData.payload.publicKey,
-        payloadData.payload.operatorIds,
-        payloadData.payload.sharesData,
-        payloadData.tokenAmount,
-        clusterParams,
-      ],
-    );
-
-    console.log("encodedData",encodedData);
 
     const { request } = await publicClient.simulateContract({
       account: walletAddress,
       address: poolAddress,
       abi: FrensContracts[network].StakingPool.abi,
-      args: [encodedData],
+      args: [encodedFunctionData],
       functionName: "callSSVNetwork",
     });
 
     console.log("register request=", request)
-
+debugger;
     if (walletClient) {
       const txHash = await walletClient.writeContract(request);
       setRegisterTxHash(txHash);
