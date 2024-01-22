@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { Address, useNetwork, useWaitForTransaction } from "wagmi";
 
 interface FeeRecCheckSetInterface {
-  owner: Address;
+  poolAddress: Address;
 }
 
-function FeeRecCheckSet({ owner }: FeeRecCheckSetInterface) {
+function FeeRecCheckSet({ poolAddress }: FeeRecCheckSetInterface) {
   const [feeRecipient, setFeeRecipient] = useState<Address>();
   const { chain } = useNetwork();
   const { data, write: setOnchainFeeRecipient } = useFeeRecipient({
-    feeRecipient: owner,
+    feeRecipient: poolAddress,
   });
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
@@ -19,7 +19,7 @@ function FeeRecCheckSet({ owner }: FeeRecCheckSetInterface) {
 
   useEffect(() => {
     const fetchSsvValidator = async () => {
-      const response = await fetch(ssvAccountApi(owner, chain));
+      const response = await fetch(ssvAccountApi(poolAddress, chain));
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
@@ -36,7 +36,7 @@ function FeeRecCheckSet({ owner }: FeeRecCheckSetInterface) {
   // console.log(feeRecipient);
 
   if (feeRecipient) {
-    return <div></div>;
+    return <div>abc</div>;
   }
 
   return (
