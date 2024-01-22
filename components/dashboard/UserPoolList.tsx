@@ -135,7 +135,11 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
         </div>
       )}
 
-      {poolStates.length === 0 && <div>No pools yet</div>}
+      {poolStates.length === 0 && (
+        <div className="flex flex-col items-center justify-center bg-white">
+          <div className="mb-4">No pools yet 🧐</div>
+        </div>
+      )}
     </div>
   );
 };
