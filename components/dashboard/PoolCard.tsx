@@ -46,7 +46,8 @@ function PoolCard({ pool }: PoolCard) {
             feePerBlockWei
           }
         );
-        const r = balance * BigInt(12) / feePerBlockWei;
+        
+        const r = feePerBlockWei === BigInt(0) ? BigInt(0) : balance * BigInt(12) / feePerBlockWei;
         setRunway(r);
       }
 
