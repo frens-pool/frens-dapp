@@ -8,8 +8,9 @@ import {
   useWalletClient,
   useWaitForTransaction,
   usePublicClient,
-  Address
+  Address,
 } from "wagmi";
+import { encodeAbiParameters, encodeFunctionData } from "viem";
 import { SelectedOperators } from "./SelectedOperators";
 import { useApprove } from "../../hooks/write/useApprove";
 import { useGetAllowance } from "../../hooks/read/useGetAllowance";
@@ -24,7 +25,7 @@ export const SSVRegisterValidator = ({
   poolAddress: Address
 }) => {
 
-console.log("payload=",payloadData)
+  console.log("payload=", payloadData)
 
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
@@ -64,13 +65,13 @@ console.log("payload=",payloadData)
       };
       const clusterDataTemp = await buildCluster(clusterParams);
       setClusterData(clusterDataTemp.cluster[1]);
-      console.log("getClusterData output=",clusterDataTemp)
+      console.log("getClusterData output=", clusterDataTemp)
     }
   };
 
 
   const registerSSVValidator = async () => {
-    console.log("clusterdata=",clusterData);
+    console.log("clusterdata=", clusterData);
     const clusterParams = {
       validatorCount: clusterData.validatorCount,
       networkFeeIndex: clusterData.networkFeeIndex,
@@ -79,9 +80,11 @@ console.log("payload=",payloadData)
       active: true,
     };
 
-    const { request } = await publicClient.simulateContract({
-      account: walletAddress,
-      address: FrensContracts[network].SSVNetworkContract.address,
+
+
+
+    // function data to send to the SSV contract
+    const encodedFunctionData = encodeFunctionData({
       abi: FrensContracts[network].SSVNetworkContract.abi,
       args: [
         payloadData.payload.publicKey,
@@ -93,6 +96,34 @@ console.log("payload=",payloadData)
       functionName: "registerValidator",
     });
 
+    // console.log("encodedFunctionData",encodedFunctionData);
+
+    // debugger;
+    // const functionABI = FrensContracts[network].SSVNetworkContract.abi.find((f) => { return f.name === "registerValidator"});
+    // console.log("functionABI",functionABI);
+
+    // const encodedData = encodeAbiParameters(functionABI?.inputs || [],
+    //   [
+    //     payloadData.payload.publicKey,
+    //     payloadData.payload.operatorIds,
+    //     payloadData.payload.sharesData,
+    //     0, //payloadData.tokenAmount,
+    //     clusterParams,
+    //   ],
+    // );
+
+    console.log("encodedFunctionData",encodedFunctionData);
+
+    const { request } = await publicClient.simulateContract({
+      account: walletAddress,
+      address: poolAddress,
+      abi: FrensContracts[network].StakingPool.abi,
+      args: [encodedFunctionData],
+      functionName: "callSSVNetwork",
+    });
+
+    console.log("register request=", request)
+debugger;
     if (walletClient) {
       const txHash = await walletClient.writeContract(request);
       setRegisterTxHash(txHash);
@@ -136,9 +167,8 @@ console.log("payload=",payloadData)
             ssv explorer
           </a>
           <a
-            href={`${beaconchainUrl(chain)}/validator/${
-              payloadData.payload.publicKey
-            }`}
+            href={`${beaconchainUrl(chain)}/validator/${payloadData.payload.publicKey
+              }`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
