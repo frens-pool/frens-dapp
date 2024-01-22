@@ -1,21 +1,29 @@
-import { useFeeRecipient } from "#/hooks/write/useFeeRecipient";
-import { ssvAccountApi } from "#/utils/externalUrls";
 import { useEffect, useState } from "react";
-import { Address, useNetwork, useWaitForTransaction } from "wagmi";
+import {
+  useNetwork,
+  usePublicClient,
+  useWalletClient,
+  useAccount,
+  Address,
+  useWaitForTransaction,
+} from "wagmi";
+import { encodeFunctionData } from "viem";
+import { ssvAccountApi } from "#/utils/externalUrls";
+import { FrensContracts } from "utils/contracts";
+import { useNetworkName } from "#/hooks/useNetworkName";
 
 interface FeeRecCheckSetInterface {
   poolAddress: Address;
 }
 
 function FeeRecCheckSet({ poolAddress }: FeeRecCheckSetInterface) {
-  const [feeRecipient, setFeeRecipient] = useState<Address>();
+  const [queriedFeeRecipient, setQueriedFeeRecipient] = useState<Address>();
+  const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const { chain } = useNetwork();
-  const { data, write: setOnchainFeeRecipient } = useFeeRecipient({
-    feeRecipient: poolAddress,
-  });
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-  });
+  const network = useNetworkName();
+  const publicClient = usePublicClient();
+  const { address: walletAddress } = useAccount();
+  const { data: walletClient } = useWalletClient();
 
   useEffect(() => {
     const fetchSsvValidator = async () => {
@@ -25,18 +33,45 @@ function FeeRecCheckSet({ poolAddress }: FeeRecCheckSetInterface) {
       } else {
         const data = await response.json();
         if (data.data) {
-          console.log(data);
-          setFeeRecipient(data.data.recipientAddress);
+          // console.log(data);
+          setQueriedFeeRecipient(data.data.recipientAddress);
         }
       }
     };
     fetchSsvValidator().catch(console.error);
   }, []);
 
-  // console.log(feeRecipient);
+  const setOnChainFeeRecipient = async () => {
+    const encodedFunctionData = encodeFunctionData({
+      abi: FrensContracts[network].SSVNetworkContract.abi,
+      args: [poolAddress],
+      functionName: "setFeeRecipientAddress",
+    });
 
-  if (feeRecipient) {
-    return <div>abc</div>;
+    const { request } = await publicClient.simulateContract({
+      account: walletAddress,
+      address: poolAddress,
+      abi: FrensContracts[network].StakingPool.abi,
+      args: [encodedFunctionData],
+      functionName: "callSSVNetwork",
+    });
+
+    if (walletClient) {
+      const txHash = await walletClient.writeContract(request);
+      setRegisterTxHash(txHash);
+    }
+  };
+
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    // @ts-ignore
+    hash: registerTxHash,
+    onSuccess: () => {
+      setQueriedFeeRecipient(poolAddress);
+    },
+  });
+
+  if (queriedFeeRecipient) {
+    return <div>Fee Recipient is set</div>;
   }
 
   return (
@@ -51,9 +86,7 @@ function FeeRecCheckSet({ poolAddress }: FeeRecCheckSetInterface) {
             : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
         }`}
         onClick={() => {
-          console.log("clicked");
-          console.log(setOnchainFeeRecipient);
-          if (setOnchainFeeRecipient) setOnchainFeeRecipient();
+          setOnChainFeeRecipient();
         }}
         disabled={isLoading}
       >
