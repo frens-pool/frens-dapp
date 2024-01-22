@@ -26,24 +26,6 @@ function PoolCard({ pool }: PoolCard) {
   const [clusterInfo, setClusterInfo] = useState<ClusterInfo>();
   const [runway, setRunway] = useState<bigint>(BigInt(0));
 
-  // useEffect(() => {
-  //   if (!chain || !clusterInfo) return;
-  //   const fetchClusterData = async () => {
-  //     const data = await fetch(ssvClusterByIdApi(clusterInfo.id, chain));
-  //     const json = await data.json();
-  //     // if (json?.clusters) {
-  //     //   setClusterInfo(
-  //     //     {
-  //     //       id: json.clusters[0].id,
-  //     //       balance: json.clusters[0].balance,
-  //     //       operators: json.clusters[0].operators
-  //     //     }
-  //     //   )
-  //     // }
-  //   };
-  //   fetchClusterData();
-  // }, [chain,clusterInfo]);
-
 
   useEffect(() => {
     if (!chain) return;
