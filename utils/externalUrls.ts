@@ -69,6 +69,17 @@ export function ssvScanUrl(operatorId: number, chain?: Chain) {
   }
 }
 
+export function ssvScanValidatorUrl(validatorPubKey: any, chain?: Chain) {
+  switch (chain?.id) {
+    case 5:
+      return `https://testnet.ssvscan.io/validator/${validatorPubKey}`;
+    case 17000:
+      return `https://holesky.ssvscan.io/validator/${validatorPubKey}`;
+    default:
+      return `https://ssvscan.io/validator/${validatorPubKey}`;
+  }
+}
+
 export function ssvOperatorListApi(
   page: number,
   perPage: number,

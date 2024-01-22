@@ -85,7 +85,7 @@ const Pool: NextPage = ({}) => {
                   )}
                   <div className="text-center overflow-hidden rounded-xl border border-gray-200">
                     <div className="pt-2 text-center font-bold my-2">
-                      Pool stakes
+                      Pool shares
                     </div>
                     <div className="p-4">
                       {isConnected ? (

@@ -14,7 +14,7 @@ import { parseEther, encodeFunctionData } from "viem";
 import { SelectedOperators } from "./SelectedOperators";
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
-import { beaconchainUrl, ssvExplorer } from "#/utils/externalUrls";
+import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
 import { useApprove } from "../../hooks/write/useApprove";
 import { useGetAllowance } from "../../hooks/read/useGetAllowance";
 
@@ -146,7 +146,7 @@ export const SSVRegisterValidator = ({
         <div className="my-2">
           <div>Check it out here:</div>
           <a
-            href={ssvExplorer(payloadData.payload.publicKey, chain)}
+            href={ssvScanValidatorUrl(payloadData.payload.publicKey, chain)}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
