@@ -15,11 +15,12 @@ export const SelectOperator = ({
   const [ssvOperators, setssvOperators] = useState<SsvOperatorType[]>([]);
   const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
   const [checkedOperators, setCheckedOperators] = useState<any[]>([]);
+  const [filteredLength, setFilteredLength] = useState<number>(1);
   const { chain } = useNetwork();
 
   useEffect(() => {
     const fetchOperators = async () => {
-      const data = await fetch(ssvOperatorListApi(1, 6, chain));
+      const data = await fetch(ssvOperatorListApi(1, 8, chain));
       const json = await data.json();
 
       // filter out permissioned Operators
@@ -36,6 +37,7 @@ export const SelectOperator = ({
 
       // json.operators.reduce((coll,op)=>{ if (!op.address_whitelist) { coll.push(op) ; return coll;} },[]);
       setssvOperators(filteredOperators);
+      setFilteredLength(filteredOperators.length);
     };
 
     fetchOperators().catch(console.error);
@@ -64,7 +66,7 @@ export const SelectOperator = ({
       <tr key={index}>
         <th>
           <label>
-            {index < 6 ? (
+            {index < filteredLength ? (
               <input
                 type="checkbox"
                 className="checkbox"
@@ -95,9 +97,9 @@ export const SelectOperator = ({
           {parseFloat(operator.performance["30d"]).toFixed(4)}%
           <br />
         </td>
-        <td>{operator.fee}</td>
+        <td>{(operator.fee / 382640000000).toFixed(2)}</td>
         <td>{operator.validators_count}</td>
-        <td>{operator.address_whitelist ? "yes" : "no"}</td>
+        {/* <td>{operator.address_whitelist ? "yes" : "no"}</td> */}
         <td>
           <a
             href={ssvScanUrl(operator.id, chain)}
@@ -133,7 +135,7 @@ export const SelectOperator = ({
                 <div>Validator</div>
                 Count
               </th>
-              <th>Permissioned</th>
+              {/* <th>Permissioned</th> */}
               <th>ssvScan</th>
             </tr>
           </thead>
