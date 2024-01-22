@@ -17,6 +17,7 @@ import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
 import { useApprove } from "../../hooks/write/useApprove";
 import { useGetAllowance } from "../../hooks/read/useGetAllowance";
+import { useSendSSV } from "#/hooks/write/useSendSSV";
 
 export const SSVRegisterValidator = ({
   payloadData,
@@ -27,8 +28,6 @@ export const SSVRegisterValidator = ({
   operators: any;
   poolAddress: Address;
 }) => {
-  console.log("poolAddress", poolAddress);
-
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
@@ -37,33 +36,15 @@ export const SSVRegisterValidator = ({
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
 
-  const { config } = usePrepareSendTransaction({
-    to: poolAddress.toString(),
-    value: parseEther("0.01"),
-  });
   const {
     data,
     isLoading: sendLoading,
     isSuccess: sendSuccess,
-    sendTransaction,
-  } = useSendTransaction(config);
+    write: sendTransaction,
+  } = useSendSSV({ recipient: poolAddress, amount: parseEther("10") });
 
   const registerContract = FrensContracts[network].SSVNetworkContract;
   const maxApproval = BigInt(2) ** BigInt(256) - BigInt(1);
-
-  // const { data: approveData, write: approve } = useApprove({
-  //   spender: registerContract.address,
-  //   value: maxApproval.toString(),
-  // });
-
-  // const { data: ssvAllowance } = useGetAllowance({
-  //   address: registerContract.address,
-  // });
-
-  // const { isLoading: allowanceIsLoading, isSuccess: allowanceIsSuccess } =
-  //   useWaitForTransaction({
-  //     hash: approveData?.hash,
-  //   });
 
   const getClusterData = async (payloadData: any) => {
     if (payloadData && poolAddress && chain) {
