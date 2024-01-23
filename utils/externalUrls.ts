@@ -69,6 +69,17 @@ export function ssvScanUrl(operatorId: number, chain?: Chain) {
   }
 }
 
+export function ssvScanValidatorUrl(validatorPubKey: any, chain?: Chain) {
+  switch (chain?.id) {
+    case 5:
+      return `https://testnet.ssvscan.io/validator/${validatorPubKey}`;
+    case 17000:
+      return `https://holesky.ssvscan.io/validator/${validatorPubKey}`;
+    default:
+      return `https://ssvscan.io/validator/${validatorPubKey}`;
+  }
+}
+
 export function ssvOperatorListApi(
   page: number,
   perPage: number,
@@ -83,6 +94,39 @@ export function ssvOperatorListApi(
       return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
   }
 }
+
+
+export function ssvClusterListByOwnerApi(
+  page: number,
+  perPage: number,
+  owner: string,
+  chain?: Chain,
+) {
+  switch (chain?.id) {
+    case 5:
+      return `https://api.ssv.network/api/v4/prater/clusters/owner/${owner}?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
+    case 17000:
+      return `https://api.ssv.network/api/v4/holesky/clusters/owner/${owner}?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
+    default:
+      return `https://api.ssv.network/api/v4/mainnet/clusters/owner/${owner}?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
+  }
+}
+
+
+export function ssvValidatorCostByOwnerApi(
+  ownerAddress: string,
+  chain?: Chain,
+) {
+  switch (chain?.id) {
+    case 5:
+      return `https://api.ssv.network/api/v4/prater/validators/owned_by/${ownerAddress}/cost`;
+    case 17000:
+      return `https://api.ssv.network/api/v4/holesky/validators/owned_by/${ownerAddress}/cost`;
+    default:
+      return `https://api.ssv.network/api/v4/mainnet/validators/owned_by/${ownerAddress}/cost`;
+  }
+}
+
 
 export function ssvOperatorApi(
   page: number,

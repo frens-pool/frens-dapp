@@ -164,6 +164,7 @@ export const SplitKeyshares = ({
 
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
+      <span>Your key will be split in your local browser</span>
       <DropKeys
         filename="keystore-m_xxxxxxxxxx.json"
         validateFile={(fileContent: any) => ({ success: true })}

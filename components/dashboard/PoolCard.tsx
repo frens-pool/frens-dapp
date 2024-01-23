@@ -3,11 +3,60 @@ import Image from "next/image";
 import { formatEther } from "viem";
 import { PoolType } from "#/types/commonTypes";
 
+import { useState, useEffect, ChangeEvent } from "react";
+import { useNetwork } from "wagmi";
+import { ssvValidatorCostByOwnerApi, ssvClusterListByOwnerApi } from "#/utils/externalUrls";
+import moment from 'moment';
+
+
 interface PoolCard {
   pool: PoolType;
 }
 
+interface ClusterInfo {
+  id: number,
+  balance: bigint,
+  operators: number[],
+  feePerBlockWei: bigint
+}
+
 function PoolCard({ pool }: PoolCard) {
+
+  const { chain } = useNetwork();
+  const [clusterInfo, setClusterInfo] = useState<ClusterInfo>();
+  const [runway, setRunway] = useState<bigint>(BigInt(0));
+
+
+  useEffect(() => {
+    if (!chain) return;
+    const fetchClusterData = async () => {
+      const clusterListdata = await fetch(ssvClusterListByOwnerApi(1, 1, pool.contractAddress, chain));
+      const clusterListdataJson = await clusterListdata.json();
+      const validatorCost = await fetch(ssvValidatorCostByOwnerApi(pool.contractAddress, chain));
+      const validatorCostJson = await validatorCost.json();
+
+      if (clusterListdataJson?.clusters && validatorCostJson) {
+        const balance = BigInt(clusterListdataJson.clusters[0].balance);
+        const feePerBlockWei = BigInt(validatorCostJson.fees?.per_block?.wei);
+        setClusterInfo(
+          {
+            id: clusterListdataJson.clusters[0].id,
+            balance,
+            operators: clusterListdataJson.clusters[0].operators,
+            feePerBlockWei
+          }
+        );
+        
+        const r = feePerBlockWei === BigInt(0) ? BigInt(0) : balance * BigInt(12) / feePerBlockWei;
+        setRunway(r);
+      }
+
+    };
+    fetchClusterData();
+  }, [chain]);
+
+
+
   return (
     <Link
       href={`/pool/${pool.contractAddress}`}
@@ -52,6 +101,27 @@ function PoolCard({ pool }: PoolCard) {
               Ξ
             </div>
           </div>
+
+          <div className="h-full flex flex-col items-center justify-center">
+            <div>Balance</div>
+            <div className="text-frens-main">
+              {clusterInfo && formatEther(
+                BigInt(
+                  clusterInfo.balance
+                )
+              )}{" "}
+              SSV
+            </div>
+          </div>
+
+          {runway > 0 && (
+            <div className="h-full flex flex-col items-center justify-center">
+              <div>Runway</div>
+              <div className="text-frens-main">
+                {`${moment.duration(runway?.toString(), "seconds").locale("en").humanize()}`}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Link>
