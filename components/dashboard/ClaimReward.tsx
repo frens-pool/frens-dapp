@@ -44,7 +44,7 @@ function ClaimReward({ poolAddress, nftID, claimable }: ClaimReward) {
 
   return (
     <button
-      className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+      className="mb-2 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
       onClick={() => {
         claimReward && claimReward();
       }}
