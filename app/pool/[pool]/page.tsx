@@ -62,12 +62,7 @@ const Pool: NextPage = ({}) => {
                     poolAddress={poolAddress}
                     operatorAddress={operatorAddress}
                   />
-                  {poolState === "staked" && (
-                    <div>
-                      <ValidatorWidget poolAddress={poolAddress} />
-                      <FeeRecCheckSet poolAddress={poolAddress} />
-                    </div>
-                  )}
+
                   {poolBalance === 32 || poolState === "staked" ? (
                     <PoolFullWidget
                       poolAddress={poolAddress}
@@ -80,6 +75,16 @@ const Pool: NextPage = ({}) => {
                         <StakeForm poolAddress={poolAddress} />
                         <div className="border-[0.5px] border-gray-200 rounded-md mx-4"></div>
                         <PoolInfo poolBalance={poolBalance} />
+                      </div>
+                    </div>
+                  )}
+                  {poolState === "staked" && (
+                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
+                      <div className="flex justify-center align-middle bg-white rounded-xl p-0 ">
+                        <div className="pt-6 pb-2 px-8 text-center md:text-middle space-y-2">
+                          <ValidatorWidget poolAddress={poolAddress} />
+                          <FeeRecCheckSet poolAddress={poolAddress} />
+                        </div>
                       </div>
                     </div>
                   )}

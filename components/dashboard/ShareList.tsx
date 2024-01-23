@@ -59,7 +59,7 @@ export const ShareList = ({ userNFTs }: Props) => {
       <div className="grid grid-cols-3 gap-4">
         {userNFTs.map(({ name, image, nftID, poolAddress, claimable }) => (
           <div
-            className="items-center space-x-1 rounded-lg border border-gray-300 bg-white px-3 py-3 shadow-sm"
+            className="items-center space-x-1 rounded-xl border border-gray-300 bg-white shadow-sm"
             key={`${name}_${nftID?.toString()}`}
           >
             <CardForNFT

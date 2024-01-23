@@ -20,29 +20,25 @@ export const ValidatorWidget = ({ poolAddress }: Props) => {
   if (!isSuccess || !poolPubKey) return <></>;
 
   return (
-    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
-      <div className="flex justify-center align-middle bg-white rounded-xl p-8 md:p-0 ">
-        <div className="py-6 px-8 text-center md:text-middle space-y-2">
-          <div className="font-medium mb-2">
-            <div key={`beaconchain-${poolPubKey}`}>
-              <Link
-                href={`${beaconchainUrl(chain)}/validator/${poolPubKey}`}
-                className="underline text-frens-main"
-              >
-                Validator information on Beaconcha.in 📡
-              </Link>
-            </div>
-          </div>
-          <div className="font-medium mb-2">
-            <div key={`ssv-explorer-${poolPubKey}`}>
-              <Link
-                href={ssvExplorer(poolPubKey, chain)}
-                className="underline text-frens-main"
-              >
-                Validator information on ssv.network explorer 🧭
-              </Link>
-            </div>
-          </div>
+    <div>
+      <div className="font-medium mb-2">
+        <div key={`beaconchain-${poolPubKey}`}>
+          <Link
+            href={`${beaconchainUrl(chain)}/validator/${poolPubKey}`}
+            className="underline text-frens-main"
+          >
+            Validator information on Beaconcha.in 📡
+          </Link>
+        </div>
+      </div>
+      <div className="font-medium mb-2">
+        <div key={`ssv-explorer-${poolPubKey}`}>
+          <Link
+            href={ssvExplorer(poolPubKey, chain)}
+            className="underline text-frens-main"
+          >
+            Validator information on ssv.network explorer 🧭
+          </Link>
         </div>
       </div>
     </div>

@@ -70,19 +70,19 @@ function FeeRecCheckSet({ poolAddress }: FeeRecCheckSetInterface) {
     },
   });
 
-  if (queriedFeeRecipient) {
-    return <div>Fee Recipient is set</div>;
-  }
+  if (isLoading) return <></>;
+
+  if (queriedFeeRecipient) return <></>;
 
   return (
     <div>
-      <div className="my-4">
-        You should set your execution layer reward address
+      <div className="mt-8">
+        🚨 You should set your execution layer reward address 🚨
       </div>
       <button
         className={`${
           isLoading
-            ? "btn btn-info no-animation my-2 mr-2 loading"
+            ? "btn btn-info no-animation mt-2 mr-2 loading"
             : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
         }`}
         onClick={() => {
