@@ -1,6 +1,3 @@
-import { useNetworkName } from "#/hooks/useNetworkName";
-import { FrensContracts } from "#/utils/contracts";
-import { beaconchainUrl, ssvExplorer } from "#/utils/externalUrls";
 import { useState } from "react";
 import {
   useNetwork,
@@ -9,24 +6,28 @@ import {
   useWaitForTransaction,
   usePublicClient,
   Address,
+  usePrepareSendTransaction,
+  useSendTransaction,
 } from "wagmi";
-import { encodeAbiParameters, encodeFunctionData } from "viem";
+import { parseEther, encodeFunctionData } from "viem";
+
 import { SelectedOperators } from "./SelectedOperators";
+import { useNetworkName } from "#/hooks/useNetworkName";
+import { FrensContracts } from "#/utils/contracts";
+import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
 import { useApprove } from "../../hooks/write/useApprove";
 import { useGetAllowance } from "../../hooks/read/useGetAllowance";
+import { useSendSSV } from "#/hooks/write/useSendSSV";
 
 export const SSVRegisterValidator = ({
   payloadData,
   operators,
-  poolAddress
+  poolAddress,
 }: {
   payloadData: any;
   operators: any;
-  poolAddress: Address
+  poolAddress: Address;
 }) => {
-
-  console.log("payload=", payloadData)
-
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
@@ -35,22 +36,15 @@ export const SSVRegisterValidator = ({
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
 
+  const {
+    data,
+    isLoading: sendLoading,
+    isSuccess: sendSuccess,
+    write: sendTransaction,
+  } = useSendSSV({ recipient: poolAddress, amount: parseEther("10") });
+
   const registerContract = FrensContracts[network].SSVNetworkContract;
   const maxApproval = BigInt(2) ** BigInt(256) - BigInt(1);
-
-  const { data: approveData, write: approve } = useApprove({
-    spender: registerContract.address,
-    value: maxApproval.toString(),
-  });
-
-  const { data: ssvAllowance } = useGetAllowance({
-    address: registerContract.address,
-  });
-
-  const { isLoading: allowanceIsLoading, isSuccess: allowanceIsSuccess } =
-    useWaitForTransaction({
-      hash: approveData?.hash,
-    });
 
   const getClusterData = async (payloadData: any) => {
     if (payloadData && poolAddress && chain) {
@@ -65,13 +59,10 @@ export const SSVRegisterValidator = ({
       };
       const clusterDataTemp = await buildCluster(clusterParams);
       setClusterData(clusterDataTemp.cluster[1]);
-      console.log("getClusterData output=", clusterDataTemp)
     }
   };
 
-
   const registerSSVValidator = async () => {
-    console.log("clusterdata=", clusterData);
     const clusterParams = {
       validatorCount: clusterData.validatorCount,
       networkFeeIndex: clusterData.networkFeeIndex,
@@ -79,9 +70,6 @@ export const SSVRegisterValidator = ({
       balance: clusterData.balance,
       active: true,
     };
-
-
-
 
     // function data to send to the SSV contract
     const encodedFunctionData = encodeFunctionData({
@@ -96,24 +84,6 @@ export const SSVRegisterValidator = ({
       functionName: "registerValidator",
     });
 
-    // console.log("encodedFunctionData",encodedFunctionData);
-
-    // debugger;
-    // const functionABI = FrensContracts[network].SSVNetworkContract.abi.find((f) => { return f.name === "registerValidator"});
-    // console.log("functionABI",functionABI);
-
-    // const encodedData = encodeAbiParameters(functionABI?.inputs || [],
-    //   [
-    //     payloadData.payload.publicKey,
-    //     payloadData.payload.operatorIds,
-    //     payloadData.payload.sharesData,
-    //     0, //payloadData.tokenAmount,
-    //     clusterParams,
-    //   ],
-    // );
-
-    console.log("encodedFunctionData",encodedFunctionData);
-
     const { request } = await publicClient.simulateContract({
       account: walletAddress,
       address: poolAddress,
@@ -122,8 +92,6 @@ export const SSVRegisterValidator = ({
       functionName: "callSSVNetwork",
     });
 
-    console.log("register request=", request)
-debugger;
     if (walletClient) {
       const txHash = await walletClient.writeContract(request);
       setRegisterTxHash(txHash);
@@ -138,7 +106,7 @@ debugger;
 
   if (registerIsLoading) {
     return (
-      <div className="flex my-2 p-2 justify-center">
+      <div className="flex flex-col my-2 p-2 justify-center">
         <div>{/* <SelectedOperators /> */}</div>
         <button className="btn btn-primary my-2 mr-2" disabled>
           Allow again
@@ -159,7 +127,7 @@ debugger;
         <div className="my-2">
           <div>Check it out here:</div>
           <a
-            href={ssvExplorer(payloadData.payload.publicKey, chain)}
+            href={ssvScanValidatorUrl(payloadData.payload.publicKey, chain)}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -167,8 +135,9 @@ debugger;
             ssv explorer
           </a>
           <a
-            href={`${beaconchainUrl(chain)}/validator/${payloadData.payload.publicKey
-              }`}
+            href={`${beaconchainUrl(chain)}/validator/${
+              payloadData.payload.publicKey
+            }`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -192,7 +161,7 @@ debugger;
     );
   }
 
-  if (allowanceIsLoading) {
+  if (sendLoading) {
     return (
       <div className="flex my-0 p-2 justify-center">
         <button className="btn btn-primary my-2 mr-2 loading" disabled>
@@ -205,17 +174,19 @@ debugger;
     );
   }
 
-  if (allowanceIsSuccess) {
+  if (sendSuccess) {
     return (
-      <div className="flex my-2 p-2 justify-center">
+      <div className="flex flex-col my-2 p-2 justify-center">
         <button
           className="btn btn-info no-animation my-2 mr-2"
           onClick={() => {
-            approve?.();
+            if (sendTransaction) {
+              sendTransaction();
+            }
             getClusterData(payloadData);
           }}
         >
-          Allow again
+          Send SSV token to Pool
         </button>
         <button
           className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
@@ -228,20 +199,26 @@ debugger;
   }
 
   return (
-    <div className="flex my-2 p-2 justify-center">
-      <button
-        className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-        onClick={() => {
-          approve?.();
-          getClusterData(payloadData);
-        }}
-      >
-        Allow spending SSV
-      </button>
+    <div className="flex flex-col my-2 p-2 justify-center">
+      <div>
+        <button
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+          onClick={() => {
+            if (sendTransaction) {
+              sendTransaction();
+            }
+            getClusterData(payloadData);
+          }}
+        >
+          Send SSV token to Pool
+        </button>
+      </div>
 
-      <button className="btn btn-primary my-2 mr-2" disabled>
-        Register SSV validator
-      </button>
+      <div>
+        <button className="btn btn-primary my-2 mr-2" disabled>
+          Register SSV validator
+        </button>
+      </div>
     </div>
   );
 };

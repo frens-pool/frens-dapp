@@ -14,6 +14,7 @@ import { PoolFullWidget } from "components/staker/PoolFullWidget";
 import { StakeForm } from "components/staker/StakeForm";
 import { usePoolState } from "#/hooks/read/usePoolState";
 import { usePoolOwner } from "#/hooks/read/usePoolOwner";
+import FeeRecCheckSet from "#/components/dashboard/FeeRecCheckSet";
 
 const Pool: NextPage = ({}) => {
   const params = useParams();
@@ -62,7 +63,10 @@ const Pool: NextPage = ({}) => {
                     operatorAddress={operatorAddress}
                   />
                   {poolState === "staked" && (
-                    <ValidatorWidget poolAddress={poolAddress} />
+                    <div>
+                      <ValidatorWidget poolAddress={poolAddress} />
+                      <FeeRecCheckSet poolAddress={poolAddress} />
+                    </div>
                   )}
                   {poolBalance === 32 || poolState === "staked" ? (
                     <PoolFullWidget
@@ -81,7 +85,7 @@ const Pool: NextPage = ({}) => {
                   )}
                   <div className="text-center overflow-hidden rounded-xl border border-gray-200">
                     <div className="pt-2 text-center font-bold my-2">
-                      Pool stakes
+                      Pool shares
                     </div>
                     <div className="p-4">
                       {isConnected ? (

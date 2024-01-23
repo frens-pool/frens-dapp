@@ -11,12 +11,12 @@ export const SplitKeyshares = ({
   operatorsList,
   nextStep,
   setPayloadRegisterValidator,
-  poolAddress
+  poolAddress,
 }: {
   operatorsList: any;
   nextStep: () => void;
   setPayloadRegisterValidator: any;
-  poolAddress: Address
+  poolAddress: Address;
 }) => {
   const [pw, setPW] = useState("");
   const [loading, setLoading] = useState(false);
@@ -129,7 +129,7 @@ export const SplitKeyshares = ({
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: nodeUrl,
-        ownerAddress: poolAddress,  
+        ownerAddress: poolAddress,
         operatorIds,
       };
       console.log("clusterParams", clusterParams);
@@ -164,6 +164,7 @@ export const SplitKeyshares = ({
 
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
+      <span>Your key will be split in your local browser</span>
       <DropKeys
         filename="keystore-m_xxxxxxxxxx.json"
         validateFile={(fileContent: any) => ({ success: true })}
@@ -189,24 +190,26 @@ export const SplitKeyshares = ({
       ) : (
         <></>
       )}
-      {loading ? (
-        <button
-          className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white"
-          disabled
-        >
-          Verifying
-        </button>
-      ) : (
-        <button
-          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-          onClick={() => {
-            buildRegisterPayload();
-            setLoading(true);
-          }}
-        >
-          Next
-        </button>
-      )}
+      <div className="mb-2">
+        {loading ? (
+          <button
+            className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white"
+            disabled
+          >
+            Verifying
+          </button>
+        ) : (
+          <button
+            className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+            onClick={() => {
+              buildRegisterPayload();
+              setLoading(true);
+            }}
+          >
+            Next
+          </button>
+        )}
+      </div>
     </div>
   );
 };
