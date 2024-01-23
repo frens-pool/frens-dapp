@@ -48,13 +48,8 @@ const SearchOperator = ({ chain, addSSVOperator }: SearchOperatorProps) => {
             </div>
           </div>
         </td>
-        <td>
-          {parseFloat(operator.performance["30d"]).toFixed(4)}%
-          <br />
-        </td>
-        <td>{operator.fee}</td>
-        <td>{operator.validators_count}</td>
-        <td>{operator.address_whitelist ? "yes" : "no"}</td>
+        <td>id: {operator.id}</td>
+
         <td>
           <a
             href={ssvScanUrl(operator.id, chain)}
@@ -83,10 +78,12 @@ const SearchOperator = ({ chain, addSSVOperator }: SearchOperatorProps) => {
       </button>
 
       {results && (
-        <div className="overflow-x-auto w-full">
-          <table className="table w-full">
-            <tbody>{operatorListRows}</tbody>
-          </table>
+        <div className="flex justify-center content-center">
+          <div className="overflow-x-auto w-full">
+            <table className="table w-full">
+              <tbody>{operatorListRows}</tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
