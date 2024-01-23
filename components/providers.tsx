@@ -19,7 +19,7 @@ const apiKey = process.env.NEXT_PUBLIC_INFURA_KEY || "";
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "frens-pool";
 
 const { chains, publicClient } = configureChains(
-  [holesky, goerli],
+  [goerli],
   [
     infuraProvider({
       apiKey: apiKey,

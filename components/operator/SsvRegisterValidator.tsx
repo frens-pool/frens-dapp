@@ -107,16 +107,14 @@ export const SSVRegisterValidator = ({
   if (registerIsLoading) {
     return (
       <div className="flex flex-col my-2 p-2 justify-center">
-        <div>{/* <SelectedOperators /> */}</div>
-        <button className="btn btn-primary my-2 mr-2" disabled>
-          Allow again
-        </button>
-        <button
-          className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white my-2 mr-2"
-          disabled
-        >
-          Register in progress
-        </button>
+        <div>
+          <button
+            className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white my-2 mr-2"
+            disabled
+          >
+            Register in progress
+          </button>
+        </div>
       </div>
     );
   }
@@ -132,7 +130,7 @@ export const SSVRegisterValidator = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            ssv explorer
+            ssvscan.io
           </a>
           <a
             href={`${beaconchainUrl(chain)}/validator/${
@@ -177,29 +175,24 @@ export const SSVRegisterValidator = ({
   if (sendSuccess) {
     return (
       <div className="flex flex-col my-2 p-2 justify-center">
-        <button
-          className="btn btn-info no-animation my-2 mr-2"
-          onClick={() => {
-            if (sendTransaction) {
-              sendTransaction();
-            }
-            getClusterData(payloadData);
-          }}
-        >
-          Send SSV token to Pool
-        </button>
-        <button
-          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-          onClick={() => registerSSVValidator()}
-        >
-          Register SSV validator
-        </button>
+        <div className="mt-2">
+          Great. You are now ready to register your SSV validator.
+        </div>
+        <div>
+          <button
+            className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+            onClick={() => registerSSVValidator()}
+          >
+            Register SSV validator
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col my-2 p-2 justify-center">
+      <div>{/* <SelectedOperators /> */}</div>
       <div>
         <button
           className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"

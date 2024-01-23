@@ -98,12 +98,12 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
     <div>
       {registerThesePools.length > 0 && (
         <div>
-          <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
+          <div className="mb-2 text-base font-semibold italic leading-7 text-gray-900">
             Take action. You can run this validator
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4">
             {registerThesePools?.map((pool: PoolType) => (
-              <PoolCard pool={pool} key={pool.id} />
+              <PoolCard pool={pool} key={pool.id} showClusterInfo={false} />
             ))}
           </div>
         </div>
@@ -111,12 +111,12 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
       {openPools.length > 0 && (
         <div>
-          <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
+          <div className="mb-2 text-base font-semibold italic leading-7 text-gray-900">
             Still collecting
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4">
             {openPools?.map((pool: PoolType) => (
-              <PoolCard pool={pool} key={pool.id} />
+              <PoolCard pool={pool} key={pool.id} showClusterInfo={false} />
             ))}
           </div>
         </div>
@@ -124,12 +124,12 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
       {stakedPools.length > 0 && (
         <div>
-          <div className="mb-2 text-base font-semibold leading-7 text-gray-900">
+          <div className="my-2 text-base font-semibold italic leading-7 text-gray-900">
             Up and running
           </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4">
             {stakedPools?.map((pool: PoolType) => (
-              <PoolCard pool={pool} key={pool.id} />
+              <PoolCard pool={pool} key={pool.id} showClusterInfo={true} />
             ))}
           </div>
         </div>

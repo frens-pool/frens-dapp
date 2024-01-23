@@ -5,57 +5,60 @@ import { PoolType } from "#/types/commonTypes";
 
 import { useState, useEffect, ChangeEvent } from "react";
 import { useNetwork } from "wagmi";
-import { ssvValidatorCostByOwnerApi, ssvClusterListByOwnerApi } from "#/utils/externalUrls";
-import moment from 'moment';
-
+import {
+  ssvValidatorCostByOwnerApi,
+  ssvClusterListByOwnerApi,
+} from "#/utils/externalUrls";
+import moment from "moment";
 
 interface PoolCard {
   pool: PoolType;
+  showClusterInfo: boolean;
 }
 
 interface ClusterInfo {
-  id: number,
-  balance: bigint,
-  operators: number[],
-  feePerBlockWei: bigint
+  id: number;
+  balance: bigint;
+  operators: number[];
+  feePerBlockWei: bigint;
 }
 
-function PoolCard({ pool }: PoolCard) {
-
+function PoolCard({ pool, showClusterInfo }: PoolCard) {
   const { chain } = useNetwork();
   const [clusterInfo, setClusterInfo] = useState<ClusterInfo>();
   const [runway, setRunway] = useState<bigint>(BigInt(0));
 
-
   useEffect(() => {
     if (!chain) return;
     const fetchClusterData = async () => {
-      const clusterListdata = await fetch(ssvClusterListByOwnerApi(1, 1, pool.contractAddress, chain));
+      const clusterListdata = await fetch(
+        ssvClusterListByOwnerApi(1, 1, pool.contractAddress, chain)
+      );
       const clusterListdataJson = await clusterListdata.json();
-      const validatorCost = await fetch(ssvValidatorCostByOwnerApi(pool.contractAddress, chain));
+      const validatorCost = await fetch(
+        ssvValidatorCostByOwnerApi(pool.contractAddress, chain)
+      );
       const validatorCostJson = await validatorCost.json();
 
-      if (clusterListdataJson?.clusters && validatorCostJson) {
+      if (clusterListdataJson?.clusters[0] && validatorCostJson) {
         const balance = BigInt(clusterListdataJson.clusters[0].balance);
         const feePerBlockWei = BigInt(validatorCostJson.fees?.per_block?.wei);
-        setClusterInfo(
-          {
-            id: clusterListdataJson.clusters[0].id,
-            balance,
-            operators: clusterListdataJson.clusters[0].operators,
-            feePerBlockWei
-          }
-        );
-        
-        const r = feePerBlockWei === BigInt(0) ? BigInt(0) : balance * BigInt(12) / feePerBlockWei;
+        setClusterInfo({
+          id: clusterListdataJson.clusters[0].id,
+          balance,
+          operators: clusterListdataJson.clusters[0].operators,
+          feePerBlockWei,
+        });
+
+        const r =
+          feePerBlockWei === BigInt(0)
+            ? BigInt(0)
+            : (balance * BigInt(12)) / feePerBlockWei;
         setRunway(r);
       }
-
     };
     fetchClusterData();
   }, [chain]);
-
-
 
   return (
     <Link
@@ -74,7 +77,7 @@ function PoolCard({ pool }: PoolCard) {
         </div>
         <div className="w-full grid grid-cols-3 gap-2">
           <div className="h-full flex flex-col items-center justify-center">
-            <div>Address</div>
+            <div>Pool Address</div>
             <div>
               {`${pool.contractAddress.slice(
                 0,
@@ -83,42 +86,47 @@ function PoolCard({ pool }: PoolCard) {
             </div>
           </div>
 
-          <div className="h-full flex flex-col items-center justify-center">
-            <div>Deposits</div>
-            <div className="text-frens-main">{pool.deposits.length}</div>
-          </div>
-          <div className="h-full flex flex-col items-center justify-center">
-            <div>TVL</div>
-            <div className="text-frens-main">
-              {formatEther(
-                BigInt(
-                  pool.deposits?.reduce(
-                    (acc, current) => acc + parseInt(current.amount, 10),
-                    0
-                  )
-                )
-              )}{" "}
-              Ξ
-            </div>
-          </div>
-
-          <div className="h-full flex flex-col items-center justify-center">
-            <div>Balance</div>
-            <div className="text-frens-main">
-              {clusterInfo && formatEther(
-                BigInt(
-                  clusterInfo.balance
-                )
-              )}{" "}
-              SSV
-            </div>
-          </div>
-
-          {runway > 0 && (
+          {showClusterInfo && (
             <div className="h-full flex flex-col items-center justify-center">
-              <div>Runway</div>
+              <div>Cluster Balance</div>
               <div className="text-frens-main">
-                {`${moment.duration(runway?.toString(), "seconds").locale("en").humanize()}`}
+                {clusterInfo && formatEther(BigInt(clusterInfo.balance))} SSV
+              </div>
+            </div>
+          )}
+
+          {showClusterInfo && (
+            <div className="h-full flex flex-col items-center justify-center">
+              <div>Cluster Runway</div>
+              <div className="text-frens-main">
+                {`${moment
+                  .duration(runway?.toString(), "seconds")
+                  .locale("en")
+                  .humanize()}`}
+              </div>
+            </div>
+          )}
+
+          {!showClusterInfo && (
+            <div className="h-full flex flex-col items-center justify-center">
+              <div>Deposits</div>
+              <div className="text-frens-main">{pool.deposits.length}</div>
+            </div>
+          )}
+
+          {!showClusterInfo && (
+            <div className="h-full flex flex-col items-center justify-center">
+              <div>TVL</div>
+              <div className="text-frens-main">
+                {formatEther(
+                  BigInt(
+                    pool.deposits?.reduce(
+                      (acc, current) => acc + parseInt(current.amount, 10),
+                      0
+                    )
+                  )
+                )}{" "}
+                Ξ
               </div>
             </div>
           )}

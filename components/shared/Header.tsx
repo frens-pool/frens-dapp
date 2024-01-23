@@ -14,6 +14,11 @@ const navigation = [
   },
   { name: "Dashboard", href: "/dashboard", current: true },
   { name: "New Pool", href: "/create", current: false },
+  {
+    name: "Docs",
+    href: "https://docs.frens.fun/docs/manifesto",
+    current: false,
+  },
 ];
 
 function classNames(...classes: string[]) {
@@ -55,7 +60,7 @@ const Header = () => {
                     <div className="hidden lg:ml-10 lg:block">
                       <div className="flex space-x-4">
                         {navigation.map((item) => (
-                          <Link
+                          <a
                             key={item.name}
                             href={item.href}
                             className={classNames(
@@ -67,7 +72,7 @@ const Header = () => {
                             aria-current={item.current ? "page" : undefined}
                           >
                             {item.name}
-                          </Link>
+                          </a>
                         ))}
                       </div>
                     </div>

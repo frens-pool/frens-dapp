@@ -94,7 +94,7 @@ export const SelectOperator = ({
           </div>
         </td>
         <td>
-          {parseFloat(operator.performance["30d"]).toFixed(4)}%
+          {parseFloat(operator.performance["24h"]).toFixed(2)}%
           <br />
         </td>
         <td>{(operator.fee / 382640000000).toFixed(2)}</td>
