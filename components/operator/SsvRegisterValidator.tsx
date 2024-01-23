@@ -6,17 +6,14 @@ import {
   useWaitForTransaction,
   usePublicClient,
   Address,
-  usePrepareSendTransaction,
-  useSendTransaction,
 } from "wagmi";
 import { parseEther, encodeFunctionData } from "viem";
 
+import { etherscanUrl } from "#/utils/externalUrls";
 import { SelectedOperators } from "./SelectedOperators";
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
-import { useApprove } from "../../hooks/write/useApprove";
-import { useGetAllowance } from "../../hooks/read/useGetAllowance";
 import { useSendSSV } from "#/hooks/write/useSendSSV";
 
 export const SSVRegisterValidator = ({
@@ -36,15 +33,16 @@ export const SSVRegisterValidator = ({
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
 
-  const {
-    data,
-    isLoading: sendLoading,
-    isSuccess: sendSuccess,
-    write: sendTransaction,
-  } = useSendSSV({ recipient: poolAddress, amount: parseEther("10") });
+  const { data: sendSSVdata, write: sendTransaction } = useSendSSV({
+    recipient: poolAddress,
+    amount: parseEther("10"),
+  });
 
-  const registerContract = FrensContracts[network].SSVNetworkContract;
-  const maxApproval = BigInt(2) ** BigInt(256) - BigInt(1);
+  const { isLoading: sendIsLoading, isSuccess: sendIsSuccess } =
+    useWaitForTransaction({
+      // @ts-ignore
+      hash: sendSSVdata?.hash,
+    });
 
   const getClusterData = async (payloadData: any) => {
     if (payloadData && poolAddress && chain) {
@@ -115,6 +113,18 @@ export const SSVRegisterValidator = ({
             Register in progress
           </button>
         </div>
+        {registerIsLoading && (
+          <div className="mb-2">
+            <a
+              href={`${etherscanUrl(chain)}/tx/${registerTxHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link text-frens-main underline px-2"
+            >
+              tx on Etherscan
+            </a>
+          </div>
+        )}
       </div>
     );
   }
@@ -159,7 +169,7 @@ export const SSVRegisterValidator = ({
     );
   }
 
-  if (sendLoading) {
+  if (sendIsLoading) {
     return (
       <div className="flex my-0 p-2 justify-center">
         <button className="btn btn-primary my-2 mr-2 loading" disabled>
@@ -172,7 +182,7 @@ export const SSVRegisterValidator = ({
     );
   }
 
-  if (sendSuccess) {
+  if (sendIsSuccess) {
     return (
       <div className="flex flex-col my-2 p-2 justify-center">
         <div className="mt-2">
