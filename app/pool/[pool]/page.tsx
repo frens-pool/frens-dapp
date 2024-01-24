@@ -15,6 +15,7 @@ import { StakeForm } from "components/staker/StakeForm";
 import { usePoolState } from "#/hooks/read/usePoolState";
 import { usePoolOwner } from "#/hooks/read/usePoolOwner";
 import FeeRecCheckSet from "#/components/dashboard/FeeRecCheckSet";
+import PoolSSVBalance from "#/components/dashboard/PoolSSVBalance";
 
 const Pool: NextPage = ({}) => {
   const params = useParams();
@@ -84,6 +85,7 @@ const Pool: NextPage = ({}) => {
                         <div className="pt-6 pb-2 px-8 text-center md:text-middle space-y-2">
                           <ValidatorWidget poolAddress={poolAddress} />
                           <FeeRecCheckSet poolAddress={poolAddress} />
+                          <PoolSSVBalance poolAddress={poolAddress}/>
                         </div>
                       </div>
                     </div>
