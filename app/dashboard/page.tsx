@@ -88,7 +88,7 @@ const Dashboard: NextPage = () => {
               <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">
                 <div className="pb-4 flex justify-between mx-auto max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                   <h1 className="text-base font-semibold leading-7 text-gray-900">
-                    My Pools
+                    My own pools
                   </h1>
                   <Link
                     href="/create"
@@ -109,7 +109,7 @@ const Dashboard: NextPage = () => {
               <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">
                 <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                   <h1 className="text-base font-semibold leading-7 text-gray-900 mb-2">
-                    My Shares
+                    My pool shares
                   </h1>
                 </div>
                 <ShareList userNFTs={userNFTs} />

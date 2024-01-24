@@ -137,7 +137,7 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
       {poolStates.length === 0 && (
         <div className="flex flex-col items-center justify-center bg-white">
-          <div className="mb-4">No pools yet 🧐</div>
+          <div className="mb-4">No own pools yet 🧐</div>
         </div>
       )}
     </div>
