@@ -200,7 +200,7 @@ export const TopUpClusterBalance = ({
             }}
             disabled={approveLoading}
           >
-            {approveLoading ? "In progress" : "Approve again"}
+            {approveLoading ? "In progress" : "approve again"}
           </button>
         ) : (
           <button
@@ -214,7 +214,7 @@ export const TopUpClusterBalance = ({
             }}
             disabled={approveLoading}
           >
-            {approveLoading ? "In progress" : "Approve ssv"}
+            {approveLoading ? "In progress" : "approve ssv"}
           </button>
         )}
         <button
