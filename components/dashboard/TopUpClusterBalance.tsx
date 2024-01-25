@@ -13,6 +13,7 @@ import { etherscanUrl, ssvClusterListByOwnerApi } from "#/utils/externalUrls";
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
 import { useApprove } from "#/hooks/write/useApprove";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export const TopUpClusterBalance = ({
   poolAddress,
@@ -187,51 +188,56 @@ export const TopUpClusterBalance = ({
           }
         />
       </div>
-      <div className="mt-2">
-        {approveSuccess ? (
+      {walletAddress ? (
+        <div className="mt-2">
+          {approveSuccess ? (
+            <button
+              className={`${
+                approveLoading
+                  ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
+                  : "btn btn-info text-white mb-2"
+              }`}
+              onClick={() => {
+                approveSSVSpending!();
+              }}
+              disabled={approveLoading}
+            >
+              {approveLoading ? "In progress" : "approve again"}
+            </button>
+          ) : (
+            <button
+              className={`${
+                approveLoading
+                  ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
+                  : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+              }`}
+              onClick={() => {
+                approveSSVSpending!();
+              }}
+              disabled={approveLoading}
+            >
+              {approveLoading ? "In progress" : "approve ssv"}
+            </button>
+          )}
           <button
             className={`${
-              approveLoading
-                ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
-                : "btn btn-info text-white mb-2"
+              !approveSuccess
+                ? "btn btn-disabled no-animation mt-2 mr-2 ml-2"
+                : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white ml-2"
             }`}
             onClick={() => {
-              approveSSVSpending!();
+              topUp();
             }}
-            disabled={approveLoading}
+            disabled={!clusterData && !cluster && !approveSuccess}
           >
-            {approveLoading ? "In progress" : "approve again"}
+            top up
           </button>
-        ) : (
-          <button
-            className={`${
-              approveLoading
-                ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
-                : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-            }`}
-            onClick={() => {
-              approveSSVSpending!();
-            }}
-            disabled={approveLoading}
-          >
-            {approveLoading ? "In progress" : "approve ssv"}
-          </button>
-        )}
-        <button
-          className={`${
-            !approveSuccess
-              ? "btn btn-disabled no-animation mt-2 mr-2 ml-2"
-              : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white ml-2"
-          }`}
-          onClick={() => {
-            topUp();
-          }}
-          disabled={!clusterData && !cluster && !approveSuccess}
-        >
-          top up
-        </button>
-      </div>
-      <div className=""></div>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center my-2">
+          <ConnectButton />
+        </div>
+      )}
     </div>
   );
 };
