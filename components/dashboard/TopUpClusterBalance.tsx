@@ -32,7 +32,7 @@ export const TopUpClusterBalance = ({
   const publicClient = usePublicClient();
   const { data, write: approveSSVSpending } = useApprove({
     spender: walletAddress!,
-    value: "50000000",
+    value: "20000000000000000000",
   });
 
   const { isLoading: approveLoading, isSuccess: approveSuccess } =
@@ -187,32 +187,51 @@ export const TopUpClusterBalance = ({
           }
         />
       </div>
-      <button
-        className={`${
-          approveLoading
-            ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
-            : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
-        }`}
-        onClick={() => {
-          approveSSVSpending!();
-        }}
-        disabled={approveLoading}
-      >
-        {approveLoading ? "In progress" : "Approve ssv"}
-      </button>
-      <button
-        className={`${
-          !approveSuccess
-            ? "btn btn-disabled no-animation mt-2 mr-2"
-            : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-        }`}
-        onClick={() => {
-          topUp();
-        }}
-        disabled={!clusterData && !cluster && !approveSuccess}
-      >
-        top up
-      </button>
+      <div className="mt-2">
+        {approveSuccess ? (
+          <button
+            className={`${
+              approveLoading
+                ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
+                : "btn btn-info text-white mb-2"
+            }`}
+            onClick={() => {
+              approveSSVSpending!();
+            }}
+            disabled={approveLoading}
+          >
+            {approveLoading ? "In progress" : "Approve again"}
+          </button>
+        ) : (
+          <button
+            className={`${
+              approveLoading
+                ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
+                : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+            }`}
+            onClick={() => {
+              approveSSVSpending!();
+            }}
+            disabled={approveLoading}
+          >
+            {approveLoading ? "In progress" : "Approve ssv"}
+          </button>
+        )}
+        <button
+          className={`${
+            !approveSuccess
+              ? "btn btn-disabled no-animation mt-2 mr-2 ml-2"
+              : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white ml-2"
+          }`}
+          onClick={() => {
+            topUp();
+          }}
+          disabled={!clusterData && !cluster && !approveSuccess}
+        >
+          top up
+        </button>
+      </div>
+      <div className=""></div>
     </div>
   );
 };

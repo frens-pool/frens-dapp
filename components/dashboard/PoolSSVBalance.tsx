@@ -69,8 +69,6 @@ function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
     );
   };
 
-  console.log("clusterBalance", clusterBalance);
-
   return (
     <div className="w-full flex flex-col justify-between">
       <div className="mt-4 w-full grid grid-cols-2 gap-2">
