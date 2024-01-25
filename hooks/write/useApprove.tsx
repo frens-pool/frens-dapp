@@ -1,12 +1,17 @@
 import { FrensContracts } from "#/utils/contracts";
-import { usePrepareContractWrite, useContractWrite, useNetwork } from "wagmi";
+import {
+  usePrepareContractWrite,
+  useContractWrite,
+  useNetwork,
+  Address,
+} from "wagmi";
 import { useNetworkName } from "../useNetworkName";
 
 export function useApprove({
   spender,
   value,
 }: {
-  spender: string;
+  spender: Address;
   value: string;
 }) {
   const network = useNetworkName();
