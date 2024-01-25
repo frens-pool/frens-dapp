@@ -46,7 +46,7 @@ export const CreatePool = ({
         </div> */}
         <div className="flex items-center justify-center mt-4 mb-2">
           <div>
-            <div className="my-2">just a sec ... pool is getting created</div>
+            <div className="my-2">just a sec ... pool is being created</div>
             <div className="flex justify-center">
               <div role="status">
                 <span className="loading loading-spinner text-frens-main"></span>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatEther } from "viem";
 import { PoolType } from "#/types/commonTypes";
+import { ExitValidator } from "#/components/dashboard/ExitValidator";
 
 import { useState, useEffect, ChangeEvent } from "react";
 import { useNetwork } from "wagmi";
@@ -74,7 +75,7 @@ function PoolCard({ pool, showClusterInfo }: PoolCard) {
             className="block h-12 w-10 md:h-12 md:w-9"
           />
         </div>
-        <div className="w-full grid grid-cols-3 gap-2">
+        <div className="w-full grid grid-cols-4 gap-2">
           <div className="h-full flex flex-col items-center justify-center">
             <div>Address</div>
             <div>
@@ -129,6 +130,7 @@ function PoolCard({ pool, showClusterInfo }: PoolCard) {
               </div>
             </div>
           )}
+          <ExitValidator poolAddress={pool.contractAddress}/>
         </div>
       </div>
     </Link>
