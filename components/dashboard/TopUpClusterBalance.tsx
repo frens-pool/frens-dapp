@@ -165,11 +165,11 @@ export const TopUpClusterBalance = ({
   }
 
   return (
-    <div>
+    <div className="mt-4">
       <div>
-        <div className="text-center font-bold my-2">Top up cluster balance</div>
+        <div className="text-center font-bold mb-2">Top up cluster balance</div>
 
-        <div className="text-center font-bold my-2">Select SSV amount</div>
+        <div className="text-center my-2">Select SSV amount</div>
       </div>
       <div>
         <input
