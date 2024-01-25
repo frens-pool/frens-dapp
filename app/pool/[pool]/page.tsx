@@ -16,6 +16,7 @@ import { usePoolState } from "#/hooks/read/usePoolState";
 import { usePoolOwner } from "#/hooks/read/usePoolOwner";
 import FeeRecCheckSet from "#/components/dashboard/FeeRecCheckSet";
 import PoolSSVBalance from "#/components/dashboard/PoolSSVBalance";
+import { ExitValidator } from "#/components/dashboard/ExitValidator";
 
 const Pool: NextPage = ({}) => {
   const params = useParams();
@@ -86,6 +87,7 @@ const Pool: NextPage = ({}) => {
                           <ValidatorWidget poolAddress={poolAddress} />
                           <FeeRecCheckSet poolAddress={poolAddress} />
                           <PoolSSVBalance poolAddress={poolAddress}/>
+                          <ExitValidator poolAddress={poolAddress}/>
                         </div>
                       </div>
                     </div>

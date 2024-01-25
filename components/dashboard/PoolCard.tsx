@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatEther } from "viem";
 import { PoolType } from "#/types/commonTypes";
-import { ExitValidator } from "#/components/dashboard/ExitValidator";
 
 import { useState, useEffect, ChangeEvent } from "react";
 import { useNetwork } from "wagmi";
@@ -130,7 +129,6 @@ function PoolCard({ pool, showClusterInfo }: PoolCard) {
               </div>
             </div>
           )}
-          <ExitValidator poolAddress={pool.contractAddress}/>
         </div>
       </div>
     </Link>
