@@ -19,7 +19,7 @@ export const TopUpClusterBalance = ({
   updateSSVBalance,
 }: {
   poolAddress: Address;
-  updateSSVBalance: () => void;
+  updateSSVBalance: (addedValue: number) => void;
 }) => {
   const [ssvAmount, setSsvAmount] = useState<number | undefined>(undefined);
   const [txHash, setTxHash] = useState<string | undefined>();
@@ -45,7 +45,11 @@ export const TopUpClusterBalance = ({
       // @ts-ignore
       hash: txHash,
       onSuccess: () => {
-        updateSSVBalance();
+        if (ssvAmount !== undefined) {
+          updateSSVBalance(ssvAmount);
+        } else {
+          updateSSVBalance(1);
+        }
       },
     });
 
@@ -169,7 +173,7 @@ export const TopUpClusterBalance = ({
       </div>
       <div>
         <input
-          className="input input-bordered w-1/3"
+          className="input input-bordered w-2/3"
           type="number"
           placeholder="1"
           min="0"
@@ -177,7 +181,7 @@ export const TopUpClusterBalance = ({
           onChange={(event) =>
             setSsvAmount(
               event.target.value !== ""
-                ? parseInt(event.target.value)
+                ? parseFloat(event.target.value)
                 : undefined
             )
           }

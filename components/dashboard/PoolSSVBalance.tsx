@@ -26,8 +26,8 @@ interface PoolSSVBalance {
 function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
   const { chain } = useNetwork();
   const [clusterInfo, setClusterInfo] = useState<ClusterInfo>();
+  const [clusterBalance, setClusterBalance] = useState<bigint>(BigInt(0));
   const [runway, setRunway] = useState<bigint>(BigInt(0));
-  const [updateSSVBalance, setUpdateSSVBalance] = useState<boolean>(false);
 
   useEffect(() => {
     if (!chain) return;
@@ -35,7 +35,6 @@ function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
   }, [chain]);
 
   const fetchClusterData = async () => {
-    console.log("fetching again ...");
     const clusterListdata = await fetch(
       ssvClusterListByOwnerApi(1, 1, poolAddress, chain)
     );
@@ -47,6 +46,7 @@ function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
 
     if (clusterListdataJson?.clusters[0] && validatorCostJson) {
       const balance = BigInt(clusterListdataJson.clusters[0].balance);
+      setClusterBalance(balance);
       const feePerBlockWei = BigInt(validatorCostJson.fees?.per_block?.wei);
       setClusterInfo({
         id: clusterListdataJson.clusters[0].id,
@@ -63,15 +63,21 @@ function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
     }
   };
 
-  console.log(clusterInfo);
+  const updateSSVBalance = (addedValue: number) => {
+    setClusterBalance(
+      (prevBal: bigint) => prevBal + BigInt(addedValue * 1000000000000000000)
+    );
+  };
+
+  console.log("clusterBalance", clusterBalance);
 
   return (
     <div className="w-full flex flex-col justify-between">
-      <div className="w-full grid grid-cols-2 gap-2">
+      <div className="mt-4 w-full grid grid-cols-2 gap-2">
         <div className="h-full flex flex-col items-center justify-center">
           <div>Cluster Balance</div>
           <div className="text-frens-main">
-            {clusterInfo && formatEther(BigInt(clusterInfo.balance))} SSV
+            {formatEther(clusterBalance)} SSV
           </div>
         </div>
 
@@ -88,7 +94,7 @@ function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
       <div className="w-full flex items-center justify-center">
         <TopUpClusterBalance
           poolAddress={poolAddress}
-          updateSSVBalance={() => setUpdateSSVBalance(true)}
+          updateSSVBalance={updateSSVBalance}
         />
       </div>
     </div>
