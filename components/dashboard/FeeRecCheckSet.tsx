@@ -74,26 +74,30 @@ function FeeRecCheckSet({ poolAddress }: FeeRecCheckSetInterface) {
 
   if (queriedFeeRecipient) return <></>;
 
-  return (
-    <div>
-      <div className="mt-8">
-        🚨 You should set your execution layer reward address 🚨
+  if (walletAddress) {
+    return (
+      <div>
+        <div className="mt-8">
+          🚨 You should set your execution layer reward address 🚨
+        </div>
+        <button
+          className={`${
+            isLoading
+              ? "btn btn-info no-animation mt-2 mr-2 loading"
+              : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
+          }`}
+          onClick={() => {
+            setOnChainFeeRecipient();
+          }}
+          disabled={isLoading}
+        >
+          {isLoading ? "In progress" : "Set Fee Recipient"}
+        </button>
       </div>
-      <button
-        className={`${
-          isLoading
-            ? "btn btn-info no-animation mt-2 mr-2 loading"
-            : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
-        }`}
-        onClick={() => {
-          setOnChainFeeRecipient();
-        }}
-        disabled={isLoading}
-      >
-        {isLoading ? "In progress" : "Set Fee Recipient"}
-      </button>
-    </div>
-  );
+    );
+  }
+
+  return <></>;
 }
 
 export default FeeRecCheckSet;
