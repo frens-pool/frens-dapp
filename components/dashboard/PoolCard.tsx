@@ -64,20 +64,19 @@ function PoolCard({ pool, showClusterInfo }: PoolCard) {
     <Link
       href={`/pool/${pool.contractAddress}`}
       key={pool.contractAddress}
-      className="relative flex flex-col items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
+      className="relative flex flex-col items-center space-x-1 md:space-x-3 rounded-lg border border-gray-300 bg-white px-2 md:px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
     >
       <div className="w-full flex flex-row justify-between">
-        <div className="flex justify-center p-2 mr-6">
-          <Image
+        <div className="flex justify-center mr-6">
+          <img
             src="/FRENS-logo-coloured.png"
             alt="FRENS logo"
-            width="38"
-            height="24"
+            className="block h-12 w-10 md:h-12 md:w-9"
           />
         </div>
         <div className="w-full grid grid-cols-3 gap-2">
           <div className="h-full flex flex-col items-center justify-center">
-            <div>Pool Address</div>
+            <div>Address</div>
             <div>
               {`${pool.contractAddress.slice(
                 0,

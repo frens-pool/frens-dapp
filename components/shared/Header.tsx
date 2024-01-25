@@ -33,20 +33,20 @@ const Header = () => {
       <div className="bg-frens-main pb-32">
         <Disclosure
           as="nav"
-          className="border-b border-indigo-300 border-opacity-25 bg-frens-main lg:border-none"
+          className="z-20 border-b border-indigo-300 border-opacity-25 bg-frens-main lg:border-none"
         >
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
-                  <div className="flex items-center px-2 lg:px-0">
+                  <div className="flex items-center px-0">
                     <Link
                       href="/"
                       className="text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium"
                     >
                       <div className="flex flex-shrink-0">
                         <img
-                          className="block h-8"
+                          className="block h-8 w-6"
                           src="/FRENS_logo_white.png"
                           alt="Staking with Frens"
                         />
@@ -59,21 +59,39 @@ const Header = () => {
                     </Link>
                     <div className="hidden lg:ml-10 lg:block">
                       <div className="flex space-x-4">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.href === pathname
-                                ? "bg-frens-blue text-white"
-                                : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
-                              "rounded-md py-2 px-3 text-sm font-medium"
-                            )}
-                            aria-current={item.current ? "page" : undefined}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
+                        {navigation.map((item) =>
+                          item.name === "Docs" ? (
+                            <a
+                              key={item.name}
+                              href={item.href}
+                              className={classNames(
+                                item.href === pathname
+                                  ? "bg-frens-blue text-white"
+                                  : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
+                                "rounded-md py-2 px-3 text-sm font-medium"
+                              )}
+                              aria-current={item.current ? "page" : undefined}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {item.name}
+                            </a>
+                          ) : (
+                            <Link
+                              key={item.name}
+                              href={item.href}
+                              className={classNames(
+                                item.href === pathname
+                                  ? "bg-frens-blue text-white"
+                                  : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
+                                "rounded-md py-2 px-3 text-sm font-medium"
+                              )}
+                              aria-current={item.current ? "page" : undefined}
+                            >
+                              {item.name}
+                            </Link>
+                          )
+                        )}
                       </div>
                     </div>
                   </div>
@@ -104,8 +122,8 @@ const Header = () => {
                 </div>
               </div>
 
-              <Disclosure.Panel className="lg:hidden">
-                <div className="space-y-1 px-2 pb-3 pt-2">
+              <Disclosure.Panel className="relative lg:hidden">
+                <div className="space-y-1  pb-3 pt-2 px-2 md:px-6">
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
