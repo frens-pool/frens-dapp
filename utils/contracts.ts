@@ -105,7 +105,7 @@ export const FrensContracts = {
     },
     SSVTokenContract: {
       address: MAINNET_SSV_NETWORK_TOKEN as Address,
-      abi: MainnetSSVToken.abi,
+      abi: MainnetSSVToken,
     },
     SSVNetworkContract: {
       address: MAINNET_SSV_NETWORK as Address,
