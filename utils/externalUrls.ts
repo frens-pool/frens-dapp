@@ -7,7 +7,7 @@ export function subgraphUrl(chain?: Chain) {
     case 17000:
       return `https://api.studio.thegraph.com/query/46611/frens-holesky/version/latest`;
     default:
-      return `https://api.studio.thegraph.com/query/46611/frens-goerli/version/latest`;
+      return `https://api.studio.thegraph.com/query/46611/frens-main/version/latest`;
   }
 }
 
@@ -95,12 +95,11 @@ export function ssvOperatorListApi(
   }
 }
 
-
 export function ssvClusterListByOwnerApi(
   page: number,
   perPage: number,
   owner: string,
-  chain?: Chain,
+  chain?: Chain
 ) {
   switch (chain?.id) {
     case 5:
@@ -112,10 +111,9 @@ export function ssvClusterListByOwnerApi(
   }
 }
 
-
 export function ssvValidatorCostByOwnerApi(
   ownerAddress: string,
-  chain?: Chain,
+  chain?: Chain
 ) {
   switch (chain?.id) {
     case 5:
@@ -126,7 +124,6 @@ export function ssvValidatorCostByOwnerApi(
       return `https://api.ssv.network/api/v4/mainnet/validators/owned_by/${ownerAddress}/cost`;
   }
 }
-
 
 export function ssvOperatorApi(
   page: number,
