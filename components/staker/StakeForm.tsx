@@ -4,6 +4,9 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
+import { parseEther } from "viem";
+import { ethers } from "ethers";
+
 import {
   Address,
   useAccount,
@@ -18,7 +21,8 @@ interface Props {
 }
 
 export const StakeForm = ({ poolAddress }: Props) => {
-  const [maxDepositValue, setMaxDepositValue] = useState(32);
+  const [maxDepositValue, setMaxDepositValue] = useState<bigint>(parseEther("32"));
+  const [depositAmount, setDepositAmount] = useState<bigint>(parseEther("0.1"));
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
 
   const { chain } = useNetwork();
@@ -31,21 +35,27 @@ export const StakeForm = ({ poolAddress }: Props) => {
     formState: { errors },
     reset,
   } = useForm();
-  const ethInputForm = watch("ethInput");
-  const stakeAmount = ethInputForm > 0 ? ethInputForm.toString() : "0.1";
 
   const onSubmit = () => {
     if (deposit) deposit();
     setIsDepositing(true);
   };
 
+  const setMax = () => {
+    setDepositAmount(maxDepositValue);
+  };
+
+  const setAmount = (amount: string) => {
+    setDepositAmount(BigInt(ethers.utils.parseUnits(amount, "ether").toString()));
+  }
+
   const { isConnected } = useAccount();
   useBalance({
     address: poolAddress,
     watch: true,
     onSuccess(data) {
-      const poolBalanceNumber: number = +data.formatted;
-      const maxDepositValue = 32 - poolBalanceNumber;
+      const poolBalanceNumber: bigint = data.value;
+      const maxDepositValue: bigint = parseEther("32") - poolBalanceNumber;
       setMaxDepositValue(maxDepositValue);
     },
   });
@@ -54,7 +64,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
     write: deposit,
     isError,
     prepare_error,
-  } = useDeposit({ address: poolAddress, val: stakeAmount });
+  } = useDeposit({ address: poolAddress, val: depositAmount });
   // console.log(depositData);
   const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
@@ -84,14 +94,20 @@ export const StakeForm = ({ poolAddress }: Props) => {
         <div className="text-center font-bold my-2">Select ETH amount</div>
         <label className="input-group flex justify-center">
           <input
-            {...register("ethInput", { max: maxDepositValue })}
+            {...register("ethInput", { max: ethers.utils.formatEther(maxDepositValue) })}
             id="ethInput"
             type="number"
-            placeholder="0.1"
+            placeholder={ethers.utils.formatEther(depositAmount)}
             min="0"
             step="any"
             className="input input-bordered w-1/3"
+            onChange={(e) => { setAmount(e.target.value) }}
           />
+          <button
+            className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
+            type="button"
+            onClick={setMax}
+          >Max</button>
         </label>
         {/*temp disable - causes error on full stake*/}
         {/* {prepare_error && (
@@ -116,15 +132,15 @@ export const StakeForm = ({ poolAddress }: Props) => {
                 className="btn text-white btn-primary"
                 type="submit"
               >
-                Stake
+                Pool
               </button>
             ) : (
               <>{!isDepositing && (
                 <button
                   disabled={isDepositing ? true : false}
                   className={`btn text-white ${isDepositing
-                      ? "btn-primary"
-                      : "bg-gradient-to-r from-frens-blue to-frens-teal"
+                    ? "btn-primary"
+                    : "bg-gradient-to-r from-frens-blue to-frens-teal"
                     }`}
                   type="submit"
                 >
