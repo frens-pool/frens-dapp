@@ -165,7 +165,7 @@ export function ssvAccountApi(owner: Address, chain?: Chain) {
 
 export function networkNameToId(network?: String) {
   switch (network) {
-    case "homestead":
+    case "mainnet":
       return 1;
     case "goerli":
       return 5;
