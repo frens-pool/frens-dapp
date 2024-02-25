@@ -47,8 +47,6 @@ export const SelectOperator = ({
     setssvOperators([...ssvOperators, searchOperator]);
     setCheckedOperators([...checkedOperators, searchOperator]);
   };
-  console.log(ssvOperators);
-  console.log(checkedOperators);
 
   const handleCheck = (
     e: { target: { checked: any } },

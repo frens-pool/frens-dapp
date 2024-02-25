@@ -72,7 +72,6 @@ const RunPool: NextPage = () => {
         } else {
           const data = await response.json();
           setssvValidator(data);
-          console.log(data);
           if (data) {
             setStep(STEP.DONE);
           }

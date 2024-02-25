@@ -1,6 +1,6 @@
 import { Address, useNetwork, useWaitForTransaction } from "wagmi";
 
-import { etherscanUrl } from "#/utils/externalUrls";
+import { etherscanUrl, networkNameToId } from "#/utils/externalUrls";
 import { useState } from "react";
 
 import { DropKeys, validateFileFunction } from "components/operator/DropKeys";
@@ -40,12 +40,13 @@ export const SetPubkey = ({
       const depositData = JSON.parse(fileContent)[0] as DepositFileData;
 
       const network = depositData.network_name;
+      const networkIdOfDepositFile = networkNameToId(network);
       const withdrawal_credentials =
         depositData.withdrawal_credentials.toLowerCase();
       const expectedWithdrawalAddress =
         `010000000000000000000000${poolAddress.substring(2)}`.toLowerCase();
 
-      if (network !== chain?.network) {
+      if (networkIdOfDepositFile !== chain?.id) {
         return { success: false, error: `Invalid network ${network}` };
       }
       if (withdrawal_credentials !== expectedWithdrawalAddress) {
@@ -84,7 +85,7 @@ export const SetPubkey = ({
               isLoading
                 ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mb-2 loading"
                 : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
-              }`}
+            }`}
             onClick={() => {
               if (writeDepositFileData) writeDepositFileData();
             }}

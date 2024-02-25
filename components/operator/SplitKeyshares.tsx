@@ -56,10 +56,7 @@ export const SplitKeyshares = ({
         );
 
         // SSV Cluster Data
-        console.log(operators);
         const cData = await getClusterData(operators.map((o: any) => o.id));
-        console.log("cData");
-        console.log(cData);
         const ownerAddress = cData.cluster[0].Owner;
         const ownerNonce = parseInt(cData.nonce);
 
@@ -94,7 +91,7 @@ export const SplitKeyshares = ({
           tokenAmount,
         };
       } catch (error: any) {
-        console.log(error);
+        // console.log(error);
         setPayloadError(true);
         setLoading(false);
         throw new Error(error);
@@ -132,7 +129,7 @@ export const SplitKeyshares = ({
         ownerAddress: poolAddress,
         operatorIds,
       };
-      console.log("clusterParams", clusterParams);
+      // console.log("clusterParams", clusterParams);
       const clusterDataTemp = await buildCluster(clusterParams);
       return clusterDataTemp;
     }

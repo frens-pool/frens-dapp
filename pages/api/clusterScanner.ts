@@ -7,8 +7,6 @@ export default async function handler(req: any, res: any) {
   }
 
   const inputParams = JSON.parse(req.body);
-  console.log("inputParams");
-  console.log(inputParams);
 
   const params = {
     nodeUrl: inputParams.nodeUrl,
@@ -19,21 +17,20 @@ export default async function handler(req: any, res: any) {
 
   const clusterScanner = new ClusterScanner(params);
   const result = await clusterScanner.run(params.operatorIds);
-  console.log(
-    JSON.stringify(
-      {
-        block: result.payload.Block,
-        "cluster snapshot": result.cluster,
-        cluster: Object.values(result.cluster),
-      },
-      null,
-      "  "
-    )
-  );
+  // console.log(
+  //   JSON.stringify(
+  //     {
+  //       block: result.payload.Block,
+  //       "cluster snapshot": result.cluster,
+  //       cluster: Object.values(result.cluster),
+  //     },
+  //     null,
+  //     "  "
+  //   )
+  // );
 
   const nonceScanner = new NonceScanner(params);
   const nextNonce = await nonceScanner.run();
-  console.log("Next nonce:", nextNonce);
 
   return res
     .status(200)

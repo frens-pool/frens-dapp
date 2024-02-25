@@ -162,3 +162,14 @@ export function ssvAccountApi(owner: Address, chain?: Chain) {
       return `https://api.ssv.network/api/v4/mainnet/accounts/${owner}`;
   }
 }
+
+export function networkNameToId(network?: String) {
+  switch (network) {
+    case "goerli":
+      return 5;
+    case "holesky":
+      return 17000;
+    default:
+      return 1;
+  }
+}
