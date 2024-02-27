@@ -135,9 +135,9 @@ export function ssvOperatorApi(
     case 5:
       return `https://api.ssv.network/api/v4/prater/operators?page=${page}&perPage=${perPage}&search=${name}`;
     case 17000:
-      return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&${name}`;
+      return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&search=${name}`;
     default:
-      return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&${name}`;
+      return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&search=${name}`;
   }
 }
 
