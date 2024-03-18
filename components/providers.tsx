@@ -23,13 +23,13 @@ const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "";
 const { chains, publicClient } = configureChains(
   [mainnet, goerli, holesky],
   [
-    infuraProvider({
-      apiKey: apiKey,
-    }),
+    // infuraProvider({
+    //   apiKey: apiKey,
+    // }),
     jsonRpcProvider({
       rpc: () => {
         return {
-          http: "https://rpc.ankr.com/eth_holesky/f6506653311e91b0eb8280a3c266dd388b6c31b1402f31e25d8fa7de22ab42ec",
+          http: "https://ethereum-holesky.core.chainstack.com/9bd2c053e76cb4859e12390e23609994",
         };
       },
     }),

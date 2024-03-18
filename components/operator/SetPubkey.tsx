@@ -37,6 +37,7 @@ export const SetPubkey = ({
   // validate first validator in the deposit data
   const checkDepositData = (fileContent: any) => {
     try {
+      debugger;
       const depositData = JSON.parse(fileContent)[0] as DepositFileData;
 
       const network = depositData.network_name;

@@ -13,24 +13,28 @@ export default async function handler(req: any, res: any) {
     contractAddress: inputParams.contractAddress,
     ownerAddress: inputParams.ownerAddress,
     operatorIds: inputParams.operatorIds,
+    network: "holesky"
   };
 
   const clusterScanner = new ClusterScanner(params);
+  console.log(`Clusterscanner`,clusterScanner);
   const result = await clusterScanner.run(params.operatorIds);
-  // console.log(
-  //   JSON.stringify(
-  //     {
-  //       block: result.payload.Block,
-  //       "cluster snapshot": result.cluster,
-  //       cluster: Object.values(result.cluster),
-  //     },
-  //     null,
-  //     "  "
-  //   )
-  // );
+  console.log(
+    JSON.stringify(
+      {
+        block: result.payload.Block,
+        "cluster snapshot": result.cluster,
+        cluster: Object.values(result.cluster),
+      },
+      null,
+      "  "
+    )
+  );
 
   const nonceScanner = new NonceScanner(params);
+  console.log(`nonceScanner`,nonceScanner);
   const nextNonce = await nonceScanner.run();
+  console.log(`nonceScanner result`,nextNonce);
 
   return res
     .status(200)
