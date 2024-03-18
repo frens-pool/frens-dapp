@@ -7,7 +7,7 @@ export default async function handler(req: any, res: any) {
   }
 
   const inputParams = JSON.parse(req.body);
-
+  console.log(`input params`,JSON.stringify(inputParams,null,2));
   const params = {
     nodeUrl: inputParams.nodeUrl,
     contractAddress: inputParams.contractAddress,

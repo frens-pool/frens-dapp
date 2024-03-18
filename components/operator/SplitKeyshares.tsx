@@ -60,7 +60,6 @@ export const SplitKeyshares = ({
         const ownerAddress = cData.cluster[0].Owner;
         const ownerNonce = parseInt(cData.nonce);
 
-debugger;
         const keySharesItem = new KeySharesItem();
         await keySharesItem.update({ operators });
         await keySharesItem.update({ ownerAddress, ownerNonce, publicKey });
@@ -78,7 +77,6 @@ debugger;
           }
         );
 
-
         const keyShares = new KeyShares();
         keyShares.add(keySharesItem);
 
@@ -94,10 +92,12 @@ debugger;
         //   0
         // );
 
-          debugger;
+
+          const keySharesPayload = await keyShares.toJson();
+
 
         return {
-          payload: keyShares.toJson(),
+          payload: JSON.parse(keySharesPayload),
           tokenAmount,
         };
       } catch (error: any) {
@@ -110,6 +110,7 @@ debugger;
 
     keyshareData()
       .then((data) => {
+        debugger;
         setPayloadRegisterValidator(data);
         setPayloadError(false);
         nextStep();

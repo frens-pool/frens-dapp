@@ -25,6 +25,7 @@ export const SSVRegisterValidator = ({
   operators: any;
   poolAddress: Address;
 }) => {
+  // debugger;
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
@@ -49,6 +50,7 @@ export const SSVRegisterValidator = ({
       const nodeUrl = chain.rpcUrls.default.http.at(0)!;
       const contractAddress =
         FrensContracts[network].SSVNetworkContract.address;
+        debugger;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: nodeUrl,
@@ -61,6 +63,7 @@ export const SSVRegisterValidator = ({
   };
 
   const registerSSVValidator = async () => {
+    debugger;
     const clusterParams = {
       validatorCount: clusterData.validatorCount,
       networkFeeIndex: clusterData.networkFeeIndex,
@@ -76,7 +79,7 @@ export const SSVRegisterValidator = ({
         payloadData.payload.publicKey,
         payloadData.payload.operatorIds,
         payloadData.payload.sharesData,
-        payloadData.tokenAmount,
+        payloadData.payload.shares[0].tokenAmount,
         clusterParams,
       ],
       functionName: "registerValidator",
@@ -210,7 +213,7 @@ export const SSVRegisterValidator = ({
             if (sendTransaction) {
               sendTransaction();
             }
-            getClusterData(payloadData);
+            getClusterData(payloadData.payload.shares[0]);
           }}
         >
           Send SSV token to Pool
