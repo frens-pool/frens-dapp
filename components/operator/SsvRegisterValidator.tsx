@@ -71,15 +71,15 @@ export const SSVRegisterValidator = ({
       balance: clusterData.balance,
       active: true,
     };
-
+debugger;
     // function data to send to the SSV contract
     const encodedFunctionData = encodeFunctionData({
       abi: FrensContracts[network].SSVNetworkContract.abi,
       args: [
-        payloadData.payload.publicKey,
-        payloadData.payload.operatorIds,
-        payloadData.payload.sharesData,
-        payloadData.payload.shares[0].tokenAmount,
+        payloadData.payload.shares[0].payload.publicKey,
+        payloadData.payload.shares[0].payload.operatorIds,
+        payloadData.payload.shares[0].payload.sharesData,
+        payloadData.tokenAmount,
         clusterParams,
       ],
       functionName: "registerValidator",
