@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
-import { ISharesKeyPairs, SSVKeys, KeyShares } from "ssv-keys";
+import { ISharesKeyPairs, SSVKeys, KeyShares, KeySharesItem } from "ssv-keys";
 import BigNumber from "bignumber.js";
 import { useAccount, useNetwork, usePublicClient, Address } from "wagmi";
 
@@ -60,8 +60,11 @@ export const SplitKeyshares = ({
         const ownerAddress = cData.cluster[0].Owner;
         const ownerNonce = parseInt(cData.nonce);
 
-        const keyShares = new KeyShares();
-        const payload = await keyShares.buildPayload(
+        const keySharesItem = new KeySharesItem();
+        await keySharesItem.update({ operators });
+        await keySharesItem.update({ ownerAddress, ownerNonce, publicKey });
+
+        await keySharesItem.buildPayload(
           {
             publicKey,
             operators,
@@ -73,6 +76,9 @@ export const SplitKeyshares = ({
             privateKey,
           }
         );
+
+        const keyShares = new KeyShares();
+        keyShares.add(keySharesItem);
 
         // static at 1,5 SSV token per validator.
         // assumption: exactly 4 operators
@@ -86,8 +92,10 @@ export const SplitKeyshares = ({
         //   0
         // );
 
+        const keySharesPayload = await keyShares.toJson();
+
         return {
-          payload,
+          payload: JSON.parse(keySharesPayload),
           tokenAmount,
         };
       } catch (error: any) {
@@ -128,6 +136,7 @@ export const SplitKeyshares = ({
         nodeUrl: nodeUrl,
         ownerAddress: poolAddress,
         operatorIds,
+        network,
       };
       // console.log("clusterParams", clusterParams);
       const clusterDataTemp = await buildCluster(clusterParams);
@@ -141,6 +150,7 @@ export const SplitKeyshares = ({
       nodeUrl: string;
       ownerAddress: string;
       operatorIds: number[];
+      network: string;
     } | null
   ) {
     const clusterData = async () => {

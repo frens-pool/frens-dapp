@@ -42,7 +42,6 @@ export const SelectedOperators = ({
       </tr>
     );
   });
-
   return (
     <div className="w-2/5 mx-auto my-2 p-2">
       <div className="overflow-x-auto w-full">

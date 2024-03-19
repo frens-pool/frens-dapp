@@ -7,12 +7,12 @@ export default async function handler(req: any, res: any) {
   }
 
   const inputParams = JSON.parse(req.body);
-
   const params = {
     nodeUrl: inputParams.nodeUrl,
     contractAddress: inputParams.contractAddress,
     ownerAddress: inputParams.ownerAddress,
     operatorIds: inputParams.operatorIds,
+    network: inputParams.network,
   };
 
   const clusterScanner = new ClusterScanner(params);
@@ -30,7 +30,9 @@ export default async function handler(req: any, res: any) {
   // );
 
   const nonceScanner = new NonceScanner(params);
+  // console.log(`nonceScanner`, nonceScanner);
   const nextNonce = await nonceScanner.run();
+  // console.log(`nonceScanner result`, nextNonce);
 
   return res
     .status(200)

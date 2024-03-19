@@ -16,7 +16,9 @@ import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
 import { useSendSSV } from "#/hooks/write/useSendSSV";
 
-export const SSVRegisterValidator = ({
+// 
+
+export const SSVRemoveValidator = ({
   payloadData,
   operators,
   poolAddress,
@@ -25,7 +27,6 @@ export const SSVRegisterValidator = ({
   operators: any;
   poolAddress: Address;
 }) => {
-  // debugger;
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
@@ -55,7 +56,6 @@ export const SSVRegisterValidator = ({
         nodeUrl: nodeUrl,
         ownerAddress: poolAddress,
         operatorIds: payloadData.payload.operatorIds,
-        network,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
       setClusterData(clusterDataTemp.cluster[1]);
@@ -70,13 +70,14 @@ export const SSVRegisterValidator = ({
       balance: clusterData.balance,
       active: true,
     };
+
     // function data to send to the SSV contract
     const encodedFunctionData = encodeFunctionData({
       abi: FrensContracts[network].SSVNetworkContract.abi,
       args: [
-        payloadData.payload.shares[0].payload.publicKey,
-        payloadData.payload.shares[0].payload.operatorIds,
-        payloadData.payload.shares[0].payload.sharesData,
+        payloadData.payload.publicKey,
+        payloadData.payload.operatorIds,
+        payloadData.payload.sharesData,
         payloadData.tokenAmount,
         clusterParams,
       ],
@@ -211,7 +212,7 @@ export const SSVRegisterValidator = ({
             if (sendTransaction) {
               sendTransaction();
             }
-            getClusterData(payloadData.payload.shares[0]);
+            getClusterData(payloadData);
           }}
         >
           Send SSV token to Pool
