@@ -23,9 +23,9 @@ const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "";
 const { chains, publicClient } = configureChains(
   [mainnet, goerli, holesky],
   [
-    // infuraProvider({
-    //   apiKey: apiKey,
-    // }),
+    infuraProvider({
+      apiKey: apiKey,
+    }),
     jsonRpcProvider({
       rpc: () => {
         return {

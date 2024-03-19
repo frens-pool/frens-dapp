@@ -50,12 +50,12 @@ export const SSVRegisterValidator = ({
       const nodeUrl = chain.rpcUrls.default.http.at(0)!;
       const contractAddress =
         FrensContracts[network].SSVNetworkContract.address;
-        debugger;
       const clusterParams = {
         contractAddress: contractAddress,
         nodeUrl: nodeUrl,
         ownerAddress: poolAddress,
         operatorIds: payloadData.payload.operatorIds,
+        network,
       };
       const clusterDataTemp = await buildCluster(clusterParams);
       setClusterData(clusterDataTemp.cluster[1]);
@@ -63,7 +63,6 @@ export const SSVRegisterValidator = ({
   };
 
   const registerSSVValidator = async () => {
-    debugger;
     const clusterParams = {
       validatorCount: clusterData.validatorCount,
       networkFeeIndex: clusterData.networkFeeIndex,
@@ -71,7 +70,6 @@ export const SSVRegisterValidator = ({
       balance: clusterData.balance,
       active: true,
     };
-debugger;
     // function data to send to the SSV contract
     const encodedFunctionData = encodeFunctionData({
       abi: FrensContracts[network].SSVNetworkContract.abi,

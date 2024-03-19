@@ -92,9 +92,7 @@ export const SplitKeyshares = ({
         //   0
         // );
 
-
-          const keySharesPayload = await keyShares.toJson();
-
+        const keySharesPayload = await keyShares.toJson();
 
         return {
           payload: JSON.parse(keySharesPayload),
@@ -110,7 +108,6 @@ export const SplitKeyshares = ({
 
     keyshareData()
       .then((data) => {
-        debugger;
         setPayloadRegisterValidator(data);
         setPayloadError(false);
         nextStep();
@@ -139,6 +136,7 @@ export const SplitKeyshares = ({
         nodeUrl: nodeUrl,
         ownerAddress: poolAddress,
         operatorIds,
+        network,
       };
       // console.log("clusterParams", clusterParams);
       const clusterDataTemp = await buildCluster(clusterParams);
@@ -152,6 +150,7 @@ export const SplitKeyshares = ({
       nodeUrl: string;
       ownerAddress: string;
       operatorIds: number[];
+      network: string;
     } | null
   ) {
     const clusterData = async () => {
