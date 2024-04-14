@@ -102,6 +102,7 @@ const RunPool: NextPage = () => {
                   </div>
                   {/* Dev purpose */}
                   <PoolStatus
+                    poolAddress={poolAddress}
                     poolState={poolState}
                     poolOwner={poolOwner}
                     poolBalance={poolBalance}

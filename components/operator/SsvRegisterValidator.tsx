@@ -8,13 +8,15 @@ import {
   Address,
 } from "wagmi";
 import { parseEther, encodeFunctionData } from "viem";
-
+import { useTokenBalance } from "#/hooks/read/useTokenBalance";
 import { etherscanUrl } from "#/utils/externalUrls";
 import { SelectedOperators } from "./SelectedOperators";
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
 import { useSendSSV } from "#/hooks/write/useSendSSV";
+import { useClusterScanner } from "#/hooks/read/useClusterScanner";
+import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 
 export const SSVRegisterValidator = ({
   payloadData,
@@ -25,14 +27,23 @@ export const SSVRegisterValidator = ({
   operators: any;
   poolAddress: Address;
 }) => {
+
+  const operatorIDs = operators.map((o: any)=>{return o.id})
+
+// debugger;
+  const { data: clusterData, isLoading: isLoadingClusterScanner } = useClusterScanner(poolAddress,operatorIDs);
+  const { data: poolPubKey, isLoading:isLoadingPoolPubKey } = usePoolPubKey({address: poolAddress});
+
+
   // debugger;
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
-  const [clusterData, setClusterData] = useState<any>();
+  // const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
   const { address: walletAddress } = useAccount();
   const { chain } = useNetwork();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
+  const { balance: SSVPoolBalance } = useTokenBalance({ tokenAddress: FrensContracts[network].SSVTokenContract.address, accountAddress: poolAddress });
 
   const { data: sendSSVdata, write: sendTransaction } = useSendSSV({
     recipient: poolAddress,
@@ -45,31 +56,33 @@ export const SSVRegisterValidator = ({
       hash: sendSSVdata?.hash,
     });
 
-  const getClusterData = async (payloadData: any) => {
-    if (payloadData && poolAddress && chain) {
-      const nodeUrl = chain.rpcUrls.default.http.at(0)!;
-      const contractAddress =
-        FrensContracts[network].SSVNetworkContract.address;
-      const clusterParams = {
-        contractAddress: contractAddress,
-        nodeUrl: nodeUrl,
-        ownerAddress: poolAddress,
-        operatorIds: payloadData.payload.operatorIds,
-        network,
-      };
-      const clusterDataTemp = await buildCluster(clusterParams);
-      setClusterData(clusterDataTemp.cluster[1]);
-    }
-  };
+  // const getClusterData = async (payloadData: any) => {
+  //   if (payloadData && poolAddress && chain) {
+  //     const nodeUrl = chain.rpcUrls.default.http.at(0)!;
+  //     const contractAddress =
+  //       FrensContracts[network].SSVNetworkContract.address;
+  //     const clusterParams = {
+  //       contractAddress: contractAddress,
+  //       nodeUrl: nodeUrl,
+  //       ownerAddress: poolAddress,
+  //       operatorIds: payloadData.payload.operatorIds,
+  //       network,
+  //     };
+  //     const clusterDataTemp = await buildCluster(clusterParams);
+  //     setClusterData(clusterDataTemp.cluster[1]);
+  //   }
+  // };
 
   const registerSSVValidator = async () => {
-    const clusterParams = {
-      validatorCount: clusterData.validatorCount,
-      networkFeeIndex: clusterData.networkFeeIndex,
-      index: clusterData.index,
-      balance: clusterData.balance,
-      active: true,
-    };
+    debugger;
+    const clusterParams = clusterData.cluster[1];
+    // {
+    //   validatorCount: clusterData.validatorCount,
+    //   networkFeeIndex: clusterData.networkFeeIndex,
+    //   index: clusterData.index,
+    //   balance: clusterData.balance,
+    //   active: true,
+    // };
     // function data to send to the SSV contract
     const encodedFunctionData = encodeFunctionData({
       abi: FrensContracts[network].SSVNetworkContract.abi,
@@ -144,9 +157,8 @@ export const SSVRegisterValidator = ({
             ssvscan.io
           </a>
           <a
-            href={`${beaconchainUrl(chain)}/validator/${
-              payloadData.payload.publicKey
-            }`}
+            href={`${beaconchainUrl(chain)}/validator/${payloadData.payload.publicKey
+              }`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -183,27 +195,28 @@ export const SSVRegisterValidator = ({
     );
   }
 
-  if (sendIsSuccess) {
-    return (
-      <div className="flex flex-col my-2 p-2 justify-center">
-        <div className="mt-2">
-          Great. You are now ready to register your SSV validator.
-        </div>
-        <div>
-          <button
-            className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-            onClick={() => registerSSVValidator()}
-          >
-            Register SSV validator
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // if (sendIsSuccess || SSVPoolBalance > 0) {
+  //   return (
+  //     <div className="flex flex-col my-2 p-2 justify-center">
+  //       <div className="mt-2">
+  //         Great. You are now ready to register your SSV validator.
+  //       </div>
+  //       <div>
+  //         <button
+  //           className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+  //           onClick={() => registerSSVValidator()}
+  //         >
+  //           Register SSV validator
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col my-2 p-2 justify-center">
       <div>{/* <SelectedOperators /> */}</div>
+      Pool SSV Balance : {SSVPoolBalance}
       <div>
         <button
           className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
@@ -211,7 +224,7 @@ export const SSVRegisterValidator = ({
             if (sendTransaction) {
               sendTransaction();
             }
-            getClusterData(payloadData.payload.shares[0]);
+            // getClusterData(payloadData.payload.shares[0]);
           }}
         >
           Send SSV token to Pool
@@ -219,7 +232,10 @@ export const SSVRegisterValidator = ({
       </div>
 
       <div>
-        <button className="btn btn-primary my-2 mr-2" disabled>
+        <button
+          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+          onClick={() => registerSSVValidator()}
+        >
           Register SSV validator
         </button>
       </div>
@@ -227,26 +243,26 @@ export const SSVRegisterValidator = ({
   );
 };
 
-async function buildCluster(
-  clusterParams: {
-    contractAddress: string;
-    nodeUrl: string;
-    ownerAddress: string;
-    operatorIds: number[];
-  } | null
-) {
-  const clusterData = async () => {
-    const response = await fetch("/api/clusterScanner", {
-      method: "POST",
-      body: JSON.stringify(clusterParams),
-    });
+// async function buildCluster(
+//   clusterParams: {
+//     contractAddress: string;
+//     nodeUrl: string;
+//     ownerAddress: string;
+//     operatorIds: number[];
+//   } | null
+// ) {
+//   const clusterData = async () => {
+//     const response = await fetch("/api/clusterScanner", {
+//       method: "POST",
+//       body: JSON.stringify(clusterParams),
+//     });
 
-    if (response.status === 451) {
-      // Something went bad
-    } else {
-      return response.json();
-    }
-  };
+//     if (response.status === 451) {
+//       // Something went bad
+//     } else {
+//       return response.json();
+//     }
+//   };
 
-  return await clusterData();
-}
+//   return await clusterData();
+// }
