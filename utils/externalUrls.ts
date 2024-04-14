@@ -1,5 +1,13 @@
 import { Address, Chain } from "wagmi";
 
+const getChainName = (id: Number | undefined) => {
+  switch (id) {
+    case 5: return "goerli";
+    case 17000: return "holesky";
+    default: return "mainnet";
+  }
+}
+
 export function subgraphUrl(chain?: Chain) {
   switch (chain?.id) {
     case 5:
@@ -85,14 +93,7 @@ export function ssvOperatorListApi(
   perPage: number,
   chain?: Chain
 ) {
-  switch (chain?.id) {
-    case 5:
-      return `https://api.ssv.network/api/v4/prater/operators?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
-    case 17000:
-      return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
-    default:
-      return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
-  }
+  return `https://api.ssv.network/api/v4/${getChainName(chain?.id)}/operators?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
 }
 
 export function ssvClusterListByOwnerApi(
@@ -101,28 +102,14 @@ export function ssvClusterListByOwnerApi(
   owner: string,
   chain?: Chain
 ) {
-  switch (chain?.id) {
-    case 5:
-      return `https://api.ssv.network/api/v4/prater/clusters/owner/${owner}?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
-    case 17000:
-      return `https://api.ssv.network/api/v4/holesky/clusters/owner/${owner}?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
-    default:
-      return `https://api.ssv.network/api/v4/mainnet/clusters/owner/${owner}?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
-  }
+  return `https://api.ssv.network/api/v4/${getChainName(chain?.id)}/clusters/owner/${owner}?page=${page}&perPage=${perPage}&ordering=performance.24h%3Adesc`;
 }
 
 export function ssvValidatorCostByOwnerApi(
   ownerAddress: string,
   chain?: Chain
 ) {
-  switch (chain?.id) {
-    case 5:
-      return `https://api.ssv.network/api/v4/prater/validators/owned_by/${ownerAddress}/cost`;
-    case 17000:
-      return `https://api.ssv.network/api/v4/holesky/validators/owned_by/${ownerAddress}/cost`;
-    default:
-      return `https://api.ssv.network/api/v4/mainnet/validators/owned_by/${ownerAddress}/cost`;
-  }
+  return `https://api.ssv.network/api/v4/${getChainName(chain?.id)}/validators/owned_by/${ownerAddress}/cost`;
 }
 
 export function ssvOperatorApi(
@@ -131,36 +118,24 @@ export function ssvOperatorApi(
   name: string,
   chain?: Chain
 ) {
-  switch (chain?.id) {
-    case 5:
-      return `https://api.ssv.network/api/v4/prater/operators?page=${page}&perPage=${perPage}&search=${name}`;
-    case 17000:
-      return `https://api.ssv.network/api/v4/holesky/operators?page=${page}&perPage=${perPage}&search=${name}`;
-    default:
-      return `https://api.ssv.network/api/v4/mainnet/operators?page=${page}&perPage=${perPage}&search=${name}`;
-  }
+  return `https://api.ssv.network/api/v4/${getChainName(chain?.id)}/operators?page=${page}&perPage=${perPage}&search=${name}`;
 }
 
 export function ssvValidatorApi(publicKey: string, chain?: Chain) {
-  switch (chain?.id) {
-    case 5:
-      return `https://api.ssv.network/api/v4/prater/validators/${publicKey}`;
-    case 17000:
-      return `https://api.ssv.network/api/v4/holesky/validators/${publicKey}`;
-    default:
-      return `https://api.ssv.network/api/v4/mainnet/validators/${publicKey}`;
-  }
+  return `https://api.ssv.network/api/v4/${getChainName(chain?.id)}/validators/${publicKey}`;
 }
 
 export function ssvAccountApi(owner: Address, chain?: Chain) {
-  switch (chain?.id) {
-    case 5:
-      return `https://api.ssv.network/api/v4/prater/accounts/${owner}`;
-    case 17000:
-      return `https://api.ssv.network/api/v4/holesky/accounts/${owner}`;
-    default:
-      return `https://api.ssv.network/api/v4/mainnet/accounts/${owner}`;
-  }
+  return `https://api.ssv.network/api/v4/${getChainName(chain?.id)}/accounts/${owner}`;
+}
+
+
+export function ssvClusterApi(id: Number, chain?: Chain) {
+  return `https://api.ssv.network/api/v4/${getChainName(chain?.id)}/clusters/${id}`;
+}
+
+export function ssvOwnerClustersApi(owner: Address, chain?: Chain) {
+  return `https://api.ssv.network/api/v4/${getChainName(chain?.id)}/clusters/owner/${owner}`;
 }
 
 export function networkNameToId(network?: String) {
