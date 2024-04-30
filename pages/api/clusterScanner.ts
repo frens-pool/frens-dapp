@@ -29,11 +29,18 @@ export default async function handler(req: any, res: any) {
   const now = Date.now();
 
   if (cachedResponse && now - cachedResponse.timestamp < 60000) { // Cache for 60 seconds
-    console.log(`using cached rclusterscanner esponse`);
+    // console.log(`using cached clusterscanner response for key ${cacheKey}`);
     return res.status(200).json(cachedResponse.data);
   }
+
+  // dirty hack to avoid double run
+  cache[cacheKey] = {
+    data: null,
+    timestamp: Date.now()
+  }
+
   try {
-    console.log(`running clusterscanner`);
+    console.log(`running clusterscanner for key ${cacheKey}`);
     const params = {
       nodeUrl: inputParams.nodeUrl,
       contractAddress: inputParams.contractAddress,
@@ -52,6 +59,8 @@ export default async function handler(req: any, res: any) {
       cluster: Object.values(result),
       nonce: nextNonce
     };
+
+    console.log(`finished, data:`,responseData);
 
     // Update cache
     cache[cacheKey] = {

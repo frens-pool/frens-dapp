@@ -28,7 +28,7 @@ export const SSVRegisterValidator = ({
   poolAddress: Address;
 }) => {
 
-  const operatorIDs = operators.map((o: any)=>{return o.id})
+  const operatorIDs = operators?.map((o: any)=>{return o.id})
 
 // debugger;
   const { data: clusterData, isLoading: isLoadingClusterScanner } = useClusterScanner(poolAddress,operatorIDs);

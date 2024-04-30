@@ -72,6 +72,15 @@ export function useClusterScanner(ownerAddress: string, operatorIDs: number[]) {
       }
     };
 
+    if (!operatorIDs || operatorIDs.length < 4) {
+      setError(new Error("No operatorIDs provided"));
+      return;
+    }
+    if (!ownerAddress) {
+      setError(new Error("No ownerAddress provided"));
+      return;
+    }
+
     fetchData();
   }, [chain, network, ownerAddress, operatorIDs]);
 
