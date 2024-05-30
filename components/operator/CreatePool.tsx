@@ -44,22 +44,20 @@ export const CreatePool = ({
         {/* <div className="my-2">
           You will get a link to your own personal staking pool
         </div> */}
-        <div className="flex items-center justify-center mt-4 mb-2">
+        <div className="flex flex-col items-start justify-start mt-4 mb-2 text-white">
           <div>
-            <div className="my-2">just a sec ... pool is getting created</div>
-            <div className="flex justify-center">
-              <div role="status">
-                <span className="loading loading-spinner text-frens-main"></span>
-              </div>
-              <a
-                className="underline text-frens-main pl-2"
-                href={etherscanLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                view tx on etherscan
-              </a>
+            <div role="status">
+              <span className="loading loading-spinner text-frens-teal"></span>
             </div>
+            <div className="my-2 ">Your pool is being created</div>
+            <a
+              className="underline"
+              href={etherscanLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              view tx on etherscan
+            </a>
           </div>
         </div>
       </div>
@@ -70,7 +68,7 @@ export const CreatePool = ({
       <div className="flex items-start justify-start">
         <div>
           {isLoading ? (
-            <button disabled className="btn text-white">
+            <button disabled className="btn-large opacity-25 text-[#3F19EE] bg-white">
               Loading ...
             </button>
           ) : (
@@ -84,7 +82,7 @@ export const CreatePool = ({
                 </button>
               ) : (
                 <button
-                  className="text-[22px] py-[20px] px-[68px] font-bold text-[#3F19EE] bg-white rounded-[34px]"
+                  className="btn-large text-[#3F19EE] bg-white"
                   onClick={() => {
                     if (openConnectModal) openConnectModal();
                   }}

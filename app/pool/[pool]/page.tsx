@@ -67,11 +67,13 @@ const Pool: NextPage = ({}) => {
             poolBalance={poolBalance}
             poolState={poolState}
           />
+          {poolState !== "staked" &&
             <PoolSetup
             chain={chain}
             poolAddress={poolAddress}
             poolState={poolState}
             poolOwner={poolOwner} />
+          }
 
             <div className="w-full px-[8vw] pt-8 flex flex-col items-start justify-start">
               <p className="text-[10px] uppercase text-frens-purple mb-4">Pool stakes</p>
