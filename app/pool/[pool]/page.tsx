@@ -9,7 +9,6 @@ import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
 import { NftGraphGallery } from "components/staker/NftGraphGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
-import { PoolFullWidget } from "components/staker/PoolFullWidget";
 import { StakeForm } from "components/staker/StakeForm";
 import { usePoolState } from "#/hooks/read/usePoolState";
 import { usePoolOwner } from "#/hooks/read/usePoolOwner";
@@ -17,6 +16,17 @@ import FeeRecCheckSet from "#/components/dashboard/FeeRecCheckSet";
 import PoolSSVBalance from "#/components/dashboard/PoolSSVBalance";
 import { PoolSetup } from "#/components/pool/PoolSetup";
 
+const ProgressBar = ({ progressPercentage }:{ progressPercentage:number }) => {
+  return (
+      <div className='h-1 w-full bg-gray-300'>
+          <div
+              style={{ width: `${progressPercentage}%`}}
+              className={`h-full ${
+                  progressPercentage < 70 ? 'bg-red-600' : 'bg-green-600'}`}>
+          </div>
+      </div>
+  );
+};
 
 const Pool: NextPage = ({}) => {
   const params = useParams();
@@ -55,6 +65,7 @@ const Pool: NextPage = ({}) => {
             poolAddress={poolAddress}
             operatorAddress={operatorAddress}
             poolBalance={poolBalance}
+            poolState={poolState}
           />
             <PoolSetup
             chain={chain}
@@ -63,11 +74,18 @@ const Pool: NextPage = ({}) => {
             poolOwner={poolOwner} />
 
             <div className="w-full px-[8vw] pt-8 flex flex-col items-start justify-start">
-              <p className="text-[10px] uppercase text-frens-purple">Pool stakes</p>
-              <div className="w-full flex flex-row items-start justify-start">
-              {poolBalance !== 32 || poolState !== "staked" && (
-                <div className="w-full max-w-[755px]">
-                <StakeForm poolAddress={poolAddress} />
+              <p className="text-[10px] uppercase text-frens-purple mb-4">Pool stakes</p>
+              <div className="w-full flex flex-col items-start justify-start">
+              {poolState !== "staked" && (
+                <div className="w-full flex flex-row items-start justify-start">
+                  <div className="w-full max-w-[755px]">
+                    <StakeForm poolAddress={poolAddress} />
+                  </div>
+                  <div className="flex flex-1 flex-col items-end justify-end">
+                    <h1>0/32</h1>
+                    <p></p>
+                    <ProgressBar progressPercentage={0} />
+                  </div>
                 </div>
               )}
               {isConnected ? (

@@ -13,7 +13,28 @@ type Props = {
 export const truncateAddress = (addr: string) =>
   `${addr.slice(0, 5)}...${addr.slice(-3)}`;
 
-export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance }: Props) => {
+const PoolStateVisual = ({poolState}:{poolState:any}) => {
+  console.log("poolState:::::",poolState);
+  if(poolState === "staked"){
+    return(
+      <div className="border-[1px] border-frens-teal mt-[4px] px-2">
+        <p className="text-[16px]">A-okay! 🤙</p>
+      </div>
+    );
+  }
+  return(
+    <div className="mt-[4px] px-2">
+      <p className="text-[16px]">Loading</p>
+    </div>
+  );
+};
+
+export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, poolState }: {
+  poolAddress: any;
+  operatorAddress: any;
+  poolBalance: any;
+  poolState: any;
+}) => {
   const [operatorENS, setOperatorENS] = useState("");
   const [operatorImage, setOperatorImage] = useState("");
   const [operatorName, setOperatorName] = useState("");
@@ -101,26 +122,22 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance }: Pr
         </div>
         <div className="w-full flex flex-col-reverse lg:flex-row items-start lg:items-end justify-start pt-2 flex-1">
           <div className="flex-1 text-frens-blue underline font-extrabold text-[12px]" onClick={() => toggleShowDetails(!showDetails)}>{showDetails?"hide":"show"} details</div>
-          <div className="w-full lg:w-auto grid grid-cols-2 gap-2 lg:gap-12 lg:grid-cols-4">
-            <div className="flex flex-col items-start justify-start">
+          <div className="w-full lg:w-auto flex flex-col lg:flex-row">
+            {/* <div className="flex flex-col items-start lg:items-end justify-start">
               <p className="text-[10px] uppercase text-frens-purple">Pool owner</p>
-              <h2 className="text-[20px] mt-[5px] font-bold text-black">{operatorName?operatorName:truncateAddress(operatorAddress)}</h2>
-            </div>
-            <div className="flex flex-col items-start justify-start">
+              <h2 className="text-[20px] mt-[5px] font-extrabold bg-gradient-to-r from-frens-blue to-[#223089] inline-block text-transparent bg-clip-text">{operatorName?operatorName:truncateAddress(operatorAddress)}</h2>
+            </div> */}
+            <div className="flex flex-col items-start lg:items-end justify-start">
               <p className="text-[10px] uppercase text-frens-purple">In pool</p>
-              <h2 className="text-[20px] mt-[5px] font-extrabold bg-gradient-to-r from-frens-blue to-[#223089] inline-block text-transparent bg-clip-text">{poolBalance ? poolBalance : "0.0"} ETH</h2>
+              <h2 className="text-[20px] mt-[5px] font-extrabold bg-gradient-to-r from-frens-blue to-[#223089] inline-block text-transparent bg-clip-text">{poolState === "staked" ? "32.0" : "?"} ETH</h2>
             </div>
-            <div className="flex flex-col items-start justify-start">
+            <div className="flex flex-col items-start lg:items-end justify-start lg:ml-10">
               <p className="text-[10px] uppercase text-frens-purple">Current rewards total</p>
-              <h2 className={poolBalance === 32 ?
-                              "text-[20px] mt-[5px] font-extrabold bg-gradient-to-r from-frens-blue to-[#223089] inline-block text-transparent bg-clip-text"
-                              :"text-[20px] mt-[5px] font-extrabold bg-gradient-to-r from-frens-blue to-[#223089] inline-block text-transparent bg-clip-text opacity-[25%]"}>0.0 ETH</h2>
+           <h2 className="text-[20px] mt-[5px] font-extrabold bg-gradient-to-r from-frens-blue to-[#223089] inline-block text-transparent bg-clip-text">{poolBalance ? poolBalance : "0.0"} ETH</h2>
             </div>
-            <div className="flex flex-col items-start justify-start">
+            <div className="flex flex-col items-start lg:items-end justify-start lg:ml-10">
               <p className="text-[10px] uppercase text-frens-purple">Pool status</p>
-              <div className="border-[1px] border-frens-teal mt-[4px] px-2">
-                <p className="text-[16px]">great! 🤙</p>
-              </div>
+              <PoolStateVisual poolState={poolState} />
             </div>
           </div>
         </div>

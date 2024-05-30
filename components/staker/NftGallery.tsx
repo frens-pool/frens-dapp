@@ -44,9 +44,7 @@ export const NftGallery = ({ poolAddress }: Props) => {
 
   if (poolNFTs.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">None 🧐</div>
-      </div>
+        <p className="w-full italic mt-12 mb-24 text-frens-blue">No pool stakes here yet.</p>
     );
   }
 

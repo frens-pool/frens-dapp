@@ -101,7 +101,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
               className="btn-medium bg-white text-frens-blue"
               type="submit"
             >
-              Stake
+              create stake
             </button>
           ) : (
             <>{!isDepositing && (
@@ -113,7 +113,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
                   }`}
                 type="submit"
               >
-                join pool
+                create stake
               </button>
             )}
             </>
