@@ -17,6 +17,7 @@ export const SelectOperator = ({
   const [checkedOperators, setCheckedOperators] = useState<any[]>([]);
   const [filteredLength, setFilteredLength] = useState<number>(1);
   const { chain } = useNetwork();
+  const [chooseOwnOperators,SetChooseOwnOperators] = useState(false);
 
   useEffect(() => {
     const fetchOperators = async () => {
@@ -57,6 +58,17 @@ export const SelectOperator = ({
         ? [...checkedOperators, item]
         : checkedOperators.filter((operator) => operator.id !== item.id)
     );
+  };
+
+  const handleOptionChange = (
+    e: { target: { id: string } },
+  ) => {
+    if(e.target.id === "choose"){
+      SetChooseOwnOperators(true);
+    } else {
+      SetChooseOwnOperators(false);
+    };
+    console.log("chooseOwnOperators",chooseOwnOperators);
   };
 
   let operatorListRows = ssvOperators?.map((operator, index) => {
@@ -112,43 +124,69 @@ export const SelectOperator = ({
   });
 
   return (
-    <div className="w-4/5 mx-auto my-2 p-2">
-      <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
-      <div className="overflow-x-auto w-full">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" disabled />
-                </label>
-              </th>
-              <th>Name</th>
-              <th>
-                <div>Performance</div>
-                <span className="badge badge-ghost badge-sm">last 24h</span>
-              </th>
-              <th>SSV Fee</th>
-              <th>
-                <div>Validator</div>
-                Count
-              </th>
-              {/* <th>Permissioned</th> */}
-              <th>ssvScan</th>
-            </tr>
-          </thead>
-          <tbody>{operatorListRows}</tbody>
-        </table>
+    <div className="w-full">
+      <div className="flex items-center mb-2">
+          <input
+            id="default"
+            type="radio" value=""
+            name="default-radio"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            onChange={handleOptionChange}
+            />
+            <label className="ms-2">Use default FRENS operators</label>
       </div>
-      <button
-        className="mt-2 btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-        onClick={() => {
-          setOperators(checkedOperators);
-          nextStep();
-        }}
-      >
-        Next
-      </button>
+      <div className="flex items-center mb-2">
+          <input
+            id="choose"
+            type="radio"
+            value=""
+            name="default-radio"
+            onChange={handleOptionChange}
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+          <label className="ms-2">Choose your own operators</label>
+      </div>
+      {chooseOwnOperators &&
+        <>
+          <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
+          <div className="overflow-x-auto w-full">
+            <table className="table w-full">
+              <thead>
+                <tr>
+                  <th>
+                    <label>
+                      <input type="checkbox" className="checkbox" disabled />
+                    </label>
+                  </th>
+                  <th>Name</th>
+                  <th>
+                    <div>Performance</div>
+                    <span className="badge badge-ghost badge-sm">last 24h</span>
+                  </th>
+                  <th>SSV Fee</th>
+                  <th>
+                    <div>Validator</div>
+                    Count
+                  </th>
+                  {/* <th>Permissioned</th> */}
+                  <th>ssvScan</th>
+                </tr>
+              </thead>
+              <tbody>{operatorListRows}</tbody>
+            </table>
+          </div>
+        </>
+      }
+      <div className="flex flex-row items-end justify-end">
+        <button
+          className="btn-medium blue-to-purple text-white"
+          onClick={() => {
+            setOperators(checkedOperators);
+            nextStep();
+          }}
+        >
+          confirm operators
+        </button>
+      </div>
     </div>
   );
 };

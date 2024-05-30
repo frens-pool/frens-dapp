@@ -12,7 +12,7 @@ const Home: NextPage = () => {
     <div>
       <Header />
       {/* Content */}
-      <main className="relative -mt-32 ">
+      <main className="relative">
         <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
           <div className="bg-white min-h-[60vh] rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
             {/* Heading */}

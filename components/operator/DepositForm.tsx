@@ -4,12 +4,10 @@ import { etherscanUrl } from "#/utils/externalUrls";
 
 interface DepositFormProps {
   poolAddress: Address;
-  nextStep: () => void;
   poolBalance: number;
 }
 
 export const DepositForm = ({
-  nextStep,
   poolAddress,
   poolBalance,
 }: DepositFormProps) => {
@@ -17,9 +15,9 @@ export const DepositForm = ({
   const { chain } = useNetwork();
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
-    onSuccess: () => {
-      nextStep();
-    },
+    // onSuccess: () => {
+    //   nextStep();
+    // },
   });
 
   return (

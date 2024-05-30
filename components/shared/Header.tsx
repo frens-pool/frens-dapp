@@ -8,12 +8,11 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
   {
-    name: "All Pools",
+    name: "All pools",
     href: "/",
     current: false,
   },
-  { name: "Dashboard", href: "/dashboard", current: true },
-  { name: "New Pool", href: "/create", current: false },
+  { name: "My dashboard", href: "/dashboard", current: true },
   {
     name: "Docs",
     href: "https://docs.frens.fun/docs/manifesto",
@@ -29,36 +28,34 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-full">
-      <div className="bg-frens-main pb-32">
+    <div className="w-full font-inter px-8 fixed top-0 z-[99] bg-gradient-to-r from-[#3b53ef] from-57% to-[#4fbee3] to-100%">
         <Disclosure
           as="nav"
-          className="z-20 border-b border-indigo-300 border-opacity-25 bg-frens-main lg:border-none"
+          className="z-20 border-b border-indigo-300 border-opacity-25 lg:border-none"
         >
           {({ open }) => (
             <>
-              <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
-                <div className="relative flex h-16 items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
-                  <div className="flex items-center px-0">
+              <div className="w-full">
+                <div className="relative flex items-center justify-between lg:border-b lg:border-indigo-400 lg:border-opacity-25">
+                  <div className="flex items-center">
                     <Link
                       href="/"
-                      className="text-white hover:bg-indigo-500 hover:bg-opacity-75 rounded-md py-2 px-3 text-sm font-medium"
                     >
-                      <div className="flex flex-shrink-0">
+                      <div className="flex flex-row items-center mt-4">
                         <img
-                          className="block h-8 w-6"
-                          src="/FRENS_logo_white.png"
+                          className="block h-24 -mb-8"
+                          src="/FRENS_logo_with_tail.png"
                           alt="Staking with Frens"
                         />
                         <img
-                          className="block h-8 pl-2"
+                          className="block h-12 pl-4"
                           src="/FRENS_writing_white.png"
                           alt="Staking with Frens"
                         />
                       </div>
                     </Link>
-                    <div className="hidden lg:ml-10 lg:block">
-                      <div className="flex space-x-4">
+                    <div className="hidden pt-6 pb-4 lg:ml-4 lg:block">
+                      <div className="flex">
                         {navigation.map((item) =>
                           item.name === "Docs" ? (
                             <a
@@ -68,7 +65,7 @@ const Header = () => {
                                 item.href === pathname
                                   ? "bg-frens-blue text-white"
                                   : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
-                                "rounded-md py-2 px-3 text-sm font-medium"
+                                "rounded-md py-2 px-4 font-bold"
                               )}
                               aria-current={item.current ? "page" : undefined}
                               target="_blank"
@@ -84,7 +81,7 @@ const Header = () => {
                                 item.href === pathname
                                   ? "bg-frens-blue text-white"
                                   : "text-white hover:bg-indigo-500 hover:bg-opacity-75",
-                                "rounded-md py-2 px-3 text-sm font-medium"
+                                "rounded-md py-2 px-4 font-bold"
                               )}
                               aria-current={item.current ? "page" : undefined}
                             >
@@ -116,7 +113,83 @@ const Header = () => {
                   </div>
                   <div className="hidden lg:ml-4 lg:block">
                     <div className="flex items-center">
-                      <ConnectButton />
+                      {/* <ConnectButton /> */}
+                      <Link
+                        href={'/create'}
+                          aria-current="page"
+                        >
+                      <button className="bg-transparent border-2 border-white text-white font-bold text-[14px] py-[8px] px-6 rounded-[22px] mr-2" type="button">
+                      + new pool
+                      </button>
+                      </Link>
+
+                      <ConnectButton.Custom>
+                        {({
+                          account,
+                          chain,
+                          openAccountModal,
+                          openChainModal,
+                          openConnectModal,
+                          authenticationStatus,
+                          mounted,
+                        }) => {
+                          // Note: If your app doesn't use authentication, you
+                          // can remove all 'authenticationStatus' checks
+                          const ready = mounted && authenticationStatus !== 'loading';
+                          const connected =
+                            ready &&
+                            account &&
+                            chain &&
+                            (!authenticationStatus ||
+                              authenticationStatus === 'authenticated');
+
+                          return (
+                            <div
+                              {...(!ready && {
+                                'aria-hidden': true,
+                                'style': {
+                                  opacity: 0,
+                                  pointerEvents: 'none',
+                                  userSelect: 'none',
+                                },
+                              })}
+                            >
+                              {(() => {
+                                if (!connected) {
+                                  return (
+                                    <button className="bg-black border-2 border-black text-white font-semibold text-[14px] py-[8px] px-8 rounded-[22px]" onClick={openConnectModal} type="button">
+                                      Connect wallet
+                                    </button>
+                                  );
+                                }
+
+                                if (chain.unsupported) {
+                                  return (
+                                    <button className="bg-black border-2 border-black text-white font-semibold text-[14px] py-[8px] px-8 rounded-[22px]" onClick={openChainModal} type="button">
+                                      Wrong network
+                                    </button>
+                                  );
+                                }
+
+                                return (
+                                    <button className="flex flex-row border-black border-2 bg-black text-white font-semibold text-[14px] py-[8px] pl-3 pr-4 rounded-[22px]" type="button">
+                                    <div
+                                      onClick={openChainModal}
+                                      style={{ display: 'flex', alignItems: 'center' }}
+                                      className="bg-[rgba(255,255,255,0.25)] text-white font-normal text-[14px] px-2 rounded-[10px] mr-2"
+                                    >
+                                      {chain.name}
+                                    </div>
+                                    <div onClick={openAccountModal}>
+                                      {account.displayName}
+                                      </div>
+                                    </button>
+                                );
+                              })()}
+                            </div>
+                          );
+                        }}
+                      </ConnectButton.Custom>
                     </div>
                   </div>
                 </div>
@@ -145,20 +218,6 @@ const Header = () => {
             </>
           )}
         </Disclosure>
-        <header className="py-10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-white">
-              {pathname === "/" ? "Join a staking pool" : ""}
-              {pathname === "/create" ? "Create your staking pool" : ""}
-              {pathname === "/dashboard" ? "Dashboard" : ""}
-              {pathname?.split("/")[1] === "pool"
-                ? "Pool ETH with your friends"
-                : ""}
-              {pathname?.split("/")[1] === "run" ? "Run your validator" : ""}
-            </h1>
-          </div>
-        </header>
-      </div>
     </div>
   );
 };

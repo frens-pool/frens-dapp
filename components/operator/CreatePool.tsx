@@ -67,11 +67,7 @@ export const CreatePool = ({
   }
 
   return (
-    <div>
-      <div className="my-2">
-        You will get a shareable link to your own personal staking pool
-      </div>
-      <div className="flex items-center justify-center mt-4 mb-2">
+      <div className="flex items-start justify-start">
         <div>
           {isLoading ? (
             <button disabled className="btn text-white">
@@ -81,25 +77,24 @@ export const CreatePool = ({
             <div>
               {accountAddress ? (
                 <button
-                  className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
+                  className="btn-large text-[#3F19EE] bg-white"
                   onClick={() => onCreatePool()}
                 >
-                  Create Pool
+                  Create new pool
                 </button>
               ) : (
                 <button
-                  className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
+                  className="text-[22px] py-[20px] px-[68px] font-bold text-[#3F19EE] bg-white rounded-[34px]"
                   onClick={() => {
                     if (openConnectModal) openConnectModal();
                   }}
                 >
-                  Create Pool
+                  Create new pool
                 </button>
               )}
             </div>
           )}
         </div>
       </div>
-    </div>
   );
 };

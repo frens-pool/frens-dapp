@@ -81,7 +81,7 @@ export const NftGallery = ({ poolAddress }: Props) => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {poolNFTs.map(({ name, image, nftID }) => (
-          <div key={name}>
+          <div className="w-full" key={name}>
             <CardForNFT name={name} image={image} nftID={nftID} />
           </div>
         ))}

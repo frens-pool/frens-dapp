@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer base {
+    .btn-medium {
+        @apply rounded-[22px] text-[15px] leading-[18px] font-bold py-[11px] px-[28px];
+    }
+    .btn-large {
+        @apply text-[22px] py-[20px] px-[68px] font-bold text-[#3F19EE] bg-white rounded-[34px];
+    }
+    .btn-blue-border {
+        @apply border-[1px] border-frens-blue text-frens-blue;
+    }
+    .blue-to-purple {
+        @apply bg-gradient-to-r from-[#3B53EF] from-0% to-[#3F19EE] to-100%;
+    }
+  }

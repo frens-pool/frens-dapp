@@ -57,23 +57,23 @@ export const DropKeys = ({ validateFile, onFileReceived, filename }: {
 
     return (
       <div
-        className="mt-2 border border-dashed border-gray-500 bg-slate-200 w-full mb-2 p-2 rounded-lg"
+        className="w-full"
         {...getRootProps()}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
           <div className="">
-            <button className="btn btn-primary disabled my-2">
-              Click to select file
+            <button className="btn-medium disabled btn-blue-border">
+              select file
             </button>
             <div>drop now</div>
           </div>
         ) : (
-          <div>
-            <button className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white no-animation my-2">
-              Click to select file
+          <div className="w-full flex flex-col items-start justify-start">
+            <button className="btn-medium btn-blue-border my-3">
+              select file
             </button>
-            <div>filename should be <b>{filename}</b></div>
+            <small>filename should be <b>{filename}</b></small>
             {feedback && (
               <div
                 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"

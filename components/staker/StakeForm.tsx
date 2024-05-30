@@ -79,20 +79,46 @@ export const StakeForm = ({ poolAddress }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="bg-white">
-        <div className="text-center font-bold my-2">Select ETH amount</div>
-        <label className="input-group flex justify-center">
-          <input
-            {...register("ethInput", { max: maxDepositValue })}
-            id="ethInput"
-            type="number"
-            placeholder="0.1"
-            min="0"
-            step="any"
-            className="input input-bordered w-1/3"
-          />
-        </label>
+    <form className="blue-to-purple text-white p-12" onSubmit={handleSubmit(onSubmit)}>
+      <div className="w-full flex flex-col items-start justify-start">
+        <h2 className="font-bold text-[30px]">Wanna pool together?</h2>
+        <div className="my-2">Set your ETH amount</div>
+        <div className="w-full flex flex-col lg:flex-row ">
+          <label className="flex-1">
+            <input
+              {...register("ethInput", { max: maxDepositValue })}
+              id="ethInput"
+              type="number"
+              placeholder="0.1"
+              min="0"
+              step="any"
+              className="w-full max-w-[400px] lg:mr-4 input bg-transparent input-bordered border-[rgba(255,255,255,0.5)] focus:border-white"
+            />
+          </label>
+          {prepare_error ? (
+            <button
+              disabled
+              className="btn-medium bg-white text-frens-blue"
+              type="submit"
+            >
+              Stake
+            </button>
+          ) : (
+            <>{!isDepositing && (
+              <button
+                disabled={isDepositing ? true : false}
+                className={`btn-medium bg-white text-frens-blue ${isDepositing
+                    ? "opacity-5"
+                    : "opacity-1"
+                  }`}
+                type="submit"
+              >
+                join pool
+              </button>
+            )}
+            </>
+          )}            
+        </div>
         {/*temp disable - causes error on full stake*/}
         {/* {prepare_error && (
           <div className="text-center font-medium my-2">
@@ -108,32 +134,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
         )}
       </div>
       <div className="flex justify-center mt-2 mb-4">
-        {isConnected ? (
-          <div className="flex flex-col justify-center">
-            {prepare_error ? (
-              <button
-                disabled
-                className="btn text-white btn-primary"
-                type="submit"
-              >
-                Stake
-              </button>
-            ) : (
-              <>{!isDepositing && (
-                <button
-                  disabled={isDepositing ? true : false}
-                  className={`btn text-white ${isDepositing
-                      ? "btn-primary"
-                      : "bg-gradient-to-r from-frens-blue to-frens-teal"
-                    }`}
-                  type="submit"
-                >
-                  Pool
-                </button>
-              )}
-              </>
-            )}
-            {isDepositing ? (
+      {isDepositing &&
               <div className="px-6 mb-4">
                 <div className="my-2 text-center">
                   Your deposit is in process
@@ -151,13 +152,12 @@ export const StakeForm = ({ poolAddress }: Props) => {
                     view tx on etherscan
                   </a>
                 </div>
-              </div>
-            ) : (
-              <div></div>
-            )}
-          </div>
+              </div>}
+        {isConnected ? (
+          <></>
         ) : (
-          <ConnectButton />
+          <p>Please connect your web3 wallet to stake this pool</p>
+          // <ConnectButton />
         )}
       </div>
     </form>

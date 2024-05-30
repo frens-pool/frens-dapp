@@ -12,11 +12,13 @@ export const SplitKeyshares = ({
   nextStep,
   setPayloadRegisterValidator,
   poolAddress,
+  itemDone
 }: {
   operatorsList: any;
   nextStep: () => void;
   setPayloadRegisterValidator: any;
   poolAddress: Address;
+  itemDone: Boolean;
 }) => {
   const [pw, setPW] = useState("");
   const [loading, setLoading] = useState(false);
@@ -170,7 +172,7 @@ export const SplitKeyshares = ({
   }
 
   return (
-    <div className="w-2/5 mx-auto my-2 p-2">
+    <div className="w-full flex flex-col items-start justify-start">
       <span>Your key will be split in your local browser</span>
       <DropKeys
         filename="keystore-m_xxxxxxxxxx.json"
@@ -207,7 +209,7 @@ export const SplitKeyshares = ({
           </button>
         ) : (
           <button
-            className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+            className="self-end btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
             onClick={() => {
               buildRegisterPayload();
               setLoading(true);
