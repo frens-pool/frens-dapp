@@ -37,40 +37,58 @@ const Create: NextPage = () => {
     `${current_step == step ? "block" : "hidden"}`;
 
   return (
-      <main className="py-[120px] px-[8vw] bg-gradient-to-r from-[#3211C8] from-0% to-[#437CEA] to-100%">
-          <h1 className="text-[50px] font-extrabold text-white">
-          Create a pool
-          </h1>
-          <p className="max-w-[640px] font-normal text-white text-[22px]">Are you ready to start pooling ETH together with your frens? Let's jump in!</p> 
-          <div className="my-32">
-            <CreatePool
-              onFinish={() => setStep("Invite")}
-              setPoolContract={setPoolContract}
-            />
-          </div>
-
-                {/* <div className="text-center overflow-hidden rounded-xl border border-gray-200">
-                  <div className="flex items-center justify-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                    <div className="text-2xl font-medium leading-6 text-gray-900">
-                      {number("Invite")} Invite Friends
-                    </div>
+      <main className="flex flex-col items-start justify-start bg-gradient-to-r from-[#3211C8] from-0% to-[#437CEA] to-100%">
+        {
+              step == "Invite" || step == "Ready"
+                ?
+                <div className="py-[120px] px-[8vw]">
+                  <h1 className="text-[50px] font-extrabold text-frens-teal">
+                    Woohoow!
+                  </h1>
+                  <div className="flex flex-col lg:flex-row items-center justify-start">
+                    <p className="max-w-[640px] font-bold text-white text-[22px]">Your pool was succesfully created!</p> 
+                    <img
+                        className="w-[17px] h-[11px] opacity-1 ml-4"
+                        src="/checkmark.png"
+                    />
                   </div>
-                  <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
-                    <div
-                      className={`${
-                        step == "Invite" || step == "Ready"
-                          ? "block pt-4 pb-6"
-                          : "hidden"
-                      }`}
-                    >
-                      <InviteFrens
-                        poolContract={poolContract}
-                        onFinish={() => setStep("Ready")}
-                        current_step={step}
+                  <p className="max-w-[640px] font-normal text-white text-[22px]">Here is your new pool:</p> 
+
+                  <div className="mt-16">
+                    <InviteFrens
+                    poolContract={poolContract}
+                    onFinish={() => setStep("Ready")}
+                    current_step={step}
+                  />
+                  </div>
+                  <div className="text-white font-light text-[16px] leading-[30px] mt-20">
+                  <p>So far so good, fren! All that's left now is:</p>
+                  <ul>
+                    <li>• complete the setup (on your pool's page)</li>
+                    <li>• invite your frens!</li>
+                  </ul>
+                  <br />
+                  <p>So get those swimsuits out, and let’s have a (pool) party!</p>
+                  </div>
+
+                </div>
+                :
+                <div className="w-full pb-[120px]">
+                  <div className="pt-[120px] px-[8vw]">
+                    <h1 className="text-[50px] font-extrabold text-white">
+                      Create a pool
+                    </h1>
+                    <p className="max-w-[640px] font-normal text-white text-[22px]">Are you ready to start pooling ETH together with your frens? Let's jump in!</p> 
+                    <div className="my-32">
+                      <CreatePool
+                        onFinish={() => setStep("Invite")}
+                        setPoolContract={setPoolContract}
                       />
                     </div>
-                  </dl>
-                </div> */}
+                  </div>
+                  <div className="px-[8vw] pt-8 border-t-[1px] border-frens-teal text-frens-teal">A little hesitant? Dip your toes in the <a className="underline" href="https://docs.frens.fun/docs/manifesto" rel="noopener noreferrer">docs</a> to learn more!</div>
+                </div>
+        }
       </main>
   );
 };
