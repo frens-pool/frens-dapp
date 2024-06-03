@@ -79,9 +79,9 @@ export const StakeForm = ({ poolAddress }: Props) => {
   };
 
   return (
-    <form className="blue-to-purple text-white p-12" onSubmit={handleSubmit(onSubmit)}>
+    <form className="border-[1px] border-frens-blue text-frens-blue p-12 mb-8" onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full flex flex-col items-start justify-start">
-        <h2 className="font-bold text-[30px]">Wanna pool together?</h2>
+        <h2 className="font-bold text-[30px] text-frens-gradient">Wanna pool together?</h2>
         <div className="my-2">Set your ETH amount</div>
         <div className="w-full flex flex-col lg:flex-row ">
           <label className="flex-1">
@@ -92,13 +92,13 @@ export const StakeForm = ({ poolAddress }: Props) => {
               placeholder="0.1"
               min="0"
               step="any"
-              className="w-full max-w-[400px] lg:mr-4 input bg-transparent input-bordered border-[rgba(255,255,255,0.5)] focus:border-white"
+              className="w-full max-w-[400px] lg:mr-4 input bg-transparent input-bordered border-frens-teal focus:border-frens-blue"
             />
           </label>
           {prepare_error ? (
             <button
               disabled
-              className="btn-medium bg-white text-frens-blue"
+              className="rounded-[26px] text-[20px] leading-[30px] font-bold py-[11px] px-[32px] blue-to-teal text-white"
               type="submit"
             >
               create stake
@@ -107,7 +107,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
             <>{!isDepositing && (
               <button
                 disabled={isDepositing ? true : false}
-                className={`btn-medium bg-white text-frens-blue ${isDepositing
+                className={`rounded-[26px] text-[20px] leading-[30px] font-bold py-[11px] px-[32px] blue-to-teal text-white ${isDepositing
                     ? "opacity-5"
                     : "opacity-1"
                   }`}
@@ -120,12 +120,12 @@ export const StakeForm = ({ poolAddress }: Props) => {
           )}            
         </div>
         {/*temp disable - causes error on full stake*/}
-        {/* {prepare_error && (
+        {prepare_error && (
           <div className="text-center font-medium my-2">
             <div>Ur a true fren but unfortunatly</div>
             <div className="text-red-500">{getErrorMessage(prepare_error)}</div>
           </div>
-        )} */}
+        )}
         {errors.ethInput && (
           <div className="text-center font-medium my-2">
             <div>Ur a true fren but unfortunatly</div>

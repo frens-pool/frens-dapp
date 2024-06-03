@@ -17,4 +17,10 @@
     .blue-to-purple {
         @apply bg-gradient-to-r from-[#3B53EF] from-0% to-[#3F19EE] to-100%;
     }
+    .blue-to-teal {
+        @apply bg-gradient-to-r from-frens-blue from-0% to-[#4fbee3] to-100%;
+    }
+    .text-frens-gradient {
+        @apply bg-gradient-to-r from-frens-blue to-[#4fbee3] inline-block text-transparent bg-clip-text;
+    }
   }

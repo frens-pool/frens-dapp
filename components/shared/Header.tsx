@@ -28,7 +28,7 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <div className="w-full font-inter px-8 fixed top-0 z-[99] bg-gradient-to-r from-[#3b53ef] from-57% to-[#4fbee3] to-100%">
+    <div className="w-full font-inter px-8 fixed top-0 z-[99] bg-gradient-to-r from-[#3b53ef] to-[#4fbee3] from-[47%] to-[100%]">
         <Disclosure
           as="nav"
           className="z-20 border-b border-indigo-300 border-opacity-25 lg:border-none"
@@ -210,7 +210,7 @@ const Header = () => {
                       )}
                       aria-current={item.current ? "page" : undefined}
                     >
-                      {item.name}
+                      {item.name} 
                     </Disclosure.Button>
                   ))}
                 </div>

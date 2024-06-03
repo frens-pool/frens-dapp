@@ -12,13 +12,15 @@ export const SplitKeyshares = ({
   nextStep,
   setPayloadRegisterValidator,
   poolAddress,
-  itemDone
+  itemDone,
+  itemEnabled
 }: {
   operatorsList: any;
   nextStep: () => void;
   setPayloadRegisterValidator: any;
   poolAddress: Address;
   itemDone: Boolean;
+  itemEnabled: Boolean;
 }) => {
   const [pw, setPW] = useState("");
   const [loading, setLoading] = useState(false);
@@ -172,6 +174,8 @@ export const SplitKeyshares = ({
   }
 
   return (
+    <>
+    {itemEnabled?
     <div className="w-full flex flex-col items-start justify-start">
       <span>Your key will be split in your local browser</span>
       <DropKeys
@@ -220,5 +224,60 @@ export const SplitKeyshares = ({
         )}
       </div>
     </div>
+    :
+    <div>
+    <p className="font-extrabold mb-5">Please complete 'Step 3: Select operators' to enable this step.</p>
+    <div className="w-full opacity-25 flex flex-col items-start justify-start">
+      <span>Your key will be split in your local browser</span>
+      <DropKeys
+        filename="keystore-m_xxxxxxxxxx.json"
+        validateFile={(fileContent: any) => ({ success: true })}
+        onFileReceived={(data: any) => {
+          handleKeystoreDrop(data);
+        }}
+      />
+      {keystoreError ? (
+        <div className="text-red-600 mb-4">pls upload a keystore file</div>
+      ) : (
+        <></>
+      )}
+      <div>Keystore password:</div>
+      <input
+        type="password"
+        onChange={(e) => setPW(e.target.value)}
+        className="input input-primary w-full max-w-xs my-2"
+        disabled
+      />
+      {payloadError ? (
+        <div className="text-red-600 mb-4">
+          likely wrong password, try again
+        </div>
+      ) : (
+        <></>
+      )}
+      <div className="mb-2">
+        {loading ? (
+          <button
+            className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white"
+            disabled
+          >
+            Verifying
+          </button>
+        ) : (
+          <button
+            className="self-end btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+            onClick={() => {
+              buildRegisterPayload();
+              setLoading(true);
+            }}
+          >
+            Next
+          </button>
+        )}
+      </div>
+    </div>
+    </div>
+    }
+    </>
   );
 };

@@ -25,12 +25,19 @@ export const InviteFrens = ({
             className="cursor-pointer"
             onClick={() => {
               copyToClipboard(link);
+              onFinish();
             }}
           >
+
+         {current_step === "Ready"?
+            <p className="ml-6">copied!</p>
+              :
+
             <img
-                  className="w-5 h-5 ml-8"
-                  src="/copypaste.png"
-                />
+            className="w-5 h-5 ml-8"
+            src="/copypaste.png"
+          />
+          }
           </div>
       </div>
     );

@@ -60,7 +60,7 @@ const Pool: NextPage = ({}) => {
   }, [isSuccess, poolOwner]);
 
   return (
-        <main className="w-full">
+        <main className="w-full pb-40">
           <OperatorWidget
             poolAddress={poolAddress}
             operatorAddress={operatorAddress}
@@ -76,18 +76,18 @@ const Pool: NextPage = ({}) => {
           }
 
             <div className="w-full px-[8vw] pt-8 flex flex-col items-start justify-start">
-              <p className="text-[10px] uppercase text-frens-purple mb-4">Pool stakes</p>
+              <p className="text-[10px] uppercase text-frens-blue mb-4">Pool stakes</p>
               <div className="w-full flex flex-col items-start justify-start">
               {poolState !== "staked" && (
                 <div className="w-full flex flex-row items-start justify-start">
                   <div className="w-full max-w-[755px]">
                     <StakeForm poolAddress={poolAddress} />
                   </div>
-                  <div className="flex flex-1 flex-col items-end justify-end">
+                  {/* <div className="flex flex-1 flex-col items-end justify-end">
                     <h1>0/32</h1>
                     <p></p>
                     <ProgressBar progressPercentage={0} />
-                  </div>
+                  </div> */}
                 </div>
               )}
               {isConnected ? (

@@ -95,7 +95,7 @@ export const PoolSetup = ({
 
     return (
     <div className="w-full flex flex-col items-start justify-start bg-frens-very-light px-[8vw] pb-8">
-        <p className="text-frens-blue mt-8 mb-6">Complete these steps while waiting on your frens to join your pool!</p>
+        <p className="text-frens-blue mt-12 mb-8">Complete these steps while waiting on your frens to join your pool!</p>
         <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-x-3">
             {/* Dev purpose */}
             {/* <PoolStatus
@@ -124,6 +124,7 @@ export const PoolSetup = ({
                         poolAddress={poolAddress}
                         nextStep={()=>updatePoolSetupState(3)}
                         itemDone={poolSetupState[3].itemDone}
+                        itemEnabled={poolSetupState[2].itemDone}
                     />
                 </PoolSetupItem>
             </div>
@@ -140,6 +141,7 @@ export const PoolSetup = ({
                     poolAddress={poolAddress}
                     operators={operators}
                     payloadData={payloadRegisterValidator}
+                    itemEnabled={poolSetupState[3].itemDone}
                     />
                 </PoolSetupItem>
             </div>
