@@ -5,22 +5,26 @@ import { queryOperator } from "hooks/graphql/queryOperator";
 import { usePoolOwner } from "../../hooks/read/usePoolOwner";
 import { PoolStateVisual } from "../pool/PoolStateVisual";
 
-type Props = {
-  poolAddress: Address;
-  operatorAddress: Address;
-  poolBalance: number;
-};
+// type Props = {
+//   poolAddress: Address;
+//   operatorAddress: Address;
+//   poolBalance: number;
+// };
 
 
-export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, poolState }: {
+export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, poolState, isConnected, accountAddress }: {
   poolAddress: any;
   operatorAddress: any;
   poolBalance: any;
   poolState: any;
+  isConnected: Boolean;
+  accountAddress: any;
 }) => {
   const [operatorENS, setOperatorENS] = useState("");
   const [operatorImage, setOperatorImage] = useState("");
   const [operatorName, setOperatorName] = useState("");
+
+  const [accountPoolOwner, setAccountPoolOwner] = useState(false);
 
   const { poolOwner, isSuccess } = usePoolOwner({ poolAddress });
   const { chain } = useNetwork();
@@ -33,6 +37,12 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
     chainId: chain?.id ?? 5,
     cacheTime: 1_000,
   });
+
+  useEffect(() => {
+    if (isConnected && (accountAddress === poolOwner)) {
+      setAccountPoolOwner(true);
+    }
+  }, [isConnected, accountAddress]);
 
   useEffect(() => {
     if (ensName && operatorAddress) {
@@ -104,7 +114,11 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
             />
         </div>
         <div className="w-full flex flex-col-reverse lg:flex-row items-start lg:items-end justify-start pt-2 flex-1">
+          {accountPoolOwner?
+          <div className="text-[14px] ml-3">Owned by <a className="underline" href="/">you</a></div>
+          :
           <div className="text-[14px] ml-3">Owned by <a className="underline" href="/">{poolOwner?`${poolOwner.slice(0,4)}...${poolOwner.slice(-4)}`:null}</a></div>
+          }
           <div className="flex-1 text-frens-blue underline font-semibold text-[14px] lg:ml-6" onClick={() => toggleShowDetails(!showDetails)}>{showDetails?"less":"more"} details</div>
           <div className="w-full lg:w-auto flex flex-col lg:flex-row">
             {/* <div className="flex flex-col items-start lg:items-end justify-start">
@@ -126,7 +140,7 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
             </div>
             <div className="flex flex-col items-start lg:items-end justify-start lg:ml-10">
               <p className="text-[10px] uppercase text-frens-blue">Pool status</p>
-              <PoolStateVisual poolState={poolState}/>
+              <PoolStateVisual poolState={poolState} showDetails={()=>toggleShowDetails(!showDetails)}/>
             </div>
           </div>
         </div>

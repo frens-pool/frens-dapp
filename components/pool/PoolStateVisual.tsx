@@ -1,6 +1,6 @@
 import { useState, useEffect, use } from "react";
 
-export const PoolStateVisual = ({poolState}:{poolState:any}) => {
+export const PoolStateVisual = ({poolState,showDetails}:{poolState:any,showDetails:any}) => {
     const [visualStyling, setVisualStyling] = useState("cursor-pointer border-[1px] border-frens-teal mt-[4px] px-2");
     const [visualMsg, setVisualMsg] = useState("A-okay! 🤙");
 
@@ -12,7 +12,7 @@ export const PoolStateVisual = ({poolState}:{poolState:any}) => {
     },[poolState]);
 
     return(
-        <div className={visualStyling} onClick={()=>{}}>
+        <div className={visualStyling} onClick={showDetails}>
           <p className="text-[16px]">{visualMsg}</p>
         </div>
       );

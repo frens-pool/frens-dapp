@@ -33,6 +33,7 @@ const Pool: NextPage = ({}) => {
   const poolAddress = params?.pool as Address;
   const { chain } = useNetwork();
   const { isConnected } = useAccount();
+  const { address: accountAddress } = useAccount();
   const { data: poolState } = usePoolState({ poolAddress });
   const [poolBalance, setPoolBalance] = useState<number>(0);
 
@@ -66,6 +67,8 @@ const Pool: NextPage = ({}) => {
             operatorAddress={operatorAddress}
             poolBalance={poolBalance}
             poolState={poolState}
+            isConnected={isConnected}
+            accountAddress={accountAddress}
           />
           {poolState !== "staked" &&
             <PoolSetup
