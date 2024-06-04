@@ -41,8 +41,8 @@ const Create: NextPage = () => {
         {
               step == "Invite" || step == "Ready"
                 ?
-                <div className="py-[120px] px-[8vw]">
-                  <h1 className="text-[50px] font-extrabold text-frens-teal">
+                <div className="py-[90px] lg:py-[120px] px-[10vw] lg:px-[8vw]">
+                  <h1 className="text-[40px] lg:text-[50px] font-extrabold text-frens-teal">
                     Woohoow!
                   </h1>
                   <div className="flex flex-col lg:flex-row items-center justify-start">
@@ -68,18 +68,18 @@ const Create: NextPage = () => {
                     <li>• invite your frens!</li>
                   </ul>
                   <br />
-                  <p>So get those swimsuits out, and let’s have a (pool) party!</p>
+                  <p>So get those swimsuits out, and let's have a (pool) party!</p>
                   </div>
 
                 </div>
                 :
-                <div className="w-full pb-[120px]">
-                  <div className="pt-[120px] px-[8vw]">
-                    <h1 className="text-[50px] font-extrabold text-white">
+                <div className="w-full pb-[90px] lg:pb-[120px]">
+                  <div className="py-[90px] lg:py-[120px] px-[10vw] lg:px-[8vw]">
+                    <h1 className="text-[40px] lg:text-[50px] font-extrabold text-white">
                       Create a pool
                     </h1>
-                    <p className="max-w-[640px] font-normal text-white text-[22px]">Are you ready to start pooling ETH together with your frens? Let's jump in!</p> 
-                    <div className="my-32">
+                    <p className="max-w-[640px] font-normal text-white text-[20px] lg:text-[22px]">Are you ready to start pooling ETH together with your frens? Let's jump in!</p> 
+                    <div className="mt-20 lg:mt-32">
                       <CreatePool
                         onFinish={() => setStep("Invite")}
                         setPoolContract={setPoolContract}

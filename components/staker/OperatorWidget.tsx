@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Address, useEnsName, useNetwork } from "wagmi";
 import { queryOperator } from "hooks/graphql/queryOperator";
 import { usePoolOwner } from "../../hooks/read/usePoolOwner";
+import { PoolStateVisual } from "../pool/PoolStateVisual";
 
 type Props = {
   poolAddress: Address;
@@ -10,32 +11,6 @@ type Props = {
   poolBalance: number;
 };
 
-export const truncateAddress = (addr: string) =>
-  `${addr.slice(0, 5)}...${addr.slice(-3)}`;
-
-
-const PoolStateVisual = ({poolState}:{poolState:any}) => {
-  console.log("poolState:::::",poolState);
-  if(poolState === "staked"){
-    return(
-      <div className="border-[1px] border-frens-teal mt-[4px] px-2">
-        <p className="text-[16px]">A-okay! 🤙</p>
-      </div>
-    );
-  }
-  if(poolState === "accepting deposits"){
-    return(
-      <div className="border-[1px] border-frens-very-light bg-frens-very-light mt-[4px] px-2">
-        <p className="text-[16px]">setup 🚧</p>
-      </div>
-    );
-  }
-  return(
-    <div className="mt-[4px] px-2">
-      <p className="text-[16px]">Loading</p>
-    </div>
-  );
-};
 
 export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, poolState }: {
   poolAddress: any;
@@ -121,7 +96,7 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
         <div className="flex flex-row items-end justify-start">
           <div className="flex flex-col items-start justify-start">
             <p className="text-[10px] uppercase text-frens-blue">Pool</p>
-            <h1 className="text-[34px] font-extrabold">{truncateAddress(poolAddress)}</h1>
+            <h1 className="text-[34px] font-extrabold">{poolAddress?`${poolAddress.slice(0,4)}...${poolAddress.slice(-4)}`:null}</h1>
           </div>
           <img
               className="w-5 h-5 mb-3 mx-4"
@@ -129,24 +104,29 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
             />
         </div>
         <div className="w-full flex flex-col-reverse lg:flex-row items-start lg:items-end justify-start pt-2 flex-1">
-          <div className="text-[14px] ml-3">Owned by <a className="underline" href="/">{truncateAddress(poolOwner)}</a></div>
+          <div className="text-[14px] ml-3">Owned by <a className="underline" href="/">{poolOwner?`${poolOwner.slice(0,4)}...${poolOwner.slice(-4)}`:null}</a></div>
           <div className="flex-1 text-frens-blue underline font-semibold text-[14px] lg:ml-6" onClick={() => toggleShowDetails(!showDetails)}>{showDetails?"less":"more"} details</div>
           <div className="w-full lg:w-auto flex flex-col lg:flex-row">
             {/* <div className="flex flex-col items-start lg:items-end justify-start">
               <p className="text-[10px] uppercase text-frens-blue">Pool owner</p>
               <h2 className="text-[20px] mt-[5px] font-extrabold text-frens-gradient">{operatorName?operatorName:truncateAddress(operatorAddress)}</h2>
-            </div> */}
+            </div> 
             <div className="flex flex-col items-start lg:items-end justify-start">
               <p className="text-[10px] uppercase text-frens-blue">In pool</p>
               <h2 className="text-[20px] mt-[5px] font-extrabold text-frens-gradient">{poolBalance ? poolBalance : "0.0"} ETH</h2>
-            </div>
+            </div>*/}
             <div className="flex flex-col items-start lg:items-end justify-start lg:ml-10">
               <p className="text-[10px] uppercase text-frens-blue">Current rewards</p>
-           <h2 className="text-[20px] mt-[5px] font-extrabold text-frens-gradient">-</h2>
+              {poolState === 'staked'?
+                <h2 className="text-[20px] mt-[5px] font-extrabold text-frens-gradient">{poolBalance} ETH</h2>
+                :
+                <p className="text-[14px] font-light italic text-slate-400 mt-2">Complete setup to start staking!</p>
+              }
+           
             </div>
             <div className="flex flex-col items-start lg:items-end justify-start lg:ml-10">
               <p className="text-[10px] uppercase text-frens-blue">Pool status</p>
-              <PoolStateVisual poolState={poolState} />
+              <PoolStateVisual poolState={poolState}/>
             </div>
           </div>
         </div>
