@@ -17,12 +17,14 @@ export const PoolSetup = ({
     poolAddress,
     chain,
     poolState,
-    poolOwner,  
+    poolOwner,
+    accountPoolOwner,  
   }: {
     poolAddress: any;
     chain: any;
     poolState: any;
     poolOwner: any;
+    accountPoolOwner: Boolean
   }) => {
 
   const { isConnected, address: connectedAddress } = useAccount();
@@ -94,68 +96,76 @@ export const PoolSetup = ({
   };
 
     return (
-    <div className="w-full flex flex-col items-start justify-start bg-frens-very-light px-[8vw] pb-8">
-        <p className="text-frens-blue mt-12 mb-8">Complete these steps while waiting on your frens to join your pool!</p>
-        <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-x-3">
-            {/* Dev purpose */}
-            {/* <PoolStatus
-            poolState={poolState}
-            poolOwner={poolOwner}
-            poolBalance={poolBalance}
-            connectedAddress={connectedAddress!}
-            ssvValidator={ssvValidator}
-            /> */}
-            {/* Run Content */}
-            <div>
-                <PoolSetupItem itemNumber={1} itemTitle={poolSetupState[0].itemTitle} itemDone={poolSetupState[0].itemDone}>
-                    <CreateKeys
-                        poolAddress={poolAddress}
-                        nextStep={()=>updatePoolSetupState(0)}
-                        itemDone={poolSetupState[0].itemDone}
-                    />
-                    
-                </PoolSetupItem>
-                <PoolSetupItem itemNumber={4} itemTitle={poolSetupState[3].itemTitle} itemDone={poolSetupState[3].itemDone}>
-                    <SplitKeyshares
-                        operatorsList={operators}
-                        setPayloadRegisterValidator={
-                            setPayloadRegisterValidator
-                        }
-                        poolAddress={poolAddress}
-                        nextStep={()=>updatePoolSetupState(3)}
-                        itemDone={poolSetupState[3].itemDone}
-                        itemEnabled={poolSetupState[2].itemDone}
-                    />
-                </PoolSetupItem>
-            </div>
+      <>
+      {accountPoolOwner?
+      <div className="w-full flex flex-col items-start justify-start bg-frens-very-light px-[8vw] pb-8">
+          <p className="text-frens-blue mt-12 mb-8">Complete these steps while waiting on your frens to join your pool!</p>
+          <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-x-3">
+              {/* Dev purpose */}
+              {/* <PoolStatus
+              poolState={poolState}
+              poolOwner={poolOwner}
+              poolBalance={poolBalance}
+              connectedAddress={connectedAddress!}
+              ssvValidator={ssvValidator}
+              /> */}
+              {/* Run Content */}
+              <div>
+                  <PoolSetupItem itemNumber={1} itemTitle={poolSetupState[0].itemTitle} itemDone={poolSetupState[0].itemDone}>
+                      <CreateKeys
+                          poolAddress={poolAddress}
+                          nextStep={()=>updatePoolSetupState(0)}
+                          itemDone={poolSetupState[0].itemDone}
+                      />
+                      
+                  </PoolSetupItem>
+                  <PoolSetupItem itemNumber={4} itemTitle={poolSetupState[3].itemTitle} itemDone={poolSetupState[3].itemDone}>
+                      <SplitKeyshares
+                          operatorsList={operators}
+                          setPayloadRegisterValidator={
+                              setPayloadRegisterValidator
+                          }
+                          poolAddress={poolAddress}
+                          nextStep={()=>updatePoolSetupState(3)}
+                          itemDone={poolSetupState[3].itemDone}
+                          itemEnabled={poolSetupState[2].itemDone}
+                      />
+                  </PoolSetupItem>
+              </div>
 
-            <div>
-                <PoolSetupItem itemNumber={2} itemTitle={poolSetupState[1].itemTitle} itemDone={poolSetupState[1].itemDone}>
-                    <SetPubkey
-                    poolAddress={poolAddress}
-                    updatePubKeyState={updatePubKeyState}
-                    />
-                </PoolSetupItem>
-                <PoolSetupItem itemNumber={5} itemTitle={poolSetupState[4].itemTitle} itemDone={poolSetupState[4].itemDone}>
-                    <SSVRegisterValidator
-                    poolAddress={poolAddress}
-                    operators={operators}
-                    payloadData={payloadRegisterValidator}
-                    itemEnabled={poolSetupState[3].itemDone}
-                    />
-                </PoolSetupItem>
-            </div>
-            <div>
-                <PoolSetupItem itemNumber={3} itemTitle={poolSetupState[2].itemTitle} itemDone={poolSetupState[2].itemDone}>
-                    <SelectOperator
-                    setOperators={setOperators}
-                    nextStep={()=>updatePoolSetupState(2)}
-                    />
-                </PoolSetupItem>
-            </div>
-
-
-        </div>
+              <div>
+                  <PoolSetupItem itemNumber={2} itemTitle={poolSetupState[1].itemTitle} itemDone={poolSetupState[1].itemDone}>
+                      <SetPubkey
+                      poolAddress={poolAddress}
+                      updatePubKeyState={updatePubKeyState}
+                      />
+                  </PoolSetupItem>
+                  <PoolSetupItem itemNumber={5} itemTitle={poolSetupState[4].itemTitle} itemDone={poolSetupState[4].itemDone}>
+                      <SSVRegisterValidator
+                      poolAddress={poolAddress}
+                      operators={operators}
+                      payloadData={payloadRegisterValidator}
+                      itemEnabled={poolSetupState[3].itemDone}
+                      />
+                  </PoolSetupItem>
+              </div>
+              <div>
+                  <PoolSetupItem itemNumber={3} itemTitle={poolSetupState[2].itemTitle} itemDone={poolSetupState[2].itemDone}>
+                      <SelectOperator
+                      setOperators={setOperators}
+                      nextStep={()=>updatePoolSetupState(2)}
+                      />
+                  </PoolSetupItem>
+              </div>
+          </div>
+      </div>
+    :
+    <div className="w-full flex flex-col items-start justify-start px-[8vw] my-6">
+      <div className="w-full bg-frens-very-light p-5">
+      <p className="text-frens-blue">🚧<span className="italic"> Your frenly poolowner is completing his steps of the setup!</span></p>
+      </div>
     </div>
+    }
+    </>
     );
 };

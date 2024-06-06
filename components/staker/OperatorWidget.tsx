@@ -12,19 +12,16 @@ import { PoolStateVisual } from "../pool/PoolStateVisual";
 // };
 
 
-export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, poolState, isConnected, accountAddress }: {
+export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, poolState, accountPoolOwner }: {
   poolAddress: any;
   operatorAddress: any;
   poolBalance: any;
   poolState: any;
-  isConnected: Boolean;
-  accountAddress: any;
+  accountPoolOwner: Boolean;
 }) => {
   const [operatorENS, setOperatorENS] = useState("");
   const [operatorImage, setOperatorImage] = useState("");
   const [operatorName, setOperatorName] = useState("");
-
-  const [accountPoolOwner, setAccountPoolOwner] = useState(false);
 
   const { poolOwner, isSuccess } = usePoolOwner({ poolAddress });
   const { chain } = useNetwork();
@@ -38,11 +35,7 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
     cacheTime: 1_000,
   });
 
-  useEffect(() => {
-    if (isConnected && (accountAddress === poolOwner)) {
-      setAccountPoolOwner(true);
-    }
-  }, [isConnected, accountAddress]);
+
 
   useEffect(() => {
     if (ensName && operatorAddress) {
@@ -114,11 +107,7 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
             />
         </div>
         <div className="w-full flex flex-col-reverse lg:flex-row items-start lg:items-end justify-start pt-2 flex-1">
-          {accountPoolOwner?
-          <div className="text-[14px] ml-3">Owned by <a className="underline" href="/">you</a></div>
-          :
-          <div className="text-[14px] ml-3">Owned by <a className="underline" href="/">{poolOwner?`${poolOwner.slice(0,4)}...${poolOwner.slice(-4)}`:null}</a></div>
-          }
+          <div className="text-[14px] ml-3">Owned by {accountPoolOwner?"you (":null}<a className="underline" href="/">{poolOwner?`${poolOwner.slice(0,4)}...${poolOwner.slice(-4)}`:null}</a>{accountPoolOwner?")":null}</div>
           <div className="flex-1 text-frens-blue underline font-semibold text-[14px] lg:ml-6" onClick={() => toggleShowDetails(!showDetails)}>{showDetails?"less":"more"} details</div>
           <div className="w-full lg:w-auto flex flex-col lg:flex-row">
             {/* <div className="flex flex-col items-start lg:items-end justify-start">
@@ -134,7 +123,7 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
               {poolState === 'staked'?
                 <h2 className="text-[20px] mt-[5px] font-extrabold text-frens-gradient">{poolBalance} ETH</h2>
                 :
-                <p className="text-[14px] font-light italic text-slate-400 mt-2">Complete setup to start staking!</p>
+                <h2 className="text-[20px] mt-[5px] font-extrabold text-frens-gradient">-</h2>
               }
            
             </div>
