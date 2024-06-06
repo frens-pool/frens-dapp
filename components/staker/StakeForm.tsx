@@ -84,11 +84,11 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
 
   return (
     <form className="border-[1px] border-frens-blue text-frens-blue p-8 mb-8" onSubmit={handleSubmit(onSubmit)}>
-      <div className="w-full flex flex-col items-start justify-start p-4">
-        <h2 className="font-bold text-[30px] text-frens-gradient">Wanna pool together?</h2>
+      <div className="w-full flex flex-col items-start justify-start p-0 lg:p-4">
+        <h2 className="font-bold text-[20px] lg:text-[30px] text-frens-gradient">Wanna pool together?</h2>
         {!isConnected ?
           <div className="w-full flex flex-row items-center justify-start py-4">
-            <p className="text-black font-bold flex-1">Please connect your web3 wallet to stake this pool</p>
+            <p className="text-black font-semibold flex-1">Please connect your web3 wallet to stake this pool</p>
             <ConnectButton.Custom>
                         {({
                           account,
@@ -173,7 +173,7 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
                 placeholder="0.1"
                 min="0"
                 step="any"
-                className="w-full max-w-[400px] lg:mr-4 input bg-transparent input-bordered border-frens-teal focus:border-frens-blue"
+                className="w-full max-w-[400px] lg:mr-4 input bg-transparent input-bordered border-frens-teal focus:border-frens-blue mb-4 lg:mb-0"
               />
             </label>
             {prepare_error ? (
@@ -245,7 +245,7 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
           </div>
         }
       <div className="w-full flex flex-1 flex-col lg:flex-row items-start justify-start bg-frens-very-light py-5 px-6">
-        <p className="text-frens-blue mb-8 lg:mb-0 lg:mr-8">🚧<span className="italic"> A pool need 32 ETH in pool stakes to be fully funded!</span></p>
+        <p className="text-frens-blue mb-8 lg:mb-0 lg:mr-12">🚧<span className="italic"> Pool needs 32 ETH in stakes to be funded!</span></p>
         <div className="flex-1 flex flex-row items-end justify-start">
           <ProgressBar progressPercentage={((poolBalance/32)*100)} />          
           <h2 className="text-[20px] ml-2 -mb-2 font-extrabold text-frens-gradient">{poolBalance ? poolBalance : "0"} / 32 ETH</h2>

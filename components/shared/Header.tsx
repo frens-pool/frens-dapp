@@ -43,7 +43,7 @@ const Header = () => {
                     >
                       <div className="flex flex-row items-center mt-4">
                         <img
-                          className="block h-16 lg:h-24 -mb-6 lg:-mb-8"
+                          className="block h-16 lg:h-24 -mb-5 lg:-mb-8"
                           src="/FRENS_logo_with_tail.png"
                           alt="Staking with Frens"
                         />
@@ -182,6 +182,11 @@ const Header = () => {
                                     </div>
                                     <div onClick={openAccountModal}>
                                       {account.displayName}
+                                      <span className="font-normal ml-1 text-[rgba(255,255,255,0.75)]">
+                                      {account.displayBalance
+                                      ? `  ${account.displayBalance}`
+                                      : ''}
+                                      </span>
                                       </div>
                                     </button>
                                 );

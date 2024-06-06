@@ -45,17 +45,9 @@ const Dashboard: NextPage = () => {
       <div>
         <Header />
         {/* Content */}
-        <main className="relative -mt-32 ">
-          <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-            <div className="bg-white rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16">
+        <main className="">
               <div className="relative isolate overflow-hidden pt-0">
                 <div className="pt-6 sm:pb-6">
-                  {/* Heading */}
-                  <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
-                    <h1 className="text-base font-semibold leading-7 text-gray-900">
-                      Statistics
-                    </h1>
-                  </div>
                   {/* Stats */}
                   <div className="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
                     <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
@@ -114,8 +106,6 @@ const Dashboard: NextPage = () => {
                 </div>
                 <ShareList userNFTs={userNFTs} />
               </div>
-            </div>
-          </div>
         </main>
       </div>
     );

@@ -4,16 +4,12 @@ import type { NextPage } from "next";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Address, useAccount, useBalance, useNetwork } from "wagmi";
-import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
-import { PoolInfo } from "components/shared/PoolInfo";
 import { NftGallery } from "components/staker/NftGallery";
 import { NftGraphGallery } from "components/staker/NftGraphGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
 import { StakeForm } from "components/staker/StakeForm";
 import { usePoolState } from "#/hooks/read/usePoolState";
 import { usePoolOwner } from "#/hooks/read/usePoolOwner";
-import FeeRecCheckSet from "#/components/dashboard/FeeRecCheckSet";
-import PoolSSVBalance from "#/components/dashboard/PoolSSVBalance";
 import { PoolSetup } from "#/components/pool/PoolSetup";
 
 
@@ -56,9 +52,8 @@ const Pool: NextPage = ({}) => {
     }
   }, [isConnected, accountAddress]);
 
-  console.log("poolState",poolState);
   return (
-        <main className="w-full pb-40">
+        <main className="w-full pb-16 lg:pb-40">
           <OperatorWidget
             poolAddress={poolAddress}
             operatorAddress={operatorAddress}
@@ -93,31 +88,6 @@ const Pool: NextPage = ({}) => {
               )}
               </div>
             </div>
-
-
-
-          {poolState === "staked" && (
-            <div className="text-center overflow-hidden rounded-xl border border-gray-200">
-              <div className="flex justify-center align-middle bg-white rounded-xl p-0 ">
-                <div className="pt-6 pb-2 px-8 text-center md:text-middle space-y-2">
-                  <ValidatorWidget poolAddress={poolAddress} />
-                  <FeeRecCheckSet poolAddress={poolAddress} />
-                  <PoolSSVBalance poolAddress={poolAddress}/>
-                </div>
-              </div>
-            </div>
-          )}
-          {/* <div className="w-full flex flex-col items-start justify-start px-8">
-
-            <div className="p-4">
-              {isConnected ? (
-                <NftGallery poolAddress={poolAddress} />
-              ) : (
-                <NftGraphGallery poolAddress={poolAddress} />
-              )}
-            </div>
-          </div> */}
-
         </main>
   );
 };

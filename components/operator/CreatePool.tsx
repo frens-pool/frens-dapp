@@ -1,6 +1,5 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount, useContractEvent, useNetwork } from "wagmi";
-import Link from "next/link";
 
 import { etherscanUrl } from "#/utils/externalUrls";
 import { FrensContracts } from "utils/contracts";
@@ -20,6 +19,7 @@ export const CreatePool = ({
   const network = useNetworkName();
 
   const { data, isLoading, write: createPool } = useCreatePool();
+  const { isConnected } = useAccount();
 
   function onCreatePool(): void {
     if (createPool) createPool();
@@ -39,6 +39,7 @@ export const CreatePool = ({
   if (data) {
     const etherscanLink = `${etherscanUrl(chain)}/tx/${data.hash}`;
 
+    console.log("isConnected????",isConnected,"accountAddress",accountAddress);
     return (
       <div>
         {/* <div className="my-2">
@@ -75,20 +76,23 @@ export const CreatePool = ({
             <div>
               {accountAddress ? (
                 <button
-                  className="btn-large text-[#3F19EE] bg-white"
+                  className="btn-large text-[#3F19EE] bg-white opacity-1"
                   onClick={() => onCreatePool()}
                 >
                   Create new pool
                 </button>
               ) : (
+                <>
                 <button
-                  className="btn-large text-[#3F19EE] bg-white"
-                  onClick={() => {
-                    if (openConnectModal) openConnectModal();
-                  }}
+                  disabled={isConnected?false:true}
+                  className={isConnected?"btn-large text-[#3F19EE] bg-white opacity-1":"btn-large text-[#3F19EE] bg-white opacity-50"}
                 >
                   Create new pool
                 </button>
+                <p className="text-white italic mt-8 font-light">Please <span className="underline cursor-pointer" onClick={() => {
+                    if (openConnectModal) openConnectModal();
+                  }}>connect your web3 wallet</span> to create a pool.</p>
+                </>
               )}
             </div>
           )}

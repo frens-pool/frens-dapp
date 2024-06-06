@@ -26,10 +26,12 @@ export const PoolList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="w-full grid grid-cols-1 gap-2">
       {data?.creates.map((pool: PoolType) => (
         <PoolCard
           pool={pool}
+          creator={pool.creator}
+          poolState={"accepting deposits"}
           key={pool.contractAddress}
           showClusterInfo={false}
         />

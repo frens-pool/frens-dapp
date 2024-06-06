@@ -99,7 +99,7 @@ export const PoolSetup = ({
       <>
       {accountPoolOwner?
       <div className="w-full flex flex-col items-start justify-start bg-frens-very-light px-[8vw] pb-8">
-          <p className="text-frens-blue mt-12 mb-8">Complete these steps while waiting on your frens to join your pool!</p>
+          <p className="text-frens-blue mt-12 mb-8">🚧 <span className="italic">Complete these steps while waiting on your frens to join your pool!</span></p>
           <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-x-3">
               {/* Dev purpose */}
               {/* <PoolStatus
@@ -160,9 +160,9 @@ export const PoolSetup = ({
           </div>
       </div>
     :
-    <div className="w-full flex flex-col items-start justify-start px-[8vw] my-6">
+    <div className="w-full flex flex-col items-start justify-start px-[8vw] mt-8 lg:my-6">
       <div className="w-full bg-frens-very-light p-5">
-      <p className="text-frens-blue">🚧<span className="italic"> Your frenly poolowner is completing his steps of the setup!</span></p>
+      <p className="text-frens-blue">🚧<span className="italic"> The frenly poolowner has to complete the setup!</span></p>
       </div>
     </div>
     }

@@ -5,8 +5,14 @@
 
 
 @layer base {
+    .btn-smol {
+        @apply rounded-[22px] text-[12px] leading-[15px] font-bold py-[6px] px-[18px];
+    }
     .btn-medium {
         @apply rounded-[22px] text-[15px] leading-[18px] font-bold py-[11px] px-[28px];
+    }
+    .btn-inbetween {
+        @apply text-[18px] py-[12px] px-[48px] font-bold text-[#3F19EE] bg-white rounded-[34px];
     }
     .btn-large {
         @apply text-[22px] py-[20px] px-[68px] font-bold text-[#3F19EE] bg-white rounded-[34px];
