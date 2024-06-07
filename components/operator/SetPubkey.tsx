@@ -9,13 +9,11 @@ import { useSetPubkey } from "#/hooks/write/useSetPubkey";
 
 interface Props {
   poolAddress: Address;
-  nextStep: () => void;
   updatePubKeyState: any;
 }
 
 export const SetPubkey = ({
   poolAddress,
-  nextStep,
   updatePubKeyState,
 }: Props) => {
   const [depositFileData, setDepositFileData] = useState<DepositFileData>();
@@ -29,7 +27,6 @@ export const SetPubkey = ({
     hash: data?.hash,
     onSuccess: (data) => {
       updatePubKeyState(depositFileData?.pubkey);
-      nextStep();
     },
   });
   const { chain } = useNetwork();
@@ -69,7 +66,8 @@ export const SetPubkey = ({
   };
 
   return (
-    <div className="w-2/5 mx-auto my-2 p-2">
+    <div className="w-full flex flex-col items-start justify-start">
+      <div>Select your deposit file</div>
       <DropKeys
         filename="deposit_data-xxxxxxxxxx.json"
         validateFile={checkDepositData}
@@ -78,13 +76,12 @@ export const SetPubkey = ({
           setDepositFileData(depositData[0] as DepositFileData);
         }}
       />
-      <div>
-        <div>
+        <div className="w-full flex flex-row items-end justify-end mt-8">
           <button
             className={`${
               isLoading
-                ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mb-2 loading"
-                : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
+                ? "w-[244px] btn-medium blue-to-purple loading"
+                : "w-[244px] btn-medium blue-to-purple text-white"
             }`}
             onClick={() => {
               if (writeDepositFileData) writeDepositFileData();
@@ -114,7 +111,6 @@ export const SetPubkey = ({
             </a>
           </div>
         )}
-      </div>
     </div>
   );
 };

@@ -10,14 +10,10 @@ import Header from "components/shared/Header";
 import { SelectOperator } from "components/operator/SelectOperator";
 import { SSVRegisterValidator } from "components/operator/SsvRegisterValidator";
 import { SplitKeyshares } from "#/components/operator/SplitKeyshares";
-import { CreateKeys } from "components/operator/CreateKeys";
-import { DepositForm } from "components/operator/DepositForm";
-import { SetPubkey } from "#/components/operator/SetPubkey";
 import { PoolStatus } from "#/components/operator/PoolStatus";
 import { usePoolState } from "#/hooks/read/usePoolState";
 import { usePoolOwner } from "#/hooks/read/usePoolOwner";
 import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
-import { ssvValidatorApi } from "#/utils/externalUrls";
 
 enum STEP {
   REMOVE_VALIDATOR,
@@ -96,12 +92,12 @@ const RunPool: NextPage = () => {
                   {/* Describtion */}
                   <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                     <h1 className="text-base font-semibold leading-7 text-gray-900">
-                      Change cluster
-                      STEP: {step}
+                      Change cluster STEP: {step}
                     </h1>
                   </div>
                   {/* Dev purpose */}
                   <PoolStatus
+                    poolAddress={poolAddress}
                     poolState={poolState}
                     poolOwner={poolOwner}
                     poolBalance={poolBalance}

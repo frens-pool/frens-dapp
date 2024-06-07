@@ -76,15 +76,16 @@ function FeeRecCheckSet({ poolAddress }: FeeRecCheckSetInterface) {
 
   if (walletAddress) {
     return (
-      <div>
-        <div className="mt-8">
-          🚨 You should set your execution layer reward address 🚨
+      <div className="flex flex-col items-start justify-start py-[6px]">
+        <p className="text-[10px] uppercase text-black mb-[10px]">Fee receipt</p>
+        <div className="mb-2">
+          Please set your execution layer reward address
         </div>
         <button
           className={`${
             isLoading
-              ? "btn btn-info no-animation mt-2 mr-2 loading"
-              : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white mb-2"
+              ? "btn-medium blue-to-teal text-white loading"
+              : "btn-medium blue-to-teal text-white"
           }`}
           onClick={() => {
             setOnChainFeeRecipient();
