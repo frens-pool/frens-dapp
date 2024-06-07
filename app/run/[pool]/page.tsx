@@ -121,9 +121,7 @@ const RunPool: NextPage = () => {
                       <dl className="-my-3 divide-y divide-gray-100 px-6 text-sm leading-6">
                         <div className={className(step, STEP.CREATE_KEYS)}>
                           <div className="pt-4 pb-6">
-                            <CreateKeys
-                              poolAddress={poolAddress}
-                            />
+                            <CreateKeys poolAddress={poolAddress} />
                           </div>
                         </div>
                       </dl>
@@ -171,9 +169,7 @@ const RunPool: NextPage = () => {
                       </div>
                       <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                         <div className={className(step, STEP.SELECT_OPERATOR)}>
-                          <SelectOperator
-                            setOperators={setOperators}
-                          />
+                          <SelectOperator setOperators={setOperators} />
                         </div>
                       </dl>
                     </div>

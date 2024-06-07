@@ -27,15 +27,18 @@ export const SSVRegisterValidator = ({
   payloadData: any;
   operators: any;
   poolAddress: Address;
-  itemEnabled: Boolean;
+  itemEnabled?: Boolean;
 }) => {
+  const operatorIDs = operators?.map((o: any) => {
+    return o.id;
+  });
 
-  const operatorIDs = operators?.map((o: any)=>{return o.id})
-
-// debugger;
-  const { data: clusterData, isLoading: isLoadingClusterScanner } = useClusterScanner(poolAddress,operatorIDs);
-  const { data: poolPubKey, isLoading:isLoadingPoolPubKey } = usePoolPubKey({address: poolAddress});
-
+  // debugger;
+  const { data: clusterData, isLoading: isLoadingClusterScanner } =
+    useClusterScanner(poolAddress, operatorIDs);
+  const { data: poolPubKey, isLoading: isLoadingPoolPubKey } = usePoolPubKey({
+    address: poolAddress,
+  });
 
   // debugger;
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
@@ -45,7 +48,10 @@ export const SSVRegisterValidator = ({
   const { chain } = useNetwork();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
-  const { balance: SSVPoolBalance } = useTokenBalance({ tokenAddress: FrensContracts[network].SSVTokenContract.address, accountAddress: poolAddress });
+  const { balance: SSVPoolBalance } = useTokenBalance({
+    tokenAddress: FrensContracts[network].SSVTokenContract.address,
+    accountAddress: poolAddress,
+  });
 
   const { data: sendSSVdata, write: sendTransaction } = useSendSSV({
     recipient: poolAddress,
@@ -159,8 +165,9 @@ export const SSVRegisterValidator = ({
             ssvscan.io
           </a>
           <a
-            href={`${beaconchainUrl(chain)}/validator/${payloadData.payload.publicKey
-              }`}
+            href={`${beaconchainUrl(chain)}/validator/${
+              payloadData.payload.publicKey
+            }`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -217,64 +224,67 @@ export const SSVRegisterValidator = ({
 
   return (
     <>
-    {itemEnabled?
-    <div className="flex flex-col my-2 p-2 justify-center">
-      <div>{/* <SelectedOperators /> */}</div>
-      Pool SSV Balance : {SSVPoolBalance}
-      <div>
-        <button
-          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-          onClick={() => {
-            if (sendTransaction) {
-              sendTransaction();
-            }
-            // getClusterData(payloadData.payload.shares[0]);
-          }}
-        >
-          Send SSV token to Pool
-        </button>
-      </div>
-
-      <div>
-        <button
-          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-          onClick={() => registerSSVValidator()}
-        >
-          Register SSV validator
-        </button>
-      </div>
-    </div>
-    :
-    <div>
-    <p className="font-extrabold mb-5">Please complete 'Step 4: Split keyshares' to enable this step.</p>
-    <div className="flex flex-col my-2 opacity-25 p-2 justify-center">
-      <div>{/* <SelectedOperators /> */}</div>
-      Pool SSV Balance : {SSVPoolBalance}
-      <div>
-        <button
-          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-          onClick={() => {
-            if (sendTransaction) {
-              sendTransaction();
-            }
-            // getClusterData(payloadData.payload.shares[0]);
-          }}
-        >
-          Send SSV token to Pool
-        </button>
-      </div>
-
-      <div>
-        <button
-          className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
-          onClick={() => registerSSVValidator()}
-        >
-          Register SSV validator
-        </button>
-      </div>
-    </div>
-    </div>
-    }
+      {itemEnabled ? (
+        <div className="flex flex-col my-2 p-2 justify-center">
+          <div>{/* <SelectedOperators /> */}</div>
+          {/* TODO: check balance correct? */}
+          Pool SSV Balance : {SSVPoolBalance.toString()}{" "}
+          <div>
+            <button
+              className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+              onClick={() => {
+                if (sendTransaction) {
+                  sendTransaction();
+                }
+                // getClusterData(payloadData.payload.shares[0]);
+              }}
+            >
+              Send SSV token to Pool
+            </button>
+          </div>
+          <div>
+            <button
+              className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+              onClick={() => registerSSVValidator()}
+            >
+              Register SSV validator
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <p className="font-extrabold mb-5">
+            Please complete &apos;Step 4: Split keyshares&apos; to enable this
+            step.
+          </p>
+          <div className="flex flex-col my-2 opacity-25 p-2 justify-center">
+            <div>{/* <SelectedOperators /> */}</div>
+            {/* TODO: check balance correct? */}
+            Pool SSV Balance : {SSVPoolBalance.toString()}
+            <div>
+              <button
+                className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+                onClick={() => {
+                  if (sendTransaction) {
+                    sendTransaction();
+                  }
+                  // getClusterData(payloadData.payload.shares[0]);
+                }}
+              >
+                Send SSV token to Pool
+              </button>
+            </div>
+            <div>
+              <button
+                className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+                onClick={() => registerSSVValidator()}
+              >
+                Register SSV validator
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

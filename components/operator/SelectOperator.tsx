@@ -9,7 +9,7 @@ export const SelectOperator = ({
   nextStep,
   setOperators,
 }: {
-  nextStep: () => void;
+  nextStep?: () => void;
   setOperators: any;
 }) => {
   const [ssvOperators, setssvOperators] = useState<SsvOperatorType[]>([]);
@@ -17,7 +17,7 @@ export const SelectOperator = ({
   const [checkedOperators, setCheckedOperators] = useState<any[]>([]);
   const [filteredLength, setFilteredLength] = useState<number>(1);
   const { chain } = useNetwork();
-  const [chooseOwnOperators,SetChooseOwnOperators] = useState(false);
+  const [chooseOwnOperators, SetChooseOwnOperators] = useState(false);
 
   useEffect(() => {
     const fetchOperators = async () => {
@@ -60,15 +60,13 @@ export const SelectOperator = ({
     );
   };
 
-  const handleOptionChange = (
-    e: { target: { id: string } },
-  ) => {
-    if(e.target.id === "choose"){
+  const handleOptionChange = (e: { target: { id: string } }) => {
+    if (e.target.id === "choose") {
       SetChooseOwnOperators(true);
     } else {
       SetChooseOwnOperators(false);
-    };
-    console.log("chooseOwnOperators",chooseOwnOperators);
+    }
+    console.log("chooseOwnOperators", chooseOwnOperators);
   };
 
   let operatorListRows = ssvOperators?.map((operator, index) => {
@@ -126,26 +124,28 @@ export const SelectOperator = ({
   return (
     <div className="w-full">
       <div className="flex items-center mb-2">
-          <input
-            id="default"
-            type="radio" value=""
-            name="default-radio"
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            onChange={handleOptionChange}
-            />
-            <label className="ms-2">Use default FRENS operators</label>
+        <input
+          id="default"
+          type="radio"
+          value=""
+          name="default-radio"
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+          onChange={handleOptionChange}
+        />
+        <label className="ms-2">Use default FRENS operators</label>
       </div>
       <div className="flex items-center mb-2">
-          <input
-            id="choose"
-            type="radio"
-            value=""
-            name="default-radio"
-            onChange={handleOptionChange}
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-          <label className="ms-2">Choose your own operators</label>
+        <input
+          id="choose"
+          type="radio"
+          value=""
+          name="default-radio"
+          onChange={handleOptionChange}
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        />
+        <label className="ms-2">Choose your own operators</label>
       </div>
-      {chooseOwnOperators &&
+      {chooseOwnOperators && (
         <>
           <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
           <div className="overflow-x-auto w-full">
@@ -175,13 +175,13 @@ export const SelectOperator = ({
             </table>
           </div>
         </>
-      }
+      )}
       <div className="flex flex-row items-end justify-end">
         <button
           className="btn-medium blue-to-purple text-white"
           onClick={() => {
             setOperators(checkedOperators);
-            nextStep();
+            // nextStep();
           }}
         >
           confirm operators

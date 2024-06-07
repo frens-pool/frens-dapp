@@ -92,8 +92,7 @@ const RunPool: NextPage = () => {
                   {/* Describtion */}
                   <div className="pb-4 mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                     <h1 className="text-base font-semibold leading-7 text-gray-900">
-                      Change cluster
-                      STEP: {step}
+                      Change cluster STEP: {step}
                     </h1>
                   </div>
                   {/* Dev purpose */}
