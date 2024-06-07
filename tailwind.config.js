@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+      },
       keyframes: {
         wiggle: {
           "0%, 100%": {
@@ -22,8 +25,10 @@ module.exports = {
       },
       colors: {
         "frens-main": "#4554EA",
-        "frens-blue": "#3F19EE",
+        "frens-blue": "#3B53EF",
         "frens-teal": "#54DAE0",
+        "frens-purple": "#3F19EE",
+        "frens-very-light" : "#ECF2FD",
       },
     },
     patterns: {

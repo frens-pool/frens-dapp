@@ -56,7 +56,7 @@ const Navbar = () => (
     </div>
     <div className="hidden sm:block z-20 navbar-center">
       <Link href="/" className="btn btn-ghost normal-case text-3xl text-white">
-        <Image src="/FRENS.png" alt="FRENS pool" width="130" height="32" />
+        <Image src="/FRENS_writing_coloured.png" alt="FRENS pool" width="130" height="32" />
       </Link>
     </div>
     <div className="navbar-end">

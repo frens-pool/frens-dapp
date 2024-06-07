@@ -25,7 +25,7 @@ export const NftGallery = ({ poolAddress }: Props) => {
     const poolNft = await Promise.all(
       poolShareIDs.map(async (nftID) => await jsonForNftId(nftID.toString()))
     );
-    // console.log(poolNft)
+    console.log(poolNft)
     setPoolNFTs(poolNft);
   };
 
@@ -44,9 +44,7 @@ export const NftGallery = ({ poolAddress }: Props) => {
 
   if (poolNFTs.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center bg-white">
-        <div className="mb-4">None 🧐</div>
-      </div>
+        <p className="w-full italic mt-2 mb-24">No pool stakes here yet.</p>
     );
   }
 
@@ -79,9 +77,9 @@ export const NftGallery = ({ poolAddress }: Props) => {
         <div></div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {poolNFTs.map(({ name, image, nftID }) => (
-          <div key={name}>
+          <div className="w-full" key={name}>
             <CardForNFT name={name} image={image} nftID={nftID} />
           </div>
         ))}

@@ -3,27 +3,25 @@
 import type { NextPage } from "next";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Address, useBalance, useAccount } from "wagmi";
-import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
-import Header from "components/shared/Header";
-import { PoolInfo } from "components/shared/PoolInfo";
+import { Address, useAccount, useBalance, useNetwork } from "wagmi";
 import { NftGallery } from "components/staker/NftGallery";
 import { NftGraphGallery } from "components/staker/NftGraphGallery";
 import { OperatorWidget } from "components/staker/OperatorWidget";
-import { PoolFullWidget } from "components/staker/PoolFullWidget";
 import { StakeForm } from "components/staker/StakeForm";
 import { usePoolState } from "#/hooks/read/usePoolState";
 import { usePoolOwner } from "#/hooks/read/usePoolOwner";
-import FeeRecCheckSet from "#/components/dashboard/FeeRecCheckSet";
-import PoolSSVBalance from "#/components/dashboard/PoolSSVBalance";
+import { PoolSetup } from "#/components/pool/PoolSetup";
+
 
 const Pool: NextPage = ({}) => {
   const params = useParams();
   const poolAddress = params?.pool as Address;
-
+  const { chain } = useNetwork();
   const { isConnected } = useAccount();
+  const { address: accountAddress } = useAccount();
   const { data: poolState } = usePoolState({ poolAddress });
   const [poolBalance, setPoolBalance] = useState<number>(0);
+  const [accountPoolOwner, setAccountPoolOwner] = useState(false);
 
   useBalance({
     address: poolAddress,
@@ -48,67 +46,49 @@ const Pool: NextPage = ({}) => {
     }
   }, [isSuccess, poolOwner]);
 
-  return (
-    <div>
-      <Header />
-      {/* Content */}
-      <main className="relative -mt-32 ">
-        <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg px-5 py-6 shadow sm:px-6">
-            <div className="relative isolate overflow-hidden pt-0">
-              <div className="pt-6 px-4 sm:px-6 sm:pb-6 lg:px-8 ">
-                {/* Pool Page */}
-                <div className="grid grid-cols-1 gap-y-8">
-                  <OperatorWidget
-                    poolAddress={poolAddress}
-                    operatorAddress={operatorAddress}
-                  />
+  useEffect(() => {
+    if (isConnected && (accountAddress === poolOwner)) {
+      setAccountPoolOwner(true);
+    }
+  }, [isConnected, accountAddress]);
 
-                  {poolBalance === 32 || poolState === "staked" ? (
-                    <PoolFullWidget
-                      poolAddress={poolAddress}
-                      poolState={poolState}
-                      operatorAddress={operatorAddress}
-                    />
-                  ) : (
-                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
-                      <div className="pt-4 pb-2">
-                        <StakeForm poolAddress={poolAddress} />
-                        <div className="border-[0.5px] border-gray-200 rounded-md mx-4"></div>
-                        <PoolInfo poolBalance={poolBalance} />
-                      </div>
-                    </div>
-                  )}
-                  {poolState === "staked" && (
-                    <div className="text-center overflow-hidden rounded-xl border border-gray-200">
-                      <div className="flex justify-center align-middle bg-white rounded-xl p-0 ">
-                        <div className="pt-6 pb-2 px-8 text-center md:text-middle space-y-2">
-                          <ValidatorWidget poolAddress={poolAddress} />
-                          <FeeRecCheckSet poolAddress={poolAddress} />
-                          <PoolSSVBalance poolAddress={poolAddress}/>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  <div className="text-center overflow-hidden rounded-xl border border-gray-200">
-                    <div className="pt-2 text-center font-bold my-2">
-                      Pool shares
-                    </div>
-                    <div className="p-4">
-                      {isConnected ? (
-                        <NftGallery poolAddress={poolAddress} />
-                      ) : (
-                        <NftGraphGallery poolAddress={poolAddress} />
-                      )}
-                    </div>
+  return (
+        <main className="w-full pb-16 lg:pb-40">
+          <OperatorWidget
+            poolAddress={poolAddress}
+            operatorAddress={operatorAddress}
+            poolBalance={poolBalance}
+            poolState={poolState}
+            accountPoolOwner={accountPoolOwner}
+          />
+          {poolState !== "staked" &&
+            <PoolSetup
+            chain={chain}
+            poolAddress={poolAddress}
+            poolState={poolState}
+            poolOwner={poolOwner}
+            accountPoolOwner={accountPoolOwner}
+            />
+          }
+
+            <div className="w-full px-[8vw] pt-8 flex flex-col items-start justify-start">
+              <p className="text-[10px] uppercase text-frens-blue mb-4">Pool stakes</p>
+              <div className="w-full flex flex-col items-start justify-start">
+              {(poolState !== "staked") && (poolBalance !== 32) && (
+                <div className="w-full flex flex-row items-start justify-start">
+                  <div className="w-full max-w-[755px]">
+                    <StakeForm poolAddress={poolAddress} poolBalance={poolBalance} />
                   </div>
                 </div>
+              )}
+              {isConnected ? (
+                <NftGallery poolAddress={poolAddress} />
+              ) : (
+                <NftGraphGallery poolAddress={poolAddress} />
+              )}
               </div>
             </div>
-          </div>
-        </div>
-      </main>
-    </div>
+        </main>
   );
 };
 

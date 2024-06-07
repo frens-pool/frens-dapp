@@ -70,31 +70,33 @@ function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
   };
 
   return (
-    <div className="w-full flex flex-col justify-between">
-      <div className="mt-4 w-full grid grid-cols-2 gap-2">
-        <div className="h-full flex flex-col items-center justify-center">
-          <div>Cluster Balance</div>
-          <div className="text-frens-main">
-            {formatEther(clusterBalance)} SSV
-          </div>
-        </div>
+    <div className="w-full flex flex-col items-start justify-start px-6 lg:px-[1.5vw] py-6 border-b-[1px] border-dashed border-slate-300">
+        <div className="w-full flex flex-row items-start justify-start">
 
-        <div className="h-full flex flex-col items-center justify-center">
-          <div>Cluster Runway</div>
-          <div className="text-frens-main">
-            {`${moment
-              .duration(runway?.toString(), "seconds")
-              .locale("en")
-              .humanize()}`}
+          <div className="flex flex-col items-start justify-start mr-6">
+            <p className="text-[10px] uppercase text-black mb-[4px]">SSV cluster balance</p>
+            <div className="font-semibold">
+              {formatEther(clusterBalance)} SSV
+            </div>
+          </div>
+
+          <div className=" flex flex-col items-start justify-start mr-6">
+            <p className="text-[10px] uppercase text-black mb-[4px]">SSV cluster runway</p>
+            <div className="font-semibold">
+              {`${moment
+                .duration(runway?.toString(), "seconds")
+                .locale("en")
+                .humanize()}`}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="w-full flex items-center justify-center">
-        <TopUpClusterBalance
-          poolAddress={poolAddress}
-          updateSSVBalance={updateSSVBalance}
-        />
-      </div>
+        <div className="w-full flex flex-1 flex-col items-start justify-start">
+            <p className="text-[10px] uppercase text-black mt-6 mb-[4px]">Top up SSV cluster balance</p>
+            <TopUpClusterBalance
+              poolAddress={poolAddress}
+              updateSSVBalance={updateSSVBalance}
+            />
+        </div>
     </div>
   );
 }
