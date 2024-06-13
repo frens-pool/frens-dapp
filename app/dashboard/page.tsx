@@ -22,14 +22,14 @@ const Dashboard: NextPage = () => {
   const userPools = useUserPools(address as Address);
 
   const stats = [
-    {
-      name: "My Pools #",
-      value: userPools?.creates.length,
-    },
-    {
-      name: "Pool Shares #",
-      value: userNFTs.length,
-    },
+    // {
+    //   name: "My Pools #",
+    //   value: userPools?.creates.length,
+    // },
+    // {
+    //   name: "Pool Shares #",
+    //   value: userNFTs.length,
+    // },
     {
       name: "ETH Deposited",
       value: totalDeposit.toFixed(4).toString(),
@@ -45,23 +45,16 @@ const Dashboard: NextPage = () => {
       <div>
         <Header />
         {/* Content */}
-        <main className="">
-              <div className="relative isolate overflow-hidden pt-0">
-                <div className="pt-6 sm:pb-6">
-                  {/* Stats */}
-                  <div className="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
-                    <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
+        <main className="w-full px-[8vw] pb-20 lg:pb-40">
+              <div className="w-full flex flex-col items-start justify-start">
+                <div className="w-full pt-20 pb-8">
+                  <h1 className="text-black font-extrabold text-[30px]">My dashboard</h1>
+                </div>
+
                       {stats.map((stat, statIdx) => (
                         <div
                           key={stat.name}
-                          className={classNames(
-                            statIdx % 2 === 1
-                              ? "sm:border-l"
-                              : statIdx === 2
-                              ? "lg:border-l"
-                              : "",
-                            "flex items-baseline flex-wrap justify-between gap-y-2 gap-x-4 border-t border-gray-900/5 px-4 py-10 sm:px-6 lg:border-t-0 xl:px-8"
-                          )}
+                          className="flex"
                         >
                           <dt className="text-sm font-medium leading-6 text-gray-500">
                             {stat.name}
@@ -71,9 +64,6 @@ const Dashboard: NextPage = () => {
                           </dd>
                         </div>
                       ))}
-                    </dl>
-                  </div>
-                </div>
               </div>
 
               {/* Heading */}
