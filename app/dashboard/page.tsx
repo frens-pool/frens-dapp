@@ -1,8 +1,9 @@
 "use client";
 
 import type { NextPage } from "next";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Address, useAccount } from "wagmi";
+import { Address, useEnsName, useNetwork, useAccount } from "wagmi";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Header from "components/shared/Header";
@@ -20,6 +21,22 @@ const Dashboard: NextPage = () => {
   const { userNFTs, totalDeposit, totalClaimable } = useUserNfts();
   const { isConnected, address } = useAccount();
   const userPools = useUserPools(address as Address);
+  const { chain } = useNetwork();
+  const [userENS, setUserENS] = useState("");
+
+
+  const { data: ensName } = useEnsName({
+    address: address,
+    chainId: chain?.id ?? 5,
+    cacheTime: 1_000,
+  });
+
+  useEffect(() => {
+    if (ensName && address) {
+      setUserENS(ensName.toString());
+    }
+  }, [ensName, address]);
+
 
   const stats = [
     // {
@@ -45,29 +62,42 @@ const Dashboard: NextPage = () => {
       <div>
         <Header />
         {/* Content */}
-        <main className="w-full px-[8vw] pb-20 lg:pb-40">
+        <main className="w-full pb-20 lg:pb-32">
               <div className="w-full flex flex-col items-start justify-start">
-                <div className="w-full pt-20 pb-8">
-                  <h1 className="text-black font-extrabold text-[30px]">My dashboard</h1>
+                <div className="w-full px-[8vw] pt-20 pb-8 text-black flex flex-1 flex-col items-start justify-start lg:mr-8 bg-[#F7F9FC]">
+                  <p className="text-[10px] uppercase">Connected as</p>
+                  {userENS?
+                    <h1 className=" mt-[7px] font-semibold text-[28px]">{userENS}</h1>
+                    :
+                    <h1 className=" mt-[7px] font-semibold text-[28px]">{address?`${address.slice(0,4)}...${address.slice(-4)}`:null}</h1>
+                  }
                 </div>
-
-                      {stats.map((stat, statIdx) => (
-                        <div
-                          key={stat.name}
-                          className="flex"
-                        >
-                          <dt className="text-sm font-medium leading-6 text-gray-500">
-                            {stat.name}
-                          </dt>
-                          <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-                            {stat.value}
-                          </dd>
-                        </div>
-                      ))}
+                <div className="w-full px-[8vw] pt-12 pb-6 flex flex-col lg:flex-row items-start justify-start ">
+                  {stats.map((stat, statIdx) => (
+                    <div
+                      key={stat.name}
+                      className="flex flex-col items-start justify-start lg:mr-12"
+                    >
+                      <p className="text-[10px] uppercase text-frens-blue">
+                        {stat.name}
+                      </p>
+                      <h1 className="text-[34px] font-extrabold">
+                        {stat.value} ETH
+                      </h1>
+                    </div>
+                  ))}
+                  </div>
+              </div>
+              <div className="w-full px-[8vw] py-6 flex flex-col items-start justify-start ">
+                <p className="text-[10px] uppercase text-frens-blue">Pools you own</p>
+                <UserPoolList operatorAddress={address as Address} />
+              </div>
+              <div className="w-full px-[8vw] py-6 flex flex-col items-start justify-start ">
+                <p className="text-[10px] uppercase text-frens-blue">Shares you own</p>
+                <ShareList userNFTs={userNFTs} />
               </div>
 
-              {/* Heading */}
-              <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">
+              {/* <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">
                 <div className="pb-4 flex justify-between mx-auto max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                   <h1 className="text-base font-semibold leading-7 text-gray-900">
                     My own pools
@@ -86,8 +116,7 @@ const Dashboard: NextPage = () => {
                   </Link>
                 </div>
                 <UserPoolList operatorAddress={address as Address} />
-              </div>
-              {/* Heading */}
+              </div> 
               <div className="pb-4 pt-6 sm:flex-nowrap sm:pb-6">
                 <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 sm:flex-nowrap">
                   <h1 className="text-base font-semibold leading-7 text-gray-900 mb-2">
@@ -95,7 +124,7 @@ const Dashboard: NextPage = () => {
                   </h1>
                 </div>
                 <ShareList userNFTs={userNFTs} />
-              </div>
+              </div>*/}
         </main>
       </div>
     );
