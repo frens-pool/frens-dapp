@@ -21,7 +21,9 @@ export const ShareList = ({ userNFTs }: Props) => {
 
   if (userNFTs.length === 0) {
     return (
-      <p className="w-full italic mt-2 mb-2">You don't own any shares yet.</p>
+      <p className="w-full italic mt-2 mb-2">
+        You don&apos;t own any shares yet
+      </p>
     );
   }
 

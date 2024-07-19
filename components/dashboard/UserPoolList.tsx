@@ -99,7 +99,12 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
       {registerThesePools.length > 0 && (
         <div className="mb-8">
           <div className="inline-block bg-[#FFFAE6] my-4 py-3 px-4">
-            <p className="font-bold">🚀 Take action! <span className="font-normal">You can run the validator of following pools:</span></p>
+            <p className="font-bold">
+              🚀 Take action!{" "}
+              <span className="font-normal">
+                You can run the validator of following pools:
+              </span>
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-4">
             {registerThesePools?.map((pool: PoolType) => (
@@ -112,7 +117,12 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
       {openPools.length > 0 && (
         <div>
           <div className="inline-block bg-frens-very-light my-4 py-3 px-4">
-            <p className="font-bold">🙋‍♂️ Still collecting! <span className="font-normal">Gather your frens and get that 32 ETH in following pools:</span></p>
+            <p className="font-bold">
+              🙋‍♂️ Still collecting!{" "}
+              <span className="font-normal">
+                Gather your frens and get that 32 ETH in following pools:
+              </span>
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-4">
             {openPools?.map((pool: PoolType) => (
@@ -136,7 +146,9 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
       )}
 
       {poolStates.length === 0 && (
-          <p className="w-full italic mt-2 mb-2">You don't own any pools yet.</p>
+        <p className="w-full italic mt-2 mb-2">
+          You don&apos;t own any pools yet.
+        </p>
       )}
     </>
   );
