@@ -95,11 +95,16 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
   }
 
   return (
-    <div>
+    <>
       {registerThesePools.length > 0 && (
-        <div>
-          <div className="mb-2 text-base font-semibold italic leading-7 text-gray-900">
-            Take action. You can run this validator
+        <div className="mb-8">
+          <div className="inline-block bg-[#FFFAE6] my-4 py-3 px-4">
+            <p className="font-bold">
+              🚀 Take action!{" "}
+              <span className="font-normal">
+                You can run the validator of following pools:
+              </span>
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-4">
             {registerThesePools?.map((pool: PoolType) => (
@@ -111,8 +116,13 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
       {openPools.length > 0 && (
         <div>
-          <div className="mb-2 text-base font-semibold italic leading-7 text-gray-900">
-            Still collecting
+          <div className="inline-block bg-frens-very-light my-4 py-3 px-4">
+            <p className="font-bold">
+              🙋‍♂️ Still collecting!{" "}
+              <span className="font-normal">
+                Gather your frens and get that 32 ETH in following pools:
+              </span>
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-4">
             {openPools?.map((pool: PoolType) => (
@@ -124,8 +134,8 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
 
       {stakedPools.length > 0 && (
         <div>
-          <div className="my-2 text-base font-semibold italic leading-7 text-gray-900">
-            Up and running
+          <div className="inline-block cursor-pointer border-[1px] border-frens-teal my-4 py-3 px-4">
+            <p className="font-bold">🤙 Up and running!</p>
           </div>
           <div className="grid grid-cols-1 gap-4">
             {stakedPools?.map((pool: PoolType) => (
@@ -136,10 +146,10 @@ export const UserPoolList = ({ operatorAddress }: UserPoolList) => {
       )}
 
       {poolStates.length === 0 && (
-        <div className="flex flex-col items-center justify-center bg-white">
-          <div className="mb-4">No own pools yet 🧐</div>
-        </div>
+        <p className="w-full italic mt-2 mb-2">
+          You don&apos;t own any pools yet.
+        </p>
       )}
-    </div>
+    </>
   );
 };
