@@ -50,81 +50,38 @@ export const NftGraphGallery = ({ poolAddress }: Props) => {
   }
   return (
     <div className="w-full bg-white">
-      <div className="w-full flex flex-row py-2">
-      <div className="text-[10px] uppercase text-black w-[10%]">Stake ID</div>
-      <div className="text-[10px] uppercase text-black w-[20%]">Stake amount</div>
-      <div className="text-[10px] uppercase text-black w-[70%]">Stake owner</div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-      </div>
-      <div className="w-full flex flex-col-reverse items-start justify-start">
         {data.depositToPools.map(
           ({ id, amount, depositer, nftId }: Deposit) => (
-            <div className="w-full border-b-[1px] border-slate-200 flex flex-row py-2" key={id}>
-                <div className="font-semibold mt-1  w-[10%]">{nftId}</div>
-                <div className="font-semibold text-frens-blue mt-1 w-[20%]">{formatEther(BigInt(amount))} ETH</div>
-                <div className="font-semibold mt-1 w-[70%]">
-                {`${depositer.slice(
-                0,
-                6
-              )}...${depositer.slice(-4)}`}
+            <div className="w-full flex flex-col items-start justify-start">
+              <div className="w-full relative" key={id}>
+                <div className="w-full text-center z-[9] absolute top-[40%] text-[32px] text-white font-extrabold mt-1 w-[20%]">{formatEther(BigInt(amount))} ETH</div>
+                <div className="font-bold z-[8] text-white text-[8.5px] absolute bottom-[21px] mt-1 w-full text-center">{depositer}</div>
+                <img
+                  className="top-0 left-0 w-full z-[1] rounded-[10px]"
+                  src="/FRENS_tokens_bg.png"
+                  alt="Tokens bg"
+                />
+              </div>
+                <div className="w-full flex flex-row items-center justify-start border-frens-blue border-dashed border-[1px] border-t-0 rounded-b-[10px] -mt-2 pt-6 pb-4 px-5">
+                  <div className="flex flex-col items-start justify-start w-[50%]">
+                    <div className="text-frens-blue uppercase text-[10px]">STAKE Owner</div>
+                    <div>
+                          {`${depositer.slice(
+                    0,
+                    6
+                  )}...${depositer.slice(-4)}`}
+                  </div>
+                  </div>
+                  <div className="flex flex-col items-start justify-start w-[50%]">
+                    <div className="text-frens-blue uppercase text-[10px]">Current stake reward</div>
+                    <div>0,45 ETH</div>
+                  </div>
                 </div>
-            </div>
+              </div>
           )
         )}
-      </div>
-      <div className="mt-10 italic">
-        <p>(This is a preview: <ConnectButton.Custom>
-            {({
-              account,
-              chain,
-              openAccountModal,
-              openChainModal,
-              openConnectModal,
-              authenticationStatus,
-              mounted,
-            }) => {
-              // Note: If your app doesn't use authentication, you
-              // can remove all 'authenticationStatus' checks
-              const ready = mounted && authenticationStatus !== 'loading';
-              const connected =
-                ready &&
-                account &&
-                chain &&
-                (!authenticationStatus ||
-                  authenticationStatus === 'authenticated');
-
-              return (
-                <span className="underline inline-block cursor-pointer" onClick={openConnectModal}
-                {...(!ready && {
-                    'aria-hidden': true,
-                    'style': {
-                      opacity: 0,
-                      pointerEvents: 'none',
-                      userSelect: 'none',
-                    },
-                  })}
-                >
-                  {(() => {
-                    if (!connected) {
-                      return (
-                          "connect your web3 wallet"
-                      );
-                    }
-
-                    if (chain.unsupported) {
-                      return (
-                          "Wrong network"
-                      );
-                    }
-
-                    return (
-                          ""
-                    );
-                  })()}
-                </span>
-              );
-            }}
-          </ConnectButton.Custom> to see full NFT)</p>
       </div>
     </div>
   );
