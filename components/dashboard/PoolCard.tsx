@@ -26,7 +26,7 @@ interface ClusterInfo {
   feePerBlockWei: bigint;
 }
 
-function PoolCard({ pool, showClusterInfo }: PoolCard) {
+function PoolCard({ pool, showClusterInfo, poolState }: PoolCard) {
   const { chain } = useNetwork();
   const [clusterInfo, setClusterInfo] = useState<ClusterInfo>();
   const [runway, setRunway] = useState<bigint>(BigInt(0));
@@ -152,7 +152,7 @@ function PoolCard({ pool, showClusterInfo }: PoolCard) {
           <div className="text-[10px] uppercase text-frens-blue mb-[4px]">
             Pool Status
           </div>
-          <PoolStateVisual poolState={pool.poolState} showDetails={""} />
+          <PoolStateVisual poolState={poolState} showDetails={""} />
         </div>
       </div>
     </Link>
