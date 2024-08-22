@@ -10,12 +10,14 @@ const GET_POOLS = gql`
       }
       contractAddress
       creator
+      staked
     }
   }
 `;
 
 export const PoolList = () => {
   const { loading, error, data } = useQuery(GET_POOLS);
+  console.log(data);
 
   if (loading) {
     return (
@@ -31,7 +33,7 @@ export const PoolList = () => {
         <PoolCard
           pool={pool}
           creator={pool.creator}
-          poolState={"accepting deposits"}
+          poolState={pool.staked ? "staked" : "accepting deposits"}
           key={pool.contractAddress}
           showClusterInfo={false}
         />
