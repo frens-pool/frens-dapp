@@ -17,6 +17,7 @@ import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
 import { useSendSSV } from "#/hooks/write/useSendSSV";
 import { useClusterScanner } from "#/hooks/read/useClusterScanner";
 import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
+import { useApprove } from "#/hooks/write/useApprove";
 
 export const SSVRegisterValidator = ({
   payloadData,
@@ -34,8 +35,8 @@ export const SSVRegisterValidator = ({
   });
 
   // debugger;
-  const { data: clusterData, isLoading: isLoadingClusterScanner } =
-    useClusterScanner(poolAddress, operatorIDs);
+  // const { data: clusterData, isLoading: isLoadingClusterScanner } =
+  //   useClusterScanner(poolAddress, operatorIDs);
   const { data: poolPubKey, isLoading: isLoadingPoolPubKey } = usePoolPubKey({
     address: poolAddress,
   });
@@ -52,6 +53,9 @@ export const SSVRegisterValidator = ({
     tokenAddress: FrensContracts[network].SSVTokenContract.address,
     accountAddress: poolAddress,
   });
+
+  const { write: approve } = useApprove({ value: SSVPoolBalance ? SSVPoolBalance.toString() : "0", spender: FrensContracts[network].SSVNetworkContract.address });
+
 
   const { data: sendSSVdata, write: sendTransaction } = useSendSSV({
     recipient: poolAddress,
@@ -82,8 +86,17 @@ export const SSVRegisterValidator = ({
   // };
 
   const registerSSVValidator = async () => {
-    debugger;
-    const clusterParams = clusterData.cluster[1];
+
+    const clusterParams = Object.values(payloadData.clusterData.cluster[1]);
+
+    const functionArgs = [payloadData.payload.shares[0].payload.publicKey,
+    payloadData.payload.shares[0].payload.operatorIds,
+    payloadData.payload.shares[0].payload.sharesData,
+    payloadData.tokenAmount,
+      clusterParams];
+
+    functionArgs.map((a, i) => { console.log(`ARG${i} : ${(typeof a)} ${a}`) })
+
     // {
     //   validatorCount: clusterData.validatorCount,
     //   networkFeeIndex: clusterData.networkFeeIndex,
@@ -94,13 +107,7 @@ export const SSVRegisterValidator = ({
     // function data to send to the SSV contract
     const encodedFunctionData = encodeFunctionData({
       abi: FrensContracts[network].SSVNetworkContract.abi,
-      args: [
-        payloadData.payload.shares[0].payload.publicKey,
-        payloadData.payload.shares[0].payload.operatorIds,
-        payloadData.payload.shares[0].payload.sharesData,
-        payloadData.tokenAmount,
-        clusterParams,
-      ],
+      args: functionArgs,
       functionName: "registerValidator",
     });
 
@@ -165,9 +172,8 @@ export const SSVRegisterValidator = ({
             ssvscan.io
           </a>
           <a
-            href={`${beaconchainUrl(chain)}/validator/${
-              payloadData.payload.publicKey
-            }`}
+            href={`${beaconchainUrl(chain)}/validator/${payloadData.payload.publicKey
+              }`}
             className="link text-frens-main underline px-2"
             target="_blank"
             rel="noopener noreferrer"
@@ -245,6 +251,19 @@ export const SSVRegisterValidator = ({
           <div>
             <button
               className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
+              onClick={() => {
+                if (approve) {
+                  approve();
+                }
+                // getClusterData(payloadData.payload.shares[0]);
+              }}
+            >
+              Allow spending SSV tokens
+            </button>
+          </div>
+          <div>
+            <button
+              className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
               onClick={() => registerSSVValidator()}
             >
               Register SSV validator
@@ -260,7 +279,7 @@ export const SSVRegisterValidator = ({
           <div className="flex flex-col my-2 opacity-25 p-2 justify-center">
             <div>{/* <SelectedOperators /> */}</div>
             {/* TODO: check balance correct? */}
-            Pool SSV Balance : {SSVPoolBalance.toString()}
+            Pool SSV Balance : {SSVPoolBalance?.toString()}
             <div>
               <button
                 className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
