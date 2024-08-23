@@ -10,12 +10,10 @@ import {
 import { parseEther, encodeFunctionData } from "viem";
 import { useTokenBalance } from "#/hooks/read/useTokenBalance";
 import { etherscanUrl } from "#/utils/externalUrls";
-import { SelectedOperators } from "./SelectedOperators";
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
 import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
 import { useSendSSV } from "#/hooks/write/useSendSSV";
-import { useClusterScanner } from "#/hooks/read/useClusterScanner";
 import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 import { useApprove } from "#/hooks/write/useApprove";
 
@@ -30,20 +28,9 @@ export const SSVRegisterValidator = ({
   poolAddress: Address;
   itemEnabled?: Boolean;
 }) => {
-  const operatorIDs = operators?.map((o: any) => {
-    return o.id;
-  });
-
-  // debugger;
-  // const { data: clusterData, isLoading: isLoadingClusterScanner } =
-  //   useClusterScanner(poolAddress, operatorIDs);
-  const { data: poolPubKey, isLoading: isLoadingPoolPubKey } = usePoolPubKey({
-    address: poolAddress,
-  });
 
   // debugger;
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
-  // const [clusterData, setClusterData] = useState<any>();
   const network = useNetworkName();
   const { address: walletAddress } = useAccount();
   const { chain } = useNetwork();
@@ -67,23 +54,6 @@ export const SSVRegisterValidator = ({
       // @ts-ignore
       hash: sendSSVdata?.hash,
     });
-
-  // const getClusterData = async (payloadData: any) => {
-  //   if (payloadData && poolAddress && chain) {
-  //     const nodeUrl = chain.rpcUrls.default.http.at(0)!;
-  //     const contractAddress =
-  //       FrensContracts[network].SSVNetworkContract.address;
-  //     const clusterParams = {
-  //       contractAddress: contractAddress,
-  //       nodeUrl: nodeUrl,
-  //       ownerAddress: poolAddress,
-  //       operatorIds: payloadData.payload.operatorIds,
-  //       network,
-  //     };
-  //     const clusterDataTemp = await buildCluster(clusterParams);
-  //     setClusterData(clusterDataTemp.cluster[1]);
-  //   }
-  // };
 
   const registerSSVValidator = async () => {
 
