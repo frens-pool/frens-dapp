@@ -7,6 +7,7 @@ import { SelectOperator } from "components/operator/SelectOperator";
 import { SSVRegisterValidator } from "components/operator/SsvRegisterValidator";
 import { SplitKeyshares } from "#/components/operator/SplitKeyshares";
 import { CreateKeys } from "components/operator/CreateKeys";
+import { DepositETH } from "components/operator/DepositETH";
 import { SetPubkey } from "#/components/operator/SetPubkey";
 import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 import { ssvValidatorApi } from "#/utils/externalUrls";
@@ -52,6 +53,10 @@ export const PoolSetup = ({
     },
     {
       itemTitle: "Register validator",
+      itemDone: false,
+    },
+    {
+      itemTitle: "Deposit 32 ETH",
       itemDone: false,
     },
   ]);
@@ -174,6 +179,17 @@ export const PoolSetup = ({
                 <SelectOperator
                   setOperators={setOperators}
                   nextStep={() => updatePoolSetupState(2)}
+                />
+              </PoolSetupItem>
+              <PoolSetupItem
+                itemNumber={6}
+                itemTitle={poolSetupState[5].itemTitle}
+                itemDone={poolSetupState[5].itemDone}
+              >
+                <DepositETH
+                  nextStep={() => updatePoolSetupState(5)}
+                  poolAddress={poolAddress}
+                  poolBalance={poolBalance}
                 />
               </PoolSetupItem>
             </div>
