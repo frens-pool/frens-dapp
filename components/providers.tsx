@@ -29,7 +29,7 @@ const { chains, publicClient } = configureChains(
     jsonRpcProvider({
       rpc: () => {
         return {
-          http: "https://ethereum-holesky.core.chainstack.com/9bd2c053e76cb4859e12390e23609994",
+          http: "http://holesky-geth.my.ava.do:8545" //"https://ethereum-holesky.core.chainstack.com/9bd2c053e76cb4859e12390e23609994",
         };
       },
     }),

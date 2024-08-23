@@ -101,6 +101,7 @@ export const SplitKeyshares = ({
         return {
           payload: JSON.parse(keySharesPayload),
           tokenAmount,
+          clusterData: cData
         };
       } catch (error: any) {
         // console.log(error);
@@ -114,7 +115,8 @@ export const SplitKeyshares = ({
       .then((data) => {
         setPayloadRegisterValidator(data);
         setPayloadError(false);
-        // nextStep();
+        setLoading(false);
+        nextStep && nextStep();
       })
       .finally(() => {
         // what now ?
