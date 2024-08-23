@@ -181,7 +181,7 @@ export const SelectOperator = ({
           className="btn-medium blue-to-purple text-white"
           onClick={() => {
             setOperators(checkedOperators);
-            // nextStep();
+            nextStep && nextStep();
           }}
         >
           confirm operators
