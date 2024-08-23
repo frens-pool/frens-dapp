@@ -21,15 +21,24 @@ export const SelectOperator = ({
 
   useEffect(() => {
     const fetchOperators = async () => {
-      const data = await fetch(ssvOperatorListApi(1, 8, chain));
+      const data = await fetch(ssvOperatorListApi(1, 800, chain));
       const json = await data.json();
+
+      let pattern = /AP #/;
 
       // filter out permissioned Operators
       const filteredOperators =
         json.operators?.reduce(
           (acc: Array<SsvOperatorType>, item: SsvOperatorType) => {
-            if (!item.address_whitelist) {
+            if (
+              // !item.address_whitelist
+              // && 
+              // [609,607,618,665].includes(item.name)
+              pattern.test(item.name)
+            ) {
               acc.push(item);
+            }else{
+              console.log("excluding",item.name)
             }
             return acc;
           },
