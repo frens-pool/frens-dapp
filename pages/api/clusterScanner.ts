@@ -28,10 +28,10 @@ export default async function handler(req: any, res: any) {
   const cachedResponse = cache[cacheKey];
   const now = Date.now();
 
-  if (cachedResponse && now - cachedResponse.timestamp < 60000) { // Cache for 60 seconds
-    // console.log(`using cached clusterscanner response for key ${cacheKey}`);
-    return res.status(200).json(cachedResponse.data);
-  }
+  // if (cachedResponse && now - cachedResponse.timestamp < 60000) { // Cache for 60 seconds
+  //   // console.log(`using cached clusterscanner response for key ${cacheKey}`);
+  //   return res.status(200).json(cachedResponse.data);
+  // }
 
   // dirty hack to avoid double run
   cache[cacheKey] = {
