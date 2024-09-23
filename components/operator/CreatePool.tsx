@@ -39,7 +39,6 @@ export const CreatePool = ({
   if (data) {
     const etherscanLink = `${etherscanUrl(chain)}/tx/${data.hash}`;
 
-    console.log("isConnected????",isConnected,"accountAddress",accountAddress);
     return (
       <div>
         {/* <div className="my-2">
@@ -66,37 +65,53 @@ export const CreatePool = ({
   }
 
   return (
-      <div className="flex items-start justify-start">
-        <div>
-          {isLoading ? (
-            <button disabled className="btn-large opacity-25 text-[#3F19EE] bg-white">
-              Loading ...
-            </button>
-          ) : (
-            <div>
-              {accountAddress ? (
+    <div className="flex items-start justify-start">
+      <div>
+        {isLoading ? (
+          <button
+            disabled
+            className="btn-large opacity-25 text-[#3F19EE] bg-white"
+          >
+            Loading ...
+          </button>
+        ) : (
+          <div>
+            {accountAddress ? (
+              <button
+                className="btn-large text-[#3F19EE] bg-white opacity-1"
+                onClick={() => onCreatePool()}
+              >
+                Create new pool
+              </button>
+            ) : (
+              <>
                 <button
-                  className="btn-large text-[#3F19EE] bg-white opacity-1"
-                  onClick={() => onCreatePool()}
+                  disabled={isConnected ? false : true}
+                  className={
+                    isConnected
+                      ? "btn-large text-[#3F19EE] bg-white opacity-1"
+                      : "btn-large text-[#3F19EE] bg-white opacity-50"
+                  }
                 >
                   Create new pool
                 </button>
-              ) : (
-                <>
-                <button
-                  disabled={isConnected?false:true}
-                  className={isConnected?"btn-large text-[#3F19EE] bg-white opacity-1":"btn-large text-[#3F19EE] bg-white opacity-50"}
-                >
-                  Create new pool
-                </button>
-                <p className="text-white italic mt-8 font-light">Please <span className="underline cursor-pointer" onClick={() => {
-                    if (openConnectModal) openConnectModal();
-                  }}>connect your web3 wallet</span> to create a pool.</p>
-                </>
-              )}
-            </div>
-          )}
-        </div>
+                <p className="text-white italic mt-8 font-light">
+                  Please{" "}
+                  <span
+                    className="underline cursor-pointer"
+                    onClick={() => {
+                      if (openConnectModal) openConnectModal();
+                    }}
+                  >
+                    connect your web3 wallet
+                  </span>{" "}
+                  to create a pool.
+                </p>
+              </>
+            )}
+          </div>
+        )}
       </div>
+    </div>
   );
 };
