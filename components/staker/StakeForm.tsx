@@ -23,7 +23,7 @@ interface Props {
   poolBalance: any;
 }
 
-export const StakeForm = ({ poolAddress }: Props) => {
+export const StakeForm = ({ poolAddress , poolBalance}: Props) => {
   const [maxDepositValue, setMaxDepositValue] = useState<bigint>(parseEther("32"));
   const [depositAmount, setDepositAmount] = useState<bigint>(parseEther("0.1"));
 
@@ -93,7 +93,6 @@ export const StakeForm = ({ poolAddress }: Props) => {
   };
 
   return (
-
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white">
         <div className="text-center font-bold my-2">Select ETH amount</div>
@@ -126,7 +125,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
             <div>Ur a true fren but unfortunatly</div>
             <div className="text-red-500">max pool sum volume is 32.0 ETH</div>
           </div>
-        :
+        )}
         <div className="mt-4 mb-8 w-full">
           <div className={`my-2 ${isDepositing || !isConnected
               ? "opacity-25"
@@ -136,7 +135,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
             <label className="flex-1">
               <input
                 disabled={isDepositing || !isConnected ? true : false}
-                {...register("ethInput", { max: maxDepositValue })}
+                {...register("ethInput", { max: maxDepositValue?.toString() })}
                 id="ethInput"
                 type="number"
                 placeholder="0.1"
@@ -171,7 +170,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
             )}            
           </div>
         </div>
-        }
+        
         {/*temp disable - causes error on full stake*/}
         {prepare_error && (
           <div className="text-center font-medium my-2">
@@ -217,7 +216,7 @@ export const StakeForm = ({ poolAddress }: Props) => {
       <div className="w-full flex flex-1 flex-col lg:flex-row items-start justify-start bg-frens-very-light py-5 px-6">
         <p className="text-frens-blue mb-8 lg:mb-0 lg:mr-12">🚧<span className="italic"> Pool needs 32 ETH in stakes to be funded!</span></p>
         <div className="flex-1 flex flex-row items-end justify-start">
-          <ProgressBar progressPercentage={((poolBalance/32)*100)} />          
+          {/* <ProgressBar progressPercentage={((poolBalance/32)*100)} />           */}
           <h2 className="text-[20px] ml-2 -mb-2 font-extrabold text-frens-gradient">{poolBalance ? poolBalance : "0"} / 32 ETH</h2>
         </div>
       </div>
