@@ -18,6 +18,7 @@ const Footer = () => (
       <Link href="/" className="text-white mt-2 text-[14px] font-semibold hover:text-frens-blue">All pools</Link>
       <Link href="/dashboard" className="text-white text-[14px] font-semibold hover:text-frens-blue">My Dashboard</Link>
       <Link href="https://docs.frens.fun/docs/manifesto" target="_blank" rel="noopener noreferrer" className="text-white text-[14px] font-semibold hover:text-frens-blue">Docs</Link>
+      <Link href="/disclaimer" rel="noopener noreferrer" className="text-white text-[14px] font-semibold hover:text-frens-blue">Legal Disclaimer</Link>
       <Link href="/create" className="text-white text-[14px] font-semibold hover:text-frens-blue">New Pool</Link>
       <a href="https://frens.fun/" target="_blank" rel="noopener noreferrer" className="text-[12px] text-slate-500 mt-6">
         Made with ❤️ by your{" "}
