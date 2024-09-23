@@ -9,7 +9,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, goerli, holesky } from "wagmi/chains";
+import { mainnet, holesky } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
@@ -21,7 +21,7 @@ const apiKey = process.env.NEXT_PUBLIC_INFURA_KEY || "";
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, goerli, holesky],
+  [mainnet, holesky],
   [
     infuraProvider({
       apiKey: apiKey,
@@ -29,7 +29,7 @@ const { chains, publicClient } = configureChains(
     jsonRpcProvider({
       rpc: () => {
         return {
-          http: "http://holesky-geth.my.ava.do:8545" //"https://ethereum-holesky.core.chainstack.com/9bd2c053e76cb4859e12390e23609994",
+          http: "http://holesky-geth.my.ava.do:8545", //"https://ethereum-holesky.core.chainstack.com/9bd2c053e76cb4859e12390e23609994",
         };
       },
     }),
