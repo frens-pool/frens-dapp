@@ -5,6 +5,7 @@ import {
   RainbowKitProvider,
   connectorsForWallets,
   getDefaultWallets,
+  DisclaimerComponent,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
 import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
@@ -14,9 +15,6 @@ import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
-const appInfo = {
-  appName: "FRENS",
-};
 const apiKey = process.env.NEXT_PUBLIC_INFURA_KEY || "";
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "";
 
@@ -60,6 +58,15 @@ const wagmiConfig = createConfig({
   publicClient,
 });
 
+const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
+  <Text>
+    By connecting your wallet, you agree to the{" "}
+    <Link href="https://app.frens.fun/terms">Terms of Service</Link> and
+    acknowledge you have read and understand the protocol{" "}
+    <Link href="https://app.frens.fun/disclaimer">Disclaimer</Link>
+  </Text>
+);
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
@@ -67,7 +74,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider
         chains={chains}
-        appInfo={appInfo}
+        appInfo={{
+          appName: "FRENS",
+          disclaimer: Disclaimer,
+        }}
         theme={lightTheme({
           accentColor: "#3F19EE",
         })}
