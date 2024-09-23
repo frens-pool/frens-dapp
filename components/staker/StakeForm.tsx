@@ -4,8 +4,10 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FrensContracts } from "utils/contracts";
-
+import { parseEther } from "viem";
+import { ethers } from "ethers";
 import { ProgressBar } from "../shared/ProgressBar";
+
 
 import {
   Address,
@@ -21,8 +23,10 @@ interface Props {
   poolBalance: any;
 }
 
-export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
-  const [maxDepositValue, setMaxDepositValue] = useState(32);
+export const StakeForm = ({ poolAddress , poolBalance}: Props) => {
+  const [maxDepositValue, setMaxDepositValue] = useState<bigint>(parseEther("32"));
+  const [depositAmount, setDepositAmount] = useState<bigint>(parseEther("0.1"));
+
   const [isDepositing, setIsDepositing] = useState<boolean>(false);
 
   const { chain } = useNetwork();
@@ -35,21 +39,27 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
     formState: { errors },
     reset,
   } = useForm();
-  const ethInputForm = watch("ethInput");
-  const stakeAmount = ethInputForm > 0 ? ethInputForm.toString() : "0.1";
 
   const onSubmit = () => {
     if (deposit) deposit();
     setIsDepositing(true);
   };
 
+  const setMax = () => {
+    setDepositAmount(maxDepositValue);
+  };
+
+  const setAmount = (amount: string) => {
+    setDepositAmount(BigInt(ethers.utils.parseUnits(amount, "ether").toString()));
+  }
+
   const { isConnected } = useAccount();
   useBalance({
     address: poolAddress,
     watch: true,
     onSuccess(data) {
-      const poolBalanceNumber: number = +data.formatted;
-      const maxDepositValue = 32 - poolBalanceNumber;
+      const poolBalanceNumber: bigint = data.value;
+      const maxDepositValue: bigint = parseEther("32") - poolBalanceNumber;
       setMaxDepositValue(maxDepositValue);
     },
   });
@@ -58,7 +68,7 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
     write: deposit,
     isError,
     prepare_error,
-  } = useDeposit({ address: poolAddress, val: stakeAmount });
+  } = useDeposit({ address: poolAddress, val: depositAmount });
   // console.log(depositData);
   const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
@@ -83,81 +93,39 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
   };
 
   return (
-    <form className="border-[1px] border-frens-blue text-frens-blue p-8 mb-8" onSubmit={handleSubmit(onSubmit)}>
-      <div className="w-full flex flex-col items-start justify-start p-0 lg:p-4">
-        <h2 className="font-bold text-[20px] lg:text-[30px] text-frens-gradient">Wanna pool together?</h2>
-        {!isConnected ?
-          <div className="w-full flex flex-row items-center justify-start py-4">
-            <p className="text-black font-semibold flex-1">Please connect your web3 wallet to stake this pool</p>
-            <ConnectButton.Custom>
-                        {({
-                          account,
-                          chain,
-                          openAccountModal,
-                          openChainModal,
-                          openConnectModal,
-                          authenticationStatus,
-                          mounted,
-                        }) => {
-                          // Note: If your app doesn't use authentication, you
-                          // can remove all 'authenticationStatus' checks
-                          const ready = mounted && authenticationStatus !== 'loading';
-                          const connected =
-                            ready &&
-                            account &&
-                            chain &&
-                            (!authenticationStatus ||
-                              authenticationStatus === 'authenticated');
-
-                          return (
-                            <div
-                              {...(!ready && {
-                                'aria-hidden': true,
-                                'style': {
-                                  opacity: 0,
-                                  pointerEvents: 'none',
-                                  userSelect: 'none',
-                                },
-                              })}
-                            >
-                              {(() => {
-                                if (!connected) {
-                                  return (
-                                    <button className="bg-black border-2 border-black text-white font-semibold text-[14px] py-[8px] px-8 rounded-[22px]" onClick={openConnectModal} type="button">
-                                      Connect wallet
-                                    </button>
-                                  );
-                                }
-
-                                if (chain.unsupported) {
-                                  return (
-                                    <button className="bg-black border-2 border-black text-white font-semibold text-[14px] py-[8px] px-8 rounded-[22px]" onClick={openChainModal} type="button">
-                                      Wrong network
-                                    </button>
-                                  );
-                                }
-
-                                return (
-                                    <button className="flex flex-row border-black border-2 bg-black text-white font-semibold text-[14px] py-[8px] pl-3 pr-4 rounded-[22px]" type="button">
-                                    <div
-                                      onClick={openChainModal}
-                                      style={{ display: 'flex', alignItems: 'center' }}
-                                      className="bg-[rgba(255,255,255,0.25)] text-white font-normal text-[14px] px-2 rounded-[10px] mr-2"
-                                    >
-                                      {chain.name}
-                                    </div>
-                                    <div onClick={openAccountModal}>
-                                      {account.displayName}
-                                      </div>
-                                    </button>
-                                );
-                              })()}
-                            </div>
-                          );
-                        }}
-                      </ConnectButton.Custom>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="bg-white">
+        <div className="text-center font-bold my-2">Select ETH amount</div>
+        <label className="input-group flex justify-center">
+          <input
+            {...register("ethInput", { max: ethers.utils.formatEther(maxDepositValue) })}
+            id="ethInput"
+            type="number"
+            placeholder={ethers.utils.formatEther(depositAmount)}
+            min="0"
+            step="any"
+            className="input input-bordered w-1/3"
+            onChange={(e) => { setAmount(e.target.value) }}
+          />
+          <button
+            className="btn text-white bg-gradient-to-r from-frens-blue to-frens-teal"
+            type="button"
+            onClick={setMax}
+          >Max</button>
+        </label>
+        {/*temp disable - causes error on full stake*/}
+        {/* {prepare_error && (
+          <div className="text-center font-medium my-2">
+            <div>Ur a true fren but unfortunatly</div>
+            <div className="text-red-500">{getErrorMessage(prepare_error)}</div>
           </div>
-        :
+        )} */}
+        {errors.ethInput && (
+          <div className="text-center font-medium my-2">
+            <div>Ur a true fren but unfortunatly</div>
+            <div className="text-red-500">max pool sum volume is 32.0 ETH</div>
+          </div>
+        )}
         <div className="mt-4 mb-8 w-full">
           <div className={`my-2 ${isDepositing || !isConnected
               ? "opacity-25"
@@ -167,7 +135,7 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
             <label className="flex-1">
               <input
                 disabled={isDepositing || !isConnected ? true : false}
-                {...register("ethInput", { max: maxDepositValue })}
+                {...register("ethInput", { max: maxDepositValue?.toString() })}
                 id="ethInput"
                 type="number"
                 placeholder="0.1"
@@ -182,15 +150,16 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
                 className="rounded-[26px] text-[20px] leading-[30px] font-bold py-[11px] px-[32px] blue-to-teal text-white"
                 type="submit"
               >
-                create stake
+                Pool
               </button>
             ) : (
               <>{!isDepositing && (
                 <button
-                  disabled={isDepositing || !isConnected ? true : false}
-                  className={`rounded-[26px] text-[20px] leading-[30px] font-bold py-[11px] px-[32px] blue-to-teal text-white ${isDepositing || !isConnected
-                      ? "opacity-25"
-                      : "opacity-1"
+                  disabled={isDepositing ? true : false}
+                  className={`btn text-white ${isDepositing
+                    ? "btn-primary"
+                    : "bg-gradient-to-r from-frens-blue to-frens-teal"
+
                     }`}
                   type="submit"
                 >
@@ -201,7 +170,7 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
             )}            
           </div>
         </div>
-        }
+        
         {/*temp disable - causes error on full stake*/}
         {prepare_error && (
           <div className="text-center font-medium my-2">
@@ -247,7 +216,7 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
       <div className="w-full flex flex-1 flex-col lg:flex-row items-start justify-start bg-frens-very-light py-5 px-6">
         <p className="text-frens-blue mb-8 lg:mb-0 lg:mr-12">🚧<span className="italic"> Pool needs 32 ETH in stakes to be funded!</span></p>
         <div className="flex-1 flex flex-row items-end justify-start">
-          <ProgressBar progressPercentage={((poolBalance/32)*100)} />          
+          {/* <ProgressBar progressPercentage={((poolBalance/32)*100)} />           */}
           <h2 className="text-[20px] ml-2 -mb-2 font-extrabold text-frens-gradient">{poolBalance ? poolBalance : "0"} / 32 ETH</h2>
         </div>
       </div>
