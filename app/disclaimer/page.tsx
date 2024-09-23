@@ -1,106 +1,29 @@
 "use client";
 
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Address, useEnsName, useNetwork, useAccount } from "wagmi";
-import { PlusSmallIcon } from "@heroicons/react/20/solid";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Header from "components/shared/Header";
-import { UserPoolList } from "#/components/dashboard/UserPoolList";
-import { ShareList } from "components/dashboard/ShareList";
 
-import { useUserNfts } from "#/hooks/read/useUserNFTs";
-import { useUserPools } from "#/hooks/read/useUserPools";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
-const Dashboard: NextPage = () => {
-  const { userNFTs, totalDeposit, totalClaimable } = useUserNfts();
-  const { isConnected, address } = useAccount();
-  const userPools = useUserPools(address as Address);
-  const { chain } = useNetwork();
-  const [userENS, setUserENS] = useState("");
-
-
-  const { data: ensName } = useEnsName({
-    address: address,
-    chainId: chain?.id ?? 5,
-    cacheTime: 1_000,
-  });
-
-  useEffect(() => {
-    if (ensName && address) {
-      setUserENS(ensName.toString());
-    }
-  }, [ensName, address]);
-
-
-  const stats = [
-    // {
-    //   name: "My Pools #",
-    //   value: userPools?.creates.length,
-    // },
-    // {
-    //   name: "Pool Shares #",
-    //   value: userNFTs.length,
-    // },
-    {
-      name: "ETH Deposited",
-      value: totalDeposit.toFixed(4).toString(),
-    },
-    {
-      name: "ETH claimable",
-      value: totalClaimable.toFixed(4).toString(),
-    },
-  ];
-
-  // if (isConnected) {
-  //   return (
-  //     <div>
-  //       <Header />
-  //       {/* Content */}
-  //       <main className="w-full pb-20 lg:pb-32">
-  //             <div className="w-full flex flex-col items-start justify-start">
-  //               <div className="w-full px-[8vw] pt-20 pb-8 text-black flex flex-1 flex-col items-start justify-start lg:mr-8 bg-[#F7F9FC]">
-  //                 <p className="text-[10px] uppercase">disclaimer</p>
-
-  //               </div>
-  //              </div>
-  //       </main>
-  //     </div>
-  //   );
-  // }
+const Disclaimer: NextPage = () => {
 
   return (
     <div className="bg-white" data-theme="winter">
       <Header />
-
-
       <main className="w-full pb-20 lg:pb-32">
-              <div className="w-full flex flex-col items-start justify-start">
-                <div className="w-full px-[8vw] pt-20 pb-8 text-black flex flex-1 flex-col items-start justify-start lg:mr-8 bg-[#F7F9FC]">
-                     
-      {/* <main className="relative -mt-32 ">
-        <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-          <div className="bg-white min-h-[60vh] flex flex-col items-center justify-center rounded-lg py-6 shadow px-4 sm:px-6 lg:px-16"> */}
-            {/* <div>disclaimer</div> */}
-
+        <div className="w-full flex flex-col items-start justify-start">
+          <div className="w-full px-[8vw] pt-20 pb-8 text-black flex flex-1 flex-col items-start justify-start lg:mr-8 bg-[#F7F9FC]">
             <div className="project-rich-text w-richtext">
               <p><strong>Disclaimer <br />FRENS dapp</strong></p>
               <p>v-1, 23.09.2024</p>
-              <p>Please read this disclaimer ("<strong>Disclaimer</strong>") carefully before accessing, interacting with, or using the set of blockchain-based smart contracts that together constitute "<strong>FRENS dapp</strong>".
+              <p>Please read this disclaimer (&quot;<strong>Disclaimer</strong>&quot;) carefully before accessing, interacting with, or using the set of blockchain-based smart contracts that together constitute &quot;<strong>FRENS dapp</strong>&quot;.
                 This Disclaimer relates to the use of the FRENS dapp. The use of services offered by Eguila BV is distinctly separate from the use of the FRENS dapp .</p>
-              <p>The FRENS dapp is a fully on-chain, decentralized and non-custodial staking pool protocol. The FRENS dapp enables its users ("<strong>you</strong>" or "<strong>Protocol User(s)</strong>") (i) to stake Ether (ETH) with node operators ("<strong>Node Operator(s)</strong>"</p>
+              <p>The FRENS dapp is a fully on-chain, decentralized and non-custodial staking pool protocol. The FRENS dapp enables its users (&quot;<strong>you</strong>&quot; or &quot;<strong>Protocol User(s)</strong>&quot;) (i) to stake Ether (ETH) with node operators (&quot;<strong>Node Operator(s)</strong>&quot;</p>
               <p>ALL FUNCTIONALITIES OF THE FRENS dapp ARE OF A PURELY TECHNICAL NATURE, ARE NOT ASSOCIATED WITH, AND DO NOT CONVEY ANY LEGAL CLAIM TOWARD ANY ENTITY, INDIVIDUAL, OR GROUP OF INDIVIDUALS, INCLUDING BUT NOT LIMITED TO Eguila BV, ANY DIRECTOR, EMPLOYEE, AGENT, TEAM MEMBER OR ANY OTHER THIRD-PARTY.</p>
               <p><strong>1. No legal or factual relationship</strong></p>
-              <p>The FRENS dapp has been deployed and runs in a non-custodial and decentralized manner on the Ethereum network. Neither Eguila BV or any other third-party is responsible for the operation, running, or functioning of the FRENS dapp and/or any of the interactions, collaborations, or factual relationships between Protocol Users and the smart contracts of the FRENS dapp, between Protocol Users themselves, or between Protocol Users and Operators. Any use of the terms 'we', 'our' etc., is for semantic purposes only and not to be understood as an assumption of ownership or control of the FRENS dapp.</p>
+              <p>The FRENS dapp has been deployed and runs in a non-custodial and decentralized manner on the Ethereum network. Neither Eguila BV or any other third-party is responsible for the operation, running, or functioning of the FRENS dapp and/or any of the interactions, collaborations, or factual relationships between Protocol Users and the smart contracts of the FRENS dapp, between Protocol Users themselves, or between Protocol Users and Operators. Any use of the terms &quot;we&quot;, &quot;our&quot; etc., is for semantic purposes only and not to be understood as an assumption of ownership or control of the FRENS dapp.</p>
               <p>The Protocol User understands, acknowledges, and agrees that:</p>
               <ul role="list">
                 <li><strong>No relevant control / no relevant permissioned functions</strong>: Eguila BV has neither access to nor any other possibility to control and/or influence any transactions, deposits, and/or allocations made by the Protocol Users using the FRENS dapp. Any funds potentially placed with the FRENS dapp are in the sole control of the respective smart contracts and cannot be accessed by Eguila BV. There is no operational dependency of the FRENS dapp on Eguila BV.</li>
-                <li><strong>Third Party Services and Materials: </strong>The FRENS dapp may integrate and rely on the functioning of third-party services and technologies, such as the Ethereum network, third-party digital wallets, and other external protocols (collectively, "<strong>Third Party Services</strong>"), as well as third party content, data, information, applications, materials, or may provide links to third-party websites (collectively, "<strong>Third Party Materials</strong>"). By using the FRENS dapp, you acknowledge that the functionality, reliability and compatibility of Third Party Services and Third Party Materials may be essential to the functioning of the FRENS dapp and you assume any and all responsibility for the use of such Third Party Services and Third Party Materials. </li>
+                <li><strong>Third Party Services and Materials: </strong>The FRENS dapp may integrate and rely on the functioning of third-party services and technologies, such as the Ethereum network, third-party digital wallets, and other external protocols (collectively, &quot;<strong>Third Party Services</strong>&quot;), as well as third party content, data, information, applications, materials, or may provide links to third-party websites (collectively, &quot;<strong>Third Party Materials</strong>&quot;). By using the FRENS dapp, you acknowledge that the functionality, reliability and compatibility of Third Party Services and Third Party Materials may be essential to the functioning of the FRENS dapp and you assume any and all responsibility for the use of such Third Party Services and Third Party Materials. </li>
                 <li><strong>Restaking rewards</strong>: By using the FRENS dapp and subject to the programmatic logic of the FRENS dapp and any integrated Third Party Services (such as the Ethereum staking mechanism), Protocol Users may earn network fees and token rewards from Third Party Services through interactions such as participating in the network consensus mechanism. Any such rewards are a direct compensation for services provided by the Protocol User. Eguila BV has no control over any such rewards (including the amount of such rewards paid to Protocol Users) and such rewards do not originate from / are not intermediated or forwarded by Eguila BV.</li>
                 <li><strong>No partnership</strong>: Protocol Users do not agree to and do not state their will to enter into or create a simple partnership, joint venture, or similar sort of legal or factual partnership by accessing or using the FRENS dapp, by holding the FRENS NFT, and/or interacting with the FRENS dapp in any other way.</li>
                 <li><strong>Release of claims</strong>: By accessing or using the FRENS dapp, you hereby, to the maximum extent permissible under applicable law, release all present and future claims against Eguila BV, and against any individual or group of project team member or contributors related to your use of the FRENS dapp, the FRENS dapp governance mechanism, and any other facet of the FRENS dapp.</li>
@@ -110,7 +33,7 @@ const Dashboard: NextPage = () => {
               <p>The Protocol User understands and acknowledges that the FRENS dapp, in particular, and smart contracts, blockchains, cryptographic tokens, and related systems and software, in general, are nascent, experimental, inherently risky, and subject to change. In order to understand the risks associated with using the FRENS dapp, as well as any other blockchain-based technology, you are strongly encouraged to get acquainted with the underlying protocols as much as possible.</p>
               <p>The following list contains some of the risks associated with the use of the FRENS dapp, without being exhaustive:</p>
               <ul role="list">
-                <li>THE FRENS dapp IS DEPLOYED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.</li>
+                <li>THE FRENS dapp IS DEPLOYED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.</li>
                 <li>THE FRENS dapp IS HIGHLY EXPERIMENTAL, AND ANY DIGITAL ASSETS OR TOKENS (INCLUDING, BUT NOT LIMITED TO, ETH) USED IN CONNECTION WITH THE FRENS dapp ARE AT RISK OF BEING LOST INDEFINITELY, WITHOUT ANY KIND OF CONSIDERATION. </li>
                 <li>Although the FRENS dapp has been security-audited prior to its deployment, THERE IS A HIGH RISK THAT THE FRENS dapp MAY CONTAIN BUGS, DEFECTS, OR ERRORS THAT MATERIALLY AND ADVERSELY AFFECT THE USE, FUNCTIONALITY, OR PERFORMANCE OF THE FRENS dapp OR ANY OTHER PROTOCOL, APPLICATION, OR SERVICE CONTAINING OR USED IN CONNECTION WITH THE FRENS dapp OR THAT THE FRENS dapp MAY BE HACKED BY THIRD-PARTIES, POTENTIALLY LEADING TO ADVERSE EFFECTS ON STAKED ASSETS OR THE INDEFINITE LOSS OF ANY DIGITAL ASSETS OR TOKENS PLACED WITH THE FRENS dapp.</li>
                 <li>The FRENS dapp is built on the Ethereum network and may make use of other DeFi applications or services, including but not limited to services of Validators. As such, the proper functioning of the FRENS dapp is dependent on the proper functioning of the underlying and/or incorporated protocols. </li>
@@ -130,4 +53,4 @@ const Dashboard: NextPage = () => {
   );
 };
 
-export default Dashboard;
+export default Disclaimer;
