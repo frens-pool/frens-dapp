@@ -19,19 +19,20 @@ const Disclaimer: NextPage = () => {
                 <strong>1. Scope</strong>
               </p>
               <p>
-                These terms of service (as amended from time to time the "
-                <strong>Terms</strong>") apply to the access and use of the
-                website at frens.fun (including all subdomains the "
-                <strong>Website</strong>"), the front-end interface at
-                app.frens.fun (the "<strong>App</strong>") as well as any
-                services, content, documentation, tools, features and
-                functionalities as may be provided by Eguila BV (the "
-                <strong>Company</strong>") from time to time in connection with
-                the AP Protocol (collectively the "<strong>Services</strong>").
-                The Company may offer services and products other than those
-                described in section 2, and your use of, and participation in,
-                such other services and products may subject to additional terms
-                ("<strong>Additional Terms</strong>"). Such Additional Terms,
+                These terms of service (as amended from time to time the &quot;
+                <strong>Terms</strong>&quot;) apply to the access and use of the
+                website at frens.fun (including all subdomains the &quot;
+                <strong>Website</strong>&quot;), the front-end interface at
+                app.frens.fun (the &quot;<strong>App</strong>&quot;) as well as
+                any services, content, documentation, tools, features and
+                functionalities as may be provided by Eguila BV (the &quot;
+                <strong>Company</strong>&quot;) from time to time in connection
+                with the AP Protocol (collectively the &quot;
+                <strong>Services</strong>&quot;). The Company may offer services
+                and products other than those described in section 2, and your
+                use of, and participation in, such other services and products
+                may subject to additional terms (&quot;
+                <strong>Additional Terms</strong>&quot;). Such Additional Terms,
                 where applicable, will be presented to you before your use of or
                 your participation in such other services or product.{" "}
               </p>
@@ -62,14 +63,18 @@ const Disclaimer: NextPage = () => {
                   content and documentation regarding the functionalities of a
                   set of decentralized and open-sourced smart contracts that
                   facilitate the non-custodial restaking of natively staked
-                  Ether (ETH) for holders of ETH ("<strong>ETH Holders</strong>
-                  ") and node operators ("<strong>Node Operators</strong>" or "
-                  <strong>Validators</strong>") on the one hand, and operators
-                  of actively validates services ("<strong>AVS(s)</strong>") on
-                  the other hand (these smart contracts collectively the "
-                  <strong>FRENS Protocol</strong>", and the different users each
-                  a "<strong>Protocol User</strong>" and collectively the "
-                  <strong>Protocol Users</strong>").
+                  Ether (ETH) for holders of ETH (&quot;
+                  <strong>ETH Holders</strong>
+                  &quot;) and node operators (&quot;
+                  <strong>Node Operators</strong>&quot; or &quot;
+                  <strong>Validators</strong>&quot;) on the one hand, and
+                  operators of actively validates services (&quot;
+                  <strong>AVS(s)</strong>&quot;) on the other hand (these smart
+                  contracts collectively the &quot;
+                  <strong>FRENS Protocol</strong>&quot;, and the different users
+                  each a &quot;<strong>Protocol User</strong>&quot; and
+                  collectively the &quot;
+                  <strong>Protocol Users</strong>&quot;).
                   <em>
                     The FRENS Protocol is not part of the Services, and your use
                     of the FRENS Protocol as a Protocol User is entirely at your
@@ -95,35 +100,36 @@ const Disclaimer: NextPage = () => {
               <p>
                 The Services may rely on the functioning of third-party services
                 and technologies, such as the Ethereum network, third-party
-                digital wallets, and other external protocols (collectively, "
-                <strong>Third Party Services</strong>"), as well as third party
-                content, data, information, applications, materials, or may
-                provide links to third-party websites (collectively, "
-                <strong>Third Party Materials</strong>"). The Company does not
-                control, endorse, recommend, or have any responsibility for the
-                performance, availability, security, or content of Third Party
-                Services and Third Party Materials, which may be essential for
-                the proper functioning of the Services and which are distinctly
-                different from the Services themselves. By using the Services,
-                you acknowledge that the functionality, reliability, and
-                compatibility of Third Party Services and Third Party Materials
-                are beyond the Company's control, and the Company disclaims any
-                liability for any issues, losses, disruptions, errors, or
-                damages arising from their use, malfunction, or failure. Your
-                access and use of such Third Party Services and Third Party
-                Materials are governed solely by their respective terms and
-                conditions, and you waive any claims against the Company related
-                to these third party interactions. The Company makes no
-                representations or warranties regarding the security, operation,
-                accuracy, completeness, availability, or legality of Third Party
-                Services or Third Party Materials. Any reliance on the privacy
-                practices, data security processes, or other policies of such
-                Third Party Services or Third Party Materials is at your own
-                risk. Third Party Services and Third Party Materials are
-                provided solely as a convenience to you, and the Company
-                reserves the right to remove any of them from the Services for
-                any reason, including but not limited to, any AVSs or
-                Validators.
+                digital wallets, and other external protocols (collectively,
+                &quot;
+                <strong>Third Party Services</strong>&quot;), as well as third
+                party content, data, information, applications, materials, or
+                may provide links to third-party websites (collectively, &quot;
+                <strong>Third Party Materials</strong>&quot;). The Company does
+                not control, endorse, recommend, or have any responsibility for
+                the performance, availability, security, or content of Third
+                Party Services and Third Party Materials, which may be essential
+                for the proper functioning of the Services and which are
+                distinctly different from the Services themselves. By using the
+                Services, you acknowledge that the functionality, reliability,
+                and compatibility of Third Party Services and Third Party
+                Materials are beyond the Company&apos;s control, and the Company
+                disclaims any liability for any issues, losses, disruptions,
+                errors, or damages arising from their use, malfunction, or
+                failure. Your access and use of such Third Party Services and
+                Third Party Materials are governed solely by their respective
+                terms and conditions, and you waive any claims against the
+                Company related to these third party interactions. The Company
+                makes no representations or warranties regarding the security,
+                operation, accuracy, completeness, availability, or legality of
+                Third Party Services or Third Party Materials. Any reliance on
+                the privacy practices, data security processes, or other
+                policies of such Third Party Services or Third Party Materials
+                is at your own risk. Third Party Services and Third Party
+                Materials are provided solely as a convenience to you, and the
+                Company reserves the right to remove any of them from the
+                Services for any reason, including but not limited to, any AVSs
+                or Validators.
               </p>
               <p>
                 <strong>4. Prohibited Use and Excluded Jurisdictions</strong>
@@ -152,8 +158,8 @@ const Disclaimer: NextPage = () => {
                 </li>
                 <li>
                   To transmit, or procure the sending of, any advertising or
-                  promotional material, including any "junk", "spam", or any
-                  other similar solicitation.
+                  promotional material, including any &quot;junk&quot;,
+                  &quot;spam&quot;, or any other similar solicitation.
                 </li>
                 <li>
                   To impersonate or attempt to impersonate the Company, a
@@ -210,14 +216,15 @@ const Disclaimer: NextPage = () => {
                 <li>
                   Use the Website in any manner or with the use of any tool,
                   device, or software that could disable, overburden, damage,
-                  impair, or interfere with any other person's use of the
+                  impair, or interfere with any other person&apos;s use of the
                   Website.
                 </li>
                 <li>
                   Introduce any viruses, trojan horses, worms, logic bombs, or
                   other material that is malicious or technologically harmful to
                   the Services, the Protocol Users, any underlying blockchain,
-                  or any of the Service’s related utilities or functionalities.
+                  or any of the Service&quot;s related utilities or
+                  functionalities.
                 </li>
                 <li>
                   Encourage or induce any third-party to engage in any of the
@@ -279,15 +286,16 @@ const Disclaimer: NextPage = () => {
                 or delay in fulfilling or performing any obligation under these
                 Terms or in providing the Services, when and to the extent such
                 failure is caused by or results from any events beyond the
-                Company's ability to control, including flood, fire, earthquake,
-                epidemics, pandemics, tsunami, explosion, war, invasion,
-                hostilities (whether war is declared or not), terrorist threats
-                or acts, riot or other civil unrest, government order, law, or
-                action, embargoes or blockades, strikes, labour stoppages or
-                slowdowns, or other industrial disturbances, shortage of
-                adequate or suitable Internet connectivity, telecommunication
-                breakdown or shortage of adequate power or electricity, and
-                other similar events beyond the Company's control.
+                Company&apos;s ability to control, including flood, fire,
+                earthquake, epidemics, pandemics, tsunami, explosion, war,
+                invasion, hostilities (whether war is declared or not),
+                terrorist threats or acts, riot or other civil unrest,
+                government order, law, or action, embargoes or blockades,
+                strikes, labour stoppages or slowdowns, or other industrial
+                disturbances, shortage of adequate or suitable Internet
+                connectivity, telecommunication breakdown or shortage of
+                adequate power or electricity, and other similar events beyond
+                the Company&apos;s control.
               </p>
               <p>
                 <strong>5.2. Indemnity</strong>
@@ -295,10 +303,10 @@ const Disclaimer: NextPage = () => {
               <p>
                 You agree to indemnify and hold the Company harmless from and
                 against any loss, damage, liability, claim, or demand, including
-                reasonable attorneys' fees and expenses, made by any third party
-                due to or arising out of (i) any breach of these Terms or any
-                law or regulation by you, your affiliates, your employees or any
-                other persons acting your behalf; (ii) any breach of your
+                reasonable attorneys&apos; fees and expenses, made by any third
+                party due to or arising out of (i) any breach of these Terms or
+                any law or regulation by you, your affiliates, your employees or
+                any other persons acting your behalf; (ii) any breach of your
                 representations and warranties set forth in these Terms, or
                 (iii) your violation of the rights of a third party.
               </p>
@@ -333,11 +341,11 @@ const Disclaimer: NextPage = () => {
                 integration.
               </p>
               <p>
-                The Services are provided on an 'as is' and 'as available' basis
-                and may from time to time be subject to improvements,
-                modifications, or updates. Your continued access and use of the
-                Services is subject to such improvements, modifications, or
-                updates.{" "}
+                The Services are provided on an &apos;as is&apos; and &apos;as
+                available&apos; basis and may from time to time be subject to
+                improvements, modifications, or updates. Your continued access
+                and use of the Services is subject to such improvements,
+                modifications, or updates.{" "}
               </p>
               <p>
                 THE COMPANY FURTHERMORE DOES NOT REPRESENT AND WARRANT AND
@@ -368,8 +376,8 @@ const Disclaimer: NextPage = () => {
                   service mark, trade name, slogan, logo, image, or other
                   proprietary notation displayed on or through the Services,
                   unless applicable laws or regulations prohibit this
-                  restriction or you have the Company's written permission to do
-                  so.
+                  restriction or you have the Company&apos;s written permission
+                  to do so.
                 </li>
                 <li>
                   You do not exploit the Services for any commercial purpose,
@@ -379,7 +387,7 @@ const Disclaimer: NextPage = () => {
                 <li>
                   You do not access or use the Services in any manner that could
                   disable, overburden, damage, disrupt or impair the Services or
-                  interfere with any other party's access to or use of the
+                  interfere with any other party&apos;s access to or use of the
                   Services or use any device, software or routine that causes
                   the same.
                 </li>
@@ -426,16 +434,16 @@ const Disclaimer: NextPage = () => {
                 retains all rights, titles, and interests to its own
                 intellectual property, including all copyrights, inventions,
                 trademarks, designs, domain names, know-how, trade secrets,
-                data, and other intangible property rights ("
-                <strong>Intellectual Property Rights</strong>"). Unless
+                data, and other intangible property rights (&quot;
+                <strong>Intellectual Property Rights</strong>&quot;). Unless
                 expressly indicated otherwise, all Intellectual Property Rights
                 in the Services or any part of it remain vested in the Company.
               </p>
               <p>
                 By submitting any ideas, suggestions, documents, or proposals to
-                the Company through any form of communication ("
-                <strong>User Feedback</strong>"), you do so at your own risk,
-                and the Company assumes no obligations regarding the User
+                the Company through any form of communication (&quot;
+                <strong>User Feedback</strong>&quot;), you do so at your own
+                risk, and the Company assumes no obligations regarding the User
                 Feedback. You acknowledge and agree that your submission of User
                 Feedback does not grant you any rights, titles, or interests in
                 the Services or the User Feedback. All User Feedback becomes the
