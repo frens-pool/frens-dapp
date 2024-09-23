@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   RainbowKitProvider,
   connectorsForWallets,
+  getDefaultWallets,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
 import { injectedWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
@@ -11,32 +12,47 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, goerli, holesky } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 const appInfo = {
   appName: "FRENS",
 };
 const apiKey = process.env.NEXT_PUBLIC_INFURA_KEY || "";
-const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "frens-pool";
+const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "";
 
 const { chains, publicClient } = configureChains(
-  [goerli],
+  [mainnet, goerli, holesky],
   [
     infuraProvider({
       apiKey: apiKey,
+    }),
+    jsonRpcProvider({
+      rpc: () => {
+        return {
+          http: "http://holesky-geth.my.ava.do:8545" //"https://ethereum-holesky.core.chainstack.com/9bd2c053e76cb4859e12390e23609994",
+        };
+      },
     }),
     publicProvider(),
   ]
 );
 
-const connectors = connectorsForWallets([
-  {
-    groupName: "Wallets",
-    wallets: [
-      injectedWallet({ chains }),
-      metaMaskWallet({ projectId, chains }),
-    ],
-  },
-]);
+const { connectors } = getDefaultWallets({
+  appName: "Frens",
+  projectId,
+  chains,
+});
+
+// const connectors = connectorsForWallets([
+//   ...wallets,
+//   {
+//     groupName: "Wallets",
+//     wallets: [
+//       injectedWallet({ chains }),
+//       metaMaskWallet({ projectId, chains }),
+//     ],
+//   },
+// ]);
 
 const wagmiConfig = createConfig({
   autoConnect: true,

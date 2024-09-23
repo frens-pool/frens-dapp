@@ -166,15 +166,11 @@ export const TopUpClusterBalance = ({
   }
 
   return (
-    <div className="mt-4">
-      <div>
-        <div className="text-center font-bold mb-2">Top up cluster balance</div>
-
-        <div className="text-center my-2">Select SSV amount</div>
-      </div>
-      <div>
+    <div className="w-full">
+      <div className="my-2">Select SSV amount</div>
+      <div className="flex flex-col lg:flex-row items-start justify-start">
         <input
-          className="input input-bordered w-2/3"
+          className="input input-bordered w-full lg:max-w-[300px]"
           type="number"
           placeholder="1"
           min="0"
@@ -187,57 +183,139 @@ export const TopUpClusterBalance = ({
             )
           }
         />
+        {walletAddress ? (
+          <>
+            {approveSuccess ? (
+              <button
+                className={`${
+                  approveLoading
+                    ? "btn-medium btn-blue-border mx-4 loading"
+                    : "btn-medium btn-blue-border mx-4"
+                }`}
+                onClick={() => {
+                  approveSSVSpending!();
+                }}
+                disabled={approveLoading}
+              >
+                {approveLoading ? "In progress" : "approve again"}
+              </button>
+            ) : (
+              <button
+                className={`${
+                  approveLoading
+                    ? "btn-medium btn-blue-border mx-4 loading"
+                    : "btn-medium btn-blue-border mx-4"
+                }`}
+                onClick={() => {
+                  approveSSVSpending!();
+                }}
+                disabled={approveLoading}
+              >
+                {approveLoading ? "In progress" : "approve ssv"}
+              </button>
+            )}
+            <button
+              className={`${
+                !approveSuccess
+                  ? "btn-medium opacity-50 text-white blue-to-teal"
+                  : "btn-medium opacity-1 text-white blue-to-teal"
+              }`}
+              onClick={() => {
+                topUp();
+              }}
+              disabled={!clusterData && !cluster && !approveSuccess}
+            >
+              top up
+            </button>
+          </>
+        ) : (
+          <div className="ml-4">
+            <ConnectButton.Custom>
+              {({
+                account,
+                chain,
+                openAccountModal,
+                openChainModal,
+                openConnectModal,
+                authenticationStatus,
+                mounted,
+              }) => {
+                // Note: If your app doesnt use authentication, you
+                // can remove all authenticationStatus checks
+                const ready = mounted && authenticationStatus !== "loading";
+                const connected =
+                  ready &&
+                  account &&
+                  chain &&
+                  (!authenticationStatus ||
+                    authenticationStatus === "authenticated");
+
+                return (
+                  <div
+                    {...(!ready && {
+                      "aria-hidden": true,
+                      style: {
+                        opacity: 0,
+                        pointerEvents: "none",
+                        userSelect: "none",
+                      },
+                    })}
+                  >
+                    {(() => {
+                      if (!connected) {
+                        return (
+                          <button
+                            className="bg-black border-2 border-black text-white font-semibold text-[14px] py-[8px] px-8 rounded-[22px]"
+                            onClick={openConnectModal}
+                            type="button"
+                          >
+                            Connect wallet
+                          </button>
+                        );
+                      }
+
+                      if (chain.unsupported) {
+                        return (
+                          <button
+                            className="bg-black border-2 border-black text-white font-semibold text-[14px] py-[8px] px-8 rounded-[22px]"
+                            onClick={openChainModal}
+                            type="button"
+                          >
+                            Wrong network
+                          </button>
+                        );
+                      }
+
+                      return (
+                        <button
+                          className="flex flex-row border-black border-2 bg-black text-white font-semibold text-[14px] py-[8px] pl-3 pr-4 rounded-[22px]"
+                          type="button"
+                        >
+                          <div
+                            onClick={openChainModal}
+                            style={{ display: "flex", alignItems: "center" }}
+                            className="bg-[rgba(255,255,255,0.25)] text-white font-normal text-[14px] px-2 rounded-[10px] mr-2"
+                          >
+                            {chain.name}
+                          </div>
+                          <div onClick={openAccountModal}>
+                            {account.displayName}
+                            <span className="font-normal ml-1 text-[rgba(255,255,255,0.75)]">
+                              {account.displayBalance
+                                ? `  ${account.displayBalance}`
+                                : ""}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
+          </div>
+        )}
       </div>
-      {walletAddress ? (
-        <div className="mt-2">
-          {approveSuccess ? (
-            <button
-              className={`${
-                approveLoading
-                  ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
-                  : "btn btn-info text-white mb-2"
-              }`}
-              onClick={() => {
-                approveSSVSpending!();
-              }}
-              disabled={approveLoading}
-            >
-              {approveLoading ? "In progress" : "approve again"}
-            </button>
-          ) : (
-            <button
-              className={`${
-                approveLoading
-                  ? "btn bg-gradient-to-r from-frens-blue to-frens-teal mt-2 mr-2 loading"
-                  : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-              }`}
-              onClick={() => {
-                approveSSVSpending!();
-              }}
-              disabled={approveLoading}
-            >
-              {approveLoading ? "In progress" : "approve ssv"}
-            </button>
-          )}
-          <button
-            className={`${
-              !approveSuccess
-                ? "btn btn-disabled no-animation mt-2 mr-2 ml-2"
-                : "btn bg-gradient-to-r from-frens-blue to-frens-teal text-white ml-2"
-            }`}
-            onClick={() => {
-              topUp();
-            }}
-            disabled={!clusterData && !cluster && !approveSuccess}
-          >
-            top up
-          </button>
-        </div>
-      ) : (
-        <div className="flex justify-center items-center my-2">
-          <ConnectButton />
-        </div>
-      )}
     </div>
   );
 };

@@ -42,11 +42,12 @@ const Operator: NextPage = () => {
               {number(STEP.DEPOSIT)} Deposit ETH
             </h1>
             <div className={className(step, STEP.DEPOSIT)}>
-              <DepositForm
+              {/* TODO - needs fixing */}
+              {/* <DepositForm
                 poolAddress={poolAddress}
                 nextStep={() => setStep(STEP.DEPOSIT)}
                 poolBalance={poolBalance}
-              />
+              /> */}
             </div>
           </div>
         </main>

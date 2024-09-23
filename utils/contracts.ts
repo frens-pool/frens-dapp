@@ -18,7 +18,12 @@ import MainnetFrensPoolShareTokenURI from "./abis/frensGoerli/FrensPoolShareToke
 import MainnetFrensStorage from "./abis/frensGoerli/FrensStorage.json";
 import MainnetStakingPool from "./abis/frensGoerli/StakingPool.json";
 import MainnetStakingPoolFactory from "./abis/frensGoerli/StakingPoolFactory.json";
+
 import MainnetDepositContract from "./abis/DepositContract.json";
+import MainnetSSVNetwork from "./abis/ssvMainnet/SSVNetwork.json";
+import MainnetSSVViews from "./abis/ssvMainnet/SSVNetworkViews.json";
+import MainnetSSVToken from "./abis/ssvMainnet/SSVToken.json";
+
 import { Address } from "wagmi";
 
 import {
@@ -49,52 +54,66 @@ import {
   HOLESKY_SSV_NETWORK_TOKEN,
 } from "./constants/holeskyAddresses";
 
+import {
+  MAINNET_FRENS_ART,
+  MAINNET_FRENS_META,
+  MAINNET_FRENS_ORACLE,
+  MAINNET_FRENS_POOLSHARE,
+  MAINNET_FRENS_POOLSHARE_TOKENURI,
+  MAINNET_FRENS_STORAGE,
+  MAINNET_FRENS_STAKINGPOOL_FACTORY,
+  MAINNET_DEPOSIT_CONTRACT,
+  MAINNET_SSV_NETWORK,
+  MAINNET_SSV_NETWORK_VIEWS,
+  MAINNET_SSV_NETWORK_TOKEN,
+} from "./constants/mainnetAddresses";
+
 const unknownABI = { abi: [] };
 
 export const FrensContracts = {
   mainnet: {
     FrensStorage: {
-      address: GOERLI_FRENS_STORAGE as Address,
+      address: MAINNET_FRENS_STORAGE as Address,
       abi: MainnetFrensStorage.abi,
     },
     StakingPoolFactory: {
-      address: GOERLI_FRENS_STAKINGPOOL_FACTORY as Address,
+      address: MAINNET_FRENS_STAKINGPOOL_FACTORY as Address,
       abi: MainnetStakingPoolFactory.abi,
     },
     FrensMetaHelper: {
-      address: GOERLI_FRENS_META as Address,
+      address: MAINNET_FRENS_META as Address,
       abi: MainnetFrensMetaHelper.abi,
     },
     FrensPoolShare: {
-      address: GOERLI_FRENS_POOLSHARE as Address,
+      address: MAINNET_FRENS_POOLSHARE as Address,
       abi: MainnetFrensPoolShare.abi,
     },
     FrensPoolShareTokenURI: {
-      address: GOERLI_FRENS_POOLSHARE_TOKENURI as Address,
+      address: MAINNET_FRENS_POOLSHARE_TOKENURI as Address,
       abi: MainnetFrensPoolShareTokenURI.abi,
     },
     FrensArt: {
-      address: GOERLI_FRENS_ART as Address,
+      address: MAINNET_FRENS_ART as Address,
       abi: MainnetFrensArt.abi,
     },
     StakingPool: {
       abi: MainnetStakingPool.abi,
     },
     DepositContract: {
-      address: "0x00000000219ab540356cBB839Cbe05303d7705Fa" as Address,
+      address: MAINNET_DEPOSIT_CONTRACT as Address,
       abi: MainnetDepositContract,
     },
     SSVTokenContract: {
-      address: "0x0" as Address,
-      abi: GoerliSSVToken.abi, // TODO
+      address: MAINNET_SSV_NETWORK_TOKEN as Address,
+      abi: MainnetSSVToken,
     },
     SSVNetworkContract: {
-      address: "0x0" as Address,
-      abi: GoerliSSVNetwork, // TODO
+      address: MAINNET_SSV_NETWORK as Address,
+      abi: MainnetSSVNetwork,
     },
     SSVNetworkViewsContract: {
-      address: "0x0" as Address,
-      abi: GoerliSSVViews, // TODO
+      address: MAINNET_SSV_NETWORK_VIEWS as Address,
+      abi: MainnetSSVViews,
     },
   },
   holesky: {

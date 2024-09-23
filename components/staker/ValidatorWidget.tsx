@@ -20,27 +20,22 @@ export const ValidatorWidget = ({ poolAddress }: Props) => {
   if (!isSuccess || !poolPubKey) return <></>;
 
   return (
-    <div>
-      <div className="font-medium mb-2">
-        <div key={`beaconchain-${poolPubKey}`}>
+    <div className="w-full flex flex-col items-start justify-start px-6 lg:px-[1.5vw] pb-6 border-b-[1px] border-dashed border-slate-300">
+    <p className="text-[10px] uppercase text-black mb-[4px]">External links</p>
           <Link
+            key={`beaconchain-${poolPubKey}`}
             href={`${beaconchainUrl(chain)}/validator/${poolPubKey}`}
-            className="underline text-frens-main"
+            className="underline text-[14px] font-semibold mb-2"
           >
-            Validator information on Beaconcha.in 📡
+          📡 Validator on Beaconcha.in 
           </Link>
-        </div>
-      </div>
-      <div className="font-medium mb-2">
-        <div key={`ssv-explorer-${poolPubKey}`}>
           <Link
+            key={`ssv-explorer-${poolPubKey}`}
             href={ssvExplorer(poolPubKey, chain)}
-            className="underline text-frens-main"
+            className="underline font-semibold"
           >
-            Validator information on ssv.network explorer 🧭
+            📡 Validator on ssv.network explorer
           </Link>
-        </div>
-      </div>
     </div>
   );
 };
