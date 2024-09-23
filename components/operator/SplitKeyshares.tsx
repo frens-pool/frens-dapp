@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DropKeys } from "components/operator/DropKeys";
-import { ISharesKeyPairs, SSVKeys, KeyShares } from "ssv-keys";
+import { ISharesKeyPairs, SSVKeys, KeyShares, KeySharesItem } from "ssv-keys";
 import BigNumber from "bignumber.js";
 import { useAccount, useNetwork, usePublicClient, Address } from "wagmi";
 
@@ -12,11 +12,15 @@ export const SplitKeyshares = ({
   nextStep,
   setPayloadRegisterValidator,
   poolAddress,
+  itemDone,
+  itemEnabled,
 }: {
   operatorsList: any;
-  nextStep: () => void;
+  nextStep?: () => void;
   setPayloadRegisterValidator: any;
   poolAddress: Address;
+  itemDone?: Boolean;
+  itemEnabled?: Boolean;
 }) => {
   const [pw, setPW] = useState("");
   const [loading, setLoading] = useState(false);
@@ -56,15 +60,15 @@ export const SplitKeyshares = ({
         );
 
         // SSV Cluster Data
-        console.log(operators);
         const cData = await getClusterData(operators.map((o: any) => o.id));
-        console.log("cData");
-        console.log(cData);
         const ownerAddress = cData.cluster[0].Owner;
         const ownerNonce = parseInt(cData.nonce);
 
-        const keyShares = new KeyShares();
-        const payload = await keyShares.buildPayload(
+        const keySharesItem = new KeySharesItem();
+        await keySharesItem.update({ operators });
+        await keySharesItem.update({ ownerAddress, ownerNonce, publicKey });
+
+        await keySharesItem.buildPayload(
           {
             publicKey,
             operators,
@@ -76,6 +80,9 @@ export const SplitKeyshares = ({
             privateKey,
           }
         );
+
+        const keyShares = new KeyShares();
+        keyShares.add(keySharesItem);
 
         // static at 1,5 SSV token per validator.
         // assumption: exactly 4 operators
@@ -89,12 +96,15 @@ export const SplitKeyshares = ({
         //   0
         // );
 
+        const keySharesPayload = await keyShares.toJson();
+
         return {
-          payload,
+          payload: JSON.parse(keySharesPayload),
           tokenAmount,
+          clusterData: cData
         };
       } catch (error: any) {
-        console.log(error);
+        // console.log(error);
         setPayloadError(true);
         setLoading(false);
         throw new Error(error);
@@ -105,7 +115,8 @@ export const SplitKeyshares = ({
       .then((data) => {
         setPayloadRegisterValidator(data);
         setPayloadError(false);
-        nextStep();
+        setLoading(false);
+        nextStep && nextStep();
       })
       .finally(() => {
         // what now ?
@@ -131,8 +142,9 @@ export const SplitKeyshares = ({
         nodeUrl: nodeUrl,
         ownerAddress: poolAddress,
         operatorIds,
+        network,
       };
-      console.log("clusterParams", clusterParams);
+      // console.log("clusterParams", clusterParams);
       const clusterDataTemp = await buildCluster(clusterParams);
       return clusterDataTemp;
     }
@@ -144,6 +156,7 @@ export const SplitKeyshares = ({
       nodeUrl: string;
       ownerAddress: string;
       operatorIds: number[];
+      network: string;
     } | null
   ) {
     const clusterData = async () => {
@@ -163,53 +176,115 @@ export const SplitKeyshares = ({
   }
 
   return (
-    <div className="w-2/5 mx-auto my-2 p-2">
-      <span>Your key will be split in your local browser</span>
-      <DropKeys
-        filename="keystore-m_xxxxxxxxxx.json"
-        validateFile={(fileContent: any) => ({ success: true })}
-        onFileReceived={(data: any) => {
-          handleKeystoreDrop(data);
-        }}
-      />
-      {keystoreError ? (
-        <div className="text-red-600 mb-4">pls upload a keystore file</div>
-      ) : (
-        <></>
-      )}
-      <div>Keystore password:</div>
-      <input
-        type="password"
-        onChange={(e) => setPW(e.target.value)}
-        className="input input-primary w-full max-w-xs my-2"
-      />
-      {payloadError ? (
-        <div className="text-red-600 mb-4">
-          likely wrong password, try again
+    <>
+      {itemEnabled ? (
+        <div className="w-full flex flex-col items-start justify-start">
+          <span>Your key will be split in your local browser</span>
+          <DropKeys
+            filename="keystore-m_xxxxxxxxxx.json"
+            validateFile={(fileContent: any) => ({ success: true })}
+            onFileReceived={(data: any) => {
+              handleKeystoreDrop(data);
+            }}
+          />
+          {keystoreError ? (
+            <div className="text-red-600 mb-4">pls upload a keystore file</div>
+          ) : (
+            <></>
+          )}
+          <div>Keystore password:</div>
+          <input
+            type="password"
+            onChange={(e) => setPW(e.target.value)}
+            className="input input-primary w-full max-w-xs my-2"
+          />
+          {payloadError ? (
+            <div className="text-red-600 mb-4">
+              likely wrong password, try again
+            </div>
+          ) : (
+            <></>
+          )}
+          <div className="mb-2">
+            {loading ? (
+              <button
+                className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white"
+                disabled
+              >
+                Verifying
+              </button>
+            ) : (
+              <button
+                className="self-end btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+                onClick={() => {
+                  buildRegisterPayload();
+                  setLoading(true);
+                }}
+              >
+                Next
+              </button>
+            )}
+          </div>
         </div>
       ) : (
-        <></>
+        <div>
+          <p className="font-extrabold mb-5">
+            Please complete &apos;Step 3: Select operators&apos; to enable this
+            step.
+          </p>
+          <div className="w-full opacity-25 flex flex-col items-start justify-start">
+            <span>Your key will be split in your local browser</span>
+            <DropKeys
+              filename="keystore-m_xxxxxxxxxx.json"
+              validateFile={(fileContent: any) => ({ success: true })}
+              onFileReceived={(data: any) => {
+                handleKeystoreDrop(data);
+              }}
+            />
+            {keystoreError ? (
+              <div className="text-red-600 mb-4">
+                pls upload a keystore file
+              </div>
+            ) : (
+              <></>
+            )}
+            <div>Keystore password:</div>
+            <input
+              type="password"
+              onChange={(e) => setPW(e.target.value)}
+              className="input input-primary w-full max-w-xs my-2"
+              disabled
+            />
+            {payloadError ? (
+              <div className="text-red-600 mb-4">
+                likely wrong password, try again
+              </div>
+            ) : (
+              <></>
+            )}
+            <div className="mb-2">
+              {loading ? (
+                <button
+                  className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white"
+                  disabled
+                >
+                  Verifying
+                </button>
+              ) : (
+                <button
+                  className="self-end btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
+                  onClick={() => {
+                    buildRegisterPayload();
+                    setLoading(true);
+                  }}
+                >
+                  Next
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       )}
-      <div className="mb-2">
-        {loading ? (
-          <button
-            className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white"
-            disabled
-          >
-            Verifying
-          </button>
-        ) : (
-          <button
-            className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
-            onClick={() => {
-              buildRegisterPayload();
-              setLoading(true);
-            }}
-          >
-            Next
-          </button>
-        )}
-      </div>
-    </div>
+    </>
   );
 };

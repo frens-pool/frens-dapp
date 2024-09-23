@@ -72,7 +72,6 @@ const RunPool: NextPage = () => {
         } else {
           const data = await response.json();
           setssvValidator(data);
-          console.log(data);
           if (data) {
             setStep(STEP.DONE);
           }
@@ -122,10 +121,7 @@ const RunPool: NextPage = () => {
                       <dl className="-my-3 divide-y divide-gray-100 px-6 text-sm leading-6">
                         <div className={className(step, STEP.CREATE_KEYS)}>
                           <div className="pt-4 pb-6">
-                            <CreateKeys
-                              nextStep={() => setStep(STEP.DEPOSIT_FILE)}
-                              poolAddress={poolAddress}
-                            />
+                            <CreateKeys poolAddress={poolAddress} />
                           </div>
                         </div>
                       </dl>
@@ -141,7 +137,6 @@ const RunPool: NextPage = () => {
                         <div className={className(step, STEP.DEPOSIT_FILE)}>
                           <SetPubkey
                             poolAddress={poolAddress}
-                            nextStep={() => setStep(STEP.DEPOSIT)}
                             updatePubKeyState={updatePubKeyState}
                           />
                         </div>
@@ -158,7 +153,6 @@ const RunPool: NextPage = () => {
                         <div className={className(step, STEP.DEPOSIT)}>
                           {pubKey && (
                             <DepositForm
-                              nextStep={() => setStep(STEP.SELECT_OPERATOR)}
                               poolAddress={poolAddress}
                               poolBalance={poolBalance}
                             />
@@ -175,10 +169,7 @@ const RunPool: NextPage = () => {
                       </div>
                       <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                         <div className={className(step, STEP.SELECT_OPERATOR)}>
-                          <SelectOperator
-                            nextStep={() => setStep(STEP.KEYSTORE_FORM)}
-                            setOperators={setOperators}
-                          />
+                          <SelectOperator setOperators={setOperators} />
                         </div>
                       </dl>
                     </div>
@@ -192,7 +183,6 @@ const RunPool: NextPage = () => {
                       <dl className="-my-3 divide-y divide-gray-100 px-6  text-sm leading-6">
                         <div className={className(step, STEP.KEYSTORE_FORM)}>
                           <SplitKeyshares
-                            nextStep={() => setStep(STEP.SSV_REGISTER)}
                             operatorsList={operators}
                             setPayloadRegisterValidator={
                               setPayloadRegisterValidator

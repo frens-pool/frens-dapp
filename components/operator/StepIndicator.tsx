@@ -5,7 +5,7 @@ export const StepIndicator = ({ step }: { step: any }) => {
         Create Keys
       </li>
       <li className={`step px-1 ${step >= 2 ? "step-primary" : ""}`}>
-        Deposit ETH
+        Upload Deposit file
       </li>
       <li className={`step px-1 ${step >= 3 ? "step-primary" : ""}`}>
         Select operators
@@ -15,6 +15,9 @@ export const StepIndicator = ({ step }: { step: any }) => {
       </li>
       <li className={`step px-1 ${step >= 5 ? "step-primary" : ""}`}>
         Register validator
+      </li>
+      <li className={`step px-1 ${step >= 6 ? "step-primary" : ""}`}>
+        Deposit 32 ETH
       </li>
     </ul>
   );

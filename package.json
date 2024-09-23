@@ -29,8 +29,8 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.41.1",
     "source-map-support": "^0.5.21",
-    "ssv-keys": "github:bloxapp/ssv-keys#v1.0.9",
-    "ssv-scanner": "github:bloxapp/ssv-scanner#v1.0.3",
+    "ssv-keys": "github:bloxapp/ssv-keys#v1.1.0",
+    "ssv-scanner": "github:bloxapp/ssv-scanner",
     "stream-browserify": "^3.0.0",
     "wagmi": "^1.4.6",
     "web3": "^1.7.4"
