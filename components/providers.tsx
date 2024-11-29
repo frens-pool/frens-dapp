@@ -21,17 +21,17 @@ const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "";
 const { chains, publicClient } = configureChains(
   [mainnet, holesky],
   [
-    infuraProvider({
-      apiKey: apiKey,
-    }),
+    // infuraProvider({
+    //   apiKey: apiKey,
+    // }),
     jsonRpcProvider({
       rpc: () => {
         return {
-          http: "https://holesky.infura.io/v3/48089fbe53fa4ad18ffffd3115d11528",
+          http: "http://avado-dnp-nethermind.my.ava.do:8545" //"https://holesky.infura.io/v3/48089fbe53fa4ad18ffffd3115d11528",
         };
       },
     }),
-    publicProvider(),
+    // publicProvider(),
   ]
 );
 
