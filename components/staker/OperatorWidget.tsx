@@ -6,6 +6,7 @@ import { PoolStateVisual } from "../shared/PoolStateVisual";
 import { ValidatorWidget } from "#/components/staker/ValidatorWidget";
 import FeeRecCheckSet from "#/components/dashboard/FeeRecCheckSet";
 import PoolSSVBalance from "#/components/dashboard/PoolSSVBalance";
+import { etherscanUrl } from "#/utils/externalUrls";
 
 export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, poolState, accountPoolOwner }: {
   poolAddress: any;
@@ -95,14 +96,14 @@ export const OperatorWidget = ({ poolAddress, operatorAddress, poolBalance, pool
           <div className="flex flex-row items-end justify-start">
             <div className="flex flex-col items-start justify-start">
               <p className="text-[10px] uppercase text-frens-blue">Pool</p>
-              <h1 className="text-[34px] font-extrabold"><a className="underline" target="_blank" href={`https://etherscan.io/address/${poolAddress}`}>{poolAddress ? `${poolAddress.slice(0, 4)}...${poolAddress.slice(-4)}` : null}</a></h1>
+              <h1 className="text-[34px] font-extrabold"><a className="underline" target="_blank" href={`${etherscanUrl(chain)}/address/${poolAddress}`}>{poolAddress ? `${poolAddress.slice(0, 4)}...${poolAddress.slice(-4)}` : null}</a></h1>
             </div>
             {/* <img
               className="w-5 h-5 mb-3 mx-4"
               src="/copypaste.png"
             /> */}
           </div>
-          <div className="text-[14px] mb-4 lg:mb-[8px] lg:ml-3 font-semibold lg:font-normal">Owned by {accountPoolOwner ? "you (" : null}<a className="underline" target="_blank" href={`https://etherscan.io/address/${operatorAddress}`}>{operatorENS ? ensName : `${operatorAddress.slice(0, 4)}...${operatorAddress.slice(-4)}`}</a>{accountPoolOwner ? ")" : null}</div>
+          <div className="text-[14px] mb-4 lg:mb-[8px] lg:ml-3 font-semibold lg:font-normal">Owned by {accountPoolOwner ? "you (" : null}<a className="underline" target="_blank" href={`${etherscanUrl(chain)}/address/${operatorAddress}`}>{operatorENS ? ensName : `${operatorAddress.slice(0, 4)}...${operatorAddress.slice(-4)}`}</a>{accountPoolOwner ? ")" : null}</div>
         </div>
         <div className="w-full flex flex-col-reverse lg:flex-row items-start lg:items-end justify-start pt-2 flex-1">
           <div className="hidden lg:block flex-1 text-frens-blue underline font-semibold text-[14px] mt-10 lg:mt-0 mb-2 lg:mb-0 lg:ml-6" onClick={() => toggleShowDetails(!showDetails)}>{showDetails ? "hide" : "show"} details</div>
