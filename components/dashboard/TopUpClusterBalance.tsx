@@ -263,8 +263,8 @@ export const TopUpClusterBalance = ({
   return (
     <div className="w-full">
 
-      <div className="my-2">Available SSV balance in pool ( {ssvBalance ? ethers.utils.formatUnits((ssvBalance), 18) : ""} SSV)</div>
-      <div className="my-2">Select SSV amount ( your allowance is {allowance ? ethers.utils.formatUnits((allowance as bigint), 18) : ""} SSV)</div>
+      <div className="my-2">Available SSV balance in pool ( {ssvBalance ? Number.parseFloat(ethers.utils.formatUnits((ssvBalance), 18)).toFixed(4) : ""} SSV)</div>
+      <div className="my-2">Select SSV amount</div>
       <div className="flex flex-col lg:flex-row items-start justify-start">
         <input
           className="input input-bordered w-full lg:max-w-[300px]"
@@ -285,6 +285,7 @@ export const TopUpClusterBalance = ({
 
             {clusterData ? (
               <>
+              { allowance.toString() === "0" && (
                 <button
                   className={`${approveLoading
                     ? "btn-medium btn-blue-border mx-4 loading"
@@ -297,6 +298,7 @@ export const TopUpClusterBalance = ({
                 >
                   {approveLoading ? "In progress" : "approve ssv"}
                 </button>
+                )}
                 {/* these actions can be performed when the cluster is active */}
                 {clusterData.active === true && (
                   <>
@@ -308,7 +310,7 @@ export const TopUpClusterBalance = ({
                       onClick={() => {
                         topUp();
                       }}
-                      disabled={!clusterData && !cluster && !approveSuccess}
+                      disabled={!clusterData && !cluster}
                     >
                       top up
                     </button>
@@ -322,7 +324,7 @@ export const TopUpClusterBalance = ({
                       onClick={() => {
                         liquidate();
                       }}
-                      disabled={!clusterData && !cluster && !approveSuccess}
+                      disabled={!clusterData && !cluster}
                     >
                       liquidate!
                     </button>
