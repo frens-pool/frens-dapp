@@ -12,5 +12,5 @@ export function useAllowance(address: Address) {
     args: [address, FrensContracts[network].SSVNetworkContract.address],
   });
 
-  return { data, isLoading, isSuccess };
+  return { data: data ? data as BigInt : BigInt(0), isLoading, isSuccess };
 }
