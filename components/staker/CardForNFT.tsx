@@ -8,9 +8,11 @@ type CardProps = {
   image: any;
   nftID: string;
   poolAddress?: Address;
+  owner: Address;
+  claimable: string;
 };
 
-function CardForNFT({ name, image, nftID, poolAddress }: CardProps) {
+function CardForNFT({ name, image, nftID, owner, claimable }: CardProps) {
   const { chain } = useNetwork();
   const network = useNetworkName();
   const openSeaLink = openseaUrl(
@@ -27,11 +29,11 @@ function CardForNFT({ name, image, nftID, poolAddress }: CardProps) {
       <div className="w-full flex flex-row items-center justify-start border-frens-blue border-dashed border-[1px] border-t-0 rounded-b-[10px] -mt-2 pt-7 pb-4 px-6">
         <div className="flex flex-col items-start justify-start w-[50%]">
           <div className="text-frens-blue uppercase text-[10px]">STAKE Owner</div>
-          <div>0x87d...10z</div>
+          <div>{`${owner.slice(0, 4)}...${owner.slice(-4)}`}</div>
         </div>
         <div className="flex flex-col items-start justify-start w-[50%]">
-          <div className="text-frens-blue uppercase text-[10px]">Current stake reward</div>
-          <div>0,45 ETH</div>
+          <div className="text-frens-blue uppercase text-[10px]">Stake rewards</div>
+          <div>{claimable}</div>
         </div>
       </div>
       {/* <div className="px-2 text-center">
