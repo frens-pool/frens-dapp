@@ -21,11 +21,11 @@ const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "";
 const { chains, publicClient } = configureChains(
   [mainnet, holesky],
   [
-    jsonRpcProvider({
+    jsonRpcProvider({ 
       rpc: (chain) => {
         if (chain.id === mainnet.id) {
           return {
-            http: process.env.NEXT_PUBLIC_RPC_MAINNET,
+            http: `${process.env.NEXT_PUBLIC_RPC_MAINNET}`,
           };
         } else {
           return null;
