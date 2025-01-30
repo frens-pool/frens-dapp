@@ -29,7 +29,7 @@ function CardForNFT({ name, image, nftID, owner, claimable }: CardProps) {
       <div className="w-full flex flex-row items-center justify-start border-frens-blue border-dashed border-[1px] border-t-0 rounded-b-[10px] -mt-2 pt-7 pb-4 px-6">
         <div className="flex flex-col items-start justify-start w-[50%]">
           <div className="text-frens-blue uppercase text-[10px]">STAKE Owner</div>
-          <div>{`${owner.slice(0, 4)}...${owner.slice(-4)}`}</div>
+          <div><a className="underline" target="_blank" href={`https://etherscan.io/address/${owner}`}>{`${owner.slice(0, 4)}...${owner.slice(-4)}`}</a></div>
         </div>
         <div className="flex flex-col items-start justify-start w-[50%]">
           <div className="text-frens-blue uppercase text-[10px]">Stake rewards</div>
