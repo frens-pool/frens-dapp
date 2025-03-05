@@ -18,41 +18,21 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { useTokenBalance } from "#/hooks/read/useTokenBalance";
 import { useClusterScanner } from "#/hooks/read/useClusterScanner";
+import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 
 export const ExitValidator = ({
   poolAddress,
 }: {
   poolAddress: Address;
 }) => {
-  const { data: allowance } = useAllowance(poolAddress)
-  const [ssvAmount, setSsvAmount] = useState<number | undefined>(undefined);
   const [txHash, setTxHash] = useState<string | undefined>();
   // const [clusterData, setClusterData] = useState<any>();
   const [cluster, setCluster] = useState<any>();
   const network = useNetworkName();
-  const { balance: ssvBalance } = useTokenBalance({ tokenAddress: FrensContracts[network].SSVTokenContract.address, accountAddress: poolAddress })
   const { address: walletAddress } = useAccount();
   const { chain } = useNetwork();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
-  const { data, write: approveSSVSpending } = useApprove({
-    spender: FrensContracts[network].SSVNetworkContract.address!,
-    value: "20000000000000000000",
-  });
-
-  // const { isLoading: approveLoading, isSuccess: approveSuccess } =
-  //   useWaitForTransaction({
-  //     hash: data?.hash,
-  //   });
-
-  const { isLoading: exitIsLoading, isSuccess: exitIsSuccess } =
-    useWaitForTransaction({
-      // @ts-ignore
-      hash: txHash,
-      onSuccess: () => {
-
-      },
-    });
 
   useEffect(() => {
     if (!chain) return;
@@ -67,24 +47,26 @@ export const ExitValidator = ({
     fetchClusterList();
   }, []);
 
-  const { data: clusterData, isLoading: isLoadingClusterScanner } =
-    useClusterScanner(poolAddress, cluster?.clusters[0].operators);
+  const { isLoading: exitIsLoading, isSuccess: exitIsSuccess } =
+    useWaitForTransaction({
+      // @ts-ignore
+      hash: txHash,
+      onSuccess: () => {
 
+      },
+    });
+
+  const {
+    data: poolPubKey,
+    isLoading,
+    isSuccess,
+  } = usePoolPubKey({ address: poolAddress });
 
   const exitValidator = async () => {
-    const clusterParams = {
-      validatorCount: clusterData.validatorCount,
-      networkFeeIndex: clusterData.networkFeeIndex,
-      index: clusterData.index,
-      balance: clusterData.balance,
-      active: clusterData.active,
-    };
 
     const functionArgs = [
-      "0xpubkey",
-      cluster.clusters[0].operators,
-      ssvAmount !== undefined ? parseEther(ssvAmount.toString()) : "1",
-      clusterParams,
+      poolPubKey,
+      cluster?.clusters[0].operators,
     ];
 
     const encodedFunctionData = encodeFunctionData({
@@ -116,7 +98,7 @@ export const ExitValidator = ({
             className="btn bg-gradient-to-r from-frens-blue to-frens-teal loading text-white my-2 mr-2"
             disabled
           >
-            Eit in progress
+            Exit in progress
           </button>
         </div>
         {exitIsLoading && (
@@ -143,14 +125,14 @@ export const ExitValidator = ({
 
       <div className="flex flex-col lg:flex-row items-start justify-start">
         <button
-          className={`${!clusterData && !cluster
+          className={`${!poolPubKey
             ? "btn-medium opacity-50 text-white blue-to-teal"
             : "btn-medium opacity-1 text-white blue-to-teal"
             }`}
           onClick={() => {
             exitValidator();
           }}
-          disabled={!clusterData && !cluster}
+          disabled={!poolPubKey}
         >
           Exit validator
         </button>
