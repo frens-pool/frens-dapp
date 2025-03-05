@@ -17,6 +17,7 @@ import { useApprove } from "#/hooks/write/useApprove";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { useTokenBalance } from "#/hooks/read/useTokenBalance";
+import { useClusterScanner } from "#/hooks/read/useClusterScanner";
 
 export const TopUpClusterBalance = ({
   poolAddress,
@@ -28,7 +29,7 @@ export const TopUpClusterBalance = ({
   const { data: allowance } = useAllowance(poolAddress)
   const [ssvAmount, setSsvAmount] = useState<number | undefined>(undefined);
   const [txHash, setTxHash] = useState<string | undefined>();
-  const [clusterData, setClusterData] = useState<any>();
+  // const [clusterData, setClusterData] = useState<any>();
   const [cluster, setCluster] = useState<any>();
   const network = useNetworkName();
   const { balance: ssvBalance } = useTokenBalance({ tokenAddress: FrensContracts[network].SSVTokenContract.address, accountAddress: poolAddress })
@@ -67,29 +68,32 @@ export const TopUpClusterBalance = ({
       );
       const clusterListdataJson = await clusterListdata.json();
       setCluster(clusterListdataJson);
-      getClusterData(clusterListdataJson.clusters[0].operators);
+      // getClusterData(clusterListdataJson.clusters[0].operators);
     };
 
     fetchClusterList();
   }, []);
 
-  // TODO : this should be replaced by hooks/read/useClusterScanner
-  const getClusterData = async (operatorIds: any) => {
-    if (operatorIds && poolAddress && chain) {
-      const contractAddress =
-        FrensContracts[network].SSVNetworkContract.address;
-      const nodeUrl = chain.rpcUrls.default.http.at(0)!;
-      const clusterParams = {
-        contractAddress: contractAddress,
-        nodeUrl: nodeUrl,
-        ownerAddress: poolAddress,
-        operatorIds,
-        network
-      };
-      const clusterDataTemp = await buildCluster(clusterParams);
-      setClusterData(clusterDataTemp.cluster[1]);
-    }
-  };
+  const { data: clusterData, isLoading: isLoadingClusterScanner } =
+    useClusterScanner(poolAddress, cluster?.clusters[0].operators);
+
+  // // TODO : this should be replaced by hooks/read/useClusterScanner
+  // const getClusterData = async (operatorIds: any) => {
+  //   if (operatorIds && poolAddress && chain) {
+  //     const contractAddress =
+  //       FrensContracts[network].SSVNetworkContract.address;
+  //     const nodeUrl = chain.rpcUrls.default.http.at(0)!;
+  //     const clusterParams = {
+  //       contractAddress: contractAddress,
+  //       nodeUrl: nodeUrl,
+  //       ownerAddress: poolAddress,
+  //       operatorIds,
+  //       network
+  //     };
+  //     const clusterDataTemp = await buildCluster(clusterParams);
+  //     setClusterData(clusterDataTemp.cluster[1]);
+  //   }
+  // };
 
   async function buildCluster(
     clusterParams: {
@@ -285,19 +289,19 @@ export const TopUpClusterBalance = ({
 
             {clusterData ? (
               <>
-              { allowance.toString() === "0" && (
-                <button
-                  className={`${approveLoading
-                    ? "btn-medium btn-blue-border mx-4 loading"
-                    : "btn-medium btn-blue-border mx-4"
-                    }`}
-                  onClick={() => {
-                    approveSSVSpending!();
-                  }}
-                  disabled={approveLoading}
-                >
-                  {approveLoading ? "In progress" : "approve ssv"}
-                </button>
+                {allowance.toString() === "0" && (
+                  <button
+                    className={`${approveLoading
+                      ? "btn-medium btn-blue-border mx-4 loading"
+                      : "btn-medium btn-blue-border mx-4"
+                      }`}
+                    onClick={() => {
+                      approveSSVSpending!();
+                    }}
+                    disabled={approveLoading}
+                  >
+                    {approveLoading ? "In progress" : "approve ssv"}
+                  </button>
                 )}
                 {/* these actions can be performed when the cluster is active */}
                 {clusterData.active === true && (
