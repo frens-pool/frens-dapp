@@ -11,6 +11,7 @@ import {
 } from "#/utils/externalUrls";
 import moment from "moment";
 import { TopUpClusterBalance } from "./TopUpClusterBalance";
+import { ExitValidator } from "./ExitValidator";
 
 interface ClusterInfo {
   id: number;
@@ -100,6 +101,12 @@ function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
         <TopUpClusterBalance
           poolAddress={poolAddress}
           updateSSVBalance={updateSSVBalance}
+        />
+      </div>
+      <div className="w-full flex flex-1 flex-col items-start justify-start">
+        <p className="text-[10px] uppercase text-black mt-6 mb-[4px]">Exit validator</p>
+        <ExitValidator
+          poolAddress={poolAddress}
         />
       </div>
     </div>
