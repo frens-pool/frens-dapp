@@ -6,7 +6,7 @@ import { useNetworkName } from "#/hooks/useNetworkName";
 import {
   useNetwork,
 } from "wagmi";
-
+import { mainnet, holesky } from "wagmi/chains";
 export function useClusterScanner(ownerAddress: string, operatorIDs: number[]) {
 
   const [data, setData] = useState<any | null>(null);
@@ -49,8 +49,18 @@ export function useClusterScanner(ownerAddress: string, operatorIDs: number[]) {
       try {
         setLoading(true);
 
-
-        const nodeUrl = chain.rpcUrls.default.http.at(0)!;
+        let nodeUrl = "";
+        switch (chain?.id) {
+          case mainnet.id:
+            nodeUrl = `${process.env.NEXT_PUBLIC_RPC_MAINNET}`;
+            break;
+          case holesky.id:
+            nodeUrl = `${process.env.NEXT_PUBLIC_RPC_HOLESKY}`;
+            break;
+        }
+        console.log(`RPC URL=${nodeUrl}`);
+        // debugger;
+        // const nodeUrl = chain.rpcUrls.default.http.at(0)!;
 
         const clusterParams = {
           contractAddress: FrensContracts[network].SSVNetworkContract.address,
