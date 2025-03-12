@@ -89,7 +89,7 @@ console.log(`Pool address = ${poolAddress}`)
   };
 
   return (
-    <form className="border-[1px] border-frens-blue text-frens-blue p-8 mb-8" onSubmit={handleSubmit(onSubmit)}>
+    <form autoComplete="off" className="border-[1px] border-frens-blue text-frens-blue p-8 mb-8" onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full flex flex-col items-start justify-start p-0 lg:p-4">
         <h2 className="font-bold text-[20px] lg:text-[30px] text-frens-gradient">Wanna pool together?</h2>
         {!isConnected ?
