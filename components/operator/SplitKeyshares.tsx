@@ -6,6 +6,7 @@ import { useAccount, useNetwork, usePublicClient, Address } from "wagmi";
 
 import { FrensContracts } from "#/utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
+import { useClusterScanner } from "#/hooks/read/useClusterScanner";
 
 export const SplitKeyshares = ({
   operatorsList,
@@ -30,16 +31,27 @@ export const SplitKeyshares = ({
   const network = useNetworkName();
   const { chain } = useNetwork();
   const publicClient = usePublicClient();
+  // const operatorIDs = operatorsList?.map((o: any) => o.id);
+  // const { data: clusterData, isLoading: isLoadingClusterScanner } =
+  //   useClusterScanner(poolAddress, operatorIDs);
 
-  const ssvKeys = new SSVKeys();
+  // console.log(`operatorIDs`, operatorIDs);
+  // console.log(`clusterData`, clusterData);
+
+
+
+  // console.log(`operatorIDs`,operatorIDs);
+  // console.log(`poolAddress`,poolAddress);
+  // console.log(`cluster data`,clusterData);
 
   function buildRegisterPayload() {
+    const ssvKeys = new SSVKeys();
     const keyshareData = async () => {
       try {
         if (!keystoreFileData) {
           setKeystoreError(true);
         }
-
+        // debugger;
         const operators = operatorsList.map((operator: any) => ({
           id: operator.id,
           operatorKey: operator.public_key,
@@ -60,9 +72,15 @@ export const SplitKeyshares = ({
         );
 
         // SSV Cluster Data
-        const cData = await getClusterData(operators.map((o: any) => o.id));
-        const ownerAddress = cData.cluster[0].Owner;
-        const ownerNonce = parseInt(cData.nonce);
+        let initialClusterData =  {
+          cluster: {
+            Owner: poolAddress,
+          }
+        }
+
+        // const cData = await getClusterData(operators.map((o: any) => o.id));
+        const ownerAddress = initialClusterData.cluster.Owner;
+        const ownerNonce = 0; // TODO fix this parseInt(cData.nonce);
 
         const keySharesItem = new KeySharesItem();
         await keySharesItem.update({ operators });
@@ -88,20 +106,12 @@ export const SplitKeyshares = ({
         // assumption: exactly 4 operators
         const tokenAmount = new BigNumber(5000000000000000000).toString();
 
-        // const operatorFees = operators.map((operator: any) => {
-        //   return operator.fee;
-        // });
-        // const sumOfFees: number = operatorFees.reduceRight(
-        //   (acc: number, cur: number) => Number(acc) + Number(cur),
-        //   0
-        // );
-
         const keySharesPayload = await keyShares.toJson();
 
         return {
           payload: JSON.parse(keySharesPayload),
           tokenAmount,
-          clusterData: cData
+          clusterData: initialClusterData.cluster
         };
       } catch (error: any) {
         // console.log(error);
@@ -195,6 +205,7 @@ export const SplitKeyshares = ({
           <div>Keystore password:</div>
           <input
             type="password"
+            autoComplete="off"
             onChange={(e) => setPW(e.target.value)}
             className="input input-primary w-full max-w-xs my-2"
           />
@@ -217,8 +228,8 @@ export const SplitKeyshares = ({
               <button
                 className="self-end btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
                 onClick={() => {
-                  buildRegisterPayload();
                   setLoading(true);
+                  buildRegisterPayload();
                 }}
               >
                 Next
@@ -251,6 +262,7 @@ export const SplitKeyshares = ({
             <div>Keystore password:</div>
             <input
               type="password"
+              autoComplete="off"
               onChange={(e) => setPW(e.target.value)}
               className="input input-primary w-full max-w-xs my-2"
               disabled
