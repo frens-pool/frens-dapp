@@ -27,7 +27,7 @@ export const TopUpClusterBalance = ({
   updateSSVBalance: (addedValue: number) => void;
 }) => {
   const { data: allowance } = useAllowance(poolAddress)
-  const [ssvAmount, setSsvAmount] = useState<number | undefined>(undefined);
+  const [ssvAmount, setSsvAmount] = useState<string | undefined>(undefined);
   const [txHash, setTxHash] = useState<string | undefined>();
   // const [clusterData, setClusterData] = useState<any>();
   const [cluster, setCluster] = useState<any>();
@@ -53,7 +53,7 @@ export const TopUpClusterBalance = ({
       hash: txHash,
       onSuccess: () => {
         if (ssvAmount !== undefined) {
-          updateSSVBalance(ssvAmount);
+          updateSSVBalance(parseFloat(ssvAmount));
         } else {
           updateSSVBalance(1);
         }
@@ -68,6 +68,7 @@ export const TopUpClusterBalance = ({
       );
       const clusterListdataJson = await clusterListdata.json();
       setCluster(clusterListdataJson);
+      console.log(`CD`,clusterListdataJson);
       // getClusterData(clusterListdataJson.clusters[0].operators);
     };
 
@@ -75,63 +76,20 @@ export const TopUpClusterBalance = ({
   }, []);
 
   const { data: clusterData, isLoading: isLoadingClusterScanner } =
-    useClusterScanner(poolAddress, cluster?.clusters[0].operators);
-
-  // // TODO : this should be replaced by hooks/read/useClusterScanner
-  // const getClusterData = async (operatorIds: any) => {
-  //   if (operatorIds && poolAddress && chain) {
-  //     const contractAddress =
-  //       FrensContracts[network].SSVNetworkContract.address;
-  //     const nodeUrl = chain.rpcUrls.default.http.at(0)!;
-  //     const clusterParams = {
-  //       contractAddress: contractAddress,
-  //       nodeUrl: nodeUrl,
-  //       ownerAddress: poolAddress,
-  //       operatorIds,
-  //       network
-  //     };
-  //     const clusterDataTemp = await buildCluster(clusterParams);
-  //     setClusterData(clusterDataTemp.cluster[1]);
-  //   }
-  // };
-
-  async function buildCluster(
-    clusterParams: {
-      contractAddress: string;
-      nodeUrl: string;
-      ownerAddress: string;
-      operatorIds: number[];
-      network: string;
-    } | null
-  ) {
-    const clusterData = async () => {
-      const response = await fetch("/api/clusterScanner", {
-        method: "POST",
-        body: JSON.stringify(clusterParams),
-      });
-
-      if (response.status === 451) {
-        // Something went bad
-      } else {
-        return response.json();
-      }
-    };
-
-    return await clusterData();
-  }
+    useClusterScanner(poolAddress, cluster?.clusters[0]?.operators)
 
   const topUp = async () => {
     const clusterParams = {
-      validatorCount: clusterData.validatorCount,
-      networkFeeIndex: clusterData.networkFeeIndex,
-      index: clusterData.index,
-      balance: clusterData.balance,
-      active: clusterData.active,
+      validatorCount: clusterData.cluster.validatorCount,
+      networkFeeIndex: clusterData.cluster.networkFeeIndex,
+      index: clusterData.cluster.index,
+      balance: clusterData.cluster.balance,
+      active: clusterData.cluster.active,
     };
 
     const functionArgs = [
       poolAddress,
-      cluster.clusters[0].operators,
+      clusterData.cluster.operators,
       ssvAmount !== undefined ? parseEther(ssvAmount.toString()) : "1",
       clusterParams,
     ];
@@ -267,22 +225,29 @@ export const TopUpClusterBalance = ({
   return (
     <div className="w-full">
 
-      <div className="my-2">Available SSV balance in pool ( {ssvBalance ? Number.parseFloat(ethers.utils.formatUnits((ssvBalance), 18)).toFixed(4) : ""} SSV)</div>
-      <div className="my-2">Select SSV amount</div>
+      <div className="my-2 text-sm">Available SSV balance: {ssvBalance ? Number.parseFloat(ethers.utils.formatUnits((ssvBalance), 18)).toFixed(4) : ""} SSV</div>
+      <div className="my-2 text-sm">Select SSV amount</div>
       <div className="flex flex-col lg:flex-row items-start justify-start">
         <input
-          className="input input-bordered w-full lg:max-w-[300px]"
-          type="number"
+          className="input input-bordered w-full lg:max-w-[300px] mb-4"
+          type="text"
           placeholder="1"
           min="0"
           value={ssvAmount !== undefined ? ssvAmount : ""}
-          onChange={(event) =>
-            setSsvAmount(
-              event.target.value !== ""
-                ? parseFloat(event.target.value)
-                : undefined
-            )
-          }
+          onChange={(event) => {
+            const value = event.target.value;
+            // Allow empty input and dot for decimal
+            if (value === "" || value === ".") {
+              event.target.value = value;
+              setSsvAmount("");
+              return;
+            }
+            // Only allow numbers and one decimal point
+            if (/^\d*\.?\d*$/.test(value)) {
+              event.target.value = value;
+              setSsvAmount(value);
+            }
+          }}
         />
         {walletAddress ? (
           <>
@@ -304,8 +269,8 @@ export const TopUpClusterBalance = ({
                   </button>
                 )}
                 {/* these actions can be performed when the cluster is active */}
-                {clusterData.active === true && (
-                  <>
+                {clusterData.cluster.active === true && (
+                  <div className="flex flex-row gap-4">
                     <button
                       className={`${!approveSuccess
                         ? "btn-medium opacity-50 text-white blue-to-teal"
@@ -318,7 +283,6 @@ export const TopUpClusterBalance = ({
                     >
                       top up
                     </button>
-                    <br />
 
                     <button
                       className={`${!approveSuccess
@@ -332,7 +296,7 @@ export const TopUpClusterBalance = ({
                     >
                       liquidate!
                     </button>
-                  </>
+                  </div>
                 )}
                 {/* these actions can be performed when the cluster is not active */}
                 {clusterData.active === false && (
