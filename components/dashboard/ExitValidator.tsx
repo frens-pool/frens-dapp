@@ -12,12 +12,6 @@ import { parseEther, encodeFunctionData } from "viem";
 import { etherscanUrl, ssvClusterListByOwnerApi } from "#/utils/externalUrls";
 import { useNetworkName } from "#/hooks/useNetworkName";
 import { FrensContracts } from "#/utils/contracts";
-import { useAllowance } from "#/hooks/read/useAllowance";
-import { useApprove } from "#/hooks/write/useApprove";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { ethers } from "ethers";
-import { useTokenBalance } from "#/hooks/read/useTokenBalance";
-import { useClusterScanner } from "#/hooks/read/useClusterScanner";
 import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 
 export const ExitValidator = ({

@@ -97,7 +97,7 @@ function PoolSSVBalance({ poolAddress }: PoolSSVBalance) {
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col items-start justify-start">
-        <p className="text-[10px] uppercase text-black mt-6 mb-[4px]">Top up SSV cluster balance</p>
+        <p className="text-[16px] uppercase text-black mt-6 mb-[4px] font-semibold">Top up SSV cluster balance</p>
         <TopUpClusterBalance
           poolAddress={poolAddress}
           updateSSVBalance={updateSSVBalance}
