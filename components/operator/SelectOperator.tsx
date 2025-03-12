@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useMemo } from "react";
 import { useNetwork } from "wagmi";
 import { formatEther } from "viem";
 import { ssvScanUrl, ssvOperatorListApi } from "#/utils/externalUrls";
@@ -12,6 +12,7 @@ export const SelectOperator = ({
   nextStep?: () => void;
   setOperators: any;
 }) => {
+
   const [ssvOperators, setssvOperators] = useState<SsvOperatorType[]>([]);
   const [frenSsvOperatorIDs, setFrenSsvOperatorIDs] = useState([]);
   const [checkedOperators, setCheckedOperators] = useState<any[]>([]);
@@ -19,39 +20,52 @@ export const SelectOperator = ({
   const { chain } = useNetwork();
   const [chooseOwnOperators, SetChooseOwnOperators] = useState(false);
 
-  useEffect(() => {
-    const fetchOperators = async () => {
-      const data = await fetch(ssvOperatorListApi(1, 800, chain));
-      const json = await data.json();
 
-      let pattern = /AP #/;
+  const fetchOperators = async () => {
+    const data = await fetch(ssvOperatorListApi(1, 5000, chain));
+    const json = await data.json();
+    console.log(`operators`, json);
+    let pattern = /AP #/;
 
-      // filter out permissioned Operators
-      const filteredOperators =
-        json.operators?.reduce(
-          (acc: Array<SsvOperatorType>, item: SsvOperatorType) => {
-            if (
-              // !item.address_whitelist
-              // && 
-              // [609,607,618,665].includes(item.name)
-              pattern.test(item.name)
-            ) {
-              acc.push(item);
-            }else{
-              console.log("excluding",item.name)
-            }
-            return acc;
-          },
-          []
-        ) || [];
+    // filter out permissioned Operators
+    const filteredOperators =
+      json.operators?.reduce(
+        (acc: Array<SsvOperatorType>, item: SsvOperatorType) => {
+          if (
+            // !item.address_whitelist
+            // && 
+            chooseOwnOperators ||
+            [169, 177, 191, 393].includes(item.id)
+            // pattern.test(item.name)
+            // true
+          ) {
+            acc.push(item);
+          } else {
+            console.log("excluding", item.name)
+          }
+          return acc;
+        },
+        []
+      ) || [];
 
-      // json.operators.reduce((coll,op)=>{ if (!op.address_whitelist) { coll.push(op) ; return coll;} },[]);
-      setssvOperators(filteredOperators);
-      setFilteredLength(filteredOperators.length);
-    };
+    // json.operators.reduce((coll,op)=>{ if (!op.address_whitelist) { coll.push(op) ; return coll;} },[]);
+    setssvOperators(filteredOperators);
+    setFilteredLength(filteredOperators.length);
+  };
 
+  // useEffect(() => {
+  //   setssvOperators([]);
+  //   setFilteredLength(0);
+  //   fetchOperators().catch(console.error);
+  // }, []);
+
+  useMemo(() => {
+    console.log(`choose!`);
+    setCheckedOperators([]);
+    setssvOperators([]);
+    setFilteredLength(0);
     fetchOperators().catch(console.error);
-  }, []);
+  }, [chooseOwnOperators]);
 
   const addSSVOperator = (searchOperator: SsvOperatorType) => {
     setssvOperators([...ssvOperators, searchOperator]);
@@ -111,6 +125,13 @@ export const SelectOperator = ({
           </div>
         </td>
         <td>
+          <div className="flex items-center space-x-3">
+            <div>
+              <div className="font-bold">{operator.id}</div>
+            </div>
+          </div>
+        </td>
+        <td>
           {parseFloat(operator.performance["24h"]).toFixed(2)}%
           <br />
         </td>
@@ -136,7 +157,7 @@ export const SelectOperator = ({
         <input
           id="default"
           type="radio"
-          value=""
+          checked={!chooseOwnOperators}
           name="default-radio"
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
           onChange={handleOptionChange}
@@ -147,14 +168,14 @@ export const SelectOperator = ({
         <input
           id="choose"
           type="radio"
-          value=""
+          checked={chooseOwnOperators}
           name="default-radio"
           onChange={handleOptionChange}
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
         />
         <label className="ms-2">Choose your own operators</label>
       </div>
-      {chooseOwnOperators && (
+      {ssvOperators.length > 0 && (
         <>
           <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
           <div className="overflow-x-auto w-full">
@@ -167,6 +188,7 @@ export const SelectOperator = ({
                     </label>
                   </th>
                   <th>Name</th>
+                  <th>ID</th>
                   <th>
                     <div>Performance</div>
                     <span className="badge badge-ghost badge-sm">last 24h</span>
@@ -187,11 +209,12 @@ export const SelectOperator = ({
       )}
       <div className="flex flex-row items-end justify-end">
         <button
-          className="btn-medium blue-to-purple text-white"
+          className={`btn-medium blue-to-purple text-white ${checkedOperators.length !== 4 ? 'opacity-50' : ''}`}
           onClick={() => {
             setOperators(checkedOperators);
             nextStep && nextStep();
           }}
+          disabled={checkedOperators.length !== 4}
         >
           confirm operators
         </button>
