@@ -24,6 +24,7 @@ export function useSetPubkey({ poolAddress, depositFileData }: Props) {
     abi: FrensContracts[network].StakingPool.abi,
     functionName: "setPubKey",
     args,
+    enabled: depositFileData !== undefined,
   });
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
   return { data, isLoading, isSuccess, write, prepare_error };
