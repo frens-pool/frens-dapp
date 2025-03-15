@@ -18,6 +18,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ethers } from "ethers";
 import { useTokenBalance } from "#/hooks/read/useTokenBalance";
 import { useClusterScanner } from "#/hooks/read/useClusterScanner";
+import { useClusterBalance } from "#/hooks/read/useClusterBalance";
+import { useDepositSSVToCluster } from "#/hooks/write/useDepositSSVToCluster";
 
 export const TopUpClusterBalance = ({
   poolAddress,
@@ -26,37 +28,56 @@ export const TopUpClusterBalance = ({
   poolAddress: Address;
   updateSSVBalance: (addedValue: number) => void;
 }) => {
-  const { data: allowance } = useAllowance(poolAddress)
-  const [ssvAmount, setSsvAmount] = useState<string | undefined>(undefined);
-  const [txHash, setTxHash] = useState<string | undefined>();
+  const [ssvAmount, setSsvAmount] = useState<BigInt>(BigInt(0));
+  // const [txHash, setTxHash] = useState<string | undefined>();
   // const [clusterData, setClusterData] = useState<any>();
   const [cluster, setCluster] = useState<any>();
   const network = useNetworkName();
-  const { balance: ssvBalance } = useTokenBalance({ tokenAddress: FrensContracts[network].SSVTokenContract.address, accountAddress: poolAddress })
   const { address: walletAddress } = useAccount();
+  const { data: allowance } = useAllowance(walletAddress ?? "0x")
+  const { balance: ssvBalance } = useTokenBalance({
+    tokenAddress: FrensContracts[network].SSVTokenContract.address,
+    accountAddress: walletAddress ?? "0x"
+  })
   const { chain } = useNetwork();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
   const { data, write: approveSSVSpending } = useApprove({
     spender: FrensContracts[network].SSVNetworkContract.address!,
-    value: "20000000000000000000",
+    value: "20000000000000000000", // 20 SSV
   });
+
+  const { data: clusterOnChainBalance } = useClusterBalance(poolAddress, cluster?.clusters[0]?.operators)
+
+  console.log(`clusterOnChainBalance`, clusterOnChainBalance)
+  console.log(`ssvAmount`,ssvAmount?.toString())
 
   const { isLoading: approveLoading, isSuccess: approveSuccess } =
     useWaitForTransaction({
       hash: data?.hash,
     });
 
+
+    const {
+      data: depositTx,
+      write: depositToCluster,
+      isError,
+      prepare_error,
+    } = useDepositSSVToCluster({ ownerAddress: poolAddress, operatorIds: cluster?.clusters[0]?.operators, amount: ssvAmount });
+  
+  
+    console.log(`depositToCluster data=`,depositTx?.hash)
+
   const { isLoading: topUpIsLoading, isSuccess: topUpIsSuccess } =
     useWaitForTransaction({
       // @ts-ignore
-      hash: txHash,
+      hash: depositTx?.hash,
       onSuccess: () => {
-        if (ssvAmount !== undefined) {
-          updateSSVBalance(parseFloat(ssvAmount));
-        } else {
-          updateSSVBalance(1);
-        }
+        // if (ssvAmount !== undefined) {
+        //   updateSSVBalance(parseFloat(ssvAmount.toLocaleString()));
+        // } else {
+        //   updateSSVBalance(1);
+        // }
       },
     });
 
@@ -68,7 +89,7 @@ export const TopUpClusterBalance = ({
       );
       const clusterListdataJson = await clusterListdata.json();
       setCluster(clusterListdataJson);
-      console.log(`CD`,clusterListdataJson);
+      console.log(`CD`, clusterListdataJson);
       // getClusterData(clusterListdataJson.clusters[0].operators);
     };
 
@@ -78,119 +99,123 @@ export const TopUpClusterBalance = ({
   const { data: clusterData, isLoading: isLoadingClusterScanner } =
     useClusterScanner(poolAddress, cluster?.clusters[0]?.operators)
 
+
+
   const topUp = async () => {
-    const clusterParams = {
-      validatorCount: clusterData.cluster.validatorCount,
-      networkFeeIndex: clusterData.cluster.networkFeeIndex,
-      index: clusterData.cluster.index,
-      balance: clusterData.cluster.balance,
-      active: clusterData.cluster.active,
-    };
+    depositToCluster && depositToCluster();
 
-    const functionArgs = [
-      poolAddress,
-      clusterData.cluster.operators,
-      ssvAmount !== undefined ? parseEther(ssvAmount.toString()) : "1",
-      clusterParams,
-    ];
+    // const clusterParams = {
+    //   validatorCount: clusterData.cluster.validatorCount,
+    //   networkFeeIndex: clusterData.cluster.networkFeeIndex,
+    //   index: clusterData.cluster.index,
+    //   balance: clusterData.cluster.balance,
+    //   active: clusterData.cluster.active,
+    // };
 
-    const encodedFunctionData = encodeFunctionData({
-      abi: FrensContracts[network].SSVNetworkContract.abi,
-      args: functionArgs,
-      functionName: "deposit",
-    });
+    // const functionArgs = [
+    //   poolAddress,
+    //   clusterData.cluster.operators,
+    //   ssvAmount !== undefined ? parseEther(ssvAmount.toString()) : "1",
+    //   clusterParams,
+    // ];
 
-    const { request } = await publicClient.simulateContract({
-      account: walletAddress,
-      address: poolAddress,
-      abi: FrensContracts[network].StakingPool.abi,
-      args: [encodedFunctionData],
-      functionName: "callSSVNetwork",
-    });
+    // const encodedFunctionData = encodeFunctionData({
+    //   abi: FrensContracts[network].SSVNetworkContract.abi,
+    //   args: functionArgs,
+    //   functionName: "deposit",
+    // });
 
-    if (walletClient) {
-      const txHash = await walletClient.writeContract(request);
-      setTxHash(txHash);
-    }
+    // const { request } = await publicClient.simulateContract({
+    //   account: walletAddress,
+    //   address: poolAddress,
+    //   abi: FrensContracts[network].StakingPool.abi,
+    //   args: [encodedFunctionData],
+    //   functionName: "callSSVNetwork",
+    // });
+
+    // if (walletClient) {
+    //   const txHash = await walletClient.writeContract(request);
+    //   setTxHash(txHash);
+    // }
   };
 
 
-  const reactivate = async () => {
-    const clusterParams = {
-      validatorCount: clusterData.validatorCount,
-      networkFeeIndex: clusterData.networkFeeIndex,
-      index: clusterData.index,
-      balance: clusterData.balance,
-      active: clusterData.active,
-    };
+  // const reactivate = async () => {
+  //   const clusterParams = {
+  //     validatorCount: clusterData.validatorCount,
+  //     networkFeeIndex: clusterData.networkFeeIndex,
+  //     index: clusterData.index,
+  //     balance: clusterData.balance,
+  //     active: clusterData.active,
+  //   };
 
-    const functionArgs = [
-      cluster.clusters[0].operators,
-      ssvAmount !== undefined ? parseEther(ssvAmount.toString()) : "1",
-      clusterParams,
-    ];
+  //   const functionArgs = [
+  //     cluster.clusters[0].operators,
+  //     ssvAmount !== undefined ? parseEther(ssvAmount.toString()) : "1",
+  //     clusterParams,
+  //   ];
 
-    const encodedFunctionData = encodeFunctionData({
-      abi: FrensContracts[network].SSVNetworkContract.abi,
-      args: functionArgs,
-      functionName: "reactivate",
-    });
+  //   const encodedFunctionData = encodeFunctionData({
+  //     abi: FrensContracts[network].SSVNetworkContract.abi,
+  //     args: functionArgs,
+  //     functionName: "reactivate",
+  //   });
 
-    const { request } = await publicClient.simulateContract({
-      account: walletAddress,
-      address: poolAddress,
-      abi: FrensContracts[network].StakingPool.abi,
-      args: [encodedFunctionData],
-      functionName: "callSSVNetwork",
-    });
+  //   const { request } = await publicClient.simulateContract({
+  //     account: walletAddress,
+  //     address: poolAddress,
+  //     abi: FrensContracts[network].StakingPool.abi,
+  //     args: [encodedFunctionData],
+  //     functionName: "callSSVNetwork",
+  //   });
 
-    if (walletClient) {
-      const txHash = await walletClient.writeContract(request);
-      setTxHash(txHash);
-    }
-  };
+  //   if (walletClient) {
+  //     const txHash = await walletClient.writeContract(request);
+  //     setTxHash(txHash);
+  //   }
+  // };
 
-  // liquidate the cluster (WARNING)! 
+  // // liquidate the cluster (WARNING)! 
 
-  const liquidate = async () => {
+  // const liquidate = async () => {
 
-    if (!clusterData.active === true) {
-      throw new Error("Cannot liquidate an inactive cluster")
-    }
+  //   if (!clusterData.active === true) {
+  //     throw new Error("Cannot liquidate an inactive cluster")
+  //   }
 
-    const clusterParams = {
-      validatorCount: clusterData.validatorCount,
-      networkFeeIndex: clusterData.networkFeeIndex,
-      index: clusterData.index,
-      balance: clusterData.balance,
-      active: clusterData.active,
-    };
+  //   const clusterParams = {
+  //     validatorCount: clusterData.validatorCount,
+  //     networkFeeIndex: clusterData.networkFeeIndex,
+  //     index: clusterData.index,
+  //     balance: clusterData.balance,
+  //     active: clusterData.active,
+  //   };
 
-    const functionArgs = [
-      poolAddress,
-      cluster.clusters[0].operators,
-      clusterParams,
-    ];
+  //   const functionArgs = [
+  //     poolAddress,
+  //     cluster.clusters[0].operators,
+  //     clusterParams,
+  //   ];
 
-    const encodedFunctionData = encodeFunctionData({
-      abi: FrensContracts[network].SSVNetworkContract.abi,
-      args: functionArgs,
-      functionName: "liquidate",
-    });
+  //   const encodedFunctionData = encodeFunctionData({
+  //     abi: FrensContracts[network].SSVNetworkContract.abi,
+  //     args: functionArgs,
+  //     functionName: "liquidate",
+  //   });
 
-    const { request } = await publicClient.simulateContract({
-      account: walletAddress,
-      address: poolAddress,
-      abi: FrensContracts[network].StakingPool.abi,
-      args: [encodedFunctionData],
-      functionName: "callSSVNetwork",
-    });
+  //   const { request } = await publicClient.simulateContract({
+  //     account: walletAddress,
+  //     address: poolAddress,
+  //     abi: FrensContracts[network].StakingPool.abi,
+  //     args: [encodedFunctionData],
+  //     functionName: "callSSVNetwork",
+  //   });
 
-    if (walletClient) {
-      const txHash = await walletClient.writeContract(request);
-      setTxHash(txHash);
-    }
-  };
+  //   if (walletClient) {
+  //     const txHash = await walletClient.writeContract(request);
+  //     setTxHash(txHash);
+  //   }
+  // };
 
   if (topUpIsLoading) {
     return (
@@ -206,7 +231,7 @@ export const TopUpClusterBalance = ({
         {topUpIsLoading && (
           <div className="mb-2">
             <a
-              href={`${etherscanUrl(chain)}/tx/${txHash}`}
+              href={`${etherscanUrl(chain)}/tx/${depositTx?.hash}`}
               target="_blank"
               rel="noopener noreferrer"
               className="link text-frens-main underline px-2"
@@ -225,7 +250,8 @@ export const TopUpClusterBalance = ({
   return (
     <div className="w-full">
 
-      <div className="my-2 text-sm">Available SSV balance: {ssvBalance ? Number.parseFloat(ethers.utils.formatUnits((ssvBalance), 18)).toFixed(4) : ""} SSV</div>
+      <div className="my-2 text-sm">Cluster SSV balance: {clusterOnChainBalance ? Number.parseFloat(ethers.utils.formatUnits((clusterOnChainBalance), 18)).toFixed(4) : ""} SSV</div>
+      <div className="my-2 text-sm">Available SSV balance in your wallet: {ssvBalance ? Number.parseFloat(ethers.utils.formatUnits((ssvBalance), 18)).toFixed(4) : ""} SSV</div>
       <div className="my-2 text-sm">Select SSV amount</div>
       <div className="flex flex-col lg:flex-row items-start justify-start">
         <input
@@ -233,19 +259,23 @@ export const TopUpClusterBalance = ({
           type="text"
           placeholder="1"
           min="0"
-          value={ssvAmount !== undefined ? ssvAmount : ""}
+          // value={ssvAmount !== undefined ? ssvAmount : ""}
           onChange={(event) => {
             const value = event.target.value;
             // Allow empty input and dot for decimal
             if (value === "" || value === ".") {
               event.target.value = value;
-              setSsvAmount("");
+              setSsvAmount(BigInt(0));
               return;
             }
             // Only allow numbers and one decimal point
             if (/^\d*\.?\d*$/.test(value)) {
               event.target.value = value;
-              setSsvAmount(value);
+              try {
+                setSsvAmount(BigInt(parseEther(value)));
+              } catch {
+                setSsvAmount(BigInt(0));
+              }
             }
           }}
         />
@@ -269,21 +299,21 @@ export const TopUpClusterBalance = ({
                   </button>
                 )}
                 {/* these actions can be performed when the cluster is active */}
-                {clusterData.cluster.active === true && (
+                {clusterData.cluster?.active === true && (
                   <div className="flex flex-row gap-4">
                     <button
-                      className={`${!approveSuccess
+                      className={`${allowance < ssvAmount
                         ? "btn-medium opacity-50 text-white blue-to-teal"
                         : "btn-medium opacity-1 text-white blue-to-teal"
                         }`}
                       onClick={() => {
                         topUp();
                       }}
-                      disabled={!clusterData && !cluster}
+                      // disabled={!clusterData && !cluster}
                     >
                       top up
                     </button>
-
+{/* 
                     <button
                       className={`${!approveSuccess
                         ? "btn-medium opacity-50 text-white blue-to-teal"
@@ -295,11 +325,11 @@ export const TopUpClusterBalance = ({
                       disabled={!clusterData && !cluster}
                     >
                       liquidate!
-                    </button>
+                    </button> */}
                   </div>
                 )}
                 {/* these actions can be performed when the cluster is not active */}
-                {clusterData.active === false && (
+                {/* {clusterData.active === false && (
                   <button
                     className="btn-medium opacity-50 text-white blue-to-teal"
                     onClick={() => {
@@ -308,7 +338,7 @@ export const TopUpClusterBalance = ({
                   >
                     reactivate with {ssvAmount} SSV!
                   </button>
-                )}
+                )} */}
               </>
             ) : (<span>Running ClusterScanner... <span className="loading loading-spinner loading-lg text-frens-main"></span></span>)}
 
