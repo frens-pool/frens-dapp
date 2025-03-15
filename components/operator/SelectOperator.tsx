@@ -19,45 +19,46 @@ export const SelectOperator = ({
   const [filteredLength, setFilteredLength] = useState<number>(1);
   const { chain } = useNetwork();
   const [chooseOwnOperators, SetChooseOwnOperators] = useState(false);
-
+  const [fetching, setFetching] = useState<boolean>(false);
 
   const fetchOperators = async () => {
-    const data = await fetch(ssvOperatorListApi(1, 5000, chain));
-    const json = await data.json();
-    console.log(`operators`, json);
-    let pattern = /AP #/;
+    try {
+      setFetching(true);
+      const data = await fetch(ssvOperatorListApi(1, 5000, chain));
+      const json = await data.json();
+      console.log(`operators`, json);
+      let pattern = /AP #/;
 
-    // filter out permissioned Operators
-    const filteredOperators =
-      json.operators?.reduce(
-        (acc: Array<SsvOperatorType>, item: SsvOperatorType) => {
-          if (
-            // !item.address_whitelist
-            // && 
-            chooseOwnOperators ||
-            [169, 177, 191, 393].includes(item.id)
-            // pattern.test(item.name)
-            // true
-          ) {
-            acc.push(item);
-          } else {
-            console.log("excluding", item.name)
-          }
-          return acc;
-        },
-        []
-      ) || [];
+      // filter out permissioned Operators
+      const filteredOperators =
+        json.operators?.reduce(
+          (acc: Array<SsvOperatorType>, item: SsvOperatorType) => {
+            if (
+              // !item.address_whitelist
+              // && 
+              chooseOwnOperators ||
+              [169, 177, 191, 393].includes(item.id)
+              // pattern.test(item.name)
+              // true
+            ) {
+              acc.push(item);
+            } else {
+              console.log("excluding", item.name)
+            }
+            return acc;
+          },
+          []
+        ) || [];
 
-    // json.operators.reduce((coll,op)=>{ if (!op.address_whitelist) { coll.push(op) ; return coll;} },[]);
-    setssvOperators(filteredOperators);
-    setFilteredLength(filteredOperators.length);
+      // json.operators.reduce((coll,op)=>{ if (!op.address_whitelist) { coll.push(op) ; return coll;} },[]);
+      setssvOperators(filteredOperators);
+      setFilteredLength(filteredOperators.length);
+      setFetching(false);
+    } catch (e) {
+      setFetching(false);
+
+    }
   };
-
-  // useEffect(() => {
-  //   setssvOperators([]);
-  //   setFilteredLength(0);
-  //   fetchOperators().catch(console.error);
-  // }, []);
 
   useMemo(() => {
     console.log(`choose!`);
@@ -175,6 +176,11 @@ export const SelectOperator = ({
         />
         <label className="ms-2">Choose your own operators</label>
       </div>
+      {fetching && (
+        <div>
+          <span className="loading loading-spinner loading-lg text-frens-main"></span>
+        </div>
+      )}
       {ssvOperators.length > 0 && (
         <>
           <SearchOperator chain={chain} addSSVOperator={addSSVOperator} />
