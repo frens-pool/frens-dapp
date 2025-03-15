@@ -41,7 +41,7 @@ export const SSVRegisterValidator = ({
     accountAddress: poolAddress,
   });
 
-  const { write: approve } = useApprove({ value: SSVPoolBalance ? SSVPoolBalance.toString() : "0", spender: FrensContracts[network].SSVNetworkContract.address });
+  const { write: approve } = useApprove({ value: SSVPoolBalance ? (SSVPoolBalance?.toString() || "0") : "0", spender: FrensContracts[network].SSVNetworkContract.address });
 
 
   const { data: sendSSVdata, write: sendTransaction } = useSendSSV({
