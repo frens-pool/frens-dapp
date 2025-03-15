@@ -10,6 +10,7 @@ export function useAllowance(address: Address) {
     abi: FrensContracts[network].SSVTokenContract.abi,
     functionName: "allowance",
     args: [address, FrensContracts[network].SSVNetworkContract.address],
+    watch: true,
   });
 
   return { data: data ? data as BigInt : BigInt(0), isLoading, isSuccess };
