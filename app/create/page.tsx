@@ -87,7 +87,10 @@ const Create: NextPage = () => {
             </p>
             <div className="mt-20 lg:mt-32">
               <CreatePool
-                onFinish={() => setStep("Invite")}
+                onFinish={() => {
+                  console.log(`pool created!`);
+                  setStep("Invite")
+                }}
                 setPoolContract={setPoolContract}
               />
             </div>

@@ -48,7 +48,7 @@ export const PoolSetup = ({
       itemDone: false,
     },
     {
-      itemTitle: "Split keyshares",
+      itemTitle: "Split key into SSV keyshares",
       itemDone: false,
     },
     {

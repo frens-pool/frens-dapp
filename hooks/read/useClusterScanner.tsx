@@ -1,89 +1,35 @@
 // import { Address } from "wagmi";
 import { useState, useEffect } from 'react';
-import { ssvClusterApi } from "#/utils/externalUrls";
-import { FrensContracts } from "#/utils/contracts";
-import { useNetworkName } from "#/hooks/useNetworkName";
-import {
-  useNetwork,
-} from "wagmi";
+import useSWR from 'swr';
+import { useNetwork } from "wagmi";
+import { mainnet, holesky } from "wagmi/chains";
 
 export function useClusterScanner(ownerAddress: string, operatorIDs: number[]) {
-
-  const [data, setData] = useState<any | null>(null);
-  const [isLoading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
-
   const { chain } = useNetwork();
-  const network = useNetworkName();
 
+  // Construct SSV API URL - moved up
+  const network = chain?.id === mainnet.id ? 'mainnet' : 'holesky';
+  const operatorString = operatorIDs?.join(',');
+  const url = ownerAddress && operatorIDs?.length >= 4
+    ? `https://api.ssv.network/api/v4/${network}/clusters/owner/${ownerAddress}/operators/${operatorString}`
+    : null;
 
-  async function buildCluster(
-    clusterParams: {
-      contractAddress: string;
-      nodeUrl: string;
-      ownerAddress: string;
-      operatorIds: number[];
-    } | null
-  ) {
-    const clusterData = async () => {
-      const response = await fetch("/api/clusterScanner", {
-        method: "POST",
-        body: JSON.stringify(clusterParams),
-      });
+  // Use SWR for data fetching
+  const { data, error, isLoading } = useSWR(url, async (url: string | URL | Request) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Failed to fetch cluster data');
+    }
+    return await response.json();
+  });
 
-      if (response.status === 451) {
-        // Something went bad
-        throw new Error("Cluster scanner error")
-      } else {
-        return response.json();
-      }
-    };
-
-    return await clusterData();
+  // Validation moved after hook
+  if (!operatorIDs || operatorIDs.length < 4) {
+    return { data: null, isLoading: false, error: new Error("No operatorIDs provided") };
+  }
+  if (!ownerAddress) {
+    return { data: null, isLoading: false, error: new Error("No ownerAddress provided") };
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!chain || !network) return;
-
-      try {
-        setLoading(true);
-
-
-        const nodeUrl = chain.rpcUrls.default.http.at(0)!;
-
-        const clusterParams = {
-          contractAddress: FrensContracts[network].SSVNetworkContract.address,
-          nodeUrl: nodeUrl,
-          ownerAddress: ownerAddress,
-          operatorIds: operatorIDs,
-          network,
-        };
-        const clusterDataTemp = await buildCluster(clusterParams);
-        setData(clusterDataTemp);
-
-
-      } catch (err) {
-
-        setError(err as Error);
-      } finally {
-
-        setLoading(false);
-      }
-    };
-
-    if (!operatorIDs || operatorIDs.length < 4) {
-      setError(new Error("No operatorIDs provided"));
-      return;
-    }
-    if (!ownerAddress) {
-      setError(new Error("No ownerAddress provided"));
-      return;
-    }
-
-    fetchData();
-  }, [chain, network, ownerAddress, operatorIDs]);
-
   return { data, isLoading, error };
-
 }

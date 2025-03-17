@@ -30,10 +30,9 @@ export const SSVRemoveValidator = ({
 
   const removeValidator = async (cd: any) => {
 
-    const operatorList = cd.cluster[0]?.Operators.split(",");
-    const cluster = cd.cluster[1];
-    const owner = cd.cluster[0].Owner;
-
+    const operatorList = cd.cluster.operators
+    const cluster = cd.cluster;
+    const owner = cd.cluster.Owner;
 
     // function data to send to the SSV contract
     const encodedFunctionData = encodeFunctionData({

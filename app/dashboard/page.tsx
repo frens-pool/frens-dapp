@@ -3,7 +3,8 @@
 import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Address, useEnsName, useNetwork, useAccount } from "wagmi";
+import { useEnsName, useAccount, useChainId } from "wagmi";
+import type { Address } from "viem";
 import { PlusSmallIcon } from "@heroicons/react/20/solid";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Header from "components/shared/Header";
@@ -20,14 +21,14 @@ function classNames(...classes: string[]) {
 const Dashboard: NextPage = () => {
   const { userNFTs, totalDeposit, totalClaimable } = useUserNfts();
   const { isConnected, address } = useAccount();
+  const chainId = useChainId();
   const userPools = useUserPools(address as Address);
-  const { chain } = useNetwork();
   const [userENS, setUserENS] = useState("");
 
 
   const { data: ensName } = useEnsName({
     address: address,
-    chainId: chain?.id ?? 5,
+    chainId: chainId ?? 5,
     cacheTime: 1_000,
   });
 
@@ -39,14 +40,6 @@ const Dashboard: NextPage = () => {
 
 
   const stats = [
-    // {
-    //   name: "My Pools #",
-    //   value: userPools?.creates.length,
-    // },
-    // {
-    //   name: "Pool Shares #",
-    //   value: userNFTs.length,
-    // },
     {
       name: "ETH Deposited",
       value: totalDeposit.toFixed(4).toString(),

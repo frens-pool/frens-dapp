@@ -29,7 +29,7 @@ export const CreateKeys = ({
         <button
           className="w-[244px] btn-medium blue-to-purple text-white"
           onClick={() => {
-            // nextStep();
+            nextStep && nextStep();
           }}
         >
           yup, keys created

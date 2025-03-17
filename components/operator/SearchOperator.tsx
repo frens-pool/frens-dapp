@@ -67,7 +67,7 @@ const SearchOperator = ({ chain, addSSVOperator }: SearchOperatorProps) => {
     <div>
       <input
         type="text"
-        placeholder="operator name"
+        placeholder="filter by operator name"
         className="input input-bordered w-full max-w-xs"
         value={query}
         onChange={(e) => setQuery(e.target.value)}

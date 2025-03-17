@@ -30,6 +30,7 @@ export const CreatePool = ({
     abi: FrensContracts[network].StakingPoolFactory.abi,
     eventName: "Create",
     listener: (node) => {
+      console.log(`Create listener fired`)
       // @ts-ignore
       setPoolContract(node[0].args.contractAddress);
       onFinish();
@@ -39,7 +40,7 @@ export const CreatePool = ({
   if (data) {
     const etherscanLink = `${etherscanUrl(chain)}/tx/${data.hash}`;
 
-    console.log("isConnected????",isConnected,"accountAddress",accountAddress);
+    // console.log("isConnected????",isConnected,"accountAddress",accountAddress);
     return (
       <div>
         {/* <div className="my-2">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DropKeys } from "components/operator/DropKeys";
 import { ISharesKeyPairs, SSVKeys, KeyShares, KeySharesItem } from "ssv-keys";
 import BigNumber from "bignumber.js";
@@ -6,6 +6,7 @@ import { useAccount, useNetwork, usePublicClient, Address } from "wagmi";
 
 import { FrensContracts } from "#/utils/contracts";
 import { useNetworkName } from "#/hooks/useNetworkName";
+import { useClusterScanner } from "#/hooks/read/useClusterScanner";
 
 export const SplitKeyshares = ({
   operatorsList,
@@ -29,98 +30,40 @@ export const SplitKeyshares = ({
   const [keystoreFileData, setKeystoreFileData] = useState<string>("");
   const network = useNetworkName();
   const { chain } = useNetwork();
-  const publicClient = usePublicClient();
+  const [worker, setWorker] = useState<Worker | null>(null);
 
-  const ssvKeys = new SSVKeys();
+  useEffect(() => {
+    console.log(`loading webworker...`)
+    const w = new Worker(new URL('../../workers/keyshares.worker.ts', import.meta.url));
+    setWorker(w);
+    
+    return () => {
+      console.log(`unloading webworker...`)
+      w.terminate();
+    };
+  }, []);
 
   function buildRegisterPayload() {
-    const keyshareData = async () => {
-      try {
-        if (!keystoreFileData) {
-          setKeystoreError(true);
-        }
+    if (!worker) return;
 
-        const operators = operatorsList.map((operator: any) => ({
-          id: operator.id,
-          operatorKey: operator.public_key,
-          // publicKey: operator.public_key,
-        }));
-
-        const { publicKey, privateKey } = await ssvKeys.extractKeys(
-          keystoreFileData,
-          pw
-        );
-        const threshold: ISharesKeyPairs = await ssvKeys.createThreshold(
-          privateKey,
-          operators
-        );
-        const encryptedShares = await ssvKeys.encryptShares(
-          operators,
-          threshold.shares
-        );
-
-        // SSV Cluster Data
-        const cData = await getClusterData(operators.map((o: any) => o.id));
-        const ownerAddress = cData.cluster[0].Owner;
-        const ownerNonce = parseInt(cData.nonce);
-
-        const keySharesItem = new KeySharesItem();
-        await keySharesItem.update({ operators });
-        await keySharesItem.update({ ownerAddress, ownerNonce, publicKey });
-
-        await keySharesItem.buildPayload(
-          {
-            publicKey,
-            operators,
-            encryptedShares,
-          },
-          {
-            ownerAddress,
-            ownerNonce,
-            privateKey,
-          }
-        );
-
-        const keyShares = new KeyShares();
-        keyShares.add(keySharesItem);
-
-        // static at 1,5 SSV token per validator.
-        // assumption: exactly 4 operators
-        const tokenAmount = new BigNumber(5000000000000000000).toString();
-
-        // const operatorFees = operators.map((operator: any) => {
-        //   return operator.fee;
-        // });
-        // const sumOfFees: number = operatorFees.reduceRight(
-        //   (acc: number, cur: number) => Number(acc) + Number(cur),
-        //   0
-        // );
-
-        const keySharesPayload = await keyShares.toJson();
-
-        return {
-          payload: JSON.parse(keySharesPayload),
-          tokenAmount,
-          clusterData: cData
-        };
-      } catch (error: any) {
-        // console.log(error);
+    worker.onmessage = (e) => {
+      if (e.data.success) {
+        setPayloadRegisterValidator(e.data.data);
+        setPayloadError(false);
+        setLoading(false);
+        // nextStep && nextStep();
+      } else {
         setPayloadError(true);
         setLoading(false);
-        throw new Error(error);
       }
     };
 
-    keyshareData()
-      .then((data) => {
-        setPayloadRegisterValidator(data);
-        setPayloadError(false);
-        setLoading(false);
-        nextStep && nextStep();
-      })
-      .finally(() => {
-        // what now ?
-      });
+    worker.postMessage({
+      operatorsList,
+      keystoreFileData,
+      pw,
+      poolAddress
+    });
   }
 
   function handleKeystoreDrop(data: any) {
@@ -130,49 +73,6 @@ export const SplitKeyshares = ({
     } else {
       alert("please upload a keystore file");
     }
-  }
-
-  const getClusterData = async (operatorIds: any) => {
-    if (operatorIds && poolAddress && chain) {
-      const contractAddress =
-        FrensContracts[network].SSVNetworkContract.address;
-      const nodeUrl = chain.rpcUrls.default.http.at(0)!;
-      const clusterParams = {
-        contractAddress: contractAddress,
-        nodeUrl: nodeUrl,
-        ownerAddress: poolAddress,
-        operatorIds,
-        network,
-      };
-      // console.log("clusterParams", clusterParams);
-      const clusterDataTemp = await buildCluster(clusterParams);
-      return clusterDataTemp;
-    }
-  };
-
-  async function buildCluster(
-    clusterParams: {
-      contractAddress: string;
-      nodeUrl: string;
-      ownerAddress: string;
-      operatorIds: number[];
-      network: string;
-    } | null
-  ) {
-    const clusterData = async () => {
-      const response = await fetch("/api/clusterScanner", {
-        method: "POST",
-        body: JSON.stringify(clusterParams),
-      });
-
-      if (response.status === 451) {
-        // Something went bad
-      } else {
-        return response.json();
-      }
-    };
-
-    return await clusterData();
   }
 
   return (
@@ -195,6 +95,7 @@ export const SplitKeyshares = ({
           <div>Keystore password:</div>
           <input
             type="password"
+            autoComplete="off"
             onChange={(e) => setPW(e.target.value)}
             className="input input-primary w-full max-w-xs my-2"
           />
@@ -217,8 +118,8 @@ export const SplitKeyshares = ({
               <button
                 className="self-end btn bg-gradient-to-r from-frens-blue to-frens-teal text-white"
                 onClick={() => {
-                  buildRegisterPayload();
                   setLoading(true);
+                  buildRegisterPayload();
                 }}
               >
                 Next
@@ -251,6 +152,7 @@ export const SplitKeyshares = ({
             <div>Keystore password:</div>
             <input
               type="password"
+              autoComplete="off"
               onChange={(e) => setPW(e.target.value)}
               className="input input-primary w-full max-w-xs my-2"
               disabled

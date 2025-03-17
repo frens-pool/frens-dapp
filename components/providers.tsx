@@ -14,26 +14,32 @@ import { mainnet, holesky } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { infuraProvider } from "wagmi/providers/infura";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { createPublicClient, webSocket, http } from 'viem';
 
 const apiKey = process.env.NEXT_PUBLIC_INFURA_KEY || "";
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID || "";
 
-const { chains, publicClient } = configureChains(
-  [mainnet, holesky],
-  [
-    infuraProvider({
-      apiKey: apiKey,
-    }),
-    jsonRpcProvider({
-      rpc: () => {
-        return {
-          http: "https://holesky.infura.io/v3/48089fbe53fa4ad18ffffd3115d11528",
-        };
-      },
-    }),
-    publicProvider(),
-  ]
-);
+const publicClient = createPublicClient({
+  chain: mainnet,
+  transport: http(process.env.NEXT_PUBLIC_RPC_MAINNET)
+});
+
+const holeskyPublicClient = createPublicClient({
+  chain: holesky,
+  transport: http(process.env.NEXT_PUBLIC_RPC_HOLESKY)
+});
+
+const webSocketPublicClient = createPublicClient({
+  chain: mainnet,
+  transport: webSocket(process.env.NEXT_PUBLIC_RPC_MAINNET_WSS)
+});
+
+const holeskyWebSocketPublicClient = createPublicClient({
+  chain: holesky,
+  transport: webSocket(process.env.NEXT_PUBLIC_RPC_HOLESKY_WSS)
+});
+
+const chains = [mainnet, holesky];
 
 const { connectors } = getDefaultWallets({
   appName: "Frens",
@@ -41,22 +47,17 @@ const { connectors } = getDefaultWallets({
   chains,
 });
 
-// const connectors = connectorsForWallets([
-//   ...wallets,
-//   {
-//     groupName: "Wallets",
-//     wallets: [
-//       injectedWallet({ chains }),
-//       metaMaskWallet({ projectId, chains }),
-//     ],
-//   },
-// ]);
-
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  publicClient,
+  publicClient: ({ chainId }) => 
+    chainId === mainnet.id ? publicClient : holeskyPublicClient,
+  webSocketPublicClient: ({ chainId }) =>
+    chainId === mainnet.id ? webSocketPublicClient : holeskyWebSocketPublicClient,
 });
+
+
+console.log(`wagmiconfig`,wagmiConfig)
 
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <Text>

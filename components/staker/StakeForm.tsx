@@ -36,23 +36,26 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
     reset,
   } = useForm();
   const ethInputForm = watch("ethInput");
-  const stakeAmount = ethInputForm > 0 ? ethInputForm.toString() : "0.1";
+  const { isConnected, address } = useAccount();
+
+  // Add balance check for connected wallet
+  const { data: userBalance } = useBalance({
+    address: address,
+    watch: true,
+  });
+
+  const defaultStakeAmount = userBalance && Number(userBalance.formatted) < 0.1 
+    ? userBalance.formatted 
+    : "0.1";
+
+  const stakeAmount = ethInputForm > 0 ? ethInputForm.toString() : defaultStakeAmount;
+
 
   const onSubmit = () => {
     if (deposit) deposit();
     setIsDepositing(true);
   };
 
-  const { isConnected } = useAccount();
-  useBalance({
-    address: poolAddress,
-    watch: true,
-    onSuccess(data) {
-      const poolBalanceNumber: number = +data.formatted;
-      const maxDepositValue = 32 - poolBalanceNumber;
-      setMaxDepositValue(maxDepositValue);
-    },
-  });
   const {
     data: depositData,
     write: deposit,
@@ -62,13 +65,16 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
   // console.log(depositData);
   const etherscanLink = `${etherscanUrl(chain)}/tx/${depositData?.hash}`;
 
-  if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
+  // if (isError) setIsDepositing(false); //to handle user reject (metamask). throw react error but okay for now.
+
+console.log(`Pool address = ${poolAddress}`)
 
   useContractEvent({
     address: poolAddress,
     abi: FrensContracts[network].StakingPool.abi,
     eventName: "DepositToPool",
     listener: (log) => {
+      console.log(`DepositToPool listener fired!`)
       setIsDepositing(false);
       reset();
     },
@@ -83,7 +89,7 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
   };
 
   return (
-    <form className="border-[1px] border-frens-blue text-frens-blue p-8 mb-8" onSubmit={handleSubmit(onSubmit)}>
+    <form autoComplete="off" className="border-[1px] border-frens-blue text-frens-blue p-8 mb-8" onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full flex flex-col items-start justify-start p-0 lg:p-4">
         <h2 className="font-bold text-[20px] lg:text-[30px] text-frens-gradient">Wanna pool together?</h2>
         {!isConnected ?
@@ -170,7 +176,7 @@ export const StakeForm = ({ poolAddress, poolBalance }: Props) => {
                 {...register("ethInput", { max: maxDepositValue })}
                 id="ethInput"
                 type="number"
-                placeholder="0.1"
+                placeholder={defaultStakeAmount}
                 min="0"
                 step="any"
                 className="w-full max-w-[400px] lg:mr-4 input bg-transparent input-bordered border-frens-teal focus:border-frens-blue mb-4 lg:mb-0"
