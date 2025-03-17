@@ -244,7 +244,7 @@ export const TopUpClusterBalance = ({
     );
   }
   if (topUpIsSuccess) {
-    return <div className="w-2/5 mx-auto my-2 p-2">Top was successful</div>;
+    return <div className="w-2/5 mx-auto my-2 p-2"><a href="#">Top-up was successful</a></div>;
   }
 
   return (
