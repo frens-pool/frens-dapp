@@ -47,11 +47,12 @@ export const SplitKeyshares = ({
     if (!worker) return;
 
     worker.onmessage = (e) => {
+      console.log(`result received from worker!`,e.data.data)
       if (e.data.success) {
         setPayloadRegisterValidator(e.data.data);
         setPayloadError(false);
         setLoading(false);
-        // nextStep && nextStep();
+        nextStep && nextStep();
       } else {
         setPayloadError(true);
         setLoading(false);

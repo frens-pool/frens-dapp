@@ -16,6 +16,7 @@ import { beaconchainUrl, ssvScanValidatorUrl } from "#/utils/externalUrls";
 import { useSendSSV } from "#/hooks/write/useSendSSV";
 import { usePoolPubKey } from "#/hooks/read/usePoolPubKey";
 import { useApprove } from "#/hooks/write/useApprove";
+import { useClusterScanner } from "#/hooks/read/useClusterScanner";
 
 export const SSVRegisterValidator = ({
   payloadData,
@@ -29,6 +30,8 @@ export const SSVRegisterValidator = ({
   itemEnabled?: Boolean;
 }) => {
 
+  console.log(`SSVRegisterValidator payloadData`,payloadData)
+
   // debugger;
   const [registerTxHash, setRegisterTxHash] = useState<string | undefined>();
   const network = useNetworkName();
@@ -40,6 +43,8 @@ export const SSVRegisterValidator = ({
     tokenAddress: FrensContracts[network].SSVTokenContract.address,
     accountAddress: poolAddress,
   });
+
+  // const {data: clusterData } = useClusterScanner(poolAddress,operators.map(o=>o.id))
 
   const { write: approve } = useApprove({ value: SSVPoolBalance ? (SSVPoolBalance?.toString() || "0") : "0", spender: FrensContracts[network].SSVNetworkContract.address });
 
@@ -57,7 +62,7 @@ export const SSVRegisterValidator = ({
 
   const registerSSVValidator = async () => {
 
-    const clusterParams = Object.values(payloadData.clusterData.cluster[1]);
+    const clusterParams = [0,0,0,true,0] ; //Object.values(payloadData.clusterData.cluster[1]);
 
     const functionArgs = [payloadData.payload.shares[0].payload.publicKey,
     payloadData.payload.shares[0].payload.operatorIds,
@@ -206,7 +211,7 @@ export const SSVRegisterValidator = ({
           {/* TODO: check balance correct? */}
           Pool SSV Balance : {SSVPoolBalance?.toString()}{" "}
           <div>
-            <button
+            {/* <button
               className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
               onClick={() => {
                 if (sendTransaction) {
@@ -216,7 +221,7 @@ export const SSVRegisterValidator = ({
               }}
             >
               Send SSV token to Pool
-            </button>
+            </button> */}
           </div>
           <div>
             <button
@@ -250,7 +255,7 @@ export const SSVRegisterValidator = ({
             <div>{/* <SelectedOperators /> */}</div>
             {/* TODO: check balance correct? */}
             Pool SSV Balance : {SSVPoolBalance?.toString()}
-            <div>
+            {/* <div>
               <button
                 className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
                 onClick={() => {
@@ -262,7 +267,7 @@ export const SSVRegisterValidator = ({
               >
                 Send SSV token to Pool
               </button>
-            </div>
+            </div> */}
             <div>
               <button
                 className="btn bg-gradient-to-r from-frens-blue to-frens-teal text-white my-2 mr-2"
